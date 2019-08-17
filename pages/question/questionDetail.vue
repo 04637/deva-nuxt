@@ -13,14 +13,14 @@
                 <v-layout justify-space-between>
                   <v-flex xs1 class="mt-12" align-center>
                     <v-layout column align-center>
-                      <v-btn icon>
+                      <v-btn icon fab>
                         <v-icon size="80">arrow_drop_up</v-icon>
                       </v-btn>
                       <strong>47</strong>
-                      <v-btn icon>
+                      <v-btn icon fab>
                         <v-icon size="80">arrow_drop_down</v-icon>
                       </v-btn>
-                      <v-btn icon>
+                      <v-btn icon fab>
                         <!--<v-tooltip bottom>-->
                         <!--  <template v-slot:activator="{ on }">-->
                         <!--    <v-icon size="40" dark v-on="on">favorite_border</v-icon>-->
@@ -69,7 +69,8 @@
                         </v-card>
                       </v-dialog>
                     </v-layout>
-                    <vue-markdown :source="source"></vue-markdown>
+                    <!--eslint-disable-next-line-->
+                    <vue-markdown v-html="$md.render(source)"></vue-markdown>
                     <!--color="cyan"  知更鸟蓝-->
                     <v-layout align-center>
                       <v-alert
@@ -198,14 +199,14 @@
                 <v-layout justify-space-between>
                   <v-flex xs1 class="mt-12" align-center>
                     <v-layout column align-center>
-                      <v-btn icon>
+                      <v-btn icon fab>
                         <v-icon size="80">arrow_drop_up</v-icon>
                       </v-btn>
                       <strong>47</strong>
-                      <v-btn icon>
+                      <v-btn icon fab>
                         <v-icon size="80">arrow_drop_down</v-icon>
                       </v-btn>
-                      <v-btn icon color="green">
+                      <v-btn icon color="success" fab>
                         <v-icon size="40">check</v-icon>
                       </v-btn>
                     </v-layout>
@@ -224,7 +225,8 @@
                       <!--  </v-tooltip>-->
                       <!--</v-btn>-->
                     </v-layout>
-                    <vue-markdown :source="source"></vue-markdown>
+                    <!--eslint-disable-next-line-->
+                    <vue-markdown v-html="$md.render(source)"></vue-markdown>
                     <v-card-actions>
                       <v-layout justify-end>
                         <v-card class="px-8 pt-3 pb-1">

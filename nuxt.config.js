@@ -52,7 +52,8 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/markdownit'
   ],
   /*
    ** Axios module configuration
@@ -72,7 +73,7 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary: colors.cyan.darken1,
+          primary: colors.cyan,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
@@ -86,6 +87,19 @@ export default {
       }
     }
   },
+
+  // [optional] markdownit options
+  // See https://github.com/markdown-it/markdown-it
+  markdownit: {
+    preset: 'default',
+    linkify: true,
+    breaks: true,
+    injected: true,
+    emoji: true,
+    html: true,
+    use: ['markdown-it-div', 'markdown-it-attrs', 'markdown-it-emoji']
+  },
+
   /*
    ** Build configuration
    */

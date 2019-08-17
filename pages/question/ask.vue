@@ -64,13 +64,8 @@
   </v-container>
 </template>
 <script>
-import VueMarkdown from 'vue-markdown'
-
 export default {
   name: 'Ask',
-  components: {
-    VueMarkdown
-  },
   data() {
     return {
       source: '# h1 Heading 8-)',
@@ -135,5 +130,4 @@ export default {
   background: #f6f6f6;
 }
 /*简约滚动条 end*/
-/*  todo vuetify user input kbd 替换 code 样式*/
 </style>

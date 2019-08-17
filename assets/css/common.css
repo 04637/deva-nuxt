@@ -41,3 +41,10 @@
   box-shadow: 0 0 20px inset rgba(0, 0, 0, 0.2);
   background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 48px);
 }
+
+/* 替换 code 样式 参考vuetify kbd*/
+code {
+  background-image: initial;
+  background-color: #616161 !important;
+  color: #ffffff !important;
+}

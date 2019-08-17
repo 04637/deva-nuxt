@@ -13,9 +13,12 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/markdownit": "^1.2.6",
     "@nuxtjs/pwa": "^3.0.0-0",
+    "markdown-it-attrs": "^3.0.0",
+    "markdown-it-div": "^1.1.0",
+    "markdown-it-emoji": "^1.4.0",
     "nuxt": "^2.0.0",
-    "vue-markdown": "^2.2.4",
     "vuex-persist": "^2.0.1"
   },
   "devDependencies": {

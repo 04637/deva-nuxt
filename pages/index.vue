@@ -47,12 +47,15 @@
                           {{ question.createTime | timeago }}</v-card-text
                         >
                       </v-layout>
-                      <v-btn text class="title" to="/question/questionDetail">{{
-                        question.title
-                      }}</v-btn>
-                      <v-card-text
-                        >问题详细内容打开解放上蓝框上来看待荆防颗粒是的圣诞快乐放假</v-card-text
+                      <v-btn
+                        text
+                        class="title"
+                        to="/question/questionDetail?id=12113"
+                        >{{ question.title }}</v-btn
                       >
+                      <!--eslint-disable-next-line-->
+                      <v-card-text class="preview_content" v-html="$md.render(question.content)"
+                      ></v-card-text>
                       <v-card-actions>
                         <v-layout>
                           <v-chip link to="" class="question-tag">java</v-chip>
@@ -157,5 +160,14 @@ export default {
   width: 20px;
   height: 20px;
   vertical-align: -6px;
+}
+.preview_content {
+  height: 43px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
 </style>
