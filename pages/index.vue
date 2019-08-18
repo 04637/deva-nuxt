@@ -50,7 +50,7 @@
                       <v-btn
                         text
                         class="title"
-                        to="/question/questionDetail?id=12113"
+                        :to="'/question/' + question.questionId"
                         >{{ question.title }}</v-btn
                       >
                       <!--eslint-disable-next-line-->
@@ -91,8 +91,8 @@
               :key="hotQuestion.questionId"
             >
               <v-list-item>
-                <v-card>
-                  {{ hotQuestion.title }}
+                <v-card class="d-inline-block text-truncate" flat
+                  >{{ hotQuestion.title }}
                 </v-card>
               </v-list-item>
               <v-divider></v-divider>

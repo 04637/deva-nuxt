@@ -94,7 +94,7 @@
               </v-badge>
             </v-btn>
             <div v-if="$store.getters.getUserInfo">
-              <v-avatar color="grey">
+              <v-avatar color="grey" size="35" tile class="mr-10">
                 <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
               </v-avatar>
               <v-btn

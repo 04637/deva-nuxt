@@ -20,7 +20,11 @@
               >
             </v-layout>
             <v-layout class="label-description mt-1">
-              <v-card-text class="d-inline" title="hello wrold">
+              <!--展示一行省略-->
+              <v-card-text
+                class="d-inline-block text-truncate"
+                title="hello wrold"
+              >
                 Java是一门面向对象编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。
               </v-card-text>
             </v-layout>
@@ -47,6 +51,7 @@ export default {}
 </script>
 
 <style scoped>
+/* 控制展示两行 */
 .label-description {
   font-size: 14px;
   text-indent: 14px;

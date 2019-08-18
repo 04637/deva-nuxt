@@ -36,6 +36,7 @@ export default {
   plugins: [
     '~plugins/axios',
     '~plugins/timeago',
+    { src: '~plugins/quill-editor', ssr: false },
     { src: '~/plugins/vuex-persist', ssr: false }
   ],
   /*

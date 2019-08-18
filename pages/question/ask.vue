@@ -25,11 +25,11 @@
             ></v-textarea>
           </v-flex>
           <v-flex xs6>
-            <vue-markdown
+            <div
               id="markdown-preview"
               class="simple-scroll"
-              :source="source"
-            ></vue-markdown>
+              v-html="$md.render(source)"
+            ></div>
           </v-flex>
         </v-layout>
         <v-layout style="margin-top: 10px;">

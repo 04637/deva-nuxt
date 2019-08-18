@@ -3,6 +3,9 @@
     <h1 v-if="error.statusCode === 404">
       {{ pageNotFound }}
     </h1>
+    <h1 v-if="error.statusCode === 401">
+      {{ invalidToken }}
+    </h1>
     <h1 v-else>
       {{ otherError }}
     </h1>
@@ -14,7 +17,7 @@
 
 <script>
 export default {
-  layout: 'empty',
+  row: 'empty',
   props: {
     error: {
       type: Object,
@@ -31,7 +34,8 @@ export default {
   data() {
     return {
       pageNotFound: '404 Not Found',
-      otherError: 'An error occurred'
+      otherError: 'An error occurred',
+      invalidToken: '当前登录已失效，请重新登录'
     }
   }
 }
