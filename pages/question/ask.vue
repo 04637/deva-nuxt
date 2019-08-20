@@ -1,18 +1,21 @@
 <template>
   <v-container justify-center align-start>
-    <v-row justify="end">
-      <v-btn
-        text
-        nuxt
-        class="text-capitalize"
-        @click="useMarkdown = !useMarkdown"
-        ><v-icon small>arrow_forward_ios</v-icon>&nbsp;{{
-          useMarkdown ? '富文本编辑器' : 'Markdown 编辑器'
-        }}</v-btn
-      >
-    </v-row>
-    <v-layout justify-center>
-      <v-btn to="find">提问之前，不妨先搜索一下？</v-btn>
+    <v-layout justify-end>
+      <v-col cols="3">
+        <v-btn to="find">提问之前，不妨先搜索一下？</v-btn>
+      </v-col>
+      <v-col cols="5">
+        <v-btn
+          text
+          nuxt
+          class="text-capitalize"
+          style="float: right"
+          @click="useMarkdown = !useMarkdown"
+          ><v-icon small>arrow_forward_ios</v-icon>&nbsp;{{
+            useMarkdown ? '富文本编辑器' : 'Markdown 编辑器'
+          }}</v-btn
+        >
+      </v-col>
     </v-layout>
     <v-layout justify-center>
       <v-form ref="form" style="width: 80vw">
@@ -25,7 +28,7 @@
           required
           :rules="[rules.min10, rules.max50]"
         ></v-text-field>
-        <v-layout v-show="useMarkdown" justify-space-around class="mt-4">
+        <v-layout v-show="useMarkdown" justify-space-around class="mt-2">
           <v-flex xs6>
             <v-textarea
               id="markdown-edit"
@@ -39,8 +42,8 @@
             ></v-textarea>
           </v-flex>
           <v-flex xs6>
-            <!--eslint-disable-next-line-->
-            <div id="markdown-preview"
+            <div
+              id="markdown-preview"
               class="simple-scroll"
               v-html="$md.render(source)"
             ></div>
@@ -52,7 +55,7 @@
             ref="myTextEditor"
             v-model="content"
             :options="editorOption"
-            class="mt-4"
+            class="mt-2"
             style="border-radius: 5px"
             @change="onEditorChange($event)"
           >
@@ -115,19 +118,14 @@ export default {
     useMarkdown: true,
     maxLength: 3000,
     source: '# h1 Heading 8-)',
-    chips: [
-      'Programming',
-      'Playing video games',
-      'Watching movies',
-      'Sleeping'
-    ],
+    chips: [],
     rules: {
       min10: (v) => (v && v.length >= 10) || '不能少于10个字符',
       min20: (v) => (v && v.length >= 10) || '不能少于10个字符',
       max50: (v) => (v && v.length <= 50) || '不能超过50个字符',
       max3000: (v) => (v && v.length <= 3000) || '不能超过3000个字符'
     },
-    items: ['Streaming', 'Eating'],
+    items: [],
     content: `<h1>试试选中来设置样式哦 😜 </h1>`,
     editorOption: {
       theme: 'bubble',
@@ -169,6 +167,9 @@ export default {
     source: 'scrollBottom'
   },
   mounted() {},
+  created() {
+    this.loadTags()
+  },
   methods: {
     scrollBottom() {
       this.$nextTick(() => {
@@ -183,6 +184,12 @@ export default {
     onEditorChange({ editor, html, text }) {
       // console.log('editor change!', editor, html, text)
       this.content = html
+    },
+    //  加载标签
+    loadTags() {
+      for (let i = 0; i < 100000; i++) {
+        this.items.push('heloo' + i)
+      }
     }
   }
 }

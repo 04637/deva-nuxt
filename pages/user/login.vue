@@ -92,9 +92,9 @@ export default {
 }
 
 .form {
-  width: 500px;
-  margin-top: 100px;
-  border: 1px solid rgb(193, 193, 193);
+  width: 30vw;
+  margin-top: 3vh;
+  border: 1px solid rgba(193, 193, 193, 0.7);
   padding: 30px;
 }
 </style>
