@@ -37,14 +37,23 @@
   width: 23px;
 }
 
-.lightbox {
-  box-shadow: 0 0 20px inset rgba(0, 0, 0, 0.2);
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 48px);
-}
 
 /* 替换 code 样式 参考vuetify kbd*/
 code {
   background-image: initial;
   background-color: #616161 !important;
   color: #ffffff !important;
+}
+
+.logo-md{
+  width: 100px;
+  height: 47px;
+  display: block;
+}
+
+.form {
+  width: 30vw;
+  margin-top: 3vh;
+  border: 1px solid rgba(193, 193, 193, 0.7);
+  padding: 30px;
 }

@@ -183,4 +183,13 @@ export default {
   }
 }
 </script>
-<style scoped></style>
+<style scoped>
+.lightbox {
+  box-shadow: 0 0 20px inset rgba(0, 0, 0, 0.2);
+  background-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    transparent 48px
+  );
+}
+</style>

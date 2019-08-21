@@ -7,7 +7,7 @@
     <v-layout justify-center>
       <v-form ref="form" class="form">
         <v-layout justify-center>
-          <img src="/deva.png" alt="" class="logo" />
+          <img src="/deva.png" alt="" class="logo-md" />
         </v-layout>
         <v-layout class="mt-3" column>
           <v-text-field
@@ -85,16 +85,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.logo {
-  width: 100px;
-  display: block;
-}
-
-.form {
-  width: 30vw;
-  margin-top: 3vh;
-  border: 1px solid rgba(193, 193, 193, 0.7);
-  padding: 30px;
-}
-</style>
+<style scoped></style>

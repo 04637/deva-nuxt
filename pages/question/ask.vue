@@ -20,6 +20,7 @@
     <v-layout justify-center>
       <v-form ref="form" style="width: 80vw">
         <v-text-field
+          v-model="title"
           autofocus
           prepend-icon="title"
           hint="简短的描述下你的问题"
@@ -80,14 +81,21 @@
         </div>
         <v-layout class="mt-5">
           <v-combobox
-            v-model="chips"
-            :items="items"
+            v-model="selectedTags"
+            :items="tags"
             chips
             clearable
+            :counter="5"
             label="输入问题的标签"
             multiple
             prepend-icon="filter_list"
+            hide-selected
+            auto-select-first
             solo
+            item-text="tagName"
+            item-value="tagId"
+            :rules="[rules.tags]"
+            @change="selectedChange"
           >
             <template v-slot:selection="{ attrs, item, select, selected }">
               <v-chip
@@ -97,13 +105,20 @@
                 @click="select"
                 @click:close="remove(item)"
               >
-                <strong>{{ item }}</strong>
+                <strong>{{ item.tagName || item }}</strong>
               </v-chip>
             </template>
           </v-combobox>
         </v-layout>
         <v-layout justify-end>
-          <v-btn outlined accent depressed min-width="150px">提交</v-btn>
+          <v-btn
+            outlined
+            accent
+            depressed
+            min-width="150px"
+            @click="submitQuestion"
+            >提交</v-btn
+          >
         </v-layout>
       </v-form>
     </v-layout>
@@ -115,17 +130,19 @@ import hljs from 'highlight.js'
 export default {
   name: 'Ask',
   data: () => ({
+    title: null,
     useMarkdown: true,
     maxLength: 3000,
     source: '# h1 Heading 8-)',
-    chips: [],
+    selectedTags: [],
     rules: {
       min10: (v) => (v && v.length >= 10) || '不能少于10个字符',
       min20: (v) => (v && v.length >= 10) || '不能少于10个字符',
       max50: (v) => (v && v.length <= 50) || '不能超过50个字符',
-      max3000: (v) => (v && v.length <= 3000) || '不能超过3000个字符'
+      max3000: (v) => (v && v.length <= 3000) || '不能超过3000个字符',
+      tags: (v) => (v && v.length <= 5) || '最多选择五个标签哦'
     },
-    items: [],
+    tags: [],
     content: `<h1>试试选中来设置样式哦 😜 </h1>`,
     editorOption: {
       theme: 'bubble',
@@ -171,6 +188,33 @@ export default {
     this.loadTags()
   },
   methods: {
+    selectedChange() {
+      console.log('change')
+      for (let i = 0; i < this.selectedTags.length; ++i) {
+        const tag = this.selectedTags[i]
+        if (!tag.tagId) {
+          for (let j = 0; j < this.selectedTags.length; ++j) {
+            const tag2 = this.selectedTags[i]
+            if (tag2.tagName === tag) {
+              this.remove(tag)
+            }
+          }
+        }
+      }
+    },
+    submitQuestion() {
+      console.log(this.title)
+      console.log(this.selectedTags)
+      const tagInfos = []
+      for (let i = 0; i < this.selectedTags.length; ++i) {
+        const tag = this.selectedTags[i]
+        tagInfos.push({
+          tagId: tag.tagId || null,
+          tagName: tag.tagName || tag
+        })
+      }
+      console.log(tagInfos)
+    },
     scrollBottom() {
       this.$nextTick(() => {
         const div = document.getElementById('markdown-preview')
@@ -178,8 +222,8 @@ export default {
       })
     },
     remove(item) {
-      this.chips.splice(this.chips.indexOf(item), 1)
-      this.chips = [...this.chips]
+      this.selectedTags.splice(this.selectedTags.indexOf(item), 1)
+      this.selectedTags = [...this.selectedTags]
     },
     onEditorChange({ editor, html, text }) {
       // console.log('editor change!', editor, html, text)
@@ -187,9 +231,18 @@ export default {
     },
     //  加载标签
     loadTags() {
-      for (let i = 0; i < 100000; i++) {
-        this.items.push('heloo' + i)
-      }
+      const _this = this
+      this.$axios.$get('/tagInfo/listCacheTags').then(function(resp) {
+        if (resp.succeed) {
+          const _data = resp.data
+          for (let i = 0; i < resp.data.length; ++i) {
+            _this.tags.push({
+              tagName: _data[i].tagName,
+              tagId: _data[i].tagId
+            })
+          }
+        }
+      })
     }
   }
 }
