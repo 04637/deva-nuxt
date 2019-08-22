@@ -1,128 +1,168 @@
 <template>
-  <v-container justify-center align-start>
-    <v-layout justify-end>
-      <v-col cols="3">
-        <v-btn to="find">提问之前，不妨先搜索一下？</v-btn>
-      </v-col>
-      <v-col cols="5">
-        <v-btn
-          text
-          nuxt
-          class="text-capitalize"
-          style="float: right"
-          @click="useMarkdown = !useMarkdown"
-          ><v-icon small>arrow_forward_ios</v-icon>&nbsp;{{
-            useMarkdown ? '富文本编辑器' : 'Markdown 编辑器'
-          }}</v-btn
-        >
-      </v-col>
-    </v-layout>
-    <v-layout justify-center>
-      <v-form ref="form" style="width: 80vw">
-        <v-text-field
-          v-model="title"
-          autofocus
-          prepend-icon="title"
-          hint="简短的描述下你的问题"
-          :counter="50"
-          label="问题标题"
-          required
-          :rules="[rules.min10, rules.max50]"
-        ></v-text-field>
-        <v-layout v-show="useMarkdown" justify-space-around class="mt-2">
-          <v-flex xs6>
-            <v-textarea
-              id="markdown-edit"
-              v-model="source"
-              no-resize
-              outlined
-              counter="3000"
-              full-height
-              rows="30"
-              :rules="[rules.max3000, rules.min20]"
-            ></v-textarea>
-          </v-flex>
-          <v-flex xs6>
-            <div
-              id="markdown-preview"
-              class="simple-scroll"
-              v-html="$md.render(source)"
-            ></div>
-          </v-flex>
-        </v-layout>
-        <!--富文本编辑器-->
-        <div v-show="!useMarkdown" style="height: 597px;">
-          <quill-editor
-            ref="myTextEditor"
-            v-model="content"
-            :options="editorOption"
-            class="mt-2"
-            style="border-radius: 5px"
-            @change="onEditorChange($event)"
-          >
-          </quill-editor>
-          <v-row justify="space-between" class="mt-1 mr-1 ml-1">
-            <div class="v-messages v-messages__message error--text">
-              {{ quillErrorMessage === true ? '' : quillErrorMessage }}
-            </div>
-            <div
-              class="v-counter"
-              :class="
-                content.length > maxLength
-                  ? 'error--text'
-                  : $vuetify.theme.dark
-                  ? 'theme--dark'
-                  : 'theme--light'
-              "
-            >
-              {{ content.length }}&nbsp;/&nbsp;{{ maxLength }}
-            </div>
-          </v-row>
-        </div>
-        <v-layout class="mt-5">
-          <v-combobox
-            v-model="selectedTags"
-            :items="tags"
-            chips
-            clearable
-            :counter="5"
-            label="输入问题的标签"
-            multiple
-            prepend-icon="filter_list"
-            hide-selected
-            auto-select-first
-            solo
-            item-text="tagName"
-            item-value="tagId"
-            :rules="[rules.tags]"
-            @change="selectedChange"
-          >
-            <template v-slot:selection="{ attrs, item, select, selected }">
-              <v-chip
-                v-bind="attrs"
-                :input-value="selected"
-                close
-                @click="select"
-                @click:close="remove(item)"
-              >
-                <strong>{{ item.tagName || item }}</strong>
-              </v-chip>
-            </template>
-          </v-combobox>
-        </v-layout>
-        <v-layout justify-end>
+  <v-app>
+    <v-container id="root" justify-center align-start>
+      <v-layout justify-end>
+        <v-col cols="3">
+          <v-btn to="find">提问之前，不妨先搜索一下？</v-btn>
+        </v-col>
+        <v-col cols="5">
           <v-btn
-            outlined
-            accent
-            depressed
-            min-width="150px"
-            @click="submitQuestion"
-            >提交</v-btn
+            text
+            nuxt
+            class="text-capitalize"
+            style="float: right"
+            @click="useMarkdown = !useMarkdown"
+            ><v-icon small>arrow_forward_ios</v-icon>&nbsp;{{
+              useMarkdown ? '富文本编辑器' : 'Markdown 编辑器'
+            }}</v-btn
           >
-        </v-layout>
-      </v-form>
-    </v-layout>
-  </v-container>
+        </v-col>
+      </v-layout>
+      <v-layout justify-center>
+        <v-form ref="form" style="width: 80vw">
+          <v-text-field
+            v-model="title"
+            autofocus
+            prepend-icon="title"
+            hint="简短的描述下你的问题"
+            :counter="50"
+            label="问题标题"
+            required
+            :rules="[rules.min10, rules.max50]"
+          ></v-text-field>
+          <v-layout v-show="useMarkdown" justify-space-around class="mt-2">
+            <v-flex xs6>
+              <v-textarea
+                id="markdown-edit"
+                v-model="source"
+                no-resize
+                outlined
+                counter="3000"
+                full-height
+                rows="30"
+                :rules="[rules.max3000, rules.min20]"
+              ></v-textarea>
+            </v-flex>
+            <v-flex xs6>
+              <div
+                id="markdown-preview"
+                class="simple-scroll"
+                v-html="$md.render(source)"
+              ></div>
+            </v-flex>
+          </v-layout>
+          <!--富文本编辑器-->
+          <div v-show="!useMarkdown" style="height: 597px;">
+            <quill-editor
+              ref="myTextEditor"
+              v-model="content"
+              :options="editorOption"
+              class="mt-2"
+              style="border-radius: 5px"
+              @change="onEditorChange($event)"
+            >
+            </quill-editor>
+            <v-row justify="space-between" class="mt-1 mr-1 ml-1">
+              <div class="v-messages v-messages__message error--text">
+                {{ quillErrorMessage === true ? '' : quillErrorMessage }}
+              </div>
+              <div
+                class="v-counter"
+                :class="
+                  content.length > maxLength
+                    ? 'error--text'
+                    : $vuetify.theme.dark
+                    ? 'theme--dark'
+                    : 'theme--light'
+                "
+              >
+                {{ content.length }}&nbsp;/&nbsp;{{ maxLength }}
+              </div>
+            </v-row>
+          </div>
+          <v-layout class="mt-5">
+            <v-combobox
+              v-model="selectedTags"
+              :items="tags"
+              chips
+              clearable
+              :counter="5"
+              label="输入问题的标签"
+              multiple
+              prepend-icon="filter_list"
+              hide-selected
+              solo
+              item-text="tagName"
+              item-value="tagId"
+              :rules="[rules.tags]"
+              auto-select-first
+              @change="selectedChange"
+            >
+              <template v-slot:selection="{ attrs, item, select, selected }">
+                <v-chip
+                  v-bind="attrs"
+                  :input-value="selected"
+                  close
+                  @click="select"
+                  @click:close="remove(item)"
+                >
+                  <strong>{{ item.tagName || item }}</strong>
+                </v-chip>
+              </template>
+              <template v-slot:no-data>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      <v-btn
+                        text
+                        color="success"
+                        @click="createTagDialog = !createTagDialog"
+                      >
+                        点此创建标签
+                      </v-btn>
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </template>
+            </v-combobox>
+          </v-layout>
+          <v-layout justify-end>
+            <v-btn
+              outlined
+              accent
+              depressed
+              min-width="150px"
+              @click="submitQuestion"
+              >提交</v-btn
+            >
+          </v-layout>
+        </v-form>
+      </v-layout>
+    </v-container>
+    <v-dialog v-model="createTagDialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">创建标签</span>
+        </v-card-title>
+        <v-card-text>
+          <v-text-field
+            label="输入标签名称"
+            :rules="[rules.tagRequired]"
+          ></v-text-field>
+          <v-text-field label="输入标签描述"></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="createTagDialog = false"
+            >关闭
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="createTagDialog = false"
+            >确定
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-app>
 </template>
 <script>
 import hljs from 'highlight.js'
@@ -140,8 +180,10 @@ export default {
       min20: (v) => (v && v.length >= 10) || '不能少于10个字符',
       max50: (v) => (v && v.length <= 50) || '不能超过50个字符',
       max3000: (v) => (v && v.length <= 3000) || '不能超过3000个字符',
-      tags: (v) => (v && v.length <= 5) || '最多选择五个标签哦'
+      tags: (v) => (v && v.length <= 5) || '最多选择五个标签哦',
+      tagRequired: (v) => (v && v.trim().length > 1) || '标签名称必填'
     },
+    createTagDialog: false,
     tags: [],
     content: `<h1>试试选中来设置样式哦 😜 </h1>`,
     editorOption: {
@@ -189,16 +231,10 @@ export default {
   },
   methods: {
     selectedChange() {
-      console.log('change')
-      for (let i = 0; i < this.selectedTags.length; ++i) {
-        const tag = this.selectedTags[i]
-        if (!tag.tagId) {
-          for (let j = 0; j < this.selectedTags.length; ++j) {
-            const tag2 = this.selectedTags[i]
-            if (tag2.tagName === tag) {
-              this.remove(tag)
-            }
-          }
+      if (this.selectedTags.length > 1) {
+        const _lastSelectTag = this.selectedTags[this.selectedTags.length - 1]
+        if (!_lastSelectTag.tagId) {
+          this.remove(_lastSelectTag)
         }
       }
     },

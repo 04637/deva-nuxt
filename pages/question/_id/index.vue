@@ -43,41 +43,13 @@
                   </v-flex>
                   <v-flex xs11 class="ml-4">
                     <v-layout justify-end>
-                      <v-dialog v-model="dialog" persistent max-width="600px">
-                        <template v-slot:activator="{ on }">
-                          <v-btn text color="pink" v-on="on"
-                            >问题重复？标记相似
-                          </v-btn>
-                        </template>
-                        <v-card>
-                          <v-card-title>
-                            <span class="headline">相似标记</span>
-                          </v-card-title>
-                          <v-card-text>
-                            <v-text-field
-                              label="输入相似问题的链接"
-                            ></v-text-field>
-                            <small
-                              >合理的标记可以帮助小伙伴们寻找答案，提升自己的声望。同时滥用标记，关联无关问题也将受到惩罚哦!</small
-                            >
-                          </v-card-text>
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                              color="blue darken-1"
-                              text
-                              @click="dialog = false"
-                              >关闭
-                            </v-btn>
-                            <v-btn
-                              color="blue darken-1"
-                              text
-                              @click="dialog = false"
-                              >确定
-                            </v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
+                      <v-btn
+                        id="markDialogBtn"
+                        text
+                        color="pink"
+                        @click.stop="dialog = !dialog"
+                        >问题重复？标记相似
+                      </v-btn>
                     </v-layout>
                     <!--eslint-disable-next-line-->
                     <div v-html="$md.render(questionDetail.content)"></div>
@@ -465,6 +437,28 @@
         </v-flex>
       </v-layout>
     </v-container>
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">相似标记</span>
+        </v-card-title>
+        <v-card-text>
+          <v-text-field label="输入相似问题的链接"></v-text-field>
+          <small
+            >合理的标记可以帮助小伙伴们寻找答案，提升自己的声望。同时滥用标记，关联无关问题也将受到惩罚哦!</small
+          >
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialog = false"
+            >关闭
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="dialog = false"
+            >确定
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 <script>
