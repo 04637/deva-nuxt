@@ -76,7 +76,7 @@ export default {
         .then((resp) => {
           _this.loading = false
           if (resp.succeed) {
-            _this.$router.push({ path: '/' })
+            _this.$router.go(-1)
             _this.$store.commit('setUserInfo', resp.data)
           }
         })

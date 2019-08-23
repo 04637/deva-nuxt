@@ -21,6 +21,7 @@
       <v-layout justify-center>
         <v-form ref="form" style="width: 80vw">
           <v-text-field
+            ref="title"
             v-model="title"
             autofocus
             prepend-icon="title"
@@ -82,6 +83,7 @@
           </div>
           <v-layout class="mt-5">
             <v-combobox
+              ref="tags"
               v-model="selectedTags"
               :items="tags"
               chips
@@ -94,7 +96,7 @@
               solo
               item-text="tagName"
               item-value="tagId"
-              :rules="[rules.tags]"
+              :rules="[rules.tags, rules.tagsRequired]"
               auto-select-first
               @change="selectedChange"
             >
@@ -145,19 +147,45 @@
           <span class="headline">创建标签</span>
         </v-card-title>
         <v-card-text>
-          <v-text-field
-            label="输入标签名称"
-            :rules="[rules.tagRequired]"
-          ></v-text-field>
-          <v-text-field label="输入标签描述"></v-text-field>
+          <v-form ref="createTagForm">
+            <v-text-field
+              v-model="newTagName"
+              label="输入标签名称"
+              :rules="[rules.tagName]"
+              autofocus
+            ></v-text-field>
+            <v-text-field
+              v-model="newTagDescription"
+              label="输入标签描述"
+              :rules="[rules.tagDescription]"
+              :counter="100"
+            ></v-text-field>
+          </v-form>
+          <div v-if="createTagResp">
+            <small v-if="createTagResp.succeed" class="success--text">{{
+              createTagResp.msg
+            }}</small>
+            <small v-else class="error--text">{{ createTagResp.msg }}</small>
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="createTagDialog = false"
+          <v-btn
+            text
+            @click="
+              createTagDialog = false
+              createTagResp = null
+              newTagName = null
+              newTagDescription = null
+            "
             >关闭
           </v-btn>
-          <v-btn color="blue darken-1" text @click="createTagDialog = false"
-            >确定
+          <v-btn
+            text
+            color="primary"
+            :loading="createTagLoading"
+            @click="createTag"
+            >创建
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -175,13 +203,20 @@ export default {
     maxLength: 3000,
     source: '# h1 Heading 8-)',
     selectedTags: [],
+    newTagName: null,
+    newTagDescription: null,
+    createTagLoading: false,
+    createTagResp: null,
     rules: {
       min10: (v) => (v && v.length >= 10) || '不能少于10个字符',
       min20: (v) => (v && v.length >= 10) || '不能少于10个字符',
       max50: (v) => (v && v.length <= 50) || '不能超过50个字符',
       max3000: (v) => (v && v.length <= 3000) || '不能超过3000个字符',
       tags: (v) => (v && v.length <= 5) || '最多选择五个标签哦',
-      tagRequired: (v) => (v && v.trim().length > 1) || '标签名称必填'
+      tagsRequired: (v) => (v && v.length > 0) || '标签不能为空哦',
+      tagName: (v) => (v && v.trim().length > 1) || '标签名称必填',
+      tagDescription: (v) =>
+        (v && v.length <= 100) || !v || '标签描述不能超过100个字符'
     },
     createTagDialog: false,
     tags: [],
@@ -239,17 +274,46 @@ export default {
       }
     },
     submitQuestion() {
-      console.log(this.title)
-      console.log(this.selectedTags)
-      const tagInfos = []
-      for (let i = 0; i < this.selectedTags.length; ++i) {
-        const tag = this.selectedTags[i]
-        tagInfos.push({
-          tagId: tag.tagId || null,
-          tagName: tag.tagName || tag
-        })
+      if (this.useMarkdown) {
+        if (!this.$refs.form.validate()) {
+          return false
+        }
+      } else if (
+        !this.$refs.title.validate() ||
+        !this.ref.tags.validate() ||
+        this.quillErrorMessage()
+      ) {
+        return false
       }
-      console.log(tagInfos)
+      const _this = this
+      this.$axios
+        .$post('/questionInfo/askQuestion', {
+          title: _this.title,
+          content: _this.useMarkdown ? _this.source : _this.content,
+          tagInfos: JSON.stringify(_this.selectedTags)
+        })
+        .then((resp) => {
+          console.log(resp)
+        })
+    },
+    createTag() {
+      if (!this.$refs.createTagForm.validate()) {
+        return false
+      }
+      const _this = this
+      _this.createTagLoding = true
+      this.$axios
+        .$post('/tagInfo/insertTag', {
+          tagName: this.newTagName,
+          description: this.newTagDescription
+        })
+        .then((resp) => {
+          _this.createTagLoading = false
+          if (resp.succeed) {
+            _this.loadTags()
+          }
+          _this.createTagResp = resp
+        })
     },
     scrollBottom() {
       this.$nextTick(() => {

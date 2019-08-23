@@ -7,12 +7,13 @@ export default function({ store, redirect, app: { $axios } }) {
       store.state.userInfo ? store.getters.getUserInfo.token : null
     )
     if (config.method === 'post') {
-      config.data = $qs.stringify(config.data)
+      config.data = $qs.stringify(config.data, { indices: false })
     }
   })
   $axios.onError((error) => {
     if (error.response.status === 401) {
       store.commit('setUserInfo', null)
+      redirect('/user/login')
     }
   })
 }
