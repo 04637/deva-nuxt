@@ -215,7 +215,7 @@
                 </v-layout>
                 <v-layout justify-space-around column>
                   <v-layout>
-                    <v-card-text class="text-truncate"
+                    <v-card-text class="d-inline-block text-truncate"
                       >空间描述空间描述</v-card-text
                     >
                   </v-layout>

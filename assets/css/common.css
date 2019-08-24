@@ -57,3 +57,9 @@ code {
   border: 1px solid rgba(193, 193, 193, 0.7);
   padding: 30px;
 }
+
+
+/* 按钮去除内容的 display: flex */
+.v-btn.no-flex>.v-btn__content{
+  display: inline;
+}

@@ -56,7 +56,6 @@
                     <!--color="cyan"  知更鸟蓝-->
                     <v-layout v-if="questionDetail.similarMarkId" align-center>
                       <v-alert
-                        v-model="alert"
                         dense
                         border="left"
                         elevation="1"
@@ -243,7 +242,7 @@
           <v-divider></v-divider>
           <!--所有回答-->
           <v-layout class="transparent" justify-space-between align-center
-            ><v-card-text
+            ><v-card-text class="sub--text"
               >{{ questionDetail.answers.length }} 个回答</v-card-text
             >
           </v-layout>
@@ -422,6 +421,34 @@
               <v-divider></v-divider>
             </div>
           </v-list>
+          <v-divider></v-divider>
+          <!--所有回答-->
+          <v-layout class="transparent" justify-space-between align-center
+            ><v-card-text class="sub--text">我的回答</v-card-text>
+          </v-layout>
+          <v-layout>
+            <v-flex>
+              <quill-editor
+                ref="myTextEditor"
+                v-model="answer.content"
+                :options="editorOption"
+                style="border-radius: 5px"
+                @change="onEditorChange($event)"
+              >
+              </quill-editor>
+              <v-row justify="space-around" class="mt-1 mr-1 ml-1">
+                <div class="v-messages v-messages__message error--text">
+                  {{ quillErrorMessage === true ? '' : quillErrorMessage }}
+                </div>
+                <div class="v-counter">
+                  {{ answer.content.length }}&nbsp;/&nbsp;{{ answer.maxLength }}
+                </div>
+              </v-row>
+              <v-layout justify-end class="my-5">
+                <v-btn>提交</v-btn>
+              </v-layout>
+            </v-flex>
+          </v-layout>
         </v-flex>
         <v-flex fill-height xs1 lg2 justify-end shrink class="mt-4">
           <v-list>
@@ -469,14 +496,54 @@ export default {
   },
   data: () => ({
     questionDetail: null,
-    alert: true,
+    // 标记相似的弹框
     dialog: false,
+    // 控制更多评论的显示隐藏
     showAllComments: {},
+    // 控制评论输入框的下是隐藏
     showCommentInput: {},
     // 当前正在输入的评论
-    currentComment: null
+    currentComment: null,
+    answer: {
+      content: `<h3>试试选中来设置样式哦</h3>`,
+      maxLength: 3000
+    },
+    rules: {
+      min10: (v) => (v && v.length >= 10) || '不能少于10个字符',
+      min20: (v) => (v && v.length >= 10) || '不能少于10个字符',
+      max50: (v) => (v && v.length <= 50) || '不能超过50个字符',
+      max3000: (v) => (v && v.length <= 3000) || '不能超过3000个字符'
+    },
+    editorOption: {
+      theme: 'bubble',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote', 'code-block'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ indent: '-1' }, { indent: '+1' }],
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }],
+          ['link', 'image'],
+          ['clean']
+        ]
+      }
+    }
   }),
-  computed: {},
+  computed: {
+    quillErrorMessage() {
+      if (this.rules.min20(this.content)) {
+        return this.rules.max3000(this.content)
+      } else {
+        return this.rules.min20(this.content)
+      }
+    },
+    editor() {
+      return this.$refs.myTextEditor.quill
+    }
+  },
   // ssr渲染
   async asyncData({ $axios, params }) {
     const resp = await $axios.$post('/questionInfo/getQuestionDetail', {
@@ -488,6 +555,10 @@ export default {
   methods: {
     sendComment(id) {
       alert(this.currentComment)
+    },
+    onEditorChange({ editor, html, text }) {
+      // console.log('editor change!', editor, html, text)
+      this.answer.content = html
     }
   }
 }
@@ -498,5 +569,39 @@ export default {
 }
 .user_card {
   width: 267px;
+}
+</style>
+
+<!--quill editor-->
+<style lang="scss" scoped>
+.quill-editor,
+.quill-code {
+  height: 40rem;
+}
+.ql-editor > pre {
+}
+.ql-editor pre.ql-syntax {
+  font-family: Consolas, serif;
+  font-weight: bold;
+}
+
+.quill-editor {
+  border: 1px solid #ccc;
+  height: 567px;
+}
+
+.quill-code {
+  border: none;
+  height: auto;
+
+  > code {
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    height: 10rem;
+    overflow-y: auto;
+  }
 }
 </style>

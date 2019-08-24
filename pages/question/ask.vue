@@ -67,16 +67,7 @@
               <div class="v-messages v-messages__message error--text">
                 {{ quillErrorMessage === true ? '' : quillErrorMessage }}
               </div>
-              <div
-                class="v-counter"
-                :class="
-                  content.length > maxLength
-                    ? 'error--text'
-                    : $vuetify.theme.dark
-                    ? 'theme--dark'
-                    : 'theme--light'
-                "
-              >
+              <div class="v-counter">
                 {{ content.length }}&nbsp;/&nbsp;{{ maxLength }}
               </div>
             </v-row>
@@ -190,13 +181,23 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <InfoDialog
+      :msg="['提问成功', '提问失败']"
+      :succeed="askResult.resp != null && askResult.resp.succeed"
+      :dialog="askResult.dialog"
+      @update:dialog="askResult.dialog = $event"
+    >
+    </InfoDialog>
   </v-app>
 </template>
 <script>
 import hljs from 'highlight.js'
-
+import InfoDialog from '../../components/InfoDialog'
 export default {
   name: 'Ask',
+  components: {
+    InfoDialog
+  },
   data: () => ({
     title: null,
     useMarkdown: true,
@@ -207,6 +208,12 @@ export default {
     newTagDescription: null,
     createTagLoading: false,
     createTagResp: null,
+    // 创建结果的提示
+    askResp: null,
+    askResult: {
+      resp: null,
+      dialog: false
+    },
     rules: {
       min10: (v) => (v && v.length >= 10) || '不能少于10个字符',
       min20: (v) => (v && v.length >= 10) || '不能少于10个字符',
@@ -220,7 +227,7 @@ export default {
     },
     createTagDialog: false,
     tags: [],
-    content: `<h1>试试选中来设置样式哦 😜 </h1>`,
+    content: `<h1>试试选中来设置样式哦</h1>`,
     editorOption: {
       theme: 'bubble',
       modules: {
@@ -280,20 +287,27 @@ export default {
         }
       } else if (
         !this.$refs.title.validate() ||
-        !this.ref.tags.validate() ||
-        this.quillErrorMessage()
+        !this.$refs.tags.validate() ||
+        this.quillErrorMessage !== true
       ) {
         return false
       }
+
       const _this = this
       this.$axios
         .$post('/questionInfo/askQuestion', {
           title: _this.title,
           content: _this.useMarkdown ? _this.source : _this.content,
-          tagInfos: JSON.stringify(_this.selectedTags)
+          tagIds: _this.selectedTags
+            .map((e) => {
+              return e.tagId
+            })
+            .join(',')
         })
         .then((resp) => {
-          console.log(resp)
+          _this.askResult.resp = resp
+          _this.askResult.dialog = true
+          console.log(_this.askResult)
         })
     },
     createTag() {

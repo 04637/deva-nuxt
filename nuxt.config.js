@@ -6,8 +6,9 @@ export default {
    ** Headers of the page
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    // titleTemplate: '%s - ' + process.env.npm_package_name,
+    titleTemplate: '%s',
+    title: process.env.npm_package_name || 'DEVA',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -36,6 +37,7 @@ export default {
   plugins: [
     '~plugins/axios',
     '~plugins/timeago',
+    '~plugins/filterHtml',
     { src: '~plugins/quill-editor', ssr: false },
     { src: '~/plugins/vuex-persist', ssr: false }
   ],
@@ -81,7 +83,8 @@ export default {
           warning: colors.amber.base,
           // error: colors.deepOrange.accent4,
           error: colors.orange,
-          success: colors.green.accent3
+          success: colors.green.accent3,
+          sub: colors.grey.lighten1
         },
         light: {
           primary: colors.cyan
