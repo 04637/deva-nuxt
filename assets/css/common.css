@@ -63,3 +63,15 @@ code {
 .v-btn.no-flex>.v-btn__content{
   display: inline;
 }
+
+
+/*全局过渡动效*/
+.page-enter-active, .page-leave-active {
+  transition: opacity .3s;
+}
+.page-enter, .page-leave-active {
+  opacity: 0;
+}
+[v-cloak]{
+  display:none
+}

@@ -19,7 +19,7 @@
       </v-layout>
       <v-layout justify-center justify-space-around class="mt-4">
         <v-flex xs11 lg9 justify-start>
-          <v-list>
+          <v-list v-show="questionList && questionList.length > 0">
             <div v-for="question in questionList" :key="question.questionId">
               <v-list-item class="mt-2">
                 <v-card flat exact width="100vw">

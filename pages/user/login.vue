@@ -54,6 +54,7 @@
   </v-container>
 </template>
 <script>
+const Cookie = process.client ? require('js-cookie') : undefined
 export default {
   data: () => ({
     show: false,
@@ -79,6 +80,8 @@ export default {
           if (resp.succeed) {
             _this.$router.go(-1)
             _this.$store.commit('setUserInfo', resp.data)
+            // 参考 https://zh.nuxtjs.org/examples/auth-external-jwt 跨域身份验证
+            Cookie.set('userInfo', resp.data)
           }
         })
     }
