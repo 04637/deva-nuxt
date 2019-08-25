@@ -54,15 +54,17 @@
           </v-layout>
           <!--富文本编辑器-->
           <div v-show="!useMarkdown" style="height: 597px;">
-            <quill-editor
-              ref="myTextEditor"
-              v-model="content"
-              :options="editorOption"
-              class="mt-2"
-              style="border-radius: 5px"
-              @change="onEditorChange($event)"
-            >
-            </quill-editor>
+            <no-ssr>
+              <quill-editor
+                ref="myTextEditor"
+                v-model="content"
+                :options="editorOption"
+                class="mt-2"
+                style="border-radius: 5px"
+                @change="onEditorChange($event)"
+              >
+              </quill-editor>
+            </no-ssr>
             <v-row justify="space-between" class="mt-1 mr-1 ml-1">
               <div class="v-messages v-messages__message error--text">
                 {{ quillErrorMessage === true ? '' : quillErrorMessage }}
@@ -109,7 +111,7 @@
                       <v-btn
                         text
                         color="success"
-                        @click="createTagDialog = !createTagDialog"
+                        @click="createTag.dialog = !createTag.dialog"
                       >
                         点此创建标签
                       </v-btn>
@@ -125,6 +127,7 @@
               accent
               depressed
               min-width="150px"
+              :loading="askResult.loading"
               @click="submitQuestion"
               >提交</v-btn
             >
@@ -132,7 +135,7 @@
         </v-form>
       </v-layout>
     </v-container>
-    <v-dialog v-model="createTagDialog" persistent max-width="600px">
+    <v-dialog v-model="createTag.dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
           <span class="headline">创建标签</span>
@@ -140,23 +143,23 @@
         <v-card-text>
           <v-form ref="createTagForm">
             <v-text-field
-              v-model="newTagName"
+              v-model="newTag.name"
               label="输入标签名称"
               :rules="[rules.tagName]"
               autofocus
             ></v-text-field>
             <v-text-field
-              v-model="newTagDescription"
+              v-model="newTag.description"
               label="输入标签描述"
               :rules="[rules.tagDescription]"
               :counter="100"
             ></v-text-field>
           </v-form>
-          <div v-if="createTagResp">
-            <small v-if="createTagResp.succeed" class="success--text">{{
-              createTagResp.msg
+          <div v-if="createTag.resp">
+            <small v-if="createTag.resp.succeed" class="success--text">{{
+              createTag.resp.msg
             }}</small>
-            <small v-else class="error--text">{{ createTagResp.msg }}</small>
+            <small v-else class="error--text">{{ createTag.resp.msg }}</small>
           </div>
         </v-card-text>
         <v-card-actions>
@@ -164,18 +167,18 @@
           <v-btn
             text
             @click="
-              createTagDialog = false
-              createTagResp = null
-              newTagName = null
-              newTagDescription = null
+              createTag.dialog = false
+              createTag.resp = null
+              newTag.name = null
+              newTag.description = null
             "
             >关闭
           </v-btn>
           <v-btn
             text
             color="primary"
-            :loading="createTagLoading"
-            @click="createTag"
+            :loading="createTag.loading"
+            @click="submitCreateTag"
             >创建
           </v-btn>
         </v-card-actions>
@@ -191,7 +194,6 @@
   </v-app>
 </template>
 <script>
-import hljs from 'highlight.js'
 import InfoDialog from '../../components/InfoDialog'
 export default {
   name: 'Ask',
@@ -204,19 +206,26 @@ export default {
     maxLength: 3000,
     source: '# h1 Heading 8-)',
     selectedTags: [],
-    newTagName: null,
-    newTagDescription: null,
-    createTagLoading: false,
-    createTagResp: null,
+    tags: [],
+    content: `<h1>试试选中来设置样式哦</h1>`,
+    newTag: {
+      name: null,
+      description: null
+    },
+    createTag: {
+      dialog: false,
+      resp: null,
+      loading: false
+    },
     // 创建结果的提示
-    askResp: null,
     askResult: {
       resp: null,
-      dialog: false
+      dialog: false,
+      loading: false
     },
     rules: {
       min10: (v) => (v && v.length >= 10) || '不能少于10个字符',
-      min20: (v) => (v && v.length >= 10) || '不能少于10个字符',
+      min20: (v) => (v && v.length >= 20) || '不能少于20个字符',
       max50: (v) => (v && v.length <= 50) || '不能超过50个字符',
       max3000: (v) => (v && v.length <= 3000) || '不能超过3000个字符',
       tags: (v) => (v && v.length <= 5) || '最多选择五个标签哦',
@@ -225,9 +234,6 @@ export default {
       tagDescription: (v) =>
         (v && v.length <= 100) || !v || '标签描述不能超过100个字符'
     },
-    createTagDialog: false,
-    tags: [],
-    content: `<h1>试试选中来设置样式哦</h1>`,
     editorOption: {
       theme: 'bubble',
       modules: {
@@ -242,10 +248,7 @@ export default {
           [{ align: [] }],
           ['link', 'image'],
           ['clean']
-        ],
-        syntax: {
-          highlight: (text) => hljs.highlightAuto(text).value
-        }
+        ]
       }
     }
   }),
@@ -253,21 +256,17 @@ export default {
     editor() {
       return this.$refs.myTextEditor.quill
     },
-    contentCode() {
-      return hljs.highlightAuto(this.content).value
-    },
     quillErrorMessage() {
-      if (this.rules.min20(this.content)) {
-        return this.rules.max3000(this.content)
-      } else {
+      if (this.rules.min20(this.content) !== true) {
         return this.rules.min20(this.content)
+      } else {
+        return this.rules.max3000(this.content)
       }
     }
   },
   watch: {
     source: 'scrollBottom'
   },
-  mounted() {},
   created() {
     this.loadTags()
   },
@@ -292,7 +291,7 @@ export default {
       ) {
         return false
       }
-
+      this.askResult.loading = true
       const _this = this
       this.$axios
         .$post('/questionInfo/askQuestion', {
@@ -307,10 +306,10 @@ export default {
         .then((resp) => {
           _this.askResult.resp = resp
           _this.askResult.dialog = true
-          console.log(_this.askResult)
+          _this.askResult.loading = false
         })
     },
-    createTag() {
+    submitCreateTag() {
       if (!this.$refs.createTagForm.validate()) {
         return false
       }
@@ -318,15 +317,15 @@ export default {
       _this.createTagLoding = true
       this.$axios
         .$post('/tagInfo/insertTag', {
-          tagName: this.newTagName,
-          description: this.newTagDescription
+          tagName: this.newTag.name,
+          description: this.newTag.description
         })
         .then((resp) => {
-          _this.createTagLoading = false
+          _this.createTag.loading = false
           if (resp.succeed) {
             _this.loadTags()
           }
-          _this.createTagResp = resp
+          _this.createTag.resp = resp
         })
     },
     scrollBottom() {

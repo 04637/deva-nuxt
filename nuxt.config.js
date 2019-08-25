@@ -38,8 +38,9 @@ export default {
     '~plugins/axios',
     '~plugins/timeago',
     '~plugins/filterHtml',
+    '~plugins/common',
     { src: '~plugins/quill-editor', ssr: false },
-    { src: '~/plugins/vuex-persist', ssr: false }
+    { src: '~/plugins/sessionStorage', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules

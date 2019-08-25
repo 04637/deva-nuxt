@@ -26,6 +26,7 @@
             outlined
             :rules="[(v) => (!v ? '请输入密码' : true)]"
             required
+            @keyup.enter.native="submitLogin"
           ></v-text-field>
           <v-layout justify-end class="mt-4">
             <v-btn

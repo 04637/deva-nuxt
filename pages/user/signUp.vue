@@ -45,6 +45,7 @@
             :type="show ? 'text' : 'password'"
             required
             @click:append="show = !show"
+            @keyup.enter.native="submitSignUp"
           ></v-text-field>
           <v-layout justify-end class="mt-4">
             <v-btn

@@ -32,10 +32,16 @@ export default {
     msg: {
       type: Array,
       required: true
+    },
+    to: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: () => ({}),
   computed: {},
+  watch: {},
   methods: {}
 }
 </script>

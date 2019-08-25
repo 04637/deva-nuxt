@@ -116,7 +116,9 @@
         </v-container>
       </v-app-bar>
       <v-content>
-        <nuxt />
+        <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
+        <nuxt v-if="needKeepAlive" keep-alive />
+        <nuxt v-else />
       </v-content>
       <v-footer app>
         <span>&copy; 2019</span>
@@ -131,8 +133,19 @@ export default {
   props: {},
   data: () => ({
     drawer: null,
-    menuOpen: false
+    menuOpen: false,
+    keepAliveRouters: [
+      'question-ask',
+      'user-signUp',
+      'user-login',
+      'question-id'
+    ]
   }),
+  computed: {
+    needKeepAlive() {
+      return this.keepAliveRouters.includes(this.$route.name)
+    }
+  },
   created() {},
   methods: {}
 }
