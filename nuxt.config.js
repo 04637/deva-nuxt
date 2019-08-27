@@ -114,7 +114,7 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, { isDev, isClient }) {
-      // 参考 https://github.com/nuxt/nuxt.js/issues/1577  🐮🍺  👍👍👍 js调试
+      // 参考 https://github.com/nuxt/nuxt.js/issues/2781 🐮🍺  👍👍👍 js调试
       if (isDev) {
         config.devtool = 'eval-source-map'
       }
