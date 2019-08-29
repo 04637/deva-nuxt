@@ -625,6 +625,9 @@ export default {
           }
           _this.answer.dialog = true
         })
+        .catch((e) => {
+          _this.answer.loading = false
+        })
     }
   }
 }

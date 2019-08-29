@@ -200,6 +200,7 @@ export default {
   components: {
     InfoDialog
   },
+  middleware: 'authenticated',
   data: () => ({
     title: null,
     useMarkdown: true,
@@ -308,6 +309,9 @@ export default {
           _this.askResult.dialog = true
           _this.askResult.loading = false
         })
+        .catch((e) => {
+          _this.askResult.loading = false
+        })
     },
     submitCreateTag() {
       if (!this.$refs.createTagForm.validate()) {
@@ -326,6 +330,9 @@ export default {
             _this.loadTags()
           }
           _this.createTag.resp = resp
+        })
+        .catch((e) => {
+          _this.createTag.loading = false
         })
     },
     scrollBottom() {

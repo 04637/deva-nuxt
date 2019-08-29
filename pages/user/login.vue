@@ -62,6 +62,7 @@ export default {
     password: '',
     loading: false
   }),
+  middleware: 'notAuthenticated',
   methods: {
     submitLogin() {
       if (!this.$refs.form.validate()) {
@@ -78,10 +79,10 @@ export default {
         .then((resp) => {
           _this.loading = false
           if (resp.succeed) {
-            _this.$router.go(-1)
             _this.$store.commit('setUserInfo', resp.data)
             // 参考 https://zh.nuxtjs.org/examples/auth-external-jwt 跨域身份验证
             Cookie.set('userInfo', resp.data)
+            _this.$router.go(-1)
           }
         })
     }

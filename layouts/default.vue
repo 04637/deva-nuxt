@@ -97,12 +97,7 @@
               <v-avatar color="grey" size="35" tile class="mr-10">
                 <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
               </v-avatar>
-              <v-btn
-                depressed
-                class="ml-1"
-                @click="$store.commit('setUserInfo', null)"
-                >注销</v-btn
-              >
+              <v-btn depressed class="ml-1" @click="logout">注销</v-btn>
             </div>
             <div v-else>
               <v-btn text color="primary" depressed to="/user/login"
@@ -128,6 +123,7 @@
 </template>
 
 <script>
+const Cookie = process.client ? require('js-cookie') : undefined
 export default {
   name: 'App',
   props: {},
@@ -147,7 +143,13 @@ export default {
     }
   },
   created() {},
-  methods: {}
+  methods: {
+    logout() {
+      // 使外部api上的JWT Cookie失效
+      Cookie.remove('userInfo')
+      this.$store.commit('setUserInfo', null)
+    }
+  }
 }
 </script>
 

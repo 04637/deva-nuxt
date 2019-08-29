@@ -65,7 +65,7 @@ export default {
    */
   axios: {
     baseURL: 'http://localhost:8088',
-    debug: true
+    debug: false
   },
   /*
    ** vuetify module configuration
