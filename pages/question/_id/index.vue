@@ -32,11 +32,15 @@
                           >arrow_drop_down</v-icon
                         >
                       </v-btn>
-                      <v-btn icon fab>
+                      <v-btn icon fab @click="collectQuestion">
                         <v-icon
                           size="40"
-                          :color="questionDetail.isCollected ? 'success' : ''"
-                          >favorite_border</v-icon
+                          :color="questionDetail.isCollected ? 'pink' : ''"
+                          >{{
+                            questionDetail.isCollected
+                              ? 'favorite'
+                              : 'favorite_border'
+                          }}</v-icon
                         >
                       </v-btn>
                     </v-layout>
@@ -227,6 +231,10 @@
                           v-model="currentComment"
                           append-outer-icon="send"
                           autofocus
+                          :rules="[rules.requiredComment, rules.max200]"
+                          @keyup.enter.native="
+                            sendComment(questionDetail.questionId)
+                          "
                           @click:append-outer="
                             sendComment(questionDetail.questionId)
                           "
@@ -406,10 +414,11 @@
                         <!--  评论输入区-->
                         <v-layout v-show="showCommentInput[answer.answerId]">
                           <v-text-field
+                            :ref="'comment' + answer.answerId"
                             v-model="currentComment"
                             append-outer-icon="send"
                             autofocus
-                            :rules="[rules.requiredComment]"
+                            :rules="[rules.requiredComment, rules.max200]"
                             @click:append-outer="sendComment(answer.answerId)"
                           ></v-text-field>
                         </v-layout>
@@ -539,6 +548,7 @@ export default {
       min20: (v) => (v && v.length >= 20) || '不能少于20个字符',
       max50: (v) => (v && v.length <= 50) || '不能超过50个字符',
       max3000: (v) => (v && v.length <= 3000) || '不能超过3000个字符',
+      max200: (v) => (v && v.length) <= 200 || '不能超过200个字符',
       requiredComment: (v) => (v && v.trim().length > 0) || '评论不能为空'
     },
     editorOption: {
@@ -573,7 +583,6 @@ export default {
   },
   watch: {},
   // ssr渲染
-  // todo 当页面刷新时, 请求时未传递token
   async asyncData({ $axios, params }) {
     const resp = await $axios.$post('/questionInfo/getQuestionDetail', {
       questionId: params.id
@@ -599,7 +608,22 @@ export default {
         })
     },
     sendComment(id) {
-      alert(this.currentComment)
+      if (!this.$refs['comment' + id].validate()) {
+        return false
+      }
+      const _this = this
+      this.$axios
+        .$post('/questionComment/commentQuestion', {
+          ownQuestionId: _this.questionDetail.questionId,
+          content: _this.currentComment
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            _this.questionDetail.comments.push(resp.data)
+            _this.currentComment = null
+          }
+          this.$set(this.showCommentInput, id, false)
+        })
     },
     onEditorChange({ editor, html, text }) {
       // console.log('editor change!', editor, html, text)
@@ -627,6 +651,18 @@ export default {
         })
         .catch((e) => {
           _this.answer.loading = false
+        })
+    },
+    collectQuestion() {
+      const _this = this
+      this.$axios
+        .$post('/questionCollect/collectQuestion', {
+          questionId: _this.questionDetail.questionId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            _this.questionDetail.isCollected = resp.data
+          }
         })
     }
   }
@@ -656,7 +692,7 @@ export default {
 
 .quill-editor {
   border: 1px solid #ccc;
-  height: 567px;
+  height: 300px;
 }
 
 .quill-code {
