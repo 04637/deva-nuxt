@@ -51,7 +51,7 @@
                         id="markDialogBtn"
                         text
                         color="pink"
-                        @click.stop="dialog = !dialog"
+                        @click.stop="markDialog = !markDialog"
                         >问题重复？标记相似
                       </v-btn>
                     </v-layout>
@@ -166,6 +166,7 @@
                             v-for="(comment, index) in questionDetail.comments"
                             :key="comment.commentId"
                           >
+                            <!-- 妙啊!!! -->
                             <div
                               v-show="
                                 showAllComments[questionDetail.questionId]
@@ -187,7 +188,11 @@
                                   </v-flex>
                                 </v-layout>
                               </v-list-item>
-                              <v-divider></v-divider>
+                              <v-divider
+                                v-show="
+                                  index + 1 < questionDetail.comments.length
+                                "
+                              ></v-divider>
                             </div>
                           </div>
                         </v-list>
@@ -228,7 +233,7 @@
                       >
                         <v-text-field
                           :ref="'comment' + questionDetail.questionId"
-                          v-model="currentComment"
+                          v-model="comment.currentComment"
                           append-outer-icon="send"
                           autofocus
                           :rules="[rules.requiredComment, rules.max200]"
@@ -256,7 +261,7 @@
           <v-divider></v-divider>
           <v-list v-show="questionDetail.answers.length > 0">
             <div
-              v-for="answer in questionDetail.answers"
+              v-for="(answer, aIndex) in questionDetail.answers"
               :key="answer.answerId"
             >
               <v-list-item class="mt-1">
@@ -337,7 +342,7 @@
                       </v-card-actions>
                       <!-- 评论区 -->
                       <v-divider></v-divider>
-                      <v-layout justify-center column class="mt-2">
+                      <v-layout justify-center column>
                         <v-layout justify-end>
                           <v-btn
                             text
@@ -354,14 +359,14 @@
                         <v-layout>
                           <v-list width="100vw">
                             <div
-                              v-for="(comment, index) in answer.comments"
+                              v-for="(comment, _index) in answer.comments"
                               :key="comment.commentId"
                             >
                               <div
                                 v-show="
                                   showAllComments[answer.answerId]
                                     ? true
-                                    : index < 3
+                                    : _index < 3
                                 "
                               >
                                 <v-list-item>
@@ -378,7 +383,9 @@
                                     </v-flex>
                                   </v-layout>
                                 </v-list-item>
-                                <v-divider></v-divider>
+                                <v-divider
+                                  v-show="_index + 1 < answer.comments.length"
+                                ></v-divider>
                               </div>
                             </div>
                           </v-list>
@@ -414,12 +421,13 @@
                         <!--  评论输入区-->
                         <v-layout v-show="showCommentInput[answer.answerId]">
                           <v-text-field
-                            :ref="'comment' + answer.answerId"
-                            v-model="currentComment"
+                            ref="answerRef"
+                            v-model="comment.currentComment"
                             append-outer-icon="send"
                             autofocus
                             :rules="[rules.requiredComment, rules.max200]"
-                            @click:append-outer="sendComment(answer.answerId)"
+                            @keyup.enter.native="sendAnswerComment(aIndex)"
+                            @click:append-outer="sendAnswerComment(aIndex)"
                           ></v-text-field>
                         </v-layout>
                       </v-layout>
@@ -427,11 +435,12 @@
                   </v-layout>
                 </v-card>
               </v-list-item>
-              <v-divider></v-divider>
+              <v-divider
+                v-show="aIndex + 1 < questionDetail.answers.length"
+              ></v-divider>
             </div>
           </v-list>
           <v-divider></v-divider>
-          <!--所有回答-->
           <v-layout class="transparent" justify-space-between align-center
             ><v-card-text class="sub--text">我的回答</v-card-text>
           </v-layout>
@@ -483,7 +492,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="markDialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
           <span class="headline">相似标记</span>
@@ -509,8 +518,15 @@
       :msg="['回答成功', '回答失败']"
       :succeed="answer.resp != null && answer.resp.succeed"
       :dialog="answer.dialog"
-      to="hello"
       @update:dialog="answer.dialog = $event"
+    >
+    </InfoDialog>
+
+    <InfoDialog
+      :msg="['评论成功', '评论失败']"
+      :succeed="comment.resp != null && comment.resp.succeed"
+      :dialog="comment.dialog"
+      @update:dialog="comment.dialog = $event"
     >
     </InfoDialog>
   </v-app>
@@ -529,13 +545,19 @@ export default {
   data: () => ({
     questionDetail: null,
     // 标记相似的弹框
-    dialog: false,
+    markDialog: false,
     // 控制更多评论的显示隐藏
     showAllComments: {},
     // 控制评论输入框的下是隐藏
     showCommentInput: {},
-    // 当前正在输入的评论
-    currentComment: null,
+    comment: {
+      // 当前正在输入的评论
+      currentComment: null,
+      // 评论提示弹框
+      dialog: false,
+      // 回答结果
+      resp: null
+    },
     answer: {
       content: `<h3>试试选中来设置样式哦</h3>`,
       maxLength: 3000,
@@ -606,6 +628,9 @@ export default {
             _this.questionDetail.isUseful = resp.data.useful
           }
         })
+        .catch((e) => {
+          _this.comment.loading = false
+        })
     },
     sendComment(id) {
       if (!this.$refs['comment' + id].validate()) {
@@ -615,14 +640,41 @@ export default {
       this.$axios
         .$post('/questionComment/commentQuestion', {
           ownQuestionId: _this.questionDetail.questionId,
-          content: _this.currentComment
+          content: _this.comment.currentComment
         })
         .then((resp) => {
+          _this.comment.resp = resp
+          _this.comment.dialog = true
           if (resp.succeed) {
             _this.questionDetail.comments.push(resp.data)
-            _this.currentComment = null
+            _this.comment.currentComment = null
           }
           this.$set(this.showCommentInput, id, false)
+        })
+        .catch((e) => {
+          _this.comment.loading = false
+        })
+    },
+    sendAnswerComment(index) {
+      if (!this.$refs.answerRef[index].validate()) {
+        return false
+      }
+      const _answer = this.questionDetail.answers[index]
+      const _this = this
+      this.$axios
+        .$post('/questionComment/commentQuestion', {
+          ownQuestionId: _this.questionDetail.questionId,
+          ownAnswerId: _answer.answerId,
+          content: _this.comment.currentComment
+        })
+        .then((resp) => {
+          _this.comment.resp = resp
+          _this.comment.dialog = true
+          if (resp.succeed) {
+            _answer.comments.push(resp.data)
+            _this.comment.currentComment = null
+          }
+          this.$set(this.showCommentInput, _answer.answerId, false)
         })
     },
     onEditorChange({ editor, html, text }) {

@@ -5,7 +5,10 @@ export default {
     let userInfo = null
     if (req.headers.cookie) {
       const parsed = cookieparser.parse(req.headers.cookie)
-      userInfo = JSON.parse(parsed.userInfo)
+      if (parsed.userInfo) {
+        // 要先检查, 再解析 https://stackoverflow.com/questions/13022178/uncaught-syntaxerror-unexpected-token-u-json
+        userInfo = JSON.parse(parsed.userInfo)
+      }
     }
     commit('setUserInfo', userInfo)
   }

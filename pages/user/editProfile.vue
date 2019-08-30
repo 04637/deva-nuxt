@@ -60,8 +60,8 @@
               </v-layout>
             </v-flex>
             <v-spacer></v-spacer>
-            <v-flex xs5>
-              <v-form class="form">
+            <v-flex xs9 lg6>
+              <v-form class="form mt-0" style="width: 100%">
                 <v-text-field
                   hint=""
                   :counter="16"

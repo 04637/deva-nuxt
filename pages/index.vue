@@ -22,7 +22,7 @@
           <v-list v-show="questionList && questionList.length > 0">
             <div v-for="question in questionList" :key="question.questionId">
               <v-list-item class="mt-2">
-                <v-card flat exact width="100vw">
+                <v-card flat exact width="100vw" class="px-3">
                   <v-layout>
                     <v-layout
                       column
@@ -46,6 +46,7 @@
                     </v-layout>
                     <v-flex xs9>
                       <v-btn
+                        height="30px"
                         class="title d-inline-block text-truncate text-left no-flex"
                         text
                         :to="'/question/' + question.questionId"
