@@ -269,12 +269,20 @@
                   <v-layout justify-space-between>
                     <v-flex xs1 class="mt-12" align-center>
                       <v-layout column align-center>
-                        <v-btn icon fab>
-                          <v-icon size="80">arrow_drop_up</v-icon>
+                        <v-btn icon fab @click="voteAnswer(answer, true)">
+                          <v-icon
+                            size="80"
+                            :color="answer.isUseful === true ? 'success' : ''"
+                            >arrow_drop_up</v-icon
+                          >
                         </v-btn>
                         <strong>{{ answer.voteNum }}</strong>
-                        <v-btn icon fab>
-                          <v-icon size="80">arrow_drop_down</v-icon>
+                        <v-btn icon fab @click="voteAnswer(answer, false)">
+                          <v-icon
+                            size="80"
+                            :color="answer.isUseful === false ? 'success' : ''"
+                            >arrow_drop_down</v-icon
+                          >
                         </v-btn>
                         <v-btn
                           v-if="answer.isAccepted"
@@ -288,7 +296,11 @@
                     </v-flex>
                     <v-flex xs11 class="ml-4">
                       <v-layout v-if="questionDetail.status === 0" justify-end>
-                        <v-btn color="success" text>
+                        <v-btn
+                          color="success"
+                          text
+                          @click="acceptAnswer(answer)"
+                        >
                           <v-icon>check</v-icon>
                           采纳
                         </v-btn>
@@ -529,6 +541,13 @@
       @update:dialog="comment.dialog = $event"
     >
     </InfoDialog>
+    <InfoDialog
+      :msg="['采纳成功', '采纳失败']"
+      :succeed="accept.resp != null && accept.resp.succeed"
+      :dialog="accept.dialog"
+      @update:dialog="accept.dialog = $event"
+    >
+    </InfoDialog>
   </v-app>
 </template>
 <script>
@@ -564,6 +583,10 @@ export default {
       resp: null,
       dialog: false,
       loading: false
+    },
+    accept: {
+      resp: null,
+      dialog: false
     },
     rules: {
       min10: (v) => (v && v.length >= 10) || '不能少于10个字符',
@@ -614,6 +637,39 @@ export default {
   },
   mounted() {},
   methods: {
+    acceptAnswer(answer) {
+      this.accept.dialog = true
+      this.$axios
+        .$post('/questionInfo/acceptAnswer', {
+          ownQuestionId: this.questionDetail.questionId,
+          answerId: answer.answerId
+        })
+        .then((resp) => {
+          this.accept.resp = resp
+          if (resp.succeed) {
+            this.questionDetail.status = 1
+            answer.isAccepted = true
+          }
+        })
+    },
+    voteAnswer(answer, useful) {
+      const _this = this
+      this.$axios
+        .$post('/answerVote/voteAnswer', {
+          oldUseful: answer.isUseful,
+          isUseful: useful,
+          answerId: answer.answerId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            answer.voteNum += Number(resp.data.voteDelta)
+            answer.isUseful = resp.data.useful
+          }
+        })
+        .catch((e) => {
+          _this.comment.loading = false
+        })
+    },
     voteQuestion(useful) {
       const _this = this
       this.$axios

@@ -1,5 +1,5 @@
 import $qs from 'qs'
-const Cookie = process.client ? require('js-cookie') : undefined
+const Cookie = require('js-cookie')
 
 export default function({ store, redirect, app: { $axios } }) {
   // 参考 https://github.com/nuxt/nuxt.js/issues/2680
