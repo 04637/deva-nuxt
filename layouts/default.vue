@@ -130,12 +130,7 @@ export default {
   data: () => ({
     drawer: null,
     menuOpen: false,
-    keepAliveRouters: [
-      'question-ask',
-      'user-signUp',
-      'user-login',
-      'question-id'
-    ]
+    keepAliveRouters: ['question-ask', 'user-signUp', 'user-login']
   }),
   computed: {
     needKeepAlive() {

@@ -51,7 +51,7 @@
                         id="markDialogBtn"
                         text
                         color="pink"
-                        @click.stop="markDialog = !markDialog"
+                        @click.stop="similarMark.dialog = !similarMark.dialog"
                         >问题重复？标记相似
                       </v-btn>
                     </v-layout>
@@ -465,6 +465,7 @@
                   :options="editorOption"
                   style="border-radius: 5px"
                   @change="onEditorChange($event)"
+                  @focus="checkLogin"
                 >
                 </quill-editor>
               </no-ssr>
@@ -504,7 +505,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <v-dialog v-model="markDialog" persistent max-width="600px">
+    <v-dialog v-model="similarMark.dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
           <span class="headline">相似标记</span>
@@ -517,10 +518,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false"
+          <v-btn color="blue darken-1" text @click="similarMark.dialog = false"
             >关闭
           </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false"
+          <v-btn color="blue darken-1" text @click="similarMark.dialog = false"
             >确定
           </v-btn>
         </v-card-actions>
@@ -563,12 +564,15 @@ export default {
   },
   data: () => ({
     questionDetail: null,
-    // 标记相似的弹框
-    markDialog: false,
     // 控制更多评论的显示隐藏
     showAllComments: {},
     // 控制评论输入框的下是隐藏
     showCommentInput: {},
+    // 相似标记
+    similarMark: {
+      dialog: false,
+      resp: null
+    },
     comment: {
       // 当前正在输入的评论
       currentComment: null,
@@ -772,6 +776,11 @@ export default {
             _this.questionDetail.isCollected = resp.data
           }
         })
+    },
+    checkLogin() {
+      if (!this.$store.state.userInfo) {
+        this.$router.push('/user/login')
+      }
     }
   }
 }
