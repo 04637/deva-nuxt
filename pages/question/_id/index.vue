@@ -69,14 +69,15 @@
                         <v-layout justify-space-between>
                           <v-flex xs9>
                             该问题已有相似问题:
-                            <router-link to="questionDetail"
-                              >大家好我是旺旺旺
+                            <router-link
+                              :to="questionDetail.similarMark.toQuestionId"
+                              >{{ questionDetail.similarMark.toQuestionTitle }}
                             </router-link>
                           </v-flex>
                           <v-layout justify-end xs3>
                             --&nbsp;
                             <router-link to="userProfile"
-                              >别叫我小海绵
+                              >{{ questionDetail.similarMark.nickname }}
                             </router-link>
                           </v-layout>
                         </v-layout>
@@ -511,7 +512,13 @@
           <span class="headline">相似标记</span>
         </v-card-title>
         <v-card-text>
-          <v-text-field label="输入相似问题的链接"></v-text-field>
+          <v-text-field
+            v-model="similarMark.toQuestionLink"
+            label="输入相似问题的链接"
+            :rules="[rules.matchQuestionLink]"
+            :error-messages="similarMark.errorMsg"
+            autofocus
+          ></v-text-field>
           <small
             >合理的标记可以帮助小伙伴们寻找答案，提升自己的声望。同时滥用标记，关联无关问题也将受到惩罚哦!</small
           >
@@ -521,7 +528,11 @@
           <v-btn color="blue darken-1" text @click="similarMark.dialog = false"
             >关闭
           </v-btn>
-          <v-btn color="blue darken-1" text @click="similarMark.dialog = false"
+          <v-btn
+            color="blue darken-1"
+            :loading="similarMark.loading"
+            text
+            @click="markQuestion"
             >确定
           </v-btn>
         </v-card-actions>
@@ -549,6 +560,13 @@
       @update:dialog="accept.dialog = $event"
     >
     </InfoDialog>
+    <InfoDialog
+      :msg="['标记成功', '标记失败']"
+      :succeed="similarMark.resp != null && similarMark.resp.succeed"
+      :dialog="similarMark.respDialog"
+      @update:dialog="similarMark.respDialog = $event"
+    >
+    </InfoDialog>
   </v-app>
 </template>
 <script>
@@ -571,7 +589,11 @@ export default {
     // 相似标记
     similarMark: {
       dialog: false,
-      resp: null
+      toQuestionLink: null,
+      resp: null,
+      loading: false,
+      respDialog: false,
+      errorMsg: null
     },
     comment: {
       // 当前正在输入的评论
@@ -598,7 +620,9 @@ export default {
       max50: (v) => (v && v.length <= 50) || '不能超过50个字符',
       max3000: (v) => (v && v.length <= 3000) || '不能超过3000个字符',
       max200: (v) => (v && v.length) <= 200 || '不能超过200个字符',
-      requiredComment: (v) => (v && v.trim().length > 0) || '评论不能为空'
+      requiredComment: (v) => (v && v.trim().length > 0) || '评论不能为空',
+      matchQuestionLink: (v) =>
+        (v && /question\/(\d{18})/.test(v)) || '请输入有效的问题链接'
     },
     editorOption: {
       theme: 'bubble',
@@ -641,6 +665,36 @@ export default {
   },
   mounted() {},
   methods: {
+    markQuestion() {
+      const questionId = this.similarMark.toQuestionLink.match(
+        /question\/(\d{18})$/
+      )[1]
+      if (questionId === this.questionDetail.questionId) {
+        this.similarMark.errorMsg = '该链接为当前问题链接'
+        return
+      }
+      this.similarMark.loading = true
+      this.$axios
+        .$post('/similarMark/mark', {
+          fromQuestionId: this.questionDetail.questionId,
+          toQuestionId: questionId
+        })
+        .then((resp) => {
+          this.similarMark.loading = false
+          this.similarMark.resp = resp
+          if (resp.succeed) {
+            this.similarMark.dialog = false
+          }
+        })
+        .catch((e) => {
+          this.similarMark.loading = false
+          if (e.response.status === 500) {
+            this.similarMark.errorMsg = '系统异常'
+          } else if (e.response.status === 403) {
+            this.similarMark.errorMsg = '权限不足'
+          }
+        })
+    },
     acceptAnswer(answer) {
       this.accept.dialog = true
       this.$axios

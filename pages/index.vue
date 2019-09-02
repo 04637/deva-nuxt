@@ -127,6 +127,9 @@ export default {
     page: {
       current: 1,
       size: 15
+    },
+    es: {
+      keywords: null
     }
   }),
   created() {
@@ -139,6 +142,20 @@ export default {
           current: this.page.current,
           size: this.page.size,
           listType: this.listType
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.questionList = resp.data.records
+          } else {
+            this.questionList = null
+          }
+        })
+    },
+    searchQuestions() {
+      this.$axios
+        .$post('/esQuestionInfo/search', {
+          keywords: this.es.keywords,
+
         })
         .then((resp) => {
           if (resp.succeed) {
