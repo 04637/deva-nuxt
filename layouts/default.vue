@@ -76,11 +76,13 @@
               <img src="/deva.png" alt="" class="logo" />
             </v-toolbar-title>
             <v-text-field
+              v-model="keywords"
               hide-details
               label="Search"
               prepend-inner-icon="search"
               solo
               flat
+              @keyup.enter.native="search"
             ></v-text-field>
             <v-spacer></v-spacer>
           </v-flex>
@@ -130,7 +132,8 @@ export default {
   data: () => ({
     drawer: null,
     menuOpen: false,
-    keepAliveRouters: ['question-ask', 'user-signUp', 'user-login']
+    keepAliveRouters: ['question-ask', 'user-signUp', 'user-login'],
+    keywords: null
   }),
   computed: {
     needKeepAlive() {
@@ -143,6 +146,11 @@ export default {
       // 使外部api上的JWT Cookie失效
       Cookie.remove('userInfo')
       this.$store.commit('setUserInfo', null)
+    },
+    search() {
+      this.$router.push({
+        path: '/search/' + this.keywords
+      })
     }
   }
 }

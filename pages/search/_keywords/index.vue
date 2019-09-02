@@ -4,14 +4,13 @@
       <v-layout column>
         <v-layout>
           <v-flex md6 xs4 shrink hidden-sm-and-down>
-            <v-card-title>最新问题</v-card-title>
+            <v-card-title>{{ $route.params.keywords }}</v-card-title>
           </v-flex>
           <v-flex md3 align-self-end>
-            <v-tabs centered height="38" @change="loadQuestions">
-              <v-tab @click="listType = 'RECENT'">最新</v-tab>
-              <v-tab @click="listType = 'UN_RESOLVED'">待解决</v-tab>
-              <v-tab @click="listType = 'WEEK_HOT'">周榜</v-tab>
-              <v-tab @click="listType = 'MONTH_HOT'">月榜</v-tab>
+            <v-tabs centered height="38" @change="searchQuestions">
+              <v-tab @click="listType = 'RELEVANCE'">相关</v-tab>
+              <v-tab @click="listType = 'NEWEST'">最新</v-tab>
+              <v-tab @click="listType = 'ACTIVE'">活跃</v-tab>
             </v-tabs>
           </v-flex>
         </v-layout>
@@ -48,13 +47,13 @@
   </v-app>
 </template>
 <script>
-import QuestionCard from '../components/QuestionCard'
+import QuestionCard from '../../../components/QuestionCard'
 export default {
   components: {
     QuestionCard
   },
   data: () => ({
-    listType: 'RECENT',
+    listType: null,
     questionList: null,
     hotQuestionList: null,
     page: {
@@ -66,16 +65,17 @@ export default {
     this.loadHotQuestions()
   },
   methods: {
-    loadQuestions() {
+    searchQuestions() {
       this.$axios
-        .$post('/questionInfo/listQuestions', {
-          current: this.page.current,
-          size: this.page.size,
-          listType: this.listType
+        .$post('/esQuestionInfo/search', {
+          keywords: this.$route.params.keywords,
+          current: this.current,
+          size: this.size,
+          sortType: this.listType
         })
         .then((resp) => {
           if (resp.succeed) {
-            this.questionList = resp.data.records
+            this.questionList = resp.data.content
           } else {
             this.questionList = null
           }

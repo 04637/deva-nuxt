@@ -18,7 +18,9 @@ export default {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    // 参考 https://zh.nuxtjs.org/faq 引入外部资源
+    script: [{ src: '//at.alicdn.com/t/font_778737_75mss2gyvvf.js' }]
   },
   /*
    ** Customize the progress-bar color
