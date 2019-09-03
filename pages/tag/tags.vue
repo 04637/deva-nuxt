@@ -1,53 +1,85 @@
 <template>
   <v-container justify-center align-start>
-    <v-flex>
-      <v-layout>
-        <v-text-field
-          hide-details
-          label="Search"
-          prepend-inner-icon="search"
-          outlined
-          rounded
-        ></v-text-field>
-      </v-layout>
-      <v-layout wrap class="mt-5">
-        <v-flex xs3 style="height: 60px">
-          <v-card class="pa-3">
-            <v-layout>
-              <v-btn x-small elevation text><strong>JAVA</strong></v-btn>
-              <span style="height: 20px; line-height: 20px" class="ml-2"
-                >× 937</span
-              >
-            </v-layout>
-            <v-layout class="label-description mt-1">
-              <!--展示一行省略-->
-              <v-card-text
-                class="d-inline-block text-truncate"
-                title="hello wrold"
-              >
-                Java是一门面向对象编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。
-              </v-card-text>
-            </v-layout>
-            <v-layout
-              style="font-size: 14px"
-              class="mt-1"
-              justify-space-between
+    <v-layout style="width: 30vw" class="mb-3">
+      <v-text-field
+        v-model="searchKey"
+        hide-details
+        label="搜索标签"
+        prepend-inner-icon="search"
+        rounded
+        @keyup.enter.native="loadTagList"
+      ></v-text-field>
+    </v-layout>
+    <v-divider></v-divider>
+    <v-layout wrap>
+      <v-flex
+        v-for="tagInfo in tagList"
+        :key="tagInfo.tagId"
+        xs4
+        md4
+        lg3
+        style="height: 90px"
+        class="ma-4"
+      >
+        <v-card class="pa-3">
+          <v-layout>
+            <v-btn x-small text
+              ><strong>{{ tagInfo.tagName }}</strong></v-btn
             >
-              <v-layout>
-                今日使用 15 次
-              </v-layout>
-              <v-layout justify-end>
-                近一周使用 427 次
-              </v-layout>
+            <span style="height: 20px; line-height: 20px" class="ml-2"
+              >× {{ tagInfo.totalCount }}</span
+            >
+          </v-layout>
+          <v-layout class="label-description mt-1">
+            <!--展示一行省略-->
+            <v-card-text
+              style="height: 22px"
+              class="d-inline-block text-truncate pa-0"
+              title="tagInfo.description"
+            >
+              {{ tagInfo.description }}
+            </v-card-text>
+          </v-layout>
+          <v-layout style="font-size: 14px" class="mt-1" justify-space-between>
+            <v-layout> 今日使用 {{ tagInfo.dayFrequency }} 次 </v-layout>
+            <v-layout justify-end>
+              近一周使用 {{ tagInfo.weekFrequency }} 次
             </v-layout>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-flex>
+          </v-layout>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 <script>
-export default {}
+export default {
+  data: () => ({
+    tagList: null,
+    searchKey: null,
+    page: {
+      current: 1,
+      size: 100
+    }
+  }),
+  created() {
+    this.loadTagList()
+  },
+  methods: {
+    loadTagList() {
+      this.$axios
+        .$post('/tagInfo/listTags', {
+          current: this.page.current,
+          size: this.page.size,
+          searchKey: this.searchKey
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.tagList = resp.data.records
+          }
+        })
+    }
+  }
+}
 </script>
 
 <style scoped>

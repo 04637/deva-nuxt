@@ -20,9 +20,11 @@
           height="30px"
           class="title d-inline-block text-truncate text-left no-flex"
           text
+          :color="question.status === 1 ? 'success' : ''"
           :to="'/question/' + question.questionId"
           >{{ question.title }}</v-btn
         >
+        <!--<v-icon v-if="question.status === 1" color="success">check</v-icon>-->
         <v-card-text class="title d-block sub--text text-truncate subtitle-1">
           {{ $md.render(question.content) | filterHtml }}
         </v-card-text>
@@ -41,10 +43,7 @@
       </v-flex>
       <v-layout column justify-space-around class="mr-1">
         <v-row justify="end">
-          <small>
-            提问于
-            {{ question.createTime | timeago }}</small
-          >
+          <small> 提问于 {{ question.createTime | timeago }}</small>
         </v-row>
         <v-row align="end" justify="end">
           <v-card flat class="pb-0">

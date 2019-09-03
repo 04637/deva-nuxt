@@ -23,7 +23,9 @@
               <v-list-item class="mt-2">
                 <QuestionCard :question="question" />
               </v-list-item>
-              <v-divider></v-divider>
+              <div
+                :class="$vuetify.theme.dark ? 'dark-divider' : 'light-divider'"
+              ></div>
             </div>
           </v-list>
         </v-flex>

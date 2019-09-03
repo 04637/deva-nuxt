@@ -87,10 +87,12 @@ export default {
           // error: colors.deepOrange.accent4,
           error: colors.orange,
           success: colors.green.accent3,
-          sub: colors.grey.lighten1
+          sub: colors.grey.lighten1,
+          background_color: '#303030'
         },
         light: {
-          primary: colors.cyan
+          primary: colors.cyan,
+          background_color: '#fafafa'
         }
       }
     }

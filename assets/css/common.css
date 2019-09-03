@@ -75,3 +75,23 @@ code {
 [v-cloak]{
   display:none
 }
+
+/*禁用按钮大小写转换*/
+.v-btn{
+  text-transform: none !important;
+}
+
+/*字符间隔*/
+.letter-space{
+  letter-spacing: 3px;
+}
+
+/*分割器*/
+.dark-divider {
+  height: 10px;
+  background: #303030;
+}
+.light-divider {
+  height: 10px;
+  background: #fafafa;
+}

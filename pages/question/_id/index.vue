@@ -255,8 +255,8 @@
           <v-divider></v-divider>
           <!--所有回答-->
           <v-layout class="transparent" justify-space-between align-center
-            ><v-card-text class="sub--text"
-              >{{ questionDetail.answers.length }} 个回答</v-card-text
+            ><v-card-title class="sub--text"
+              >{{ questionDetail.answers.length }} 个回答</v-card-title
             >
           </v-layout>
           <v-divider></v-divider>
@@ -451,11 +451,15 @@
               <v-divider
                 v-show="aIndex + 1 < questionDetail.answers.length"
               ></v-divider>
+              <div
+                v-show="aIndex + 1 < questionDetail.answers.length"
+                :class="$vuetify.theme.dark ? 'dark-divider' : 'light-divider'"
+              ></div>
             </div>
           </v-list>
           <v-divider></v-divider>
           <v-layout class="transparent" justify-space-between align-center
-            ><v-card-text class="sub--text">我的回答</v-card-text>
+            ><v-card-title class="sub--text">我的回答</v-card-title>
           </v-layout>
           <v-layout>
             <v-flex>

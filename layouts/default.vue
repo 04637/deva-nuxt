@@ -12,7 +12,7 @@
                 <v-list-item-title>主&nbsp;&nbsp;&nbsp;页</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-subheader>DEVA</v-subheader>
+            <v-subheader class="letter-space">DEVA</v-subheader>
             <v-list-item to="/question/ask">
               <v-list-item-action>
                 <v-icon>question_answer</v-icon>
@@ -46,7 +46,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
-            <v-subheader>PRIVATE</v-subheader>
+            <v-subheader class="letter-space">PRIVATE</v-subheader>
             <v-list-item to="/private/createSpace">
               <v-list-item-action>
                 <v-icon>fiber_new</v-icon>
