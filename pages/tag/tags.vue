@@ -21,7 +21,7 @@
         style="height: 90px"
         class="ma-4"
       >
-        <v-card class="pa-3">
+        <v-card class="pa-3" :to="'/search/' + tagInfo.tagName">
           <v-layout>
             <v-btn x-small text
               ><strong>{{ tagInfo.tagName }}</strong></v-btn

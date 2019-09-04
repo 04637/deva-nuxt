@@ -20,21 +20,28 @@
           height="30px"
           class="title d-inline-block text-truncate text-left no-flex"
           text
-          :color="question.status === 1 ? 'success' : ''"
           :to="'/question/' + question.questionId"
           >{{ question.title }}</v-btn
+        ><v-chip
+          v-if="question.status === 1"
+          color="green"
+          small
+          label
+          outlined
         >
-        <!--<v-icon v-if="question.status === 1" color="success">check</v-icon>-->
+          <strong>已解决</strong>
+        </v-chip>
         <v-card-text class="title d-block sub--text text-truncate subtitle-1">
           {{ $md.render(question.content) | filterHtml }}
         </v-card-text>
         <v-card-actions>
           <v-layout>
+            <!--todo tag搜索时添加匹配列只匹配 tag-->
             <v-chip
               v-for="tag in question.tagInfos"
               :key="tag.tagId"
               link
-              to=""
+              :to="'/search/' + tag.tagName"
               class="question-tag"
               >{{ tag.tagName }}</v-chip
             >

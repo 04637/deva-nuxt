@@ -95,3 +95,8 @@ code {
   height: 10px;
   background: #fafafa;
 }
+
+/*去掉v-list的下面多余部分*/
+.v-list{
+  padding-bottom: 0 !important;
+}

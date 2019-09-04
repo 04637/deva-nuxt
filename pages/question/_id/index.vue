@@ -2,7 +2,18 @@
   <v-app id="home">
     <v-container align-center justify-center>
       <v-layout column>
-        <v-card-title>{{ questionDetail.title }}</v-card-title>
+        <v-card-title
+          >{{ questionDetail.title }}&nbsp;&nbsp;
+          <v-chip
+            v-if="questionDetail.status === 1"
+            color="green"
+            small
+            label
+            outlined
+          >
+            <strong>已解决</strong>
+          </v-chip></v-card-title
+        >
         <v-divider></v-divider>
       </v-layout>
       <v-layout justify-center justify-space-around>
@@ -48,6 +59,10 @@
                   <v-flex xs11 class="ml-4">
                     <v-layout justify-end>
                       <v-btn
+                        v-if="
+                          $store.state.userInfo &&
+                            $store.getters.getUserInfo.reputation >= 500
+                        "
                         id="markDialogBtn"
                         text
                         color="pink"

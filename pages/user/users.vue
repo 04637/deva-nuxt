@@ -21,7 +21,7 @@
         style="height: 75px"
         class="ma-4"
       >
-        <v-card class="pa-2">
+        <v-card class="pa-2" to="userProfile">
           <v-layout justify-space-between>
             <v-flex xs3>
               <v-layout justify-center>
@@ -45,7 +45,6 @@
                 text
                 width="300px"
                 class="d-inline-block text-truncate text-left no-flex"
-                to="userProfile"
                 :title="userInfo.nickname || userInfo.username"
                 >{{ userInfo.nickname || userInfo.username }}</v-btn
               >

@@ -23,9 +23,9 @@
           >实时热度，每分钟更新一次</v-subheader
         >
         <v-layout>
-          <v-list width="100%">
-            <div v-for="(item, index) in heatList" :key="index" width="100%">
-              <v-list-item>
+          <v-list width="100%" class="pt-0">
+            <div v-for="(item, index) in heatList" :key="index">
+              <v-list-item :to="'/search/' + item.keywords">
                 <v-layout>
                   <v-flex xs11 align-start
                     >{{ index + 1 }}.&nbsp;&nbsp;{{ item.keywords }}
