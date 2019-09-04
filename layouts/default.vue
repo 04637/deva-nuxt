@@ -118,7 +118,7 @@
         <nuxt v-else />
       </v-content>
       <v-footer app>
-        <span>&copy; 2019</span>
+        <span>&copy; aid.dev</span>
       </v-footer>
     </v-app>
   </div>

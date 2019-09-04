@@ -91,7 +91,8 @@
                           </v-flex>
                           <v-layout justify-end xs3>
                             --&nbsp;
-                            <router-link to="userProfile"
+                            <router-link
+                              :to="'/user/' + questionDetail.similarMark.userId"
                               >{{ questionDetail.similarMark.nickname }}
                             </router-link>
                           </v-layout>

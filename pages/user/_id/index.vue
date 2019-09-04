@@ -1,5 +1,5 @@
 <template>
-  <v-container justify-center align-start>
+  <v-container v-if="userProfile" justify-center align-start>
     <v-layout column>
       <v-layout>
         <v-card-title>
@@ -25,34 +25,52 @@
                 </v-avatar>
               </v-layout>
               <v-layout class="mt-2" justify-center>
-                <v-card-title>别叫我小海绵</v-card-title>
+                <v-card-title>{{
+                  userProfile.nickname || userProfile.username
+                }}</v-card-title>
               </v-layout>
               <v-layout class="mt-2">
                 <v-divider></v-divider>
               </v-layout>
               <v-layout justify-center>
-                <v-card-text
-                  >该用户太懒，什么也没留下该用户太懒，什么也没留下该用户太懒，什么也没留下</v-card-text
-                >
+                <v-card-text>{{ userProfile.bio }}</v-card-text>
               </v-layout>
               <v-layout justify-center>
                 <v-icon class="mr-2">email</v-icon>
-                04637@163.com
+                {{ userProfile.email }}
               </v-layout>
             </v-flex>
             <v-flex lg4 md12>
               <v-card flat>
-                <v-card-text>提问: 24</v-card-text>
-                <v-card-text>回答: 44</v-card-text>
-                <v-card-text>采纳率: 13.64%</v-card-text>
-                <v-card-text>关注者: 1023</v-card-text>
-                <v-card-text>声望: 508</v-card-text>
+                <v-card-text
+                  >提问: &nbsp;&nbsp;{{
+                    userProfile.questions.length
+                  }}</v-card-text
+                >
+                <v-card-text
+                  >回答: &nbsp;&nbsp;{{
+                    userProfile.answers.length
+                  }}</v-card-text
+                >
+                <v-card-text
+                  >采纳率: &nbsp;&nbsp;{{
+                    userProfile.adoptionRate
+                  }}&nbsp;%</v-card-text
+                >
+                <v-card-text
+                  >关注者: &nbsp;&nbsp;{{
+                    userProfile.followers.length
+                  }}</v-card-text
+                >
+                <v-card-text
+                  >声望: &nbsp;&nbsp;{{ userProfile.reputation }}</v-card-text
+                >
               </v-card>
               <v-layout justify-start class="mt-5">
                 <v-btn text icon color="pink">
                   <v-icon>favorite</v-icon>
                 </v-btn>
-                <v-card-text>← 关注</v-card-text>
+                <v-card-text class="pa-2">← 关注他</v-card-text>
               </v-layout>
             </v-flex>
           </v-layout>
@@ -103,12 +121,18 @@
                 :search="askTab.search"
               >
                 <template #item.title="{item}">
-                  <tr>
-                    <!--todo 所有tab文字溢出处理-->
-                    <router-link to="questionDetail">{{
-                      item.title
-                    }}</router-link>
-                  </tr>
+                  <router-link :to="'/question/' + item.questionId">{{
+                    item.title
+                  }}</router-link>
+                </template>
+                <template #item.status="{item}">
+                  <v-icon
+                    v-if="item.status === 1"
+                    color="success"
+                    title="已解决"
+                    >done</v-icon
+                  >
+                  <v-icon v-else color="error" title="待解决">minimize</v-icon>
                 </template>
               </v-data-table>
             </v-card>
@@ -131,10 +155,16 @@
                 :items="answerTab.items"
                 :search="answerTab.search"
               >
-                <template #item.title="{item}">
-                  <router-link to="questionDetail">{{
-                    item.title
+                <template #item.questionTitle="{item}">
+                  <router-link :to="'/question/' + item.ownQuestionId">{{
+                    item.questionTitle
                   }}</router-link>
+                </template>
+                <template #item.isAccepted="{item}">
+                  <v-icon v-if="item.isAccepted" color="success" title="已采纳"
+                    >check</v-icon
+                  >
+                  <v-icon v-else color="error" title="未采纳">close</v-icon>
                 </template>
               </v-data-table>
             </v-card>
@@ -334,139 +364,106 @@
 </template>
 <script>
 export default {
-  data() {
-    return {
-      tab: null,
-      // 提问tab
-      askTab: {
-        search: '',
-        headers: [
-          {
-            text: '标题',
-            sortable: false,
-            align: 'left',
-            value: 'title'
-          },
-          { text: '状态', value: 'status' },
-          { text: '回答', value: 'answerNum' },
-          { text: '支持', value: 'voteNum' },
-          { text: '收藏', value: 'collectNum' },
-          { text: '浏览', value: 'viewNum' }
-        ],
-        items: [
-          {
-            title: '你好世界1你好世界1你好世界1你好世界1',
-            status: '已解决',
-            answerNum: 43,
-            voteNum: 13,
-            collectNum: 52,
-            viewNum: 24
-          },
-          {
-            title: '你好世界1',
-            status: '已解决',
-            answerNum: 11,
-            voteNum: 23,
-            collectNum: 90,
-            viewNum: 12
-          },
-          {
-            title: '你好世界1',
-            status: '已解决',
-            answerNum: 21,
-            voteNum: 78,
-            collectNum: 32,
-            viewNum: 44
+  data: () => ({
+    tab: null,
+    userProfile: null,
+    // 提问tab
+    askTab: {
+      search: '',
+      headers: [
+        {
+          text: '标题',
+          sortable: false,
+          align: 'left',
+          value: 'title'
+        },
+        { text: '回答', value: 'answerNum' },
+        { text: '赞成', value: 'voteNum' },
+        { text: '状态', value: 'status', sortable: false }
+      ],
+      items: []
+    },
+    //  回答tab
+    answerTab: {
+      search: '',
+      headers: [
+        {
+          text: '问题标题',
+          align: 'left',
+          sortable: false,
+          value: 'questionTitle'
+        },
+        {
+          text: '回答内容',
+          align: 'left',
+          sortable: false,
+          value: 'content'
+        },
+        { text: '状态', value: 'isAccepted', sortable: false }
+      ],
+      items: []
+    },
+    // 收藏tab
+    collectTab: {
+      search: '',
+      headers: [
+        {
+          text: '标题',
+          sortable: false,
+          align: 'left',
+          value: 'title'
+        },
+        { text: '状态', value: 'status' },
+        { text: '回答', value: 'answerNum' },
+        { text: '支持', value: 'voteNum' },
+        { text: '收藏', value: 'collectNum' },
+        { text: '浏览', value: 'viewNum' }
+      ],
+      items: [
+        {
+          title: '你好世界1你好世界1你好世界1你好世界1',
+          status: '已解决',
+          answerNum: 43,
+          voteNum: 13,
+          collectNum: 52,
+          viewNum: 24
+        },
+        {
+          title: '你好世界1',
+          status: '已解决',
+          answerNum: 11,
+          voteNum: 23,
+          collectNum: 90,
+          viewNum: 12
+        },
+        {
+          title: '你好世界1',
+          status: '已解决',
+          answerNum: 21,
+          voteNum: 78,
+          collectNum: 32,
+          viewNum: 44
+        }
+      ]
+    }
+  }),
+  created() {
+    this.loadUserProfile()
+  },
+  methods: {
+    loadUserProfile() {
+      this.$axios
+        .$post('userInfo/getUserProfile', {
+          userId: this.$route.params.id
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            console.log(resp)
+            this.userProfile = resp.data
+            this.askTab.items = this.userProfile.questions
+            this.answerTab.items = this.userProfile.answers
           }
-        ]
-      },
-      //  回答tab
-      answerTab: {
-        search: '',
-        headers: [
-          {
-            text: '问题标题',
-            align: 'left',
-            sortable: false,
-            value: 'title'
-          },
-          {
-            text: '回答内容',
-            align: 'left',
-            sortable: false,
-            value: 'content'
-          },
-          { text: '状态', value: 'status' },
-          { text: '支持', value: 'voteNum' },
-          { text: '评论', value: 'commentNum' }
-        ],
-        items: [
-          {
-            title: '你好世界1',
-            content: '我觉的这个问题很简单',
-            status: '已采纳',
-            voteNum: 13,
-            commentNum: 52
-          },
-          {
-            title: '你好世界1',
-            content: '我觉的这个问题很简单',
-            status: '已采纳',
-            voteNum: 13,
-            commentNum: 52
-          },
-          {
-            title: '你好世界1',
-            content: '我觉的这个问题很简单',
-            status: '已采纳',
-            voteNum: 13,
-            commentNum: 52
-          }
-        ]
-      },
-      // 收藏tab
-      collectTab: {
-        search: '',
-        headers: [
-          {
-            text: '标题',
-            sortable: false,
-            align: 'left',
-            value: 'title'
-          },
-          { text: '状态', value: 'status' },
-          { text: '回答', value: 'answerNum' },
-          { text: '支持', value: 'voteNum' },
-          { text: '收藏', value: 'collectNum' },
-          { text: '浏览', value: 'viewNum' }
-        ],
-        items: [
-          {
-            title: '你好世界1你好世界1你好世界1你好世界1',
-            status: '已解决',
-            answerNum: 43,
-            voteNum: 13,
-            collectNum: 52,
-            viewNum: 24
-          },
-          {
-            title: '你好世界1',
-            status: '已解决',
-            answerNum: 11,
-            voteNum: 23,
-            collectNum: 90,
-            viewNum: 12
-          },
-          {
-            title: '你好世界1',
-            status: '已解决',
-            answerNum: 21,
-            voteNum: 78,
-            collectNum: 32,
-            viewNum: 44
-          }
-        ]
-      }
+        })
     }
   }
 }

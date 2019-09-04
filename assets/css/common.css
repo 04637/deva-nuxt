@@ -44,6 +44,18 @@ code {
   background-color: #616161 !important;
   color: #ffffff !important;
 }
+pre,code{
+  font-family: consolas, monospace !important;
+}
+pre {
+  background-image: initial;
+  background-color: #616161 !important;
+  color: #ffffff !important;
+  padding:3px;
+}
+pre>code{
+  box-shadow: none;
+}
 
 .logo-md{
   width: 100px;

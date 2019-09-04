@@ -21,7 +21,7 @@
         style="height: 75px"
         class="ma-4"
       >
-        <v-card class="pa-2" to="userProfile">
+        <v-card class="pa-2" :to="'/user/' + userInfo.userId">
           <v-layout justify-space-between>
             <v-flex xs3>
               <v-layout justify-center>
