@@ -55,7 +55,11 @@
         <v-row align="end" justify="end">
           <v-card flat class="pb-0">
             <v-card-text class="pa-0">
-              <v-btn text class="orange--text">
+              <v-btn
+                text
+                class="orange--text"
+                :to="'/user/' + question.author.userId"
+              >
                 {{ question.author.nickname }}
               </v-btn>
               <span style="vertical-align: -1px">

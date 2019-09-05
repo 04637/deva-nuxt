@@ -4,5 +4,8 @@ export default {
   },
   getToken(state) {
     return state.userInfo ? state.userInfo.token : null
+  },
+  getUserId(state) {
+    return state.userInfo ? state.userInfo.userId : null
   }
 }

@@ -96,9 +96,11 @@
               </v-badge>
             </v-btn>
             <div v-if="$store.getters.getUserInfo">
-              <v-avatar color="grey" size="35" tile class="mr-10">
-                <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
-              </v-avatar>
+              <router-link :to="'/user/' + $store.getters.getUserId">
+                <v-avatar color="grey" size="35" tile class="mr-10">
+                  <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
+                </v-avatar>
+              </router-link>
               <v-btn depressed class="ml-1" @click="logout">注销</v-btn>
             </div>
             <div v-else>

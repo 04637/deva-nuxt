@@ -15,7 +15,10 @@
             <v-flex align-center xs3 hidden-md-and-down>
               <v-layout justify-center>
                 <v-avatar color="grey" size="200" tile right>
-                  <v-img :aspect-ratio="16 / 9" :src="photoSrc">
+                  <v-img
+                    :aspect-ratio="16 / 9"
+                    :src="photoSrc || userInfo.avatar"
+                  >
                     <v-layout
                       pa-2
                       column
@@ -44,25 +47,26 @@
                 </v-avatar>
               </v-layout>
               <v-layout class="mt-2" justify-center>
-                <v-card-title>别叫我小海绵</v-card-title>
+                <v-card-title>{{
+                  userInfo.nickname || userInfo.username
+                }}</v-card-title>
               </v-layout>
               <v-layout class="mt-2">
                 <v-divider></v-divider>
               </v-layout>
               <v-layout justify-center>
-                <v-card-text
-                  >该用户太懒，什么也没留下该用户太懒，什么也没留下该用户太懒，什么也没留下</v-card-text
-                >
+                <v-card-text>{{ userInfo.bio }}</v-card-text>
               </v-layout>
               <v-layout justify-center>
                 <v-icon class="mr-2">email</v-icon>
-                04637@163.com
+                {{ userInfo.email }}
               </v-layout>
             </v-flex>
             <v-spacer></v-spacer>
             <v-flex xs9 lg6>
               <v-form class="form mt-0" style="width: 100%">
                 <v-text-field
+                  v-model="userInfo.nickname"
                   hint=""
                   :counter="16"
                   label="昵称"
@@ -70,18 +74,18 @@
                   class="mt-3"
                   :rules="[rules.required]"
                   name=""
-                  value="别叫我小海绵"
                 ></v-text-field>
                 <v-textarea
+                  v-model="userInfo.bio"
                   hint=""
                   :counter="50"
                   label="简介"
                   outlined
                   required
                   no-resize
-                  value="该用户太懒,什么也没留下"
                 ></v-textarea>
                 <v-text-field
+                  v-model="userInfo.email"
                   hint=""
                   :counter="16"
                   label="邮箱"
@@ -89,20 +93,6 @@
                   class="mt-3"
                   :rules="[rules.required]"
                   name=""
-                  value="04637@163.com"
-                ></v-text-field>
-                <v-text-field
-                  hint=""
-                  :counter="16"
-                  label="登录密码"
-                  outlined
-                  class="mt-3"
-                  :rules="[rules.required, rules.min]"
-                  type="password"
-                  name="input-10-1"
-                  value="jiguantong"
-                  required
-                  @click:append="show = !show"
                 ></v-text-field>
                 <v-layout class="justify-end mt-3">
                   <v-dialog v-model="dialog" persistent max-width="600px">
@@ -157,8 +147,12 @@ export default {
       required: (value) => !!value || 'Required.',
       min: (v) => (v && v.length >= 8) || 'Min 8 characters'
     },
-    photoSrc: 'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
+    photoSrc: null,
+    userInfo: null
   }),
+  created() {
+    this.userInfo = this.$store.getters.getUserInfo
+  },
   methods: {
     previewImg(e) {
       const files = e.target.files[0]

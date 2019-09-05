@@ -5,51 +5,53 @@
       <v-divider></v-divider>
     </v-layout>
     <v-layout justify-center>
-      <v-form ref="form" class="form">
-        <v-layout justify-center>
-          <img src="/deva.png" alt="" class="logo-md" />
-        </v-layout>
-        <v-layout class="mt-3" column>
-          <v-text-field
-            v-model="username"
-            hint="输入用户名或绑定邮箱"
-            label="用户名/邮箱"
-            outlined
-            required
-            :rules="[(v) => (!v ? '请输入用户名/邮箱' : true)]"
-            class="mt-4"
-          ></v-text-field>
-          <v-text-field
-            v-model="password"
-            class="mt-4"
-            label="密码"
-            outlined
-            :rules="[(v) => (!v ? '请输入密码' : true)]"
-            required
-            @keyup.enter.native="submitLogin"
-          ></v-text-field>
-          <v-layout justify-end class="mt-4">
-            <v-btn
-              outlined
-              accent
-              depressed
-              min-width="150px"
-              :loading="loading"
-              @click="submitLogin"
-              >登录</v-btn
-            >
+      <v-card class="pa-8 mt-6" width="520px">
+        <v-form ref="form">
+          <v-layout justify-center>
+            <img src="/deva.png" alt="" class="logo-md" />
           </v-layout>
-        </v-layout>
-      </v-form>
+          <v-layout class="mt-3" column>
+            <v-text-field
+              v-model="username"
+              hint="输入用户名或绑定邮箱"
+              label="用户名/邮箱"
+              outlined
+              required
+              :rules="[(v) => (!v ? '请输入用户名/邮箱' : true)]"
+              class="mt-4"
+            ></v-text-field>
+            <v-text-field
+              v-model="password"
+              class="mt-4"
+              label="密码"
+              outlined
+              :rules="[(v) => (!v ? '请输入密码' : true)]"
+              required
+              @keyup.enter.native="submitLogin"
+            ></v-text-field>
+            <v-layout justify-end class="mt-4">
+              <v-btn
+                outlined
+                accent
+                depressed
+                min-width="150px"
+                :loading="loading"
+                @click="submitLogin"
+                >登录</v-btn
+              >
+            </v-layout>
+          </v-layout>
+        </v-form>
+      </v-card>
     </v-layout>
     <v-layout justify-center>
-      <v-form class="form">
+      <v-card class="pa-8 mt-6" width="520px">
         <v-layout justify-center>
           <v-btn text depressed to="signUp"
             >还没有账号？<span style="color: orange">去注册</span></v-btn
           >
         </v-layout>
-      </v-form>
+      </v-card>
     </v-layout>
   </v-container>
 </template>

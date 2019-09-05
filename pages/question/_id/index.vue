@@ -115,7 +115,7 @@
                           v-for="tag in questionDetail.tagInfos"
                           :key="tag.tagId"
                           link
-                          to=""
+                          :to="'/search/' + tag.tagName"
                           class="question-tag"
                           >{{ tag.tagName }}</v-chip
                         >
@@ -123,14 +123,14 @@
                       <v-layout justify-end>
                         <v-card
                           class="px-8 pt-3 pb-1 user_card"
-                          to="/user/userProfile"
+                          :to="'/user/' + questionDetail.author.userId"
                         >
                           <v-layout justify-space-between>
                             <v-flex xs3>
                               <v-layout justify-center>
                                 <v-avatar color="grey">
                                   <v-img
-                                    src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"
+                                    :src="questionDetail.author.avatar"
                                   ></v-img>
                                 </v-avatar>
                               </v-layout>
@@ -196,7 +196,8 @@
                                   <v-flex xs10>{{ comment.content }}</v-flex>
                                   <v-flex xs2
                                     >--
-                                    <router-link to="userProfile"
+                                    <router-link
+                                      :to="'/user/' + comment.author.userId"
                                       >{{
                                         comment.author.nickname ||
                                           comment.author.username
@@ -328,7 +329,7 @@
                         <v-layout justify-end>
                           <v-card
                             class="px-8 pt-3 pb-1 user_card"
-                            to="/user/userProfile"
+                            :to="'/user/' + answer.author.userId"
                           >
                             <v-layout justify-space-between>
                               <v-flex xs3>
@@ -403,7 +404,8 @@
                                     <v-flex xs10>{{ comment.content }}</v-flex>
                                     <v-flex xs2
                                       >--
-                                      <router-link to="userProfile"
+                                      <router-link
+                                        :to="'/user/' + comment.author.userId"
                                         >{{
                                           comment.author.nickname ||
                                             comment.author.username

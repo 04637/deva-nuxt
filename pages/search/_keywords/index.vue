@@ -35,7 +35,7 @@
               v-for="hotQuestion in hotQuestionList"
               :key="hotQuestion.questionId"
             >
-              <v-list-item>
+              <v-list-item :to="'/question/' + hotQuestion.questionId">
                 <v-card class="d-inline-block text-truncate" flat
                   >{{ hotQuestion.title }}
                 </v-card>

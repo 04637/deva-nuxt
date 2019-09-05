@@ -4,7 +4,12 @@
       <v-layout>
         <v-card-title>
           用户档案
-          <v-btn class="ml-5" text to="editProfile">
+          <v-btn
+            v-if="userProfile.userId === $store.getters.getUserId"
+            class="ml-5"
+            text
+            to="editProfile"
+          >
             点此编辑
             <v-icon class="ml-2">edit</v-icon>
           </v-btn>
@@ -19,9 +24,7 @@
             <v-flex align-center xs7 hidden-md-and-down>
               <v-layout justify-center>
                 <v-avatar color="grey" size="200" tile right>
-                  <v-img
-                    src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"
-                  ></v-img>
+                  <v-img :src="userProfile.avatar"></v-img>
                 </v-avatar>
               </v-layout>
               <v-layout class="mt-2" justify-center>
@@ -55,7 +58,7 @@
                 <v-card-text
                   >采纳率: &nbsp;&nbsp;{{
                     userProfile.adoptionRate
-                  }}&nbsp;%</v-card-text
+                  }}%</v-card-text
                 >
                 <v-card-text
                   >关注者: &nbsp;&nbsp;{{
@@ -67,7 +70,22 @@
                 >
               </v-card>
               <v-layout justify-start class="mt-5">
-                <v-btn text icon color="pink">
+                <v-btn
+                  v-show="isFollowed"
+                  text
+                  icon
+                  :color="isFollowed ? 'pink' : ''"
+                  @click="unWatchUser"
+                >
+                  <v-icon>favorite</v-icon>
+                </v-btn>
+                <v-btn
+                  v-show="!isFollowed"
+                  text
+                  icon
+                  :color="isFollowed ? 'pink' : ''"
+                  @click="followUser"
+                >
                   <v-icon>favorite</v-icon>
                 </v-btn>
                 <v-card-text class="pa-2">← 关注他</v-card-text>
@@ -87,12 +105,6 @@
           </v-tab>
           <v-tab>
             收藏
-          </v-tab>
-          <v-tab>
-            标签
-          </v-tab>
-          <v-tab>
-            空间
           </v-tab>
           <v-tab>
             关注
@@ -164,7 +176,7 @@
                   <v-icon v-if="item.isAccepted" color="success" title="已采纳"
                     >check</v-icon
                   >
-                  <v-icon v-else color="error" title="未采纳">close</v-icon>
+                  <v-icon v-else color="error" title="未采纳">minimize</v-icon>
                 </template>
               </v-data-table>
             </v-card>
@@ -188,132 +200,45 @@
                 :search="collectTab.search"
               >
                 <template #item.title="{item}">
-                  <router-link to="questionDetail">{{
+                  <router-link :to="'/question/' + item.questionId">{{
                     item.title
                   }}</router-link>
                 </template>
               </v-data-table>
             </v-card>
           </v-tab-item>
-          <!-- tag tab -->
-          <v-tab-item>
-            <v-layout wrap>
-              <v-btn class="pa-1 px-8 mt-2 mr-2" to="userProfile">
-                <v-card-text>JAVA × 937</v-card-text>
-              </v-btn>
-              <v-btn class="pa-1 px-8 mt-2 mr-2" to="userProfile">
-                <v-card-text>JAVA × 937</v-card-text>
-              </v-btn>
-              <v-btn class="pa-1 px-8 mt-2 mr-2" to="userProfile">
-                <v-card-text>JAVA × 937</v-card-text>
-              </v-btn>
-              <v-btn class="pa-1 px-8 mt-2 mr-2" to="userProfile">
-                <v-card-text>JAVA × 937</v-card-text>
-              </v-btn>
-              <v-btn class="pa-1 px-8 mt-2 mr-2" to="userProfile">
-                <v-card-text>JAVA × 937</v-card-text>
-              </v-btn>
-              <v-btn class="pa-1 px-8 mt-2 mr-2" to="userProfile">
-                <v-card-text>JAVA × 937</v-card-text>
-              </v-btn>
-              <v-btn class="pa-1 px-8 mt-2 mr-2" to="userProfile">
-                <v-card-text>JAVA × 937</v-card-text>
-              </v-btn>
-              <v-btn class="pa-1 px-8 mt-2 mr-2" to="userProfile">
-                <v-card-text>JAVA × 937</v-card-text>
-              </v-btn>
-              <v-btn class="pa-1 px-8 mt-2 mr-2" to="userProfile">
-                <v-card-text>JAVA × 937</v-card-text>
-              </v-btn>
-              <v-btn class="pa-1 px-8 mt-2 mr-2" to="userProfile">
-                <v-card-text>JAVA × 937</v-card-text>
-              </v-btn>
-              <v-btn class="pa-1 px-8 mt-2 mr-2" to="userProfile">
-                <v-card-text>JAVA × 937</v-card-text>
-              </v-btn>
-              <v-btn class="pa-1 px-8 mt-2 mr-2" to="userProfile">
-                <v-card-text>JAVA × 937</v-card-text>
-              </v-btn>
-            </v-layout>
-          </v-tab-item>
-          <!-- space tab -->
-          <v-tab-item>
-            <v-layout wrap class="px-3">
-              <v-card class="pa-1 px-5 mt-2 mr-2" to="userProfile">
-                <v-layout>
-                  <strong class="subtitle-2">私密空间哦</strong>
-                </v-layout>
-                <v-layout justify-space-around column>
-                  <v-layout>
-                    <v-card-text class="d-inline-block text-truncate"
-                      >空间描述空间描述</v-card-text
-                    >
-                  </v-layout>
-                  <v-layout justify-end align-end>
-                    <v-icon>group</v-icon>&nbsp;100
-                  </v-layout>
-                </v-layout>
-              </v-card>
-            </v-layout>
-          </v-tab-item>
           <!-- watch tab -->
           <v-tab-item>
             <v-layout wrap class="px-3">
-              <v-card class="pa-1 px-5 mt-2 mr-3">
+              <v-card
+                v-for="watch in userProfile.watchUsers"
+                :key="watch.userId"
+                :to="'/user/' + watch.userId"
+                class="pa-1 px-5 mt-2 mr-3"
+                max-width="220px"
+              >
                 <v-layout justify-space-between>
                   <v-flex xs3>
                     <v-layout justify-center>
                       <v-avatar color="grey">
-                        <v-img
-                          src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"
-                        ></v-img>
+                        <v-img :src="watch.avatar"></v-img>
                       </v-avatar>
                     </v-layout>
                     <v-layout justify-center class="mt-2">
-                      <span class="subtitle-2 text-no-wrap">别叫我小海绵</span>
+                      <span class="subtitle-2 text-no-wrap">{{
+                        watch.nickname || watch.username
+                      }}</span>
                     </v-layout>
                   </v-flex>
                   <v-flex xs8>
                     <v-layout justify-space-between column fill-height>
                       <v-layout>
-                        <v-card-text class="pa-0"
-                          >该用户太懒什么也没留下</v-card-text
-                        >
+                        <v-card-text class="pa-0">{{ watch.bio }}</v-card-text>
                       </v-layout>
                       <v-layout justify-end align-end>
                         <svg class="icon heat-icon" aria-hidden="true">
                           <use xlink:href="#icon-zuanshi"></use></svg
-                        >&nbsp;100
-                      </v-layout>
-                    </v-layout>
-                  </v-flex>
-                </v-layout>
-              </v-card>
-              <v-card class="pa-1 px-5 mt-2 mr-3">
-                <v-layout justify-space-between>
-                  <v-flex xs3>
-                    <v-layout justify-center>
-                      <v-avatar color="grey">
-                        <v-img
-                          src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"
-                        ></v-img>
-                      </v-avatar>
-                    </v-layout>
-                    <v-layout justify-center class="mt-2">
-                      <span class="subtitle-2 text-no-wrap">别叫我小海绵</span>
-                    </v-layout>
-                  </v-flex>
-                  <v-flex xs8>
-                    <v-layout justify-space-between fill-height column>
-                      <v-layout>
-                        <v-card-text class="pa-0"
-                          >该用户太懒什么也没留下</v-card-text
-                        >
-                      </v-layout>
-                      <v-layout justify-end align-end>
-                        <svg class="icon heat-icon" aria-hidden="true">
-                          <use xlink:href="#icon-zuanshi"></use></svg
-                        >&nbsp;100
+                        >&nbsp;{{ watch.reputation }}
                       </v-layout>
                     </v-layout>
                   </v-flex>
@@ -324,32 +249,37 @@
           <!-- follower tab -->
           <v-tab-item>
             <v-layout wrap class="px-3">
-              <v-card class="pa-1 px-5 mt-2 mr-3">
+              <v-card
+                v-for="follower in userProfile.followers"
+                :key="follower.userId"
+                :to="'/user/' + follower.userId"
+                max-width="220px"
+                class="pa-1 px-5 mt-2 mr-3"
+              >
                 <v-layout justify-space-between>
                   <v-flex xs3>
                     <v-layout justify-center>
                       <v-avatar color="grey" class="white--text">
-                        <v-img
-                          src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
-                        >
-                        </v-img>
+                        <v-img :src="follower.avatar"> </v-img>
                       </v-avatar>
                     </v-layout>
                     <v-layout justify-center class="mt-2">
-                      <span class="subtitle-2 text-no-wrap">别叫我小海绵</span>
+                      <span class="subtitle-2 text-no-wrap">{{
+                        follower.nickname || follower.username
+                      }}</span>
                     </v-layout>
                   </v-flex>
                   <v-flex xs8>
                     <v-layout justify-space-between column fill-height>
                       <v-layout>
-                        <v-card-text class="pa-0"
-                          >该用户太懒什么也没留下</v-card-text
-                        >
+                        <v-card-text class="pa-0">{{
+                          follower.bio
+                        }}</v-card-text>
                       </v-layout>
                       <v-layout justify-end align-end>
                         <svg class="icon heat-icon" aria-hidden="true">
                           <use xlink:href="#icon-zuanshi"></use></svg
-                        >&nbsp;100
+                        >&nbsp;{{ follower.reputation }}
                       </v-layout>
                     </v-layout>
                   </v-flex>
@@ -416,37 +346,24 @@ export default {
         { text: '状态', value: 'status' },
         { text: '回答', value: 'answerNum' },
         { text: '支持', value: 'voteNum' },
-        { text: '收藏', value: 'collectNum' },
         { text: '浏览', value: 'viewNum' }
       ],
-      items: [
-        {
-          title: '你好世界1你好世界1你好世界1你好世界1',
-          status: '已解决',
-          answerNum: 43,
-          voteNum: 13,
-          collectNum: 52,
-          viewNum: 24
-        },
-        {
-          title: '你好世界1',
-          status: '已解决',
-          answerNum: 11,
-          voteNum: 23,
-          collectNum: 90,
-          viewNum: 12
-        },
-        {
-          title: '你好世界1',
-          status: '已解决',
-          answerNum: 21,
-          voteNum: 78,
-          collectNum: 32,
-          viewNum: 44
-        }
-      ]
+      items: []
     }
   }),
+  computed: {
+    isFollowed() {
+      const curUserId = this.$store.getters.getUserId
+      if (curUserId) {
+        for (let i = 0; i < this.userProfile.followers.length; ++i) {
+          if (this.userProfile.followers[i].userId === curUserId) {
+            return true
+          }
+        }
+      }
+      return false
+    }
+  },
   created() {
     this.loadUserProfile()
   },
@@ -458,10 +375,32 @@ export default {
         })
         .then((resp) => {
           if (resp.succeed) {
-            console.log(resp)
             this.userProfile = resp.data
             this.askTab.items = this.userProfile.questions
             this.answerTab.items = this.userProfile.answers
+            this.collectTab.items = this.userProfile.questionCollection
+          }
+        })
+    },
+    followUser() {
+      this.$axios
+        .$post('/userFollow/watchUser', {
+          toUserId: this.userProfile.userId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.userProfile.followers = resp.data
+          }
+        })
+    },
+    unWatchUser() {
+      this.$axios
+        .$post('/userFollow/unWatchUser', {
+          toUserId: this.userProfile.userId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.userProfile.followers = resp.data
           }
         })
     }

@@ -22,7 +22,7 @@
         class="ma-4"
       >
         <v-card class="pa-2" :to="'/user/' + userInfo.userId">
-          <v-layout justify-space-between>
+          <v-layout justify-space-between class="mb-3">
             <v-flex xs3>
               <v-layout justify-center>
                 <v-avatar color="grey">
@@ -38,15 +38,12 @@
               </v-layout>
             </v-flex>
           </v-layout>
-          <v-layout justify-space-between class="mt-1">
+          <v-layout justify-space-between style="height: 20px">
             <v-flex justify-start xs5>
-              <v-btn
-                x-small
-                text
-                width="300px"
+              <span
                 class="d-inline-block text-truncate text-left no-flex"
                 :title="userInfo.nickname || userInfo.username"
-                >{{ userInfo.nickname || userInfo.username }}</v-btn
+                >{{ userInfo.nickname || userInfo.username }}</span
               >
             </v-flex>
             <v-flex xs4 class="text-right">
