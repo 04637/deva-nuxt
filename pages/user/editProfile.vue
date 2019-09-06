@@ -57,14 +57,14 @@
               <v-layout justify-center>
                 <v-card-text>{{ userInfo.bio }}</v-card-text>
               </v-layout>
-              <v-layout justify-center>
+              <v-layout v-show="userInfo.email" justify-center>
                 <v-icon class="mr-2">email</v-icon>
                 {{ userInfo.email }}
               </v-layout>
             </v-flex>
             <v-spacer></v-spacer>
             <v-flex xs9 lg6>
-              <v-form class="form mt-0" style="width: 100%">
+              <v-form class="mt-0" style="width: 100%">
                 <v-text-field
                   v-model="userInfo.nickname"
                   hint=""
@@ -72,61 +72,29 @@
                   label="昵称"
                   outlined
                   class="mt-3"
-                  :rules="[rules.required]"
+                  :rules="[rules.max16]"
                   name=""
                 ></v-text-field>
                 <v-textarea
                   v-model="userInfo.bio"
                   hint=""
-                  :counter="50"
+                  :counter="100"
                   label="简介"
                   outlined
-                  required
                   no-resize
+                  :rules="[rules.max100]"
                 ></v-textarea>
                 <v-text-field
                   v-model="userInfo.email"
                   hint=""
-                  :counter="16"
                   label="邮箱"
                   outlined
                   class="mt-3"
-                  :rules="[rules.required]"
                   name=""
+                  :rules="[rules.email]"
                 ></v-text-field>
                 <v-layout class="justify-end mt-3">
-                  <v-dialog v-model="dialog" persistent max-width="600px">
-                    <template v-slot:activator="{ on }">
-                      <v-btn dark v-on="on">保存</v-btn>
-                    </template>
-                    <v-card>
-                      <v-card-title>
-                        <span class="headline">安全验证</span>
-                      </v-card-title>
-                      <v-card-text>
-                        <v-text-field
-                          label="请输入当前登录密码"
-                          :loading="validPasswordLoading"
-                        ></v-text-field>
-                        <!--<small></small>-->
-                      </v-card-text>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          color="blue darken-1"
-                          text
-                          @click="dialog = false"
-                          >关闭</v-btn
-                        >
-                        <v-btn
-                          color="blue darken-1"
-                          text
-                          @click="validPasswordLoading = true"
-                          >确定</v-btn
-                        >
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
+                  <v-btn outlined min-width="150px">保存</v-btn>
                 </v-layout>
               </v-form>
             </v-flex>
@@ -144,14 +112,22 @@ export default {
     dialog: false,
     validPasswordLoading: false,
     rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => (v && v.length >= 8) || 'Min 8 characters'
+      max100: (v) => !v || (v && v.length <= 100) || '最多100个字符',
+      max16: (v) => !v || (v && v.length <= 16) || '最多16个字符',
+      email: (v) =>
+        !v ||
+        ((v &&
+          /^([A-Za-z0-9_\-.\u4E00-\u9FA5])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,8})$/.test(
+            v
+          )) ||
+          '请输入正确的邮箱账号')
     },
     photoSrc: null,
     userInfo: null
   }),
   created() {
-    this.userInfo = this.$store.getters.getUserInfo
+    // 深层拷贝一个userInfo
+    this.userInfo = JSON.parse(JSON.stringify(this.$store.getters.getUserInfo))
   },
   methods: {
     previewImg(e) {

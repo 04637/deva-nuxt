@@ -5,70 +5,81 @@
       <v-divider></v-divider>
     </v-layout>
     <v-layout justify-center>
-      <v-form ref="form" class="form">
-        <v-layout justify-center>
-          <img src="/deva.png" alt="" class="logo-md" />
-        </v-layout>
-        <v-layout class="mt-3" column>
-          <v-text-field
-            v-model="username"
-            class="mt-4"
-            hint="8-16位，字母开头"
-            counter="16"
-            label="用户名"
-            outlined
-            required
-            :rules="[rules.username]"
-            :error-messages="usernameCheck"
-            @blur="checkUsername"
-          ></v-text-field>
-          <v-text-field
-            v-model="email"
-            class="mt-4"
-            hint="****@example.com"
-            label="邮箱"
-            outlined
-            required
-            :error-messages="emailCheck"
-            :rules="[rules.email]"
-            @blur="checkEmail"
-          ></v-text-field>
-          <v-text-field
-            v-model="password"
-            class="mt-4"
-            hint="8-16位，包含大小写及数字"
-            counter="16"
-            label="密码"
-            outlined
-            :append-icon="show ? 'visibility' : 'visibility_off'"
-            :rules="[rules.password]"
-            :type="show ? 'text' : 'password'"
-            required
-            @click:append="show = !show"
-            @keyup.enter.native="submitSignUp"
-          ></v-text-field>
-          <v-layout justify-end class="mt-4">
-            <v-btn
-              outlined
-              accent
-              depressed
-              min-width="150px"
-              :loading="loading"
-              @click="submitSignUp"
-              >注册</v-btn
-            >
+      <v-card class="pa-8 mt-6" width="520px">
+        <v-form ref="form">
+          <v-layout justify-center>
+            <img src="/deva.png" alt="" class="logo-md" />
           </v-layout>
-        </v-layout>
-      </v-form>
+          <v-layout class="mt-3" column>
+            <v-text-field
+              v-model="username"
+              class="mt-4"
+              hint="8-16位，字母开头"
+              counter="16"
+              label="用户名"
+              outlined
+              required
+              :rules="[rules.username]"
+              :error-messages="usernameCheck"
+              @blur="checkUsername"
+            ></v-text-field>
+            <v-text-field
+              v-model="email"
+              class="mt-4"
+              hint="****@example.com"
+              label="邮箱"
+              outlined
+              required
+              :rules="[rules.email]"
+            ></v-text-field>
+            <v-text-field
+              v-model="phone"
+              class="mt-4"
+              hint="186****0106"
+              label="手机号码"
+              outlined
+              required
+              :error-messages="phoneCheck"
+              :rules="[rules.phone]"
+              @blur="checkPhone"
+            ></v-text-field>
+            <v-text-field
+              v-model="password"
+              class="mt-4"
+              hint="8-16位，包含大小写及数字"
+              counter="16"
+              label="密码"
+              outlined
+              :append-icon="show ? 'visibility' : 'visibility_off'"
+              :rules="[rules.password]"
+              :type="show ? 'text' : 'password'"
+              required
+              @click:append="show = !show"
+              @keyup.enter.native="submitSignUp"
+            ></v-text-field>
+            <v-layout justify-end class="mt-4">
+              <v-btn
+                outlined
+                accent
+                depressed
+                min-width="150px"
+                :loading="loading"
+                @click="submitSignUp"
+                >注册</v-btn
+              >
+            </v-layout>
+          </v-layout>
+        </v-form>
+      </v-card>
     </v-layout>
     <v-layout justify-center>
-      <v-form class="form">
+      <v-card class="pa-8 mt-6" width="520px">
         <v-layout justify-center>
           <v-btn text depressed to="login"
             >已有账号？<span style="color: orange">去登录</span></v-btn
           >
         </v-layout>
-      </v-form>
+      </v-card>
 
       <v-dialog v-model="dialog" persistent max-width="600px">
         <v-card>
@@ -95,9 +106,10 @@ export default {
     show: false,
     username: '',
     email: '',
+    phone: '',
     password: '',
     usernameCheck: '',
-    emailCheck: '',
+    phoneCheck: '',
     dialog: false,
     dialogTitle: '',
     dialogMessage: '',
@@ -116,13 +128,22 @@ export default {
       },
       email(v) {
         if (!v) {
-          return '邮箱不能为空'
+          return true
         } else if (
           !/^([A-Za-z0-9_\-.\u4E00-\u9FA5])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,8})$/.test(
             v
           )
         ) {
           return '请输入正确的邮箱地址'
+        } else {
+          return true
+        }
+      },
+      phone(v) {
+        if (!v) {
+          return '手机号不能为空'
+        } else if (!/^1[3456789]\d{9}$/.test(v)) {
+          return '请输入正确的手机号码'
         } else {
           return true
         }
@@ -150,20 +171,20 @@ export default {
           this.usernameCheck = resp.data ? '' : '用户名已存在'
         })
     },
-    checkEmail() {
+    checkPhone() {
       this.$axios
-        .$post('/userInfo/checkEmail', {
-          email: this.email
+        .$post('/userInfo/checkPhone', {
+          phone: this.phone
         })
         .then((resp) => {
-          this.emailCheck = resp.data ? '' : '邮箱已存在'
+          this.phoneCheck = resp.data ? '' : '手机号码已被使用'
         })
     },
     submitSignUp() {
       if (!this.$refs.form.validate()) {
         return false
       }
-      if (this.usernameCheck || this.emailCheck) {
+      if (this.usernameCheck || this.phoneCheck) {
         return false
       }
       this.loading = true

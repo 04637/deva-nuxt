@@ -13,11 +13,11 @@
           <v-layout class="mt-3" column>
             <v-text-field
               v-model="username"
-              hint="输入用户名或绑定邮箱"
-              label="用户名/邮箱"
+              hint="输入用户名或绑定手机号码"
+              label="用户名/手机号"
               outlined
               required
-              :rules="[(v) => (!v ? '请输入用户名/邮箱' : true)]"
+              :rules="[(v) => (!v ? '请输入用户名/手机号' : true)]"
               class="mt-4"
             ></v-text-field>
             <v-text-field

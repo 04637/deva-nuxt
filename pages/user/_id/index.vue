@@ -117,14 +117,15 @@
           <!-- ask tab -->
           <v-tab-item>
             <v-card>
-              <v-card-title>
+              <v-card-title class="pt-0">
                 <v-spacer></v-spacer>
                 <v-text-field
                   v-model="askTab.search"
                   append-icon="search"
-                  label="Search"
+                  label="search"
                   single-line
                   hide-details
+                  class="pt-0"
                 ></v-text-field>
               </v-card-title>
               <v-data-table
@@ -152,14 +153,15 @@
           <!-- answer tab -->
           <v-tab-item>
             <v-card>
-              <v-card-title>
+              <v-card-title class="pt-0">
                 <v-spacer></v-spacer>
                 <v-text-field
                   v-model="answerTab.search"
                   append-icon="search"
-                  label="Search"
+                  label="search"
                   single-line
                   hide-details
+                  class="pt-0"
                 ></v-text-field>
               </v-card-title>
               <v-data-table
@@ -171,6 +173,9 @@
                   <router-link :to="'/question/' + item.ownQuestionId">{{
                     item.questionTitle
                   }}</router-link>
+                </template>
+                <template #item.content="{item}">
+                  {{ $md.render(item.content) | filterHtml }}
                 </template>
                 <template #item.isAccepted="{item}">
                   <v-icon v-if="item.isAccepted" color="success" title="已采纳"
@@ -184,14 +189,15 @@
           <!-- collect tab -->
           <v-tab-item>
             <v-card>
-              <v-card-title>
+              <v-card-title class="pt-0">
                 <v-spacer></v-spacer>
                 <v-text-field
                   v-model="collectTab.search"
                   append-icon="search"
-                  label="Search"
+                  label="search"
                   single-line
                   hide-details
+                  class="pt-0"
                 ></v-text-field>
               </v-card-title>
               <v-data-table
