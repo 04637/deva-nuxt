@@ -120,7 +120,11 @@
         <nuxt v-else />
       </v-content>
       <v-footer app>
-        <span>&copy; aid.dev</span>
+        <v-row justify="center" no-gutters>
+          <v-col class=" py-2 text-right white--text" cols="12">
+            <span>&copy;2019-{{ new Date().getFullYear() }}&nbsp;aid.dev</span>
+          </v-col>
+        </v-row>
       </v-footer>
     </v-app>
   </div>
@@ -148,6 +152,9 @@ export default {
       // 使外部api上的JWT Cookie失效
       Cookie.remove('userInfo')
       this.$store.commit('setUserInfo', null)
+      this.$router.push({
+        path: '/user/login'
+      })
     },
     search() {
       this.$router.push({

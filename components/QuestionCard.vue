@@ -50,7 +50,10 @@
       </v-flex>
       <v-layout column justify-space-around class="mr-1">
         <v-row justify="end">
-          <small> 提问于 {{ question.createTime | timeago }}</small>
+          <small v-if="question.createTime === question.modifiedTime">
+            提问于 {{ question.createTime | timeago }}</small
+          >
+          <small v-else> 更新于 {{ question.modifiedTime | timeago }}</small>
         </v-row>
         <v-row align="end" justify="end">
           <v-card flat class="pb-0">

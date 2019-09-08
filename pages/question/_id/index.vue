@@ -61,6 +61,8 @@
                       <v-btn
                         v-if="
                           $store.state.userInfo &&
+                            $store.getters.getUserId !==
+                              questionDetail.author.userId &&
                             $store.getters.getUserInfo.reputation >= 500
                         "
                         id="markDialogBtn"
@@ -68,6 +70,21 @@
                         color="pink"
                         @click.stop="similarMark.dialog = !similarMark.dialog"
                         >问题重复？标记相似
+                      </v-btn>
+                      <v-btn
+                        v-if="
+                          $store.getters.getUserId ===
+                            questionDetail.author.userId
+                        "
+                        text
+                        color="pink"
+                        :to="
+                          '/question/ask?questionId=' +
+                            questionDetail.questionId
+                        "
+                      >
+                        <v-icon size="15">edit</v-icon>
+                        编辑问题
                       </v-btn>
                     </v-layout>
                     <div v-html="$md.render(questionDetail.content)"></div>
@@ -142,19 +159,43 @@
                               </v-layout>
                             </v-flex>
                             <v-flex xs8>
-                              <v-layout column>
-                                <v-card-text class="text-no-wrap">
-                                  提问于&nbsp;
-                                  {{ questionDetail.createTime | timeago }}
-                                </v-card-text>
-                                <v-layout justify-end align-end>
+                              <v-layout
+                                column
+                                align-end
+                                justify-space-between
+                                style="height: 100%"
+                              >
+                                <v-layout>
+                                  <small>
+                                    提问于&nbsp;
+                                    {{
+                                      questionDetail.createTime | timeago
+                                    }}</small
+                                  >
+                                </v-layout>
+                                <v-layout
+                                  v-if="
+                                    questionDetail.createTime !==
+                                      questionDetail.modifiedTime
+                                  "
+                                >
+                                  <small>
+                                    更新于&nbsp;
+                                    {{
+                                      questionDetail.modifiedTime | timeago
+                                    }}</small
+                                  ></v-layout
+                                >
+                                <v-layout>
                                   <svg
                                     class="icon heat-icon"
                                     aria-hidden="true"
                                   >
                                     <use xlink:href="#icon-zuanshi"></use></svg
-                                  >&nbsp;{{ questionDetail.author.reputation }}
-                                </v-layout>
+                                  >&nbsp;{{
+                                    questionDetail.author.reputation
+                                  }}</v-layout
+                                >
                               </v-layout>
                             </v-flex>
                           </v-layout>
@@ -348,12 +389,19 @@
                                 </v-layout>
                               </v-flex>
                               <v-flex xs8>
-                                <v-layout column>
-                                  <v-card-text class="text-no-wrap">
-                                    回答于&nbsp;{{
-                                      answer.createTime | timeago
-                                    }}
-                                  </v-card-text>
+                                <v-layout
+                                  column
+                                  align-end
+                                  justify-space-between
+                                  style="height:100%"
+                                >
+                                  <v-layout>
+                                    <small>
+                                      回答于&nbsp;{{
+                                        answer.createTime | timeago
+                                      }}</small
+                                    >
+                                  </v-layout>
                                   <v-layout justify-end align-end>
                                     <svg
                                       class="icon heat-icon"

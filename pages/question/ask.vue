@@ -185,7 +185,7 @@
       </v-card>
     </v-dialog>
     <InfoDialog
-      :msg="['提问成功', '提问失败']"
+      :msg="['提交成功', '提交失败']"
       :succeed="askResult.resp != null && askResult.resp.succeed"
       :dialog="askResult.dialog"
       @update:dialog="askResult.dialog = $event"
@@ -270,6 +270,7 @@ export default {
   },
   created() {
     this.loadTags()
+    this.loadEditQuestion()
   },
   methods: {
     selectedChange() {
@@ -279,6 +280,46 @@ export default {
           this.remove(_lastSelectTag)
         }
       }
+    },
+    loadEditQuestion() {
+      const questionId = this.$route.query.questionId
+      if (!questionId) {
+        return
+      }
+      this.$axios
+        .$post('/questionInfo/getQuestion', {
+          questionId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.title = resp.data.title
+            this.source = resp.data.content
+            this.content = resp.data.content
+            this.selectedTags = resp.data.tagInfos
+          }
+        })
+    },
+    editQuestion(_questionId) {
+      this.askResult.loading = true
+      this.$axios
+        .$post('/questionInfo/editQuestion', {
+          questionId: _questionId,
+          title: this.title,
+          content: this.useMarkdown ? this.source : this.content,
+          tagIds: this.selectedTags
+            .map((e) => {
+              return e.tagId
+            })
+            .join(',')
+        })
+        .then((resp) => {
+          this.askResult.resp = resp
+          this.askResult.dialog = true
+          this.askResult.loading = false
+        })
+        .catch((e) => {
+          this.askResult.loading = false
+        })
     },
     submitQuestion() {
       if (this.useMarkdown) {
@@ -291,6 +332,10 @@ export default {
         this.quillErrorMessage !== true
       ) {
         return false
+      }
+      if (this.$route.query.questionId) {
+        this.editQuestion(this.$route.query.questionId)
+        return
       }
       this.askResult.loading = true
       const _this = this

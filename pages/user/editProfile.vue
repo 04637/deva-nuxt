@@ -84,15 +84,26 @@
                   no-resize
                   :rules="[rules.max100]"
                 ></v-textarea>
+                <v-layout align-center>
+                  <v-text-field
+                    ref="newEmail"
+                    v-model="userInfo.email"
+                    hint=""
+                    label="邮箱"
+                    class="mt-3"
+                    name=""
+                    :rules="[rules.email]"
+                    :append-outer-icon="showVerification ? 'send' : ''"
+                    @click:append-outer="sendEmailCode"
+                  ></v-text-field>
+                </v-layout>
                 <v-text-field
-                  v-model="userInfo.email"
-                  hint=""
-                  label="邮箱"
-                  outlined
-                  class="mt-3"
-                  name=""
-                  :rules="[rules.email]"
-                ></v-text-field>
+                  v-show="showVerification"
+                  v-model="emailCode"
+                  label="验证码"
+                  placeholder="点击新邮箱后的按钮获取验证码"
+                >
+                </v-text-field>
                 <v-layout class="justify-end mt-3">
                   <v-btn outlined min-width="150px">保存</v-btn>
                 </v-layout>
@@ -123,8 +134,14 @@ export default {
           '请输入正确的邮箱账号')
     },
     photoSrc: null,
-    userInfo: null
+    userInfo: null,
+    emailCode: null
   }),
+  computed: {
+    showVerification() {
+      return this.userInfo.email !== this.$store.getters.getUserInfo.email
+    }
+  },
   created() {
     // 深层拷贝一个userInfo
     this.userInfo = JSON.parse(JSON.stringify(this.$store.getters.getUserInfo))
@@ -149,6 +166,18 @@ export default {
       reader.onload = function() {
         that.photoSrc = this.result
       }
+    },
+    sendEmailCode() {
+      if (!this.$refs.newEmail.validate()) {
+        return false
+      }
+      this.$axios
+        .$post('/userInfo/sendEmailCode', {
+          email: this.userInfo.email
+        })
+        .then((resp) => {
+          console.log(resp)
+        })
     }
   }
 }
