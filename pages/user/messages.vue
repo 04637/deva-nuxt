@@ -11,7 +11,7 @@
     <v-layout class="mt-5" justify-center>
       <v-card width="60vw">
         <v-card-title>
-          <v-btn>
+          <v-btn text small depressed>
             <v-icon>playlist_add_check</v-icon>
             <span class="body-1">忽略已选消息</span>
           </v-btn>
@@ -22,19 +22,30 @@
             label="Search"
             single-line
             hide-details
+            class="pa-0 mt-0"
           ></v-text-field>
         </v-card-title>
         <v-data-table
+          v-if="$store.state.userInfo"
           :headers="headers"
-          :items="items"
+          :items="$store.getters.getUserInfo.messages"
           class="elevation-1"
           item-key="id"
           :search="search"
           show-select
         >
           <template v-slot:item.title="{ item }">
-            {{ item.title }}
-            <router-link to="questionDetail">查看该问题</router-link>
+            <v-btn
+              :to="'/user/' + item.fromUserId"
+              color="pink"
+              text
+              small
+              depressed
+              >{{ item.fromUserNickname }}</v-btn
+            >{{ item.content }}
+            <router-link :to="'/question/' + item.ownQuestionId"
+              >查看该问题</router-link
+            >
           </template>
           <template v-slot:item.action="{ item }">
             <v-icon small title="忽略" @click="deleteItem(item)">
@@ -66,50 +77,9 @@ export default {
     items: []
   }),
 
-  created() {
-    this.initialize()
-  },
+  mounted() {},
 
   methods: {
-    initialize() {
-      this.items = [
-        {
-          id: '1',
-          title: '你是谁你为什么评论我的问题',
-          status: '未读'
-        },
-        {
-          id: '2',
-          title: '你是谁你为什么评论我的问题',
-          status: '未读'
-        },
-        {
-          id: '3',
-          title: '你是谁你为什么评论我的问题',
-          status: '已读'
-        },
-        {
-          id: '4',
-          title: '你是谁你为什么评论我的问题',
-          status: '未读'
-        },
-        {
-          id: '5',
-          title: '你是谁你为什么评论我的问题',
-          status: '未读'
-        },
-        {
-          id: '6',
-          title: '你是谁你为什么评论我的问题',
-          status: '未读'
-        },
-        {
-          id: '7',
-          title: '你是谁你为什么评论我的问题',
-          status: '未读'
-        }
-      ]
-    },
     deleteItem(item) {
       const index = this.items.indexOf(item)
       confirm('Are you sure you want to delete this item?') &&

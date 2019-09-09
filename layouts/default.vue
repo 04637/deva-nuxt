@@ -89,7 +89,8 @@
           <v-layout justify-end align-center>
             <v-btn icon class="mr-5" to="/user/messages">
               <v-badge class="align-self-center" overlap>
-                <template v-slot:badge>
+                <template v-if="unReadMessageCount > 0" v-slot:badge>
+                  <!--H5桌面通知 https://juejin.im/post/59ed37f5f265da431e15eaac-->
                   <span>!</span>
                 </template>
                 <v-icon>email</v-icon>
@@ -144,8 +145,21 @@ export default {
   computed: {
     needKeepAlive() {
       return this.keepAliveRouters.includes(this.$route.name)
+    },
+    unReadMessageCount() {
+      let count = 0
+      const _userInfo = this.$store.getters.getUserInfo
+      if (_userInfo) {
+        _userInfo.messages.forEach((m) => {
+          if (!m.isRead) {
+            ++count
+          }
+        })
+      }
+      return count
     }
   },
+  watch: {},
   created() {},
   methods: {
     logout() {

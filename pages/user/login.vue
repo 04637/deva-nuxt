@@ -87,6 +87,9 @@ export default {
             _this.$router.go(-1)
           }
         })
+        .catch((e) => {
+          _this.loading = false
+        })
     }
   }
 }
