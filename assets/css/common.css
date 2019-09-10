@@ -46,6 +46,8 @@ code {
 }
 pre,code{
   font-family: consolas, monospace !important;
+  /*todo 考虑一下?*/
+  /*font-family: CharlieSans !important;*/
 }
 pre {
   background-image: initial;
