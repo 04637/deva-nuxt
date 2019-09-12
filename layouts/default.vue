@@ -132,7 +132,6 @@
 </template>
 
 <script>
-const Cookie = process.client ? require('js-cookie') : undefined
 export default {
   name: 'App',
   props: {},
@@ -147,16 +146,17 @@ export default {
       return this.keepAliveRouters.includes(this.$route.name)
     },
     unReadMessageCount() {
-      let count = 0
-      const _userInfo = this.$store.getters.getUserInfo
-      if (_userInfo) {
-        _userInfo.messages.forEach((m) => {
-          if (!m.isRead) {
-            ++count
-          }
-        })
-      }
-      return count
+      return 0
+      // let count = 0
+      // const _userInfo = this.$store.getters.getUserInfo
+      // if (_userInfo) {
+      //   _userInfo.messages.forEach((m) => {
+      //     if (!m.isRead) {
+      //       ++count
+      //     }
+      //   })
+      // }
+      // return count
     }
   },
   watch: {},
@@ -164,7 +164,6 @@ export default {
   methods: {
     logout() {
       // 使外部api上的JWT Cookie失效
-      Cookie.remove('userInfo')
       this.$store.commit('setUserInfo', null)
       this.$router.push({
         path: '/user/login'

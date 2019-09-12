@@ -81,10 +81,14 @@ pre>code{
 
 /*全局过渡动效*/
 .page-enter-active, .page-leave-active {
-  transition: opacity .3s;
+  transition: all 0.3s;
+  /*transform: translate3d(10,10,20px);*/
 }
 .page-enter, .page-leave-active {
   opacity: 0;
+  /*transform: scale(0);*/
+  /*transform: rotateY(130deg);*/
+  transform: translateX(-1000px);
 }
 [v-cloak]{
   display:none

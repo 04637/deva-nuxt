@@ -8,7 +8,7 @@ export default {
   head: {
     // titleTemplate: '%s - ' + process.env.npm_package_name,
     titleTemplate: '%s',
-    title: process.env.npm_package_name || 'DEVA',
+    title: process.env.npm_package_name || 'DEVA - 开发者的专属问答社区',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -42,7 +42,7 @@ export default {
     '~plugins/filterHtml',
     '~plugins/common',
     { src: '~plugins/quill-editor', ssr: false },
-    { src: '~/plugins/sessionStorage', ssr: false }
+    { src: '~/plugins/persistedStorage', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules
@@ -83,7 +83,7 @@ export default {
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
-          warning: colors.amber.base,
+          warning: colors.orange.darken4,
           // error: colors.deepOrange.accent4,
           error: colors.orange,
           success: colors.green.accent3,

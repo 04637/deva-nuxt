@@ -64,7 +64,7 @@
             </v-flex>
             <v-spacer></v-spacer>
             <v-flex xs9 lg6>
-              <v-form class="mt-0" style="width: 100%">
+              <v-form ref="form" class="mt-0" style="width: 100%">
                 <v-text-field
                   v-model="userInfo.nickname"
                   hint=""
@@ -93,19 +93,38 @@
                     class="mt-3"
                     name=""
                     :rules="[rules.email]"
-                    :append-outer-icon="showVerification ? 'send' : ''"
-                    @click:append-outer="sendEmailCode"
                   ></v-text-field>
+                  <v-btn
+                    v-show="
+                      emailCodeResult.timeInterval <= 0 && showVerification
+                    "
+                    class="ml-5"
+                    text
+                    outlined
+                    :loading="emailCodeResult.loading"
+                    @click="sendEmailCode"
+                    >获取验证码</v-btn
+                  >
+                  <v-btn
+                    v-show="emailCodeResult.timeInterval > 0"
+                    class="ml-5"
+                    text
+                    outlined
+                    disabled
+                    >{{ emailCodeResult.timeInterval }}&nbsp;s后重发</v-btn
+                  >
                 </v-layout>
                 <v-text-field
                   v-show="showVerification"
                   v-model="emailCode"
                   label="验证码"
-                  placeholder="点击新邮箱后的按钮获取验证码"
+                  :rules="[rules.requireCode]"
                 >
                 </v-text-field>
                 <v-layout class="justify-end mt-3">
-                  <v-btn outlined min-width="150px">保存</v-btn>
+                  <v-btn outlined min-width="150px" @click="saveProfile"
+                    >保存</v-btn
+                  >
                 </v-layout>
               </v-form>
             </v-flex>
@@ -114,10 +133,21 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <InfoDialog
+      :msg="['验证码发送成功，请至邮箱查看', '验证码发送失败, 请稍后重试']"
+      :succeed="emailCodeResult.resp != null && emailCodeResult.resp.succeed"
+      :dialog="emailCodeResult.dialog"
+      @update:dialog="emailCodeResult.dialog = $event"
+    >
+    </InfoDialog>
   </v-container>
 </template>
 <script>
+import InfoDialog from '../../components/InfoDialog'
 export default {
+  components: {
+    InfoDialog
+  },
   data: () => ({
     show: false,
     dialog: false,
@@ -131,11 +161,19 @@ export default {
           /^([A-Za-z0-9_\-.\u4E00-\u9FA5])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,8})$/.test(
             v
           )) ||
-          '请输入正确的邮箱账号')
+          '请输入正确的邮箱账号'),
+      requireCode: (v) => (v && v.length > 0) || '请输入验证码'
     },
     photoSrc: null,
     userInfo: null,
-    emailCode: null
+    emailCode: null,
+    emailCodeResult: {
+      dialog: false,
+      resp: null,
+      loading: false,
+      timeInterval: 0,
+      showSendWarning: false
+    }
   }),
   computed: {
     showVerification() {
@@ -171,13 +209,39 @@ export default {
       if (!this.$refs.newEmail.validate()) {
         return false
       }
+      if (this.emailCodeResult.timeInterval > 0) {
+        this.emailCodeResult.showSendWarning = true
+        return false
+      }
+      this.emailCodeResult.loading = true
       this.$axios
         .$post('/userInfo/sendEmailCode', {
           email: this.userInfo.email
         })
         .then((resp) => {
-          console.log(resp)
+          this.emailCodeResult.resp = resp
+          this.emailCodeResult.dialog = true
+          this.emailCodeResult.loading = false
+          const _self = this
+          _self.emailCodeResult.timeInterval = 60
+          const _interval = setInterval(function() {
+            _self.emailCodeResult.timeInterval--
+            if (_self.emailCodeResult.timeInterval <= 0) {
+              clearInterval(_interval)
+              _self.emailCodeResult.showSendWarning = false
+            }
+          }, 1000)
         })
+        .catch((e) => {
+          this.emailCodeResult.loading = false
+        })
+    },
+    saveProfile() {
+      if (!this.$refs.form.validate()) {
+        console.log(0)
+      } else {
+        console.log(1)
+      }
     }
   }
 }
