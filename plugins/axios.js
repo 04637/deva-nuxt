@@ -16,7 +16,9 @@ export default function({ store, redirect, app: { $axios } }) {
   $axios.onRequest((config) => {
     // 参考 https://github.com/nuxt-community/modules/issues/89  👍👍👍棒棒的
     $axios.setToken(store.getters.getToken)
-    if (config.method === 'post') {
+    if (process.client && config.data instanceof FormData) {
+      config.headers['content-type'] = 'multipart/form-data'
+    } else if (config.method === 'post') {
       config.data = $qs.stringify(config.data, { indices: false })
     }
   })

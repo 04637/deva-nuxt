@@ -80,6 +80,7 @@
                   <v-icon>favorite</v-icon>
                 </v-btn>
                 <v-btn
+                  v-if="userProfile.userId !== $store.getters.getUserId"
                   v-show="!isFollowed"
                   text
                   icon
@@ -88,7 +89,11 @@
                 >
                   <v-icon>favorite</v-icon>
                 </v-btn>
-                <v-card-text class="pa-2">← 关注他</v-card-text>
+                <v-card-text
+                  v-if="userProfile.userId !== $store.getters.getUserId"
+                  class="pa-2"
+                  >← 关注他</v-card-text
+                >
               </v-layout>
             </v-flex>
           </v-layout>

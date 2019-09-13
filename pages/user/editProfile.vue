@@ -15,10 +15,15 @@
             <v-flex align-center xs3 hidden-md-and-down>
               <v-layout justify-center>
                 <v-avatar color="grey" size="200" tile right>
-                  <v-img
-                    :aspect-ratio="16 / 9"
-                    :src="photoSrc || userInfo.avatar"
-                  >
+                  <v-img :aspect-ratio="16 / 9" :src="userInfo.avatar">
+                    <template v-slot:placeholder>
+                      <v-layout justify-center align-center fill-height>
+                        <v-progress-circular
+                          indeterminate
+                          color="grey lighten-5"
+                        ></v-progress-circular>
+                      </v-layout>
+                    </template>
                     <v-layout
                       pa-2
                       column
@@ -32,14 +37,14 @@
                           ref="selectAvatar"
                           accept="image/png, image/jpeg, image/bmp"
                           type="file"
-                          @change="previewImg($event)"
+                          @change="uploadAvatar($event)"
                         />
                         <v-btn
                           text
                           block
                           class="subheading font-weight-bold"
                           @click="$refs.selectAvatar.click()"
-                          >重新上传头像
+                          >修改头像
                         </v-btn>
                       </v-flex>
                     </v-layout>
@@ -89,7 +94,7 @@
                     ref="newEmail"
                     v-model="userInfo.email"
                     hint=""
-                    label="邮箱"
+                    label="绑定邮箱"
                     class="mt-3"
                     name=""
                     :rules="[rules.email]"
@@ -115,14 +120,18 @@
                   >
                 </v-layout>
                 <v-text-field
-                  v-show="showVerification"
+                  v-if="showVerification"
                   v-model="emailCode"
                   label="验证码"
                   :rules="[rules.requireCode]"
                 >
                 </v-text-field>
                 <v-layout class="justify-end mt-3">
-                  <v-btn outlined min-width="150px" @click="saveProfile"
+                  <v-btn
+                    outlined
+                    min-width="150px"
+                    :loading="saveResult.loading"
+                    @click="saveProfile"
                     >保存</v-btn
                   >
                 </v-layout>
@@ -138,6 +147,20 @@
       :succeed="emailCodeResult.resp != null && emailCodeResult.resp.succeed"
       :dialog="emailCodeResult.dialog"
       @update:dialog="emailCodeResult.dialog = $event"
+    >
+    </InfoDialog>
+    <InfoDialog
+      :msg="['保存成功', saveResult.errorMsg]"
+      :succeed="saveResult.resp != null && saveResult.resp.succeed"
+      :dialog="saveResult.dialog"
+      @update:dialog="saveResult.dialog = $event"
+    >
+    </InfoDialog>
+    <InfoDialog
+      :msg="['修改成功', uploadResult.errorMsg]"
+      :succeed="uploadResult.resp != null && uploadResult.resp.succeed"
+      :dialog="uploadResult.dialog"
+      @update:dialog="uploadResult.dialog = $event"
     >
     </InfoDialog>
   </v-container>
@@ -164,7 +187,6 @@ export default {
           '请输入正确的邮箱账号'),
       requireCode: (v) => (v && v.length > 0) || '请输入验证码'
     },
-    photoSrc: null,
     userInfo: null,
     emailCode: null,
     emailCodeResult: {
@@ -173,11 +195,26 @@ export default {
       loading: false,
       timeInterval: 0,
       showSendWarning: false
+    },
+    saveResult: {
+      dialog: false,
+      resp: null,
+      loading: false,
+      errorMsg: null
+    },
+    uploadResult: {
+      dialog: false,
+      resp: null,
+      errorMsg: null
     }
   }),
   computed: {
     showVerification() {
-      return this.userInfo.email !== this.$store.getters.getUserInfo.email
+      return (
+        this.userInfo &&
+        this.userInfo.email.length > 0 &&
+        this.userInfo.email !== this.$store.getters.getUserInfo.email
+      )
     }
   },
   created() {
@@ -185,25 +222,31 @@ export default {
     this.userInfo = JSON.parse(JSON.stringify(this.$store.getters.getUserInfo))
   },
   methods: {
-    previewImg(e) {
-      const files = e.target.files[0]
-      const that = this
-
-      // 判断浏览器是否支持 FileReader
-      if (!e || !window.FileReader) {
-        alert('您的设备不支持图片预览功能，如需该功能请升级您的设备！')
+    uploadAvatar(e) {
+      const _newAvatar = e.target.files[0]
+      if (!_newAvatar) {
         return
       }
-      const reader = new FileReader()
-
-      // 这里是最关键的一步，转换就在这里
-      if (files) {
-        reader.readAsDataURL(files)
+      if (_newAvatar.size > 5 * 1024 * 1024) {
+        this.uploadResult.dialog = true
+        this.uploadResult.errorMsg = '请选择5M以下的图片'
+        this.uploadResult.resp = { succeed: false }
+        return
       }
-
-      reader.onload = function() {
-        that.photoSrc = this.result
-      }
+      const _formData = new FormData()
+      _formData.append('newAvatar', _newAvatar)
+      this.$axios
+        .$post('/userInfo/updateUserAvatar', _formData)
+        .then((resp) => {
+          this.uploadResult.dialog = true
+          this.uploadResult.resp = resp
+          if (resp.succeed) {
+            this.userInfo.avatar = resp.data
+            this.$store.commit('setAvatar', resp.data)
+          } else {
+            this.uploadResult.errorMsg = resp.msg
+          }
+        })
     },
     sendEmailCode() {
       if (!this.$refs.newEmail.validate()) {
@@ -215,7 +258,7 @@ export default {
       }
       this.emailCodeResult.loading = true
       this.$axios
-        .$post('/userInfo/sendEmailCode', {
+        .$post('/email/sendEmailCode', {
           email: this.userInfo.email
         })
         .then((resp) => {
@@ -238,9 +281,31 @@ export default {
     },
     saveProfile() {
       if (!this.$refs.form.validate()) {
-        console.log(0)
+        return false
       } else {
-        console.log(1)
+        this.saveResult.loading = true
+
+        this.$axios.setHeader('Content-Type', 'multipart/form-data')
+        this.$axios
+          .$post('/userInfo/updateUserInfo', {
+            nickname: this.userInfo.nickname,
+            email: this.userInfo.email,
+            bio: this.userInfo.bio,
+            newAvatar: this.avatarFile,
+            emailCode: this.emailCode
+          })
+          .then((resp) => {
+            this.saveResult.loading = false
+            this.saveResult.dialog = true
+            this.saveResult.errorMsg = resp.msg
+            this.saveResult.resp = resp
+            if (resp.succeed) {
+              this.$store.commit('setUserInfo', resp.data)
+            }
+          })
+          .catch((e) => {
+            this.saveResult.loading = false
+          })
       }
     }
   }

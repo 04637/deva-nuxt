@@ -376,9 +376,7 @@
                               <v-flex xs3>
                                 <v-layout justify-center>
                                   <v-avatar color="grey">
-                                    <v-img
-                                      src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"
-                                    ></v-img>
+                                    <v-img :src="answer.author.avatar"></v-img>
                                   </v-avatar>
                                 </v-layout>
                                 <v-layout justify-center class="mt-2">

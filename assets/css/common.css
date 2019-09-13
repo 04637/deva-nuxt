@@ -118,3 +118,7 @@ pre>code{
 .v-list{
   padding-bottom: 0 !important;
 }
+
+.mini .v-treeview-node--leaf > .v-treeview-node__root{
+  padding-left: 0 !important;
+}
