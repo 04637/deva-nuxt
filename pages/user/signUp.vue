@@ -6,10 +6,8 @@
     </v-layout>
     <v-layout justify-center>
       <v-card class="pa-8 mt-6" width="520px">
+        <logo type="form"></logo>
         <v-form ref="form">
-          <v-layout justify-center>
-            <img src="/deva.png" alt="" class="logo-md" />
-          </v-layout>
           <v-layout class="mt-3" column>
             <v-text-field
               v-model="username"
@@ -101,7 +99,11 @@
   </v-container>
 </template>
 <script>
+import Logo from '../../components/Logo'
 export default {
+  components: {
+    Logo
+  },
   data: () => ({
     show: false,
     username: '',

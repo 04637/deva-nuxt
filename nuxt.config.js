@@ -79,7 +79,7 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary: colors.cyan,
+          primary: '#01a687',
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
@@ -91,7 +91,8 @@ export default {
           background_color: '#303030'
         },
         light: {
-          primary: colors.cyan,
+          // primary: colors.cyan,
+          primary: '#01a687',
           background_color: '#fafafa'
         }
       }

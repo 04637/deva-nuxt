@@ -19,7 +19,10 @@
       </v-layout>
       <v-layout justify-center justify-space-around class="mt-4">
         <v-flex xs11 lg9 justify-start>
-          <v-list v-show="questionList && questionList.length > 0">
+          <v-list
+            v-show="questionList && questionList.length > 0"
+            style="padding-top:1px"
+          >
             <div v-for="question in questionList" :key="question.questionId">
               <v-list-item class="mt-2">
                 <QuestionCard :question="question" />
@@ -30,7 +33,14 @@
             </div>
           </v-list>
         </v-flex>
-        <v-flex md2 lg2 justify-end shrink class="d-sm-none d-md-block ml-3">
+        <v-flex
+          md2
+          lg2
+          justify-end
+          shrink
+          hidden-sm-and-down
+          class="d-md-block ml-3"
+        >
           <v-list>
             <div
               v-for="hotQuestion in hotQuestionList"

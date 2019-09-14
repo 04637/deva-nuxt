@@ -1,7 +1,12 @@
 <template>
   <v-card flat exact width="100vw" class="px-3">
     <v-layout>
-      <v-layout column justify-space-around class="d-sm-none d-md-flex">
+      <v-layout
+        column
+        justify-space-around
+        class="d-md-flex"
+        hidden-sm-and-down
+      >
         <div>
           <v-icon>question_answer</v-icon>
           <strong class="num-span">{{ question.answerNum }}</strong>
@@ -18,16 +23,17 @@
       <v-flex xs9>
         <v-btn
           height="30px"
-          class="title d-inline-block text-truncate text-left no-flex"
+          class="title d-inline-block text-truncate text-left no-flex px-1"
           text
           :to="'/question/' + question.questionId"
           >{{ question.title }}</v-btn
         ><v-chip
           v-if="question.status === 1"
-          color="green"
+          color="primary"
           small
           label
           outlined
+          class="ml-2"
         >
           <strong>已解决</strong>
         </v-chip>
@@ -42,38 +48,49 @@
               :key="tag.tagId"
               link
               :to="'/search/' + tag.tagName"
-              class="question-tag"
+              :title="tag.tagName"
+              class="question-tag d-inline-block text-truncate"
               >{{ tag.tagName }}</v-chip
             >
           </v-layout>
         </v-card-actions>
       </v-flex>
-      <v-layout column justify-space-around class="mr-1">
-        <v-row justify="end">
+      <v-row
+        class="pr-2 ml-2"
+        cols="2"
+        justify="end"
+        align="space-between"
+        style="width:15%"
+      >
+        <v-row justify="end" dense>
           <small v-if="question.createTime === question.modifiedTime">
             提问于 {{ question.createTime | timeago }}</small
           >
           <small v-else> 更新于 {{ question.modifiedTime | timeago }}</small>
         </v-row>
-        <v-row align="end" justify="end">
-          <v-card flat class="pb-0">
-            <v-card-text class="pa-0">
+        <v-row align="end" justify="end" dense style="width:100%">
+          <v-col cols="7">
+            <v-row justify="center">
               <v-btn
+                min-width="0"
                 text
-                class="orange--text"
+                class="orange--text text-truncate d-inline-block text-left no-flex px-1"
                 :to="'/user/' + question.author.userId"
+                height="21px"
               >
-                {{ question.author.nickname }}
+                {{ question.author.nickname || question.author.username }}
               </v-btn>
-              <span style="vertical-align: -1px">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-zuanshi"></use></svg
-                >{{ question.author.reputation }}
-              </span>
-            </v-card-text>
-          </v-card>
+            </v-row>
+          </v-col>
+          <v-col cols="5">
+            <v-row align="center" justify="end">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-zuanshi"></use></svg
+              >{{ question.author.reputation }}
+            </v-row>
+          </v-col>
         </v-row>
-      </v-layout>
+      </v-row>
     </v-layout>
   </v-card>
 </template>
@@ -99,7 +116,6 @@ export default {
 .icon {
   width: 20px;
   height: 20px;
-  vertical-align: -5px;
   margin-right: 2px;
 }
 </style>

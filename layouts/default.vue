@@ -52,7 +52,7 @@
             </v-list-item>
             <v-list-item to="/tag/tags">
               <v-list-item-action>
-                <v-icon>dashboard</v-icon>
+                <v-icon>bookmarks</v-icon>
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title>标&nbsp;&nbsp;&nbsp;签</v-list-item-title>
@@ -84,27 +84,30 @@
               transition
               indeterminate-icon="group"
               on-icon="group"
+              class="mb-2"
               :class="mini ? 'mini' : ''"
+              :active="[currentSpaceId]"
+              color="default"
             >
               <template v-slot:prepend="{ item }">
-                <v-icon v-if="item.children">group</v-icon>&nbsp;&nbsp;
+                <v-icon v-if="item.children">dashboard</v-icon>&nbsp;&nbsp;
               </template>
               <template v-slot:label="{ item }">
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
-                    <router-link
+                    <v-btn
                       v-if="!item.children"
-                      type="success"
                       text
                       depressed
-                      class="pa-0 ma-0"
+                      height="21px"
+                      class="pa-0 ma-0 no-hover-active text-truncate d-inline-block text-left no-flex"
+                      :ripple="false"
                       :class="mini ? 'pl-0' : ''"
                       :to="'/space/' + item.spaceId"
-                      style="background-color: transparent; text-decoration: none"
                       v-on="mini ? on : ''"
                     >
                       {{ mini ? '...' : item.spaceName }}
-                    </router-link>
+                    </v-btn>
                   </template>
                   <span>{{ item.spaceName }}</span>
                 </v-tooltip>
@@ -131,10 +134,11 @@
         <v-container row align-center justify-space-between fluid>
           <v-flex justify-start row>
             <v-toolbar-title>
-              <img src="/deva.png" alt="" class="logo" />
+              <logo type="header" class="ml-5"></logo>
             </v-toolbar-title>
             <v-text-field
               v-model="keywords"
+              class="ml-10"
               hide-details
               label="Search"
               prepend-inner-icon="search"
@@ -145,53 +149,73 @@
             <v-spacer></v-spacer>
           </v-flex>
           <v-layout justify-end align-center>
-            <v-btn icon class="mr-5" to="/user/messages">
-              <v-badge class="align-self-center" overlap>
-                <template v-if="unReadMessageCount > 0" v-slot:badge>
+            <v-btn
+              v-if="$store.state.userInfo"
+              icon
+              class="mr-5"
+              to="/user/messages"
+            >
+              <v-badge
+                v-model="mini"
+                class="align-self-center small-badge"
+                color="primary"
+                overlap
+              >
+                <template v-slot:badge>
                   <!-- todo H5桌面通知 https://juejin.im/post/59ed37f5f265da431e15eaac-->
                   <span>!</span>
                 </template>
-                <v-icon>email</v-icon>
+                <v-icon>notifications_none</v-icon>
               </v-badge>
             </v-btn>
             <div v-if="$store.getters.getUserInfo">
-              <router-link :to="'/user/' + $store.getters.getUserId">
-                <v-avatar color="grey" size="35" tile class="mr-10">
-                  <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
-                </v-avatar>
-              </router-link>
+              <v-avatar
+                color="grey"
+                size="35"
+                tile
+                style="cursor:pointer"
+                @click="
+                  $router.push('/user/' + $store.getters.getUserId, () => {})
+                "
+              >
+                <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
+              </v-avatar>
               <v-menu
                 v-model="moreSpaceMenu"
                 :close-on-content-click="false"
-                nudge-width="200"
+                nudge-width="100"
                 offset-y
               >
                 <template #activator="{ on }">
-                  <v-btn icon v-on="on"><v-icon>more_vert</v-icon></v-btn>
+                  <v-btn icon small v-on="on"><v-icon>more_vert</v-icon></v-btn>
                 </template>
-                <v-card>
-                  <v-list dense>
-                    <v-list-item>
-                      <v-list-item-content>
-                        <v-btn depressed text @click="logout">注销</v-btn>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list>
-                </v-card>
+                <v-list dense nav>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-btn depressed text @click="logout">注销</v-btn>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
               </v-menu>
             </div>
             <div v-else>
               <v-btn text color="primary" depressed to="/user/login"
                 >登录</v-btn
               >
-              <v-btn depressed color="primary" class="ml-1" to="/user/signUp"
-                >注册</v-btn
-              >
+              <v-btn depressed class="ml-1" to="/user/signUp">注册</v-btn>
             </div>
           </v-layout>
         </v-container>
       </v-app-bar>
-      <v-content>
+      <v-content :class="mini ? '' : 'ml-120px'">
+        <!--<v-banner single-line>-->
+        <!--  该产品正处于测试阶段-->
+        <!--  <template v-slot:actions>-->
+        <!--    <v-btn text color="deep-purple accent-4">-->
+        <!--      Action-->
+        <!--    </v-btn>-->
+        <!--  </template>-->
+        <!--</v-banner>-->
         <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
         <nuxt v-if="needKeepAlive" keep-alive />
         <nuxt v-else />
@@ -208,9 +232,14 @@
 </template>
 
 <script>
+import Logo from '../components/Logo'
+// import Logo2 from '../components/Logo2'
 export default {
   name: 'App',
-  props: {},
+  components: {
+    Logo
+    // Logo2
+  },
   data: () => ({
     mini: false,
     drawer: null,
@@ -229,6 +258,13 @@ export default {
   computed: {
     needKeepAlive() {
       return this.keepAliveRouters.includes(this.$route.name)
+    },
+    currentSpaceId() {
+      if (/space\/\d+$/.test(this.$route.path)) {
+        return this.$route.path.match(/space\/(\d+)$/)[1]
+      } else {
+        return null
+      }
     },
     unReadMessageCount() {
       return 0
@@ -267,7 +303,6 @@ export default {
         this.$axios.$post('/spaceInfo/listSpace').then((resp) => {
           if (resp.succeed) {
             this.spaceList[0].children = resp.data
-            console.log(JSON.stringify(this.spaceList[0]))
           }
         })
       }
@@ -278,8 +313,7 @@ export default {
 
 <style></style>
 <style scoped>
-.logo {
-  width: 100px;
-  display: block;
+.ml-120px {
+  margin-left: 120px;
 }
 </style>

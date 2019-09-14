@@ -145,8 +145,9 @@
             <v-text-field
               v-model="newTag.name"
               label="输入标签名称"
-              :rules="[rules.tagName]"
+              :rules="[rules.tagName, rules.max20]"
               autofocus
+              :counter="20"
             ></v-text-field>
             <v-text-field
               v-model="newTag.description"
@@ -228,6 +229,7 @@ export default {
       min10: (v) => (v && v.length >= 10) || '不能少于10个字符',
       min20: (v) => (v && v.length >= 20) || '不能少于20个字符',
       max50: (v) => (v && v.length <= 50) || '不能超过50个字符',
+      max20: (v) => (v && v.length <= 20) || '不能超过20个字符',
       max3000: (v) => (v && v.length <= 3000) || '不能超过3000个字符',
       tags: (v) => (v && v.length <= 5) || '最多选择五个标签哦',
       tagsRequired: (v) => (v && v.length > 0) || '标签不能为空哦',

@@ -122,3 +122,17 @@ pre>code{
 .mini .v-treeview-node--leaf > .v-treeview-node__root{
   padding-left: 0 !important;
 }
+
+/*去掉按钮样式*/
+.no-hover-active::before,.no-hover-active:focus::before,.no-hover-active::before{
+  opacity: 0 !important;
+}
+
+
+/*小徽标*/
+.small-badge .v-badge__badge{
+  min-width: 0;
+  font-size: 5px;
+  height: 15px;
+  width: 15px;
+}

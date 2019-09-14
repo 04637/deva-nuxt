@@ -21,44 +21,15 @@
         style="height: 75px"
         class="ma-4"
       >
-        <v-card class="pa-2" :to="'/user/' + userInfo.userId">
-          <v-layout justify-space-between class="mb-3">
-            <v-flex xs3>
-              <v-layout justify-center>
-                <v-avatar color="grey">
-                  <v-img :src="userInfo.avatar"></v-img>
-                </v-avatar>
-              </v-layout>
-            </v-flex>
-            <v-flex xs8>
-              <v-layout justify-space-between fill-height column>
-                <v-layout>
-                  {{ userInfo.bio }}
-                </v-layout>
-              </v-layout>
-            </v-flex>
-          </v-layout>
-          <v-layout justify-space-between style="height: 20px">
-            <v-flex justify-start xs5>
-              <span
-                class="d-inline-block text-truncate text-left no-flex"
-                :title="userInfo.nickname || userInfo.username"
-                >{{ userInfo.nickname || userInfo.username }}</span
-              >
-            </v-flex>
-            <v-flex xs4 class="text-right">
-              <svg class="icon heat-icon" aria-hidden="true">
-                <use xlink:href="#icon-zuanshi"></use></svg
-              >&nbsp;{{ userInfo.reputation }}
-            </v-flex>
-          </v-layout>
-        </v-card>
+        <UserCard :user-info="userInfo"></UserCard>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 <script>
+import UserCard from '../../components/UserCard'
 export default {
+  components: { UserCard },
   data: () => ({
     userList: null,
     searchKey: null,
@@ -87,9 +58,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.icon {
-  vertical-align: -7px;
-}
-</style>

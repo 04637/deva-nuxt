@@ -6,10 +6,8 @@
     </v-layout>
     <v-layout justify-center>
       <v-card class="pa-8 mt-6" width="520px">
+        <logo type="form"></logo>
         <v-form ref="form">
-          <v-layout justify-center>
-            <img src="/deva.png" alt="" class="logo-md" />
-          </v-layout>
           <v-layout justify-space-around column class="mt-3">
             <v-layout class="mt-4">
               <v-text-field
@@ -59,10 +57,13 @@
 </template>
 <script>
 import InfoDialog from '../../components/InfoDialog'
+import Logo from '../../components/Logo'
 export default {
   components: {
-    InfoDialog
+    InfoDialog,
+    Logo
   },
+  middleware: 'authenticated',
   data: () => ({
     rules: {
       min: (v) => (v && v.length >= 2) || '最少两个字符',

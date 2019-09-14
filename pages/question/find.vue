@@ -2,10 +2,8 @@
   <v-container justify-center align-start>
     <v-layout justify-center>
       <v-flex xs9 md6 align-self-center>
-        <v-layout justify-center>
-          <img src="/deva.png" alt="" class="logo" />
-        </v-layout>
-        <v-layout>
+        <logo class="mt-10"></logo>
+        <v-layout class="mt-10">
           <v-text-field
             v-model="keywords"
             hide-details
@@ -64,7 +62,11 @@
   </v-container>
 </template>
 <script>
+import Logo from '../../components/Logo'
 export default {
+  components: {
+    Logo
+  },
   data: () => ({
     keywords: null,
     heatList: null
@@ -86,10 +88,4 @@ export default {
   }
 }
 </script>
-<style scoped>
-.logo {
-  width: 300px;
-  height: 140px;
-  display: block;
-}
-</style>
+<style scoped></style>

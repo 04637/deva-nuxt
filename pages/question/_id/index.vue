@@ -106,9 +106,14 @@
                               >{{ questionDetail.similarMark.toQuestionTitle }}
                             </router-link>
                           </v-flex>
-                          <v-layout justify-end xs3>
+                          <v-layout
+                            justify-end
+                            xs3
+                            class="text-truncate d-inline-block"
+                          >
                             --&nbsp;
                             <router-link
+                              :title="questionDetail.similarMark.nickname"
                               :to="'/user/' + questionDetail.similarMark.userId"
                               >{{ questionDetail.similarMark.nickname }}
                             </router-link>
@@ -116,7 +121,7 @@
                         </v-layout>
                       </v-alert>
                       <v-btn class="mb-4" icon>
-                        <v-tooltip bottom>
+                        <v-tooltip right>
                           <template v-slot:activator="{ on }">
                             <v-icon color="orange" dark v-on="on"
                               >report
@@ -133,17 +138,18 @@
                           :key="tag.tagId"
                           link
                           :to="'/search/' + tag.tagName"
-                          class="question-tag"
+                          :title="tag.tagName"
+                          class="question-tag d-inline-block text-truncate"
                           >{{ tag.tagName }}</v-chip
                         >
                       </v-layout>
-                      <v-layout justify-end>
+                      <v-layout justify-end style="min-width: 230px">
                         <v-card
                           class="px-8 pt-3 pb-1 user_card"
                           :to="'/user/' + questionDetail.author.userId"
                         >
                           <v-layout justify-space-between>
-                            <v-flex xs3>
+                            <v-flex xs5>
                               <v-layout justify-center>
                                 <v-avatar color="grey">
                                   <v-img
@@ -152,18 +158,21 @@
                                 </v-avatar>
                               </v-layout>
                               <v-layout justify-center class="mt-2">
-                                <span class="subtitle-2 text-no-wrap">{{
-                                  questionDetail.author.nickname ||
-                                    questionDetail.username
-                                }}</span>
+                                <span
+                                  class="subtitle-2 text-no-wrap text-truncate d-block"
+                                  >{{
+                                    questionDetail.author.nickname ||
+                                      questionDetail.username
+                                  }}</span
+                                >
                               </v-layout>
                             </v-flex>
-                            <v-flex xs8>
+                            <v-flex xs7>
                               <v-layout
                                 column
                                 align-end
                                 justify-space-between
-                                style="height: 100%"
+                                style="height:100%"
                               >
                                 <v-layout>
                                   <small>
@@ -186,16 +195,14 @@
                                     }}</small
                                   ></v-layout
                                 >
-                                <v-layout>
+                                <v-layout justify-end align-end>
                                   <svg
                                     class="icon heat-icon"
                                     aria-hidden="true"
                                   >
                                     <use xlink:href="#icon-zuanshi"></use></svg
-                                  >&nbsp;{{
-                                    questionDetail.author.reputation
-                                  }}</v-layout
-                                >
+                                  >&nbsp;{{ questionDetail.author.reputation }}
+                                </v-layout>
                               </v-layout>
                             </v-flex>
                           </v-layout>
@@ -235,7 +242,9 @@
                               <v-list-item>
                                 <v-layout justify-space-between>
                                   <v-flex xs10>{{ comment.content }}</v-flex>
-                                  <v-flex xs2
+                                  <v-flex
+                                    xs2
+                                    class="text-truncate d-inline-block text-left no-flex"
                                     >--
                                     <router-link
                                       :to="'/user/' + comment.author.userId"
@@ -373,20 +382,23 @@
                             :to="'/user/' + answer.author.userId"
                           >
                             <v-layout justify-space-between>
-                              <v-flex xs3>
+                              <v-flex xs5>
                                 <v-layout justify-center>
                                   <v-avatar color="grey">
                                     <v-img :src="answer.author.avatar"></v-img>
                                   </v-avatar>
                                 </v-layout>
                                 <v-layout justify-center class="mt-2">
-                                  <span class="subtitle-2 text-no-wrap">{{
-                                    answer.author.nickname ||
-                                      answer.author.username
-                                  }}</span>
+                                  <span
+                                    class="subtitle-2 text-no-wrap text-truncate d-block"
+                                    >{{
+                                      answer.author.nickname ||
+                                        answer.author.username
+                                    }}</span
+                                  >
                                 </v-layout>
                               </v-flex>
-                              <v-flex xs8>
+                              <v-flex xs7>
                                 <v-layout
                                   column
                                   align-end
@@ -448,7 +460,9 @@
                                 <v-list-item>
                                   <v-layout justify-space-between>
                                     <v-flex xs10>{{ comment.content }}</v-flex>
-                                    <v-flex xs2
+                                    <v-flex
+                                      xs2
+                                      class="text-truncate d-inline-block text-left no-flex"
                                       >--
                                       <router-link
                                         :to="'/user/' + comment.author.userId"

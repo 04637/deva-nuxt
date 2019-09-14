@@ -23,19 +23,24 @@
       >
         <v-card class="px-3 py-2" :to="'/search/' + tagInfo.tagName">
           <v-layout>
-            <v-btn x-small text
-              ><strong>{{ tagInfo.tagName }}</strong></v-btn
+            <v-btn
+              x-small
+              text
+              :title="tagInfo.tagName"
+              style="max-width:80%;font-weight: bold"
+              class="d-inline-block text-truncate text-left no-flex"
+              >{{ tagInfo.tagName }}</v-btn
             >
             <span style="height: 20px; line-height: 20px" class="ml-2"
               >× {{ tagInfo.totalCount }}</span
             >
           </v-layout>
-          <v-layout class="label-description mt-1">
+          <v-layout class="mt-1">
             <!--展示一行省略-->
             <v-card-text
               style="height: 22px"
               class="d-inline-block text-truncate pa-0"
-              title="tagInfo.description"
+              :title="tagInfo.description"
             >
               {{ tagInfo.description }}
             </v-card-text>
@@ -82,15 +87,4 @@ export default {
 }
 </script>
 
-<style scoped>
-/* 控制展示两行 */
-.label-description {
-  font-size: 14px;
-  text-indent: 14px;
-  overflow: hidden;
-  -webkit-line-clamp: 2;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-}
-</style>
+<style scoped></style>

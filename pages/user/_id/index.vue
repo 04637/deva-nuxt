@@ -221,81 +221,25 @@
           <!-- watch tab -->
           <v-tab-item>
             <v-layout wrap class="px-3">
-              <v-card
+              <div
                 v-for="watch in userProfile.watchUsers"
                 :key="watch.userId"
-                :to="'/user/' + watch.userId"
-                class="pa-1 px-5 mt-2 mr-3"
-                max-width="220px"
+                style="width:220px;margin-right:10px;margin-top:10px"
               >
-                <v-layout justify-space-between>
-                  <v-flex xs3>
-                    <v-layout justify-center>
-                      <v-avatar color="grey">
-                        <v-img :src="watch.avatar"></v-img>
-                      </v-avatar>
-                    </v-layout>
-                    <v-layout justify-center class="mt-2">
-                      <span class="subtitle-2 text-no-wrap">{{
-                        watch.nickname || watch.username
-                      }}</span>
-                    </v-layout>
-                  </v-flex>
-                  <v-flex xs8>
-                    <v-layout justify-space-between column fill-height>
-                      <v-layout>
-                        <v-card-text class="pa-0">{{ watch.bio }}</v-card-text>
-                      </v-layout>
-                      <v-layout justify-end align-end>
-                        <svg class="icon heat-icon" aria-hidden="true">
-                          <use xlink:href="#icon-zuanshi"></use></svg
-                        >&nbsp;{{ watch.reputation }}
-                      </v-layout>
-                    </v-layout>
-                  </v-flex>
-                </v-layout>
-              </v-card>
+                <UserCard :user-info="watch"> </UserCard>
+              </div>
             </v-layout>
           </v-tab-item>
           <!-- follower tab -->
           <v-tab-item>
             <v-layout wrap class="px-3">
-              <v-card
+              <div
                 v-for="follower in userProfile.followers"
                 :key="follower.userId"
-                :to="'/user/' + follower.userId"
-                max-width="220px"
-                class="pa-1 px-5 mt-2 mr-3"
+                style="width:220px;margin-right:10px;margin-top:10px"
               >
-                <v-layout justify-space-between>
-                  <v-flex xs3>
-                    <v-layout justify-center>
-                      <v-avatar color="grey" class="white--text">
-                        <v-img :src="follower.avatar"> </v-img>
-                      </v-avatar>
-                    </v-layout>
-                    <v-layout justify-center class="mt-2">
-                      <span class="subtitle-2 text-no-wrap">{{
-                        follower.nickname || follower.username
-                      }}</span>
-                    </v-layout>
-                  </v-flex>
-                  <v-flex xs8>
-                    <v-layout justify-space-between column fill-height>
-                      <v-layout>
-                        <v-card-text class="pa-0">{{
-                          follower.bio
-                        }}</v-card-text>
-                      </v-layout>
-                      <v-layout justify-end align-end>
-                        <svg class="icon heat-icon" aria-hidden="true">
-                          <use xlink:href="#icon-zuanshi"></use></svg
-                        >&nbsp;{{ follower.reputation }}
-                      </v-layout>
-                    </v-layout>
-                  </v-flex>
-                </v-layout>
-              </v-card>
+                <UserCard :user-info="follower"> </UserCard>
+              </div>
             </v-layout>
           </v-tab-item>
         </v-tabs-items>
@@ -304,7 +248,9 @@
   </v-container>
 </template>
 <script>
+import UserCard from '../../../components/UserCard'
 export default {
+  components: { UserCard },
   data: () => ({
     tab: null,
     userProfile: null,
