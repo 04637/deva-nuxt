@@ -32,7 +32,14 @@
             </div>
           </v-list>
         </v-flex>
-        <v-flex md2 lg2 justify-end shrink class="d-sm-none d-md-block ml-3">
+        <v-flex
+          md2
+          lg2
+          justify-end
+          shrink
+          hidden-sm-and-down
+          class="d-sm-none d-md-block ml-3"
+        >
           <v-list>
             <div
               v-for="hotQuestion in hotQuestionList"

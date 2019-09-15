@@ -3,7 +3,7 @@
     <v-layout column>
       <v-layout>
         <v-card-title>
-          档案编辑
+          基本资料
         </v-card-title>
       </v-layout>
       <v-divider></v-divider>
@@ -71,6 +71,13 @@
             <v-flex xs9 lg6>
               <v-form ref="form" class="mt-0" style="width: 100%">
                 <v-text-field
+                  v-model="userInfo.username"
+                  label="用户名"
+                  outlined
+                  class="mt-3"
+                  disabled
+                ></v-text-field>
+                <v-text-field
                   v-model="userInfo.nickname"
                   hint=""
                   :counter="16"
@@ -78,7 +85,6 @@
                   outlined
                   class="mt-3"
                   :rules="[rules.max16]"
-                  name=""
                 ></v-text-field>
                 <v-textarea
                   v-model="userInfo.bio"
@@ -96,7 +102,6 @@
                     hint=""
                     label="绑定邮箱"
                     class="mt-3"
-                    name=""
                     :rules="[rules.email]"
                   ></v-text-field>
                   <v-btn

@@ -115,9 +115,7 @@ export default {
   },
   watch: {},
   created() {},
-  mounted() {
-    this.loadSpaceList()
-  },
+  mounted() {},
   methods: {
     logout() {
       // 使外部api上的JWT Cookie失效
@@ -130,15 +128,6 @@ export default {
       this.$router.push({
         path: '/search/' + this.keywords
       })
-    },
-    loadSpaceList() {
-      if (this.$store.state.userInfo) {
-        this.$axios.$post('/spaceInfo/listSpace').then((resp) => {
-          if (resp.succeed) {
-            this.spaceList[0].children = resp.data
-          }
-        })
-      }
     }
   }
 }

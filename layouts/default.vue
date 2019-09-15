@@ -138,9 +138,10 @@
             </v-toolbar-title>
             <v-text-field
               v-model="keywords"
+              translate="yes"
               class="ml-10"
+              label="搜索"
               hide-details
-              label="Search"
               prepend-inner-icon="search"
               solo
               flat
@@ -154,60 +155,115 @@
               icon
               class="mr-5"
               to="/user/messages"
+              small
             >
               <v-badge
                 v-model="mini"
                 class="align-self-center small-badge"
-                color="primary"
+                color="warning"
                 overlap
               >
                 <template v-slot:badge>
                   <!-- todo H5桌面通知 https://juejin.im/post/59ed37f5f265da431e15eaac-->
                   <span>!</span>
                 </template>
-                <v-icon>notifications_none</v-icon>
+                <!--<v-icon>notifications_none</v-icon>-->
+                <v-icon small>notifications_none</v-icon>
               </v-badge>
             </v-btn>
-            <div v-if="$store.getters.getUserInfo">
-              <v-avatar
-                color="grey"
-                size="35"
-                tile
-                style="cursor:pointer"
-                @click="
-                  $router.push('/user/' + $store.getters.getUserId, () => {})
-                "
-              >
-                <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
-              </v-avatar>
+            <div v-if="userInfo">
               <v-menu
                 v-model="moreSpaceMenu"
-                :close-on-content-click="false"
+                :close-on-content-click="true"
+                open-on-hover
                 nudge-width="100"
                 offset-y
               >
                 <template #activator="{ on }">
-                  <v-btn icon small v-on="on"><v-icon>more_vert</v-icon></v-btn>
+                  <v-btn
+                    max-width="120px"
+                    text
+                    x-small
+                    color="primary"
+                    class="d-inline-block no-flex text-truncate text-left mr-1"
+                    :to="'/user/' + userInfo.userId"
+                    style="font-weight: bold"
+                    >{{ userInfo.nickname }}</v-btn
+                  >
+                  <v-avatar
+                    color="grey"
+                    size="35"
+                    style="cursor:pointer"
+                    v-on="on"
+                  >
+                    <v-img :src="userInfo.avatar"></v-img>
+                  </v-avatar>
                 </template>
-                <v-list dense nav>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-btn depressed text @click="logout">注销</v-btn>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
+                <v-card min-width="180px" class="pa-0">
+                  <v-row justify="space-between" align="center">
+                    <v-col cols="8" align="center" no-gutters>
+                      <v-row justify="start" align="center" class="ml-3">
+                        <span
+                          class="d-inline-block text-truncate"
+                          title="用户名"
+                          >{{ userInfo.username }}</span
+                        ></v-row
+                      ></v-col
+                    >
+                    <v-col justify="end" cols="3" align="center" no-gutters
+                      ><v-btn outlined x-small color="primary" title="声誉">{{
+                        userInfo.reputation
+                      }}</v-btn></v-col
+                    ></v-row
+                  >
+                  <v-divider></v-divider>
+                  <v-list dense nav class="pa-0">
+                    <v-list-item class="pa-0 mb-0">
+                      <v-list-item-content class="pa-0">
+                        <v-btn
+                          depressed
+                          text
+                          class="text-left no-flex"
+                          :to="'/user/' + userInfo.userId"
+                          >个人中心</v-btn
+                        >
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item class="pa-0 mb-0">
+                      <v-list-item-content class="pa-0">
+                        <v-btn
+                          depressed
+                          text
+                          to="/user/editProfile"
+                          class="text-left no-flex"
+                          >基本资料</v-btn
+                        >
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider></v-divider>
+                    <v-list-item class="pa-0 mb-0">
+                      <v-list-item-content class="pa-0">
+                        <v-btn depressed text height="40px" @click="logout"
+                          >注销</v-btn
+                        >
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-card>
               </v-menu>
             </div>
             <div v-else>
               <v-btn text color="primary" depressed to="/user/login"
                 >登录</v-btn
               >
-              <v-btn depressed class="ml-1" to="/user/signUp">注册</v-btn>
+              <v-btn depressed color="primary" class="ml-1" to="/user/signUp"
+                >注册</v-btn
+              >
             </div>
           </v-layout>
         </v-container>
       </v-app-bar>
-      <v-content :class="mini ? '' : 'ml-120px'">
+      <v-content :class="mini ? 'ml-mini' : 'ml-max'">
         <!--<v-banner single-line>-->
         <!--  该产品正处于测试阶段-->
         <!--  <template v-slot:actions>-->
@@ -222,8 +278,13 @@
       </v-content>
       <v-footer app>
         <v-row justify="center" no-gutters>
-          <v-col class=" py-2 text-right white--text" cols="12">
-            <span>&copy;2019-{{ new Date().getFullYear() }}&nbsp;aid.dev</span>
+          <v-col class="py-2 text-right primary--text" cols="12">
+            <strong
+              >&copy;2019-{{ new Date().getFullYear() }}&nbsp;<router-link
+                to="/"
+                >aid.dev</router-link
+              ></strong
+            >
           </v-col>
         </v-row>
       </v-footer>
@@ -253,7 +314,8 @@ export default {
         children: []
       }
     ],
-    moreSpaceMenu: false
+    moreSpaceMenu: false,
+    userInfo: null
   }),
   computed: {
     needKeepAlive() {
@@ -269,7 +331,7 @@ export default {
     unReadMessageCount() {
       return 0
       // let count = 0
-      // const _userInfo = this.$store.getters.getUserInfo
+      // const _userInfo = this.userInfo
       // if (_userInfo) {
       //   _userInfo.messages.forEach((m) => {
       //     if (!m.isRead) {
@@ -284,6 +346,14 @@ export default {
   created() {},
   mounted() {
     this.loadSpaceList()
+    // 监听状态改变, 🐮🍺   参考 https://dev.to/viniciuskneves/watch-for-vuex-state-changes-2mgj
+    this.$store.watch(
+      ((state, getters) => getters.getUserInfo,
+      () => {
+        this.userInfo = this.$store.getters.getUserInfo
+        this.loadSpaceList()
+      })
+    )
   },
   methods: {
     logout() {
@@ -305,6 +375,8 @@ export default {
             this.spaceList[0].children = resp.data
           }
         })
+      } else {
+        this.spaceList[0].children = []
       }
     }
   }
@@ -313,7 +385,10 @@ export default {
 
 <style></style>
 <style scoped>
-.ml-120px {
-  margin-left: 120px;
+.ml-max {
+  margin-left: 90px;
+}
+.ml-mini {
+  margin-left: 0;
 }
 </style>
