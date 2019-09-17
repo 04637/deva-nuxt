@@ -88,7 +88,6 @@ export default {
     loadMessages() {
       this.$axios.$post('/messageInfo/getMessages').then((resp) => {
         if (resp.succeed) {
-          console.log(resp.data)
           this.messages = resp.data
         }
       })

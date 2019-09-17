@@ -131,6 +131,45 @@
                   :rules="[rules.requireCode]"
                 >
                 </v-text-field>
+                <!--todo 改为弹窗形式的-->
+                <v-layout align-center>
+                  <v-text-field
+                    ref="phone"
+                    v-model="userInfo.phone"
+                    class="mt-4"
+                    label="绑定手机号"
+                    required
+                    :error-messages="phoneCheck"
+                    :rules="[rules.phone]"
+                    @blur="checkPhone"
+                  ></v-text-field>
+                  <v-btn
+                    v-show="
+                      smsCodeResult.timeInterval <= 0 && showSmsVerification
+                    "
+                    class="ml-5"
+                    text
+                    outlined
+                    :loading="smsCodeResult.loading"
+                    @click="sendSmsCode"
+                    >获取验证码</v-btn
+                  >
+                  <v-btn
+                    v-show="smsCodeResult.timeInterval > 0"
+                    class="ml-5"
+                    text
+                    outlined
+                    disabled
+                    >{{ smsCodeResult.timeInterval }}&nbsp;s后重发</v-btn
+                  >
+                </v-layout>
+                <v-text-field
+                  v-if="showSmsVerification"
+                  v-model="smsCode"
+                  label="验证码"
+                  :rules="[rules.requireCode]"
+                >
+                </v-text-field>
                 <v-layout class="justify-end mt-3">
                   <v-btn
                     outlined
@@ -190,11 +229,28 @@ export default {
             v
           )) ||
           '请输入正确的邮箱账号'),
-      requireCode: (v) => (v && v.length > 0) || '请输入验证码'
+      requireCode: (v) => (v && v.length > 0) || '请输入验证码',
+      phone(v) {
+        if (!v) {
+          return '手机号不能为空'
+        } else if (!/^1[3456789]\d{9}$/.test(v)) {
+          return '请输入正确的手机号码'
+        } else {
+          return true
+        }
+      }
     },
     userInfo: null,
     emailCode: null,
     emailCodeResult: {
+      dialog: false,
+      resp: null,
+      loading: false,
+      timeInterval: 0,
+      showSendWarning: false
+    },
+    smsCode: null,
+    smsCodeResult: {
       dialog: false,
       resp: null,
       loading: false,
@@ -219,6 +275,13 @@ export default {
         this.userInfo &&
         this.userInfo.email.length > 0 &&
         this.userInfo.email !== this.$store.getters.getUserInfo.email
+      )
+    },
+    showSmsVerification() {
+      return (
+        this.userInfo &&
+        this.userInfo.phone.length > 0 &&
+        this.userInfo.phone !== this.$store.getters.getUserInfo.phone
       )
     }
   },
@@ -312,6 +375,18 @@ export default {
             this.saveResult.loading = false
           })
       }
+    },
+    checkPhone() {
+      if (!this.$refs.phone.validate()) {
+        return false
+      }
+      this.$axios
+        .$post('/userInfo/checkPhone', {
+          phone: this.phone
+        })
+        .then((resp) => {
+          this.phoneCheck = resp.data ? '' : '手机号码已被使用'
+        })
     }
   }
 }
