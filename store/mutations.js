@@ -6,5 +6,10 @@ export default {
     if (state.userInfo) {
       state.userInfo.avatar = newAvatar
     }
+  },
+  setUnreadMessageCount(state, m) {
+    if (state.userInfo) {
+      state.unReadMessageCount = m
+    }
   }
 }

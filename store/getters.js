@@ -7,5 +7,8 @@ export default {
   },
   getUserId(state) {
     return state.userInfo ? state.userInfo.userId : null
+  },
+  getUnReadMessageCount(state) {
+    return state.unReadMessageCount
   }
 }

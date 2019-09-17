@@ -28,21 +28,18 @@
         <v-data-table
           v-if="$store.state.userInfo"
           :headers="headers"
-          :items="$store.getters.getUserInfo.messages"
+          :items="messages"
           class="elevation-1"
           item-key="id"
           :search="search"
           show-select
+          no-data-text="无数据"
         >
-          <template v-slot:item.title="{ item }">
-            <v-btn
-              :to="'/user/' + item.fromUserId"
-              color="pink"
-              text
-              small
-              depressed
-              >{{ item.fromUserNickname }}</v-btn
-            >{{ item.content }}
+          <template v-slot:item.content="{ item }">
+            <router-link :to="'/user/' + item.fromUserId">{{
+              item.fromUserNickname
+            }}</router-link
+            >&nbsp;{{ item.content }}
             <router-link :to="'/question/' + item.ownQuestionId"
               >查看该问题</router-link
             >
@@ -70,13 +67,16 @@ export default {
         text: '消息内容',
         align: 'left',
         sortable: false,
-        value: 'title'
+        value: 'content'
       },
       { text: '操作', value: 'action', sortable: false, align: 'center' }
     ],
-    items: []
+    messages: []
   }),
 
+  created() {
+    this.loadMessages()
+  },
   mounted() {},
 
   methods: {
@@ -84,6 +84,14 @@ export default {
       const index = this.items.indexOf(item)
       confirm('Are you sure you want to delete this item?') &&
         this.items.splice(index, 1)
+    },
+    loadMessages() {
+      this.$axios.$post('/messageInfo/getMessages').then((resp) => {
+        if (resp.succeed) {
+          console.log(resp.data)
+          this.messages = resp.data
+        }
+      })
     }
   }
 }

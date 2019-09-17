@@ -1,3 +1,4 @@
 export default () => ({
-  userInfo: null
+  userInfo: null,
+  unReadMessageCount: 0
 })

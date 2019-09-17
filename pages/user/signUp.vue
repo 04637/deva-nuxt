@@ -21,26 +21,15 @@
               :error-messages="usernameCheck"
               @blur="checkUsername"
             ></v-text-field>
-            <v-text-field
-              v-model="email"
-              class="mt-4"
-              hint="****@example.com"
-              label="邮箱"
-              outlined
-              required
-              :rules="[rules.email]"
-            ></v-text-field>
-            <v-text-field
-              v-model="phone"
-              class="mt-4"
-              hint="186****0106"
-              label="手机号码"
-              outlined
-              required
-              :error-messages="phoneCheck"
-              :rules="[rules.phone]"
-              @blur="checkPhone"
-            ></v-text-field>
+            <!--<v-text-field-->
+            <!--  v-model="email"-->
+            <!--  class="mt-4"-->
+            <!--  hint="****@example.com"-->
+            <!--  label="邮箱"-->
+            <!--  outlined-->
+            <!--  required-->
+            <!--  :rules="[rules.email]"-->
+            <!--&gt;</v-text-field>-->
             <v-text-field
               v-model="password"
               class="mt-4"
@@ -55,6 +44,41 @@
               @click:append="show = !show"
               @keyup.enter.native="submitSignUp"
             ></v-text-field>
+            <v-layout align-center>
+              <v-text-field
+                ref="phone"
+                v-model="phone"
+                class="mt-4"
+                label="绑定手机号"
+                required
+                :error-messages="phoneCheck"
+                :rules="[rules.phone]"
+                @blur="checkPhone"
+              ></v-text-field>
+              <v-btn
+                v-show="smsCodeResult.timeInterval <= 0"
+                class="ml-5"
+                text
+                outlined
+                :loading="smsCodeResult.loading"
+                @click="sendSmsCode"
+                >获取验证码</v-btn
+              >
+              <v-btn
+                v-show="smsCodeResult.timeInterval > 0"
+                class="ml-5"
+                text
+                outlined
+                disabled
+                >{{ smsCodeResult.timeInterval }}&nbsp;s后重发</v-btn
+              >
+            </v-layout>
+            <v-text-field
+              v-model="smsCode"
+              label="验证码"
+              :rules="[rules.requireCode]"
+            >
+            </v-text-field>
             <v-layout justify-end class="mt-4">
               <v-btn
                 outlined
@@ -78,31 +102,30 @@
           >
         </v-layout>
       </v-card>
-
-      <v-dialog v-model="dialog" persistent max-width="600px">
-        <v-card>
-          <v-card-title>
-            <span class="headline">{{ dialogTitle }}</span>
-          </v-card-title>
-          <v-card-text>
-            {{ dialogMessage }}
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false"
-              >关闭</v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-layout>
+    <InfoDialog
+      :msg="['验证码发送成功', '操作频繁, 验证码发送失败, 请稍后重试']"
+      :succeed="smsCodeResult.resp != null && smsCodeResult.resp.succeed"
+      :dialog="smsCodeResult.dialog"
+      @update:dialog="smsCodeResult.dialog = $event"
+    >
+    </InfoDialog>
+    <InfoDialog
+      :msg="['注册成功', signUpResult.resp.msg]"
+      :succeed="signUpResult.resp != null && signUpResult.resp.succeed"
+      :dialog="signUpResult.dialog"
+      @update:dialog="signUpResult.dialog = $event"
+    >
+    </InfoDialog>
   </v-container>
 </template>
 <script>
 import Logo from '../../components/Logo'
+import InfoDialog from '../../components/InfoDialog'
 export default {
   components: {
-    Logo
+    Logo,
+    InfoDialog
   },
   data: () => ({
     show: false,
@@ -112,10 +135,19 @@ export default {
     password: '',
     usernameCheck: '',
     phoneCheck: '',
-    dialog: false,
-    dialogTitle: '',
-    dialogMessage: '',
-    loading: false,
+    smsCode: null,
+    smsCodeResult: {
+      dialog: false,
+      resp: null,
+      loading: false,
+      timeInterval: 0,
+      showSendWarning: false
+    },
+    signUpResult: {
+      dialog: false,
+      resp: null,
+      loading: false
+    },
     rules: {
       username(v) {
         if (!v) {
@@ -158,7 +190,8 @@ export default {
         } else {
           return true
         }
-      }
+      },
+      requireCode: (v) => (v && v.length > 0) || '请输入验证码'
     }
   }),
   watch: {},
@@ -174,12 +207,46 @@ export default {
         })
     },
     checkPhone() {
+      if (!this.$refs.phone.validate()) {
+        return false
+      }
       this.$axios
         .$post('/userInfo/checkPhone', {
           phone: this.phone
         })
         .then((resp) => {
           this.phoneCheck = resp.data ? '' : '手机号码已被使用'
+        })
+    },
+    sendSmsCode() {
+      if (!this.$refs.phone.validate() || this.phoneCheck) {
+        return false
+      }
+      if (this.smsCodeResult.timeInterval > 0) {
+        this.smsCodeResult.showSendWarning = true
+        return false
+      }
+      this.smsCodeResult.loading = true
+      this.$axios
+        .$post('/sms/sendCode', {
+          phone: this.phone
+        })
+        .then((resp) => {
+          this.smsCodeResult.resp = resp
+          this.smsCodeResult.dialog = true
+          this.smsCodeResult.loading = false
+          const _self = this
+          _self.smsCodeResult.timeInterval = 60
+          const _interval = setInterval(function() {
+            _self.smsCodeResult.timeInterval--
+            if (_self.smsCodeResult.timeInterval <= 0) {
+              clearInterval(_interval)
+              _self.smsCodeResult.showSendWarning = false
+            }
+          }, 1000)
+        })
+        .catch((e) => {
+          this.smsCodeResult.loading = false
         })
     },
     submitSignUp() {
@@ -189,25 +256,22 @@ export default {
       if (this.usernameCheck || this.phoneCheck) {
         return false
       }
-      this.loading = true
-      const _this = this
+      this.signUpResult.loading = true
       this.$axios
         .$post('/userInfo/signUp', {
           username: this.username,
-          email: this.email,
-          password: this.password
+          password: this.password,
+          phone: this.phone,
+          smsCode: this.smsCode
         })
         .then((resp) => {
-          _this.loading = false
-          _this.dialogTitle = resp.succeed ? '注册成功' : '注册失败'
-          _this.dialogMessage = resp.msg
-          _this.dialog = true
+          this.signUpResult.loading = false
+          this.signUpResult.dialog = true
+          this.signUpResult.resp = resp
         })
         .catch((e) => {
-          _this.loading = false
-          _this.dialogTitle = '注册失败'
-          _this.dialogMessage = e.response.data[0].defaultMessage
-          _this.dialog = true
+          this.signUpResult.loading = false
+          this.signUpResult.dialog = true
         })
     }
   }

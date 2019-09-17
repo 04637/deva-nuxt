@@ -158,7 +158,7 @@
               small
             >
               <v-badge
-                v-model="mini"
+                :value="$store.getters.getUnReadMessageCount > 0"
                 class="align-self-center small-badge"
                 color="warning"
                 overlap
@@ -167,7 +167,6 @@
                   <!-- todo H5桌面通知 https://juejin.im/post/59ed37f5f265da431e15eaac-->
                   <span>!</span>
                 </template>
-                <!--<v-icon>notifications_none</v-icon>-->
                 <v-icon small>notifications_none</v-icon>
               </v-badge>
             </v-btn>
@@ -294,12 +293,10 @@
 
 <script>
 import Logo from '../components/Logo'
-// import Logo2 from '../components/Logo2'
 export default {
   name: 'App',
   components: {
     Logo
-    // Logo2
   },
   data: () => ({
     mini: false,
@@ -327,19 +324,6 @@ export default {
       } else {
         return null
       }
-    },
-    unReadMessageCount() {
-      return 0
-      // let count = 0
-      // const _userInfo = this.userInfo
-      // if (_userInfo) {
-      //   _userInfo.messages.forEach((m) => {
-      //     if (!m.isRead) {
-      //       ++count
-      //     }
-      //   })
-      // }
-      // return count
     }
   },
   watch: {},
@@ -352,6 +336,7 @@ export default {
       () => {
         this.userInfo = this.$store.getters.getUserInfo
         this.loadSpaceList()
+        this.loadMessageCount()
       })
     )
   },
@@ -378,6 +363,15 @@ export default {
       } else {
         this.spaceList[0].children = []
       }
+    },
+    loadMessageCount() {
+      if (this.$store.state.userInfo) {
+        this.$axios.$post('/messageInfo/getUnreadCount').then((resp) => {
+          if (resp.succeed) {
+            this.$store.commit('setUnreadMessageCount', resp.data)
+          }
+        })
+      }
     }
   }
 }
@@ -386,7 +380,7 @@ export default {
 <style></style>
 <style scoped>
 .ml-max {
-  margin-left: 90px;
+  margin-left: 120px;
 }
 .ml-mini {
   margin-left: 0;
