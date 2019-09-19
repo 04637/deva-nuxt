@@ -239,6 +239,17 @@
                         >
                       </v-list-item-content>
                     </v-list-item>
+                    <v-list-item class="pa-0 mb-0">
+                      <v-list-item-content class="pa-0">
+                        <v-btn
+                          depressed
+                          text
+                          to="/user/safeSetting"
+                          class="text-left no-flex"
+                          >安全设置</v-btn
+                        >
+                      </v-list-item-content>
+                    </v-list-item>
                     <v-divider></v-divider>
                     <v-list-item class="pa-0 mb-0">
                       <v-list-item-content class="pa-0">
