@@ -283,8 +283,8 @@
         <!--  </template>-->
         <!--</v-banner>-->
         <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
-        <nuxt v-if="needKeepAlive" keep-alive />
-        <nuxt v-else />
+        <nuxt v-if="needKeepAlive" class="pa-5" keep-alive />
+        <nuxt v-else class="pa-5" />
       </v-content>
       <v-footer app>
         <v-row justify="center" no-gutters>

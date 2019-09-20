@@ -1,6 +1,6 @@
 <template>
-  <v-app id="home">
-    <v-container align-center justify-center>
+  <v-app>
+    <v-app>
       <v-layout column>
         <v-card-title
           >{{ questionDetail.title }}&nbsp;&nbsp;
@@ -587,7 +587,7 @@
           </v-list>
         </v-flex>
       </v-layout>
-    </v-container>
+    </v-app>
     <v-dialog v-model="similarMark.dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>

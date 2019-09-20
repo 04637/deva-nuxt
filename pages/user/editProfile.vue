@@ -1,6 +1,6 @@
 <template>
-  <v-container justify-center align-start>
-    <v-layout column>
+  <v-app>
+    <v-layout column shrink>
       <v-layout>
         <v-card-title>
           基本资料
@@ -125,7 +125,7 @@
       @update:dialog="uploadResult.dialog = $event"
     >
     </InfoDialog>
-  </v-container>
+  </v-app>
 </template>
 <script>
 import InfoDialog from '../../components/InfoDialog'

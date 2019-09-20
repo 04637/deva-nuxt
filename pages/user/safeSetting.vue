@@ -1,5 +1,5 @@
 <template>
-  <v-container justify-center align-start>
+  <v-app>
     <v-layout column>
       <v-layout>
         <v-card-title>
@@ -195,7 +195,7 @@
       @update:dialog="smsCodeResult.dialog = $event"
     >
     </InfoDialog>
-  </v-container>
+  </v-app>
 </template>
 <script>
 import InfoDialog from '../../components/InfoDialog'

@@ -1,6 +1,6 @@
 <template>
-  <v-container justify-center align-start>
-    <v-layout style="width: 30vw" class="mb-3">
+  <v-app>
+    <v-layout style="width: 30vw" class="mb-3" shrink>
       <v-text-field
         v-model="searchKey"
         hide-details
@@ -24,7 +24,7 @@
         <UserCard :user-info="userInfo"></UserCard>
       </v-flex>
     </v-layout>
-  </v-container>
+  </v-app>
 </template>
 <script>
 import UserCard from '../../components/UserCard'

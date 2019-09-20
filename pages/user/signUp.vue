@@ -1,10 +1,10 @@
 <template>
-  <v-container justify-center align-start>
-    <v-layout column>
+  <v-app>
+    <v-layout column shrink>
       <v-card-title>注册</v-card-title>
       <v-divider></v-divider>
     </v-layout>
-    <v-layout justify-center>
+    <v-layout justify-center shrink>
       <v-card class="pa-8 mt-6" width="520px">
         <logo type="form"></logo>
         <v-form ref="form">
@@ -95,7 +95,7 @@
         </v-form>
       </v-card>
     </v-layout>
-    <v-layout justify-center>
+    <v-layout justify-center shrink>
       <v-card class="pa-8 mt-6" width="520px">
         <v-layout justify-center>
           <v-btn text depressed to="login"
@@ -118,7 +118,7 @@
       @update:dialog="signUpResult.dialog = $event"
     >
     </InfoDialog>
-  </v-container>
+  </v-app>
 </template>
 <script>
 import Logo from '../../components/Logo'

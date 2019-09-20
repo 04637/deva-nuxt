@@ -1,6 +1,6 @@
 <template>
-  <v-container justify-center align-start>
-    <v-layout column>
+  <v-app>
+    <v-layout column shrink>
       <v-card-title>设置</v-card-title>
       <v-divider></v-divider>
     </v-layout>
@@ -9,7 +9,7 @@
         <v-switch v-model="$vuetify.theme.dark" label="主题切换"></v-switch>
       </v-layout>
     </v-layout>
-  </v-container>
+  </v-app>
 </template>
 <script>
 export default {

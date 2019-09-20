@@ -1,6 +1,6 @@
 <template>
-  <v-container justify-center align-start>
-    <v-layout justify-center>
+  <v-app>
+    <v-layout justify-center shrink>
       <v-flex xs9 md6 align-self-center>
         <logo class="mt-10"></logo>
         <v-layout class="mt-10">
@@ -59,7 +59,7 @@
         </v-layout>
       </v-flex>
     </v-layout>
-  </v-container>
+  </v-app>
 </template>
 <script>
 import Logo from '../../components/Logo'

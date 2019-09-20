@@ -1,6 +1,6 @@
 <template>
-  <v-container justify-center align-start>
-    <v-layout style="width: 30vw" class="mb-3">
+  <v-app>
+    <v-layout style="width: 30vw" class="mb-3" shrink>
       <v-text-field
         v-model="searchKey"
         hide-details
@@ -54,7 +54,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-  </v-container>
+  </v-app>
 </template>
 <script>
 export default {

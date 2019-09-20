@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="userProfile" justify-center align-start>
+  <v-layout v-if="userProfile" column justify-center>
     <v-layout column>
       <v-layout>
         <v-card-title>
@@ -99,8 +99,7 @@
           </v-layout>
         </v-card>
       </v-flex>
-      <v-spacer></v-spacer>
-      <v-flex lg7 md8>
+      <v-flex lg7 md8 class="ml-8">
         <v-tabs v-model="tab" fixed-tabs>
           <v-tab>
             提问
@@ -245,7 +244,7 @@
         </v-tabs-items>
       </v-flex>
     </v-layout>
-  </v-container>
+  </v-layout>
 </template>
 <script>
 import UserCard from '../../../components/UserCard'

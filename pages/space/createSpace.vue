@@ -1,5 +1,5 @@
 <template>
-  <v-container justify-center align-start>
+  <v-app justify-center align-start>
     <v-layout column>
       <v-card-title>空间创建</v-card-title>
       <v-divider></v-divider>
@@ -53,7 +53,7 @@
       @update:dialog="createResult.dialog = $event"
     >
     </InfoDialog>
-  </v-container>
+  </v-app>
 </template>
 <script>
 import InfoDialog from '../../components/InfoDialog'

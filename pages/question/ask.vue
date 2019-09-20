@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-container id="root" justify-center align-start>
-      <v-layout justify-end>
+    <v-app>
+      <v-layout justify-end shrink>
         <v-col cols="3">
           <v-btn to="find">提问之前，不妨先搜索一下？</v-btn>
         </v-col>
@@ -134,7 +134,7 @@
           </v-layout>
         </v-form>
       </v-layout>
-    </v-container>
+    </v-app>
     <v-dialog v-model="createTag.dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>

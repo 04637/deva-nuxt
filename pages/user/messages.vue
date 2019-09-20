@@ -1,6 +1,6 @@
 <template>
-  <v-container justify-center align-start>
-    <v-layout column>
+  <v-app>
+    <v-layout column shrink>
       <v-layout>
         <v-card-title>
           我的消息
@@ -8,7 +8,7 @@
       </v-layout>
       <v-divider></v-divider>
     </v-layout>
-    <v-layout class="mt-5" justify-center>
+    <v-layout class="mt-5" justify-center shrink>
       <v-card width="60vw">
         <v-card-title>
           <v-btn text small depressed>
@@ -55,7 +55,7 @@
         </v-data-table>
       </v-card>
     </v-layout>
-  </v-container>
+  </v-app>
 </template>
 <script>
 export default {
