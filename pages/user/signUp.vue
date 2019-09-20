@@ -53,8 +53,15 @@
                 required
                 :error-messages="phoneCheck"
                 :rules="[rules.phone]"
-                @blur="checkPhone"
               ></v-text-field>
+            </v-layout>
+            <v-layout align-center>
+              <v-text-field
+                v-model="smsCode"
+                label="验证码"
+                :rules="[rules.requireCode]"
+              >
+              </v-text-field>
               <v-btn
                 v-show="smsCodeResult.timeInterval <= 0"
                 class="ml-5"
@@ -73,19 +80,13 @@
                 >{{ smsCodeResult.timeInterval }}&nbsp;s后重发</v-btn
               >
             </v-layout>
-            <v-text-field
-              v-model="smsCode"
-              label="验证码"
-              :rules="[rules.requireCode]"
-            >
-            </v-text-field>
             <v-layout justify-end class="mt-4">
               <v-btn
                 outlined
                 accent
                 depressed
                 min-width="150px"
-                :loading="loading"
+                :loading="signUpResult.loading"
                 @click="submitSignUp"
                 >注册</v-btn
               >
@@ -111,7 +112,7 @@
     >
     </InfoDialog>
     <InfoDialog
-      :msg="['注册成功', signUpResult.resp.msg]"
+      :msg="['注册成功', signUpResult.resp && signUpResult.resp.msg]"
       :succeed="signUpResult.resp != null && signUpResult.resp.succeed"
       :dialog="signUpResult.dialog"
       @update:dialog="signUpResult.dialog = $event"
@@ -206,7 +207,7 @@ export default {
           this.usernameCheck = resp.data ? '' : '用户名已存在'
         })
     },
-    checkPhone() {
+    sendSmsCode() {
       if (!this.$refs.phone.validate()) {
         return false
       }
@@ -216,37 +217,34 @@ export default {
         })
         .then((resp) => {
           this.phoneCheck = resp.data ? '' : '手机号码已被使用'
-        })
-    },
-    sendSmsCode() {
-      if (!this.$refs.phone.validate() || this.phoneCheck) {
-        return false
-      }
-      if (this.smsCodeResult.timeInterval > 0) {
-        this.smsCodeResult.showSendWarning = true
-        return false
-      }
-      this.smsCodeResult.loading = true
-      this.$axios
-        .$post('/sms/sendCode', {
-          phone: this.phone
-        })
-        .then((resp) => {
-          this.smsCodeResult.resp = resp
-          this.smsCodeResult.dialog = true
-          this.smsCodeResult.loading = false
-          const _self = this
-          _self.smsCodeResult.timeInterval = 60
-          const _interval = setInterval(function() {
-            _self.smsCodeResult.timeInterval--
-            if (_self.smsCodeResult.timeInterval <= 0) {
-              clearInterval(_interval)
-              _self.smsCodeResult.showSendWarning = false
+          if (resp.succeed) {
+            if (this.smsCodeResult.timeInterval > 0) {
+              this.smsCodeResult.showSendWarning = true
+              return false
             }
-          }, 1000)
-        })
-        .catch((e) => {
-          this.smsCodeResult.loading = false
+            this.smsCodeResult.loading = true
+            this.$axios
+              .$post('/sms/sendCode', {
+                phone: this.phone
+              })
+              .then((resp) => {
+                this.smsCodeResult.resp = resp
+                this.smsCodeResult.dialog = true
+                this.smsCodeResult.loading = false
+                const _self = this
+                _self.smsCodeResult.timeInterval = 60
+                const _interval = setInterval(function() {
+                  _self.smsCodeResult.timeInterval--
+                  if (_self.smsCodeResult.timeInterval <= 0) {
+                    clearInterval(_interval)
+                    _self.smsCodeResult.showSendWarning = false
+                  }
+                }, 1000)
+              })
+              .catch((e) => {
+                this.smsCodeResult.loading = false
+              })
+          }
         })
     },
     submitSignUp() {
@@ -262,7 +260,7 @@ export default {
           username: this.username,
           password: this.password,
           phone: this.phone,
-          smsCode: this.smsCode
+          smsCode: this.smsCode.trim()
         })
         .then((resp) => {
           this.signUpResult.loading = false

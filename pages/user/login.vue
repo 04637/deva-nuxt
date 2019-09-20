@@ -8,14 +8,13 @@
       <v-card class="pa-8 mt-6" width="520px">
         <logo type="form"></logo>
         <v-form ref="form">
-          <v-layout class="mt-3" column>
+          <!-- 用户名密码登录 -->
+          <v-layout v-if="usernameLogin" class="mt-3" column>
             <v-text-field
               v-model="username"
-              hint="输入用户名或绑定手机号码"
-              label="用户名/手机号"
+              label="用户名"
               outlined
               required
-              :rules="[(v) => (!v ? '请输入用户名/手机号' : true)]"
               class="mt-4"
             ></v-text-field>
             <v-text-field
@@ -23,11 +22,79 @@
               class="mt-4"
               label="密码"
               outlined
-              :rules="[(v) => (!v ? '请输入密码' : true)]"
               required
               @keyup.enter.native="submitLogin"
             ></v-text-field>
-            <v-layout justify-end class="mt-4">
+            <v-layout justify-space-between align-center class="mt-4">
+              <v-btn
+                x-small
+                text
+                depressed
+                color="primary"
+                @click="usernameLogin = false"
+                >短信验证码登录</v-btn
+              >
+              <v-btn
+                outlined
+                accent
+                depressed
+                min-width="150px"
+                :loading="loading"
+                @click="submitLogin"
+                >登录</v-btn
+              >
+            </v-layout>
+          </v-layout>
+
+          <!-- 短信验证码登录 -->
+          <v-layout v-if="!usernameLogin" class="mt-3" column>
+            <v-layout align-center>
+              <v-text-field
+                v-model="phone"
+                label="绑定手机号"
+                required
+                class="mt-4"
+              ></v-text-field>
+            </v-layout>
+            <v-layout align-center>
+              <v-text-field
+                v-model="smsCode"
+                style="width: 100px"
+                class="mt-4"
+                label="验证码"
+                required
+                @keyup.enter.native="submitLogin"
+              ></v-text-field>
+              <v-btn
+                v-show="smsCodeResult.timeInterval <= 0"
+                class="ml-5"
+                text
+                outlined
+                small
+                :loading="smsCodeResult.loading"
+                @click="sendSmsCode"
+                >获取验证码</v-btn
+              >
+              <v-btn
+                v-show="smsCodeResult.timeInterval > 0"
+                class="ml-5"
+                text
+                outlined
+                small
+                disabled
+                >{{ smsCodeResult.timeInterval }}&nbsp;s后重发</v-btn
+              >
+            </v-layout>
+
+            <v-layout justify-space-between align-center class="mt-4">
+              <v-btn
+                x-small
+                text
+                depressed
+                color="primary"
+                @click="usernameLogin = true"
+                >用户名密码登录</v-btn
+              >
               <v-btn
                 outlined
                 accent
@@ -51,44 +118,117 @@
         </v-layout>
       </v-card>
     </v-layout>
+    <InfoDialog
+      :msg="['', loginResp && loginResp.msg]"
+      :succeed="loginResp.succeed"
+      :dialog="dialog"
+      @update:dialog="dialog = $event"
+    >
+    </InfoDialog>
+    <InfoDialog
+      :msg="['验证码发送成功', '验证码发送失败, 请稍后重试']"
+      :succeed="smsCodeResult.resp != null && smsCodeResult.resp.succeed"
+      :dialog="smsCodeResult.dialog"
+      @update:dialog="smsCodeResult.dialog = $event"
+    >
+    </InfoDialog>
   </v-container>
 </template>
 <script>
 import Logo from '../../components/Logo'
+import InfoDialog from '../../components/InfoDialog'
 export default {
   components: {
-    Logo
+    Logo,
+    InfoDialog
   },
   data: () => ({
-    show: false,
     username: '',
     password: '',
-    loading: false
+    phone: null,
+    smsCode: null,
+    loading: false,
+    loginResp: {
+      succeed: false
+    },
+    smsCodeResult: {
+      dialog: false,
+      resp: null,
+      loading: false,
+      timeInterval: 0
+    },
+    dialog: false,
+    usernameLogin: true
   }),
   middleware: 'notAuthenticated',
   methods: {
     submitLogin() {
-      if (!this.$refs.form.validate()) {
-        return false
-      }
       this.loading = true
       const _this = this
+      const _data = {}
+      let _url
+      if (this.usernameLogin) {
+        if (!this.username || !this.password) {
+          return false
+        }
+        _url = '/userInfo/login'
+        _data.username = this.username
+        _data.password = this.password
+      } else {
+        if (!this.phone || !this.smsCode) {
+          return false
+        }
+        _url = '/userInfo/smsLogin'
+        _data.phone = this.phone
+        _data.smsCode = this.smsCode.trim()
+      }
       this.$axios
-        .$post('/userInfo/login', {
-          username: this.username,
-          email: this.username,
-          password: this.password
-        })
+        .$post(_url, _data)
         .then((resp) => {
           _this.loading = false
           if (resp.succeed) {
             _this.$store.commit('setUserInfo', resp.data)
             // 参考 https://zh.nuxtjs.org/examples/auth-external-jwt 跨域身份验证
             _this.$router.go(-1)
+          } else {
+            this.loginResp = resp
+            this.dialog = true
           }
         })
         .catch((e) => {
           _this.loading = false
+        })
+    },
+    sendSmsCode() {
+      if (!this.phone) {
+        return false
+      }
+      if (this.smsCodeResult.timeInterval > 0) {
+        this.smsCodeResult.showSendWarning = true
+        return false
+      }
+      this.smsCodeResult.loading = true
+      this.$axios
+        .$post('/sms/sendCode', {
+          phone: this.phone
+        })
+        .then((resp) => {
+          this.smsCodeResult.resp = resp
+          this.smsCodeResult.loading = false
+          if (!resp.succeed) {
+            this.smsCodeResult.dialog = true
+          }
+          const _self = this
+          _self.smsCodeResult.timeInterval = 60
+          const _interval = setInterval(function() {
+            _self.smsCodeResult.timeInterval--
+            if (_self.smsCodeResult.timeInterval <= 0) {
+              clearInterval(_interval)
+            }
+          }, 1000)
+        })
+        .catch((e) => {
+          this.smsCodeResult.loading = false
         })
     }
   }

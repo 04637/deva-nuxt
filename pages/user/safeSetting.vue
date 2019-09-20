@@ -58,12 +58,21 @@
         <v-card-text class="pb-0">
           <v-container class="pb-0">
             <v-form ref="emailForm">
-              <v-row align="center">
+              <v-layout align-center>
                 <v-text-field
                   ref="editEmailRef"
                   v-model="editEmail.email"
                   label="输入要绑定的邮箱"
                   :rules="[rules.email]"
+                >
+                </v-text-field>
+              </v-layout>
+
+              <v-layout align-center>
+                <v-text-field
+                  v-model="editEmail.emailCode"
+                  label="验证码"
+                  :rules="[rules.requireCode]"
                 >
                 </v-text-field>
                 <v-btn
@@ -85,16 +94,7 @@
                   disabled
                   >{{ emailCodeResult.timeInterval }}&nbsp;s后重发</v-btn
                 >
-              </v-row>
-
-              <v-row style="width:100px" align="center">
-                <v-text-field
-                  v-model="editEmail.emailCode"
-                  label="验证码"
-                  :rules="[rules.requireCode]"
-                >
-                </v-text-field>
-              </v-row>
+              </v-layout>
             </v-form>
           </v-container>
         </v-card-text>
@@ -115,13 +115,22 @@
         <v-card-text class="pb-0">
           <v-container class="pb-0">
             <v-form ref="phoneForm">
-              <v-row align="center">
+              <v-layout align-center>
                 <v-text-field
                   ref="editPhoneRef"
                   v-model="editPhone.phone"
                   label="输入要绑定的手机号码"
                   :error-messages="editPhone.phoneCheck"
                   :rules="[rules.phone]"
+                >
+                </v-text-field>
+              </v-layout>
+
+              <v-layout align-center>
+                <v-text-field
+                  v-model="editPhone.smsCode"
+                  label="验证码"
+                  :rules="[rules.requireCode]"
                 >
                 </v-text-field>
                 <v-btn
@@ -143,16 +152,7 @@
                   disabled
                   >{{ smsCodeResult.timeInterval }}&nbsp;s后重发</v-btn
                 >
-              </v-row>
-
-              <v-row style="width:100px" align="center">
-                <v-text-field
-                  v-model="editPhone.smsCode"
-                  label="验证码"
-                  :rules="[rules.requireCode]"
-                >
-                </v-text-field>
-              </v-row>
+              </v-layout>
             </v-form>
           </v-container>
         </v-card-text>
@@ -189,7 +189,7 @@
     >
     </InfoDialog>
     <InfoDialog
-      :msg="['验证码发送成功，请查看', '验证码发送失败, 请稍后重试']"
+      :msg="['验证码发送成功', '验证码发送失败, 请稍后重试']"
       :succeed="smsCodeResult.resp != null && smsCodeResult.resp.succeed"
       :dialog="smsCodeResult.dialog"
       @update:dialog="smsCodeResult.dialog = $event"
