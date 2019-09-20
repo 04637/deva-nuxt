@@ -198,7 +198,7 @@
                     <v-img :src="userInfo.avatar"></v-img>
                   </v-avatar>
                 </template>
-                <v-card min-width="180px" class="pa-0">
+                <v-card min-width="180px" class="pa-0 pr-4">
                   <v-row justify="space-between" align="center">
                     <v-col cols="8" align="center" no-gutters>
                       <v-row justify="start" align="center" class="ml-3">

@@ -95,81 +95,6 @@
                   no-resize
                   :rules="[rules.max100]"
                 ></v-textarea>
-                <v-layout align-center>
-                  <v-text-field
-                    ref="newEmail"
-                    v-model="userInfo.email"
-                    hint=""
-                    label="绑定邮箱"
-                    class="mt-3"
-                    :rules="[rules.email]"
-                  ></v-text-field>
-                  <v-btn
-                    v-show="
-                      emailCodeResult.timeInterval <= 0 && showVerification
-                    "
-                    class="ml-5"
-                    text
-                    outlined
-                    :loading="emailCodeResult.loading"
-                    @click="sendEmailCode"
-                    >获取验证码</v-btn
-                  >
-                  <v-btn
-                    v-show="emailCodeResult.timeInterval > 0"
-                    class="ml-5"
-                    text
-                    outlined
-                    disabled
-                    >{{ emailCodeResult.timeInterval }}&nbsp;s后重发</v-btn
-                  >
-                </v-layout>
-                <v-text-field
-                  v-if="showVerification"
-                  v-model="emailCode"
-                  label="验证码"
-                  :rules="[rules.requireCode]"
-                >
-                </v-text-field>
-                <!--todo 改为弹窗形式的-->
-                <v-layout align-center>
-                  <v-text-field
-                    ref="phone"
-                    v-model="userInfo.phone"
-                    class="mt-4"
-                    label="绑定手机号"
-                    required
-                    :error-messages="phoneCheck"
-                    :rules="[rules.phone]"
-                    @blur="checkPhone"
-                  ></v-text-field>
-                  <v-btn
-                    v-show="
-                      smsCodeResult.timeInterval <= 0 && showSmsVerification
-                    "
-                    class="ml-5"
-                    text
-                    outlined
-                    :loading="smsCodeResult.loading"
-                    @click="sendSmsCode"
-                    >获取验证码</v-btn
-                  >
-                  <v-btn
-                    v-show="smsCodeResult.timeInterval > 0"
-                    class="ml-5"
-                    text
-                    outlined
-                    disabled
-                    >{{ smsCodeResult.timeInterval }}&nbsp;s后重发</v-btn
-                  >
-                </v-layout>
-                <v-text-field
-                  v-if="showSmsVerification"
-                  v-model="smsCode"
-                  label="验证码"
-                  :rules="[rules.requireCode]"
-                >
-                </v-text-field>
                 <v-layout class="justify-end mt-3">
                   <v-btn
                     outlined
@@ -186,13 +111,6 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <InfoDialog
-      :msg="['验证码发送成功，请至邮箱查看', '验证码发送失败, 请稍后重试']"
-      :succeed="emailCodeResult.resp != null && emailCodeResult.resp.succeed"
-      :dialog="emailCodeResult.dialog"
-      @update:dialog="emailCodeResult.dialog = $event"
-    >
-    </InfoDialog>
     <InfoDialog
       :msg="['保存成功', saveResult.errorMsg]"
       :succeed="saveResult.resp != null && saveResult.resp.succeed"
@@ -241,22 +159,6 @@ export default {
       }
     },
     userInfo: null,
-    emailCode: null,
-    emailCodeResult: {
-      dialog: false,
-      resp: null,
-      loading: false,
-      timeInterval: 0,
-      showSendWarning: false
-    },
-    smsCode: null,
-    smsCodeResult: {
-      dialog: false,
-      resp: null,
-      loading: false,
-      timeInterval: 0,
-      showSendWarning: false
-    },
     saveResult: {
       dialog: false,
       resp: null,
@@ -269,22 +171,7 @@ export default {
       errorMsg: null
     }
   }),
-  computed: {
-    showVerification() {
-      return (
-        this.userInfo &&
-        this.userInfo.email.length > 0 &&
-        this.userInfo.email !== this.$store.getters.getUserInfo.email
-      )
-    },
-    showSmsVerification() {
-      return (
-        this.userInfo &&
-        this.userInfo.phone.length > 0 &&
-        this.userInfo.phone !== this.$store.getters.getUserInfo.phone
-      )
-    }
-  },
+  computed: {},
   created() {
     // 深层拷贝一个userInfo
     this.userInfo = JSON.parse(JSON.stringify(this.$store.getters.getUserInfo))
@@ -316,37 +203,6 @@ export default {
           }
         })
     },
-    sendEmailCode() {
-      if (!this.$refs.newEmail.validate()) {
-        return false
-      }
-      if (this.emailCodeResult.timeInterval > 0) {
-        this.emailCodeResult.showSendWarning = true
-        return false
-      }
-      this.emailCodeResult.loading = true
-      this.$axios
-        .$post('/email/sendEmailCode', {
-          email: this.userInfo.email
-        })
-        .then((resp) => {
-          this.emailCodeResult.resp = resp
-          this.emailCodeResult.dialog = true
-          this.emailCodeResult.loading = false
-          const _self = this
-          _self.emailCodeResult.timeInterval = 60
-          const _interval = setInterval(function() {
-            _self.emailCodeResult.timeInterval--
-            if (_self.emailCodeResult.timeInterval <= 0) {
-              clearInterval(_interval)
-              _self.emailCodeResult.showSendWarning = false
-            }
-          }, 1000)
-        })
-        .catch((e) => {
-          this.emailCodeResult.loading = false
-        })
-    },
     saveProfile() {
       if (!this.$refs.form.validate()) {
         return false
@@ -375,18 +231,6 @@ export default {
             this.saveResult.loading = false
           })
       }
-    },
-    checkPhone() {
-      if (!this.$refs.phone.validate()) {
-        return false
-      }
-      this.$axios
-        .$post('/userInfo/checkPhone', {
-          phone: this.phone
-        })
-        .then((resp) => {
-          this.phoneCheck = resp.data ? '' : '手机号码已被使用'
-        })
     }
   }
 }
