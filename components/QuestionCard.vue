@@ -63,10 +63,15 @@
         style="width:15%"
       >
         <v-row justify="end" dense>
-          <small v-if="question.createTime === question.modifiedTime">
+          <small
+            v-if="question.createTime === question.modifiedTime"
+            :title="$options.filters.moment(question.createTime)"
+          >
             提问于 {{ question.createTime | timeago }}</small
           >
-          <small v-else> 更新于 {{ question.modifiedTime | timeago }}</small>
+          <small v-else :title="$options.filters.moment(question.modifiedTime)">
+            更新于 {{ question.modifiedTime | timeago }}</small
+          >
         </v-row>
         <v-row align="end" justify="end" dense style="width:100%">
           <v-col cols="7">

@@ -20,7 +20,7 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     // 参考 https://zh.nuxtjs.org/faq 引入外部资源
-    script: [{ src: '//at.alicdn.com/t/font_778737_75mss2gyvvf.js' }]
+    script: [{ src: '//at.alicdn.com/t/font_778737_h1fxdq5w8ae.js' }]
   },
   /*
    ** Customize the progress-bar color
@@ -39,8 +39,11 @@ export default {
   plugins: [
     '~plugins/axios',
     '~plugins/timeago',
+    '~plugins/moment',
     '~plugins/filterHtml',
     '~plugins/common',
+    { src: '~plugins/websocket', ssr: false },
+    { src: '~plugins/notice', ssr: false },
     { src: '~plugins/quill-editor', ssr: false },
     { src: '~/plugins/persistedStorage', ssr: false }
   ],
@@ -69,6 +72,9 @@ export default {
     baseURL: 'http://localhost:8088',
     debug: false
   },
+  websocket: {
+    server: 'ws://localhost:8088/'
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -83,17 +89,19 @@ export default {
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
-          warning: colors.orange.darken4,
+          warning: colors.orange,
           // error: colors.deepOrange.accent4,
           error: colors.orange,
           success: colors.green.accent3,
           sub: colors.grey.lighten1,
-          background_color: '#303030'
+          background_color: '#303030',
+          new_orange: '#d14435'
         },
         light: {
           // primary: colors.cyan,
           primary: '#01a687',
-          background_color: '#fafafa'
+          background_color: '#fafafa',
+          new_orange: '#ff6600'
         }
       }
     }

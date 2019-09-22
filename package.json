@@ -21,9 +21,13 @@
     "markdown-it-attrs": "^3.0.0",
     "markdown-it-div": "^1.1.0",
     "markdown-it-emoji": "^1.4.0",
+    "moment": "^2.24.0",
     "nuxt": "^2.0.0",
     "timeago.js": "^4.0.0-beta.2",
+    "vue-native-websocket": "^2.0.13",
+    "vue-notifications": "^1.0.2",
     "vue-quill-editor": "^3.0.6",
+    "vue-toasted": "^1.1.27",
     "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 <template>
   <v-app id="home">
-    <v-layout column>
+    <v-layout column shrink>
       <v-layout>
         <v-flex md6 xs4 shrink hidden-sm-and-down>
           <v-card-title>最新问题</v-card-title>

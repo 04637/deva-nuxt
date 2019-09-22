@@ -152,24 +152,21 @@
           <v-layout justify-end align-center>
             <v-btn
               v-if="$store.state.userInfo"
+              style="position: fixed; right: 157px"
               icon
               class="mr-5"
               to="/user/messages"
               small
             >
-              <v-badge
-                :value="$store.getters.getUnReadMessageCount > 0"
-                class="align-self-center small-badge"
-                color="warning"
-                overlap
-              >
-                <template v-slot:badge>
-                  <!-- todo H5桌面通知 https://juejin.im/post/59ed37f5f265da431e15eaac-->
-                  <span>!</span>
-                </template>
-                <v-icon small>notifications_none</v-icon>
-              </v-badge>
+              <v-icon small>notifications_none</v-icon>
             </v-btn>
+            <svg
+              v-show="$store.getters.getUnReadMessageCount > 0"
+              class="icon unread-icon"
+              style="width: 13px; height: 13px;"
+            >
+              <use xlink:href="#icon-unread"></use>
+            </svg>
             <div v-if="userInfo">
               <v-menu
                 v-model="moreSpaceMenu"
@@ -273,7 +270,10 @@
           </v-layout>
         </v-container>
       </v-app-bar>
-      <v-content :class="mini ? 'ml-mini' : 'ml-max'">
+      <v-content
+        :class="mini ? 'ml-mini' : 'ml-max'"
+        style="padding-left: 80px"
+      >
         <!--<v-banner single-line>-->
         <!--  该产品正处于测试阶段-->
         <!--  <template v-slot:actions>-->
@@ -283,8 +283,8 @@
         <!--  </template>-->
         <!--</v-banner>-->
         <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
-        <nuxt v-if="needKeepAlive" class="pa-5" keep-alive />
-        <nuxt v-else class="pa-5" />
+        <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
+        <nuxt v-else class="pa-2" />
       </v-content>
       <v-footer app>
         <v-row justify="center" no-gutters>
@@ -304,6 +304,8 @@
 
 <script>
 import Logo from '../components/Logo'
+// https://github.com/nuxt/nuxt.js/issues/319
+import config from '../nuxt.config.js'
 export default {
   name: 'App',
   components: {
@@ -346,10 +348,15 @@ export default {
       ((state, getters) => getters.getUserInfo,
       () => {
         this.userInfo = this.$store.getters.getUserInfo
+        // 加载空间列表
         this.loadSpaceList()
+        // 加载未读消息数
         this.loadMessageCount()
+        // 连接websocket
+        this.connectWebsocket()
       })
     )
+    this.listenSocket()
   },
   methods: {
     logout() {
@@ -383,6 +390,43 @@ export default {
           }
         })
       }
+    },
+    connectWebsocket() {
+      if (this.userInfo && process.client) {
+        this.$connect(config.websocket.server + this.userInfo.userId)
+      }
+    },
+    listenSocket() {
+      if (this.userInfo && process.client) {
+        this.$options.sockets.onmessage = (data) => {
+          const _msg = JSON.parse(data.data)
+          // todo H5桌面通知Notification API https://juejin.im/post/59ed37f5f265da431e15eaac
+          this.showWarnMsg({ message: _msg.content })
+          this.$store.commit('setUnreadMessageCount', 1)
+        }
+      }
+    }
+  },
+  notifications: {
+    showSuccessMsg: {
+      type: 'success',
+      title: 'Hello there',
+      message: "That's the success!"
+    },
+    showInfoMsg: {
+      type: 'info',
+      title: 'Hey you',
+      message: 'Here is some info for you'
+    },
+    showWarnMsg: {
+      type: 'warn',
+      title: 'Wow, man',
+      message: "That's the kind of warning"
+    },
+    showErrorMsg: {
+      type: 'error',
+      title: 'Wow-wow',
+      message: "That's the error"
     }
   }
 }
@@ -395,5 +439,11 @@ export default {
 }
 .ml-mini {
   margin-left: 0;
+}
+.unread-icon {
+  width: 13px;
+  position: relative;
+  top: -7px;
+  left: -31px;
 }
 </style>

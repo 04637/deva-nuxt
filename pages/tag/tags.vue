@@ -11,15 +11,16 @@
       ></v-text-field>
     </v-layout>
     <v-divider></v-divider>
-    <v-layout wrap>
+    <v-layout wrap shrink>
       <v-flex
         v-for="tagInfo in tagList"
         :key="tagInfo.tagId"
         xs4
         md4
         lg3
-        style="height: 90px"
-        class="ma-4"
+        class="ml-4 mb-0 mt-4"
+        style="max-height: 90px; max-width: 358px"
+        shrink
       >
         <v-card class="px-3 py-2" :to="'/search/' + tagInfo.tagName">
           <v-layout>

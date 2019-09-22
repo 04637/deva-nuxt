@@ -11,14 +11,14 @@
       ></v-text-field>
     </v-layout>
     <v-divider></v-divider>
-    <v-layout wrap>
+    <v-layout wrap shrink>
       <v-flex
         v-for="userInfo in userList"
         :key="userInfo.userId"
         xs4
         md4
         lg3
-        style="height: 75px"
+        style="max-height: 75px; max-width: 358px"
         class="ma-4"
       >
         <UserCard :user-info="userInfo"></UserCard>

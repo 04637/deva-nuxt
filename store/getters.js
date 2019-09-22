@@ -9,6 +9,6 @@ export default {
     return state.userInfo ? state.userInfo.userId : null
   },
   getUnReadMessageCount(state) {
-    return state.unReadMessageCount
+    return state.userInfo ? state.unReadMessageCount : null
   }
 }

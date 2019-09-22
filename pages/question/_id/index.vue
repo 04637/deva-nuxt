@@ -175,7 +175,13 @@
                                 style="height:100%"
                               >
                                 <v-layout>
-                                  <small>
+                                  <small
+                                    :title="
+                                      $options.filters.moment(
+                                        questionDetail.createTime
+                                      )
+                                    "
+                                  >
                                     提问于&nbsp;
                                     {{
                                       questionDetail.createTime | timeago
@@ -188,7 +194,13 @@
                                       questionDetail.modifiedTime
                                   "
                                 >
-                                  <small>
+                                  <small
+                                    :title="
+                                      $options.filters.moment(
+                                        questionDetail.modifiedTime
+                                      )
+                                    "
+                                  >
                                     更新于&nbsp;
                                     {{
                                       questionDetail.modifiedTime | timeago
@@ -226,7 +238,7 @@
                         >
                       </v-layout>
                       <v-layout>
-                        <v-list width="100vw">
+                        <v-list width="100vw" dense class="pb-5">
                           <div
                             v-for="(comment, index) in questionDetail.comments"
                             :key="comment.commentId"
@@ -239,7 +251,7 @@
                                   : index < 3
                               "
                             >
-                              <v-list-item>
+                              <v-list-item style="min-height: 28px">
                                 <v-layout justify-space-between>
                                   <v-flex xs10>{{ comment.content }}</v-flex>
                                   <v-flex
@@ -247,20 +259,28 @@
                                     class="text-truncate d-inline-block text-left no-flex"
                                     >--
                                     <router-link
+                                      style="text-decoration: none"
                                       :to="'/user/' + comment.author.userId"
                                       >{{
                                         comment.author.nickname ||
                                           comment.author.username
                                       }}
                                     </router-link>
+                                    <span
+                                      style="font-size: 14px;color:gray"
+                                      :title="
+                                        $options.filters.moment(
+                                          comment.createTime
+                                        )
+                                      "
+                                      >&nbsp;{{
+                                        comment.createTime | timeago
+                                      }}</span
+                                    >
                                   </v-flex>
                                 </v-layout>
                               </v-list-item>
-                              <v-divider
-                                v-show="
-                                  index + 1 < questionDetail.comments.length
-                                "
-                              ></v-divider>
+                              <v-divider></v-divider>
                             </div>
                           </div>
                         </v-list>
@@ -330,6 +350,7 @@
           <v-list v-show="questionDetail.answers.length > 0">
             <div
               v-for="(answer, aIndex) in questionDetail.answers"
+              :id="answer.answerId"
               :key="answer.answerId"
             >
               <v-list-item class="mt-1">
@@ -406,7 +427,13 @@
                                   style="height:100%"
                                 >
                                   <v-layout>
-                                    <small>
+                                    <small
+                                      :title="
+                                        $options.filters.moment(
+                                          answer.createTime
+                                        )
+                                      "
+                                    >
                                       回答于&nbsp;{{
                                         answer.createTime | timeago
                                       }}</small
@@ -445,7 +472,7 @@
                           >
                         </v-layout>
                         <v-layout>
-                          <v-list width="100vw">
+                          <v-list width="100vw" dense class="pb-5">
                             <div
                               v-for="(comment, _index) in answer.comments"
                               :key="comment.commentId"
@@ -457,7 +484,7 @@
                                     : _index < 3
                                 "
                               >
-                                <v-list-item>
+                                <v-list-item style="min-height: 28px">
                                   <v-layout justify-space-between>
                                     <v-flex xs10>{{ comment.content }}</v-flex>
                                     <v-flex
@@ -465,18 +492,28 @@
                                       class="text-truncate d-inline-block text-left no-flex"
                                       >--
                                       <router-link
+                                        style="text-decoration: none"
                                         :to="'/user/' + comment.author.userId"
                                         >{{
                                           comment.author.nickname ||
                                             comment.author.username
                                         }}
                                       </router-link>
+                                      <span
+                                        style="font-size: 14px;color:gray"
+                                        :title="
+                                          $options.filters.moment(
+                                            comment.createTime
+                                          )
+                                        "
+                                        >&nbsp;{{
+                                          comment.createTime | timeago
+                                        }}</span
+                                      >
                                     </v-flex>
                                   </v-layout>
                                 </v-list-item>
-                                <v-divider
-                                  v-show="_index + 1 < answer.comments.length"
-                                ></v-divider>
+                                <v-divider></v-divider>
                               </div>
                             </div>
                           </v-list>

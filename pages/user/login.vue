@@ -163,7 +163,6 @@ export default {
   middleware: 'notAuthenticated',
   methods: {
     submitLogin() {
-      this.loading = true
       const _this = this
       const _data = {}
       let _url
@@ -182,6 +181,7 @@ export default {
         _data.phone = this.phone
         _data.smsCode = this.smsCode.trim()
       }
+      this.loading = true
       this.$axios
         .$post(_url, _data)
         .then((resp) => {
