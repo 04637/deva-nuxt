@@ -347,6 +347,7 @@ export default {
     this.$store.watch(
       ((state, getters) => getters.getUserInfo,
       () => {
+        this.disconnectWebsocket()
         this.userInfo = this.$store.getters.getUserInfo
         // 加载空间列表
         this.loadSpaceList()
@@ -357,6 +358,9 @@ export default {
       })
     )
     this.listenSocket()
+    window.addEventListener('beforeunload', (e) => {
+      this.disconnectWebsocket()
+    })
   },
   methods: {
     logout() {
@@ -404,6 +408,11 @@ export default {
           this.showWarnMsg({ message: _msg.content })
           this.$store.commit('setUnreadMessageCount', 1)
         }
+      }
+    },
+    disconnectWebsocket() {
+      if (process.client) {
+        this.$disconnect()
       }
     }
   },
