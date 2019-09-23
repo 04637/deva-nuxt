@@ -25,6 +25,7 @@
           height="30px"
           class="title d-inline-block text-truncate text-left no-flex px-1"
           text
+          :title="question.title"
           :to="'/question/' + question.questionId"
           >{{ question.title }}</v-btn
         ><v-chip
@@ -37,8 +38,14 @@
         >
           <strong>已解决</strong>
         </v-chip>
-        <v-card-text class="title d-block sub--text text-truncate subtitle-1">
-          {{ $md.render(question.content) | filterHtml }}
+        <!--<v-card-text class="title d-block sub&#45;&#45;text text-truncate subtitle-1">-->
+        <!--  {{ $md.render(question.content) | filterHtml }}-->
+        <!--</v-card-text>-->
+        <v-card-text
+          v-dompurify-html:noHtml="$md.render(question.content)"
+          style="padding: 8px"
+          class="title d-block sub--text text-truncate subtitle-1"
+        >
         </v-card-text>
         <v-card-actions>
           <v-layout>
@@ -46,6 +53,7 @@
             <v-chip
               v-for="tag in question.tagInfos"
               :key="tag.tagId"
+              small
               link
               :to="'/search/' + tag.tagName"
               :title="tag.tagName"
@@ -55,13 +63,7 @@
           </v-layout>
         </v-card-actions>
       </v-flex>
-      <v-row
-        class="pr-2 ml-2"
-        cols="2"
-        justify="end"
-        align="space-between"
-        style="width:15%"
-      >
+      <v-row class="pr-2 ml-2" cols="2" justify="end" style="width:15%">
         <v-row justify="end" dense>
           <small
             v-if="question.createTime === question.modifiedTime"
@@ -73,8 +75,8 @@
             更新于 {{ question.modifiedTime | timeago }}</small
           >
         </v-row>
-        <v-row align="end" justify="end" dense style="width:100%">
-          <v-col cols="7">
+        <v-row justify="end" dense style="width:100%">
+          <v-col cols="7" align-self="end">
             <v-row justify="center">
               <v-btn
                 min-width="0"
@@ -87,9 +89,14 @@
               </v-btn>
             </v-row>
           </v-col>
-          <v-col cols="5">
-            <v-row align="center" justify="end">
-              <svg class="icon" aria-hidden="true">
+          <!--suppress HtmlDeprecatedAttribute -->
+          <v-col cols="5" align-self="end">
+            <v-row justify="end" align="end" style="font-size: 14px">
+              <svg
+                class="icon"
+                aria-hidden="true"
+                style="width:17px;height:17px; position:relative;top:-1px"
+              >
                 <use xlink:href="#icon-zuanshi"></use></svg
               >{{ question.author.reputation }}
             </v-row>

@@ -16,7 +16,7 @@
       <v-divider></v-divider>
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
-      <v-flex xs11 lg9 justify-start>
+      <v-flex xs11 lg9 justify-start shrink>
         <v-list
           v-show="questionList && questionList.length > 0"
           style="padding-top:1px"
@@ -31,23 +31,16 @@
           </div>
         </v-list>
       </v-flex>
-      <v-flex
-        md2
-        lg2
-        justify-end
-        shrink
-        hidden-sm-and-down
-        class="d-sm-none d-md-block ml-3"
-      >
+      <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
         <v-list>
           <div
             v-for="hotQuestion in hotQuestionList"
             :key="hotQuestion.questionId"
           >
             <v-list-item :to="'/question/' + hotQuestion.questionId">
-              <v-card class="d-inline-block text-truncate" flat
+              <span class="d-inline-block text-truncate"
                 >{{ hotQuestion.title }}
-              </v-card>
+              </span>
             </v-list-item>
             <v-divider></v-divider>
           </div>

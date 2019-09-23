@@ -93,24 +93,24 @@
                 <v-icon v-if="item.children">dashboard</v-icon>&nbsp;&nbsp;
               </template>
               <template v-slot:label="{ item }">
-                <v-tooltip right>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      v-if="!item.children"
-                      text
-                      depressed
-                      height="21px"
-                      class="pa-0 ma-0 no-hover-active text-truncate d-inline-block text-left no-flex"
-                      :ripple="false"
-                      :class="mini ? 'pl-0' : ''"
-                      :to="'/space/' + item.spaceId"
-                      v-on="mini ? on : ''"
-                    >
-                      {{ mini ? '...' : item.spaceName }}
-                    </v-btn>
-                  </template>
-                  <span>{{ item.spaceName }}</span>
-                </v-tooltip>
+                <!--<v-tooltip right>-->
+                <!--  <template v-slot:activator="{ on }">-->
+                <v-btn
+                  v-if="!item.children"
+                  text
+                  depressed
+                  height="21px"
+                  class="pa-0 ma-0 no-hover-active text-truncate d-inline-block text-left no-flex"
+                  :ripple="false"
+                  :class="mini ? 'pl-0' : ''"
+                  :to="'/space/' + item.spaceId"
+                  :title="item.spaceName"
+                >
+                  {{ mini ? '...' : item.spaceName }}
+                </v-btn>
+                <!--</template>-->
+                <!--<span>{{ item.spaceName }}</span>-->
+                <!--</v-tooltip>-->
 
                 <span v-if="item.children">
                   {{ item.spaceName }}
@@ -169,7 +169,7 @@
             </svg>
             <div v-if="userInfo">
               <v-menu
-                v-model="moreSpaceMenu"
+                v-model="userMenu"
                 :close-on-content-click="true"
                 open-on-hover
                 nudge-width="100"
@@ -182,7 +182,6 @@
                     x-small
                     color="primary"
                     class="d-inline-block no-flex text-truncate text-left mr-1"
-                    :to="'/user/' + userInfo.userId"
                     style="font-weight: bold"
                     >{{ userInfo.nickname }}</v-btn
                   >
@@ -195,25 +194,17 @@
                     <v-img :src="userInfo.avatar"></v-img>
                   </v-avatar>
                 </template>
-                <v-card min-width="180px" class="pa-0 pr-4">
-                  <v-row justify="space-between" align="center">
-                    <v-col cols="8" align="center" no-gutters>
-                      <v-row justify="start" align="center" class="ml-3">
-                        <span
-                          class="d-inline-block text-truncate"
-                          title="用户名"
-                          >{{ userInfo.username }}</span
-                        ></v-row
-                      ></v-col
+                <v-card min-width="180px" class="pa-0">
+                  <v-row justify="start">
+                    <span
+                      class="d-block text-truncate"
+                      title="用户名"
+                      style="padding-left: 29px"
+                      >{{ userInfo.username }}</span
                     >
-                    <v-col justify="end" cols="3" align="center" no-gutters
-                      ><v-btn outlined x-small color="primary" title="声誉">{{
-                        userInfo.reputation
-                      }}</v-btn></v-col
-                    ></v-row
-                  >
+                  </v-row>
                   <v-divider></v-divider>
-                  <v-list dense nav class="pa-0">
+                  <v-list dense nav class="pa-0" shaped>
                     <v-list-item class="pa-0 mb-0">
                       <v-list-item-content class="pa-0">
                         <v-btn
@@ -324,7 +315,7 @@ export default {
         children: []
       }
     ],
-    moreSpaceMenu: false,
+    userMenu: false,
     userInfo: null
   }),
   computed: {
@@ -346,8 +337,15 @@ export default {
     // 监听状态改变, 🐮🍺   参考 https://dev.to/viniciuskneves/watch-for-vuex-state-changes-2mgj
     this.$store.watch(
       ((state, getters) => getters.getUserInfo,
-      () => {
-        this.disconnectWebsocket()
+      (v) => {
+        // 如果前后相同, 禁止重复操作, 目的是监听用户切换
+        if (
+          v.userInfo &&
+          this.userInfo &&
+          v.userInfo.userId === this.userInfo.userId
+        ) {
+          return
+        }
         this.userInfo = this.$store.getters.getUserInfo
         // 加载空间列表
         this.loadSpaceList()
@@ -357,15 +355,17 @@ export default {
         this.connectWebsocket()
       })
     )
-    this.listenSocket()
     window.addEventListener('beforeunload', (e) => {
       this.disconnectWebsocket()
     })
+    // 请求桌面通知权限
+    this.requestNotifyPermission()
   },
   methods: {
     logout() {
       // 使外部api上的JWT Cookie失效
       this.$store.commit('setUserInfo', null)
+      this.userMenu = false
       this.$router.push({
         path: '/user/login'
       })
@@ -398,14 +398,24 @@ export default {
     connectWebsocket() {
       if (this.userInfo && process.client) {
         this.$connect(config.websocket.server + this.userInfo.userId)
+        this.listenSocket()
       }
     },
     listenSocket() {
       if (this.userInfo && process.client) {
+        // 监听前删除已有监听器
+        delete this.$options.sockets.onmessage
         this.$options.sockets.onmessage = (data) => {
           const _msg = JSON.parse(data.data)
-          // todo H5桌面通知Notification API https://juejin.im/post/59ed37f5f265da431e15eaac
-          this.showWarnMsg({ message: _msg.content })
+          this.showWarnMsg({ message: _msg.title })
+          this.desktopNotify('DEVA', {
+            body: _msg.title,
+            icon: config.domain + '/logo2.png',
+            data: {
+              ownQuestionId: _msg.ownQuestionId,
+              anchor: _msg.anchor ? _msg.anchor : ''
+            }
+          })
           this.$store.commit('setUnreadMessageCount', 1)
         }
       }
@@ -413,6 +423,55 @@ export default {
     disconnectWebsocket() {
       if (process.client) {
         this.$disconnect()
+        delete this.$options.sockets.onmessage
+      }
+    },
+    desktopNotify(title, options) {
+      if (process.server) {
+        return
+      }
+      let notice
+      // 先检查浏览器是否支持
+      if (!window.Notification) {
+      } else {
+        // 检查用户曾经是否同意接受通知
+        if (Notification.permission === 'granted') {
+          notice = new Notification(title, options) // 显示通知
+        } else if (Notification.permission === 'default') {
+          // 用户还未选择，可以询问用户是否同意发送通知
+          Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+              notice = new Notification(title, options) // 显示通知
+            } else if (permission === 'default') {
+            } else {
+              // denied
+            }
+          })
+        } else {
+          // denied 用户拒绝
+        }
+        if (notice) {
+          // notice.onclick = function() {
+          //   const _link =
+          //     config.domain +
+          //     '/question/' +
+          //     options.data.ownQuestionId +
+          //     options.data.anchor
+          //   window.open(_link, '_blank')
+          //   notice.close()
+          // }
+        }
+      }
+    },
+    requestNotifyPermission() {
+      if (Notification.permission === 'default') {
+        // 用户还未选择，可以询问用户是否同意发送通知
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+          } else if (permission === 'default') {
+          } else {
+          }
+        })
       }
     }
   },

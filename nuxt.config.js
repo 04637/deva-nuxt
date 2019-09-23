@@ -2,6 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   mode: 'universal',
+  domain: 'http://localhost:3000',
   /*
    ** Headers of the page
    */
@@ -42,6 +43,7 @@ export default {
     '~plugins/moment',
     '~plugins/filterHtml',
     '~plugins/common',
+    '~plugins/dompurify',
     { src: '~plugins/websocket', ssr: false },
     { src: '~plugins/notice', ssr: false },
     { src: '~plugins/quill-editor', ssr: false },

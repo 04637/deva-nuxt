@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-layout column>
+    <v-layout column shrink>
       <v-layout>
         <v-card-title>
           安全设置

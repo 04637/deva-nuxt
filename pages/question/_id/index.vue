@@ -87,7 +87,9 @@
                         编辑问题
                       </v-btn>
                     </v-layout>
-                    <div v-html="$md.render(questionDetail.content)"></div>
+                    <div
+                      v-dompurify-html="$md.render(questionDetail.content)"
+                    ></div>
                     <!--color="cyan"  知更鸟蓝-->
                     <v-layout v-if="questionDetail.similarMarkId" align-center>
                       <v-alert
@@ -136,6 +138,7 @@
                         <v-chip
                           v-for="tag in questionDetail.tagInfos"
                           :key="tag.tagId"
+                          small
                           link
                           :to="'/search/' + tag.tagName"
                           :title="tag.tagName"
@@ -227,6 +230,7 @@
                       <v-layout justify-end>
                         <v-btn
                           text
+                          small
                           @click="
                             $set(
                               showCommentInput,
@@ -324,6 +328,7 @@
                           v-model="comment.currentComment"
                           append-outer-icon="send"
                           autofocus
+                          class="pt-0 mt-0"
                           :rules="[rules.requiredComment, rules.max200]"
                           @keyup.enter.native="
                             sendComment(questionDetail.questionId)
@@ -395,7 +400,7 @@
                         </v-btn>
                       </v-layout>
                       <!--eslint-disable-next-line-->
-                    <div v-html="$md.render(answer.content)"></div>
+                    <div v-dompurify-html="$md.render(answer.content)"></div>
                       <v-card-actions>
                         <v-layout justify-end>
                           <v-card
@@ -440,10 +445,7 @@
                                     >
                                   </v-layout>
                                   <v-layout justify-end align-end>
-                                    <svg
-                                      class="icon heat-icon"
-                                      aria-hidden="true"
-                                    >
+                                    <svg class="icon" aria-hidden="true">
                                       <use
                                         xlink:href="#icon-zuanshi"
                                       ></use></svg
@@ -457,9 +459,10 @@
                       </v-card-actions>
                       <!-- 评论区 -->
                       <v-divider></v-divider>
-                      <v-layout justify-center column>
+                      <v-layout justify-center column class="mt-2">
                         <v-layout justify-end>
                           <v-btn
+                            small
                             text
                             @click="
                               $set(
@@ -551,6 +554,7 @@
                           <v-text-field
                             ref="answerRef"
                             v-model="comment.currentComment"
+                            class="pt-0 mt-0"
                             append-outer-icon="send"
                             autofocus
                             :rules="[rules.requiredComment, rules.max200]"
@@ -611,7 +615,7 @@
             </v-flex>
           </v-layout>
         </v-flex>
-        <v-flex fill-height xs1 lg2 justify-end shrink class="mt-4">
+        <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
           <v-list>
             <div>
               <v-list-item>

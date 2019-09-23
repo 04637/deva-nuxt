@@ -178,9 +178,6 @@
                     item.questionTitle
                   }}</router-link>
                 </template>
-                <template #item.content="{item}">
-                  {{ $md.render(item.content) | filterHtml }}
-                </template>
                 <template #item.isAccepted="{item}">
                   <v-icon v-if="item.isAccepted" color="success" title="已采纳"
                     >check</v-icon
@@ -278,12 +275,6 @@ export default {
           align: 'left',
           sortable: false,
           value: 'questionTitle'
-        },
-        {
-          text: '回答内容',
-          align: 'left',
-          sortable: false,
-          value: 'content'
         },
         { text: '状态', value: 'isAccepted', sortable: false }
       ],

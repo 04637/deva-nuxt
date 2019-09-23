@@ -1,20 +1,22 @@
 <template>
   <v-app>
     <v-app>
-      <v-layout justify-end shrink>
-        <v-col cols="3">
-          <v-btn to="find">提问之前，不妨先搜索一下？</v-btn>
+      <v-layout justify-space-between shrink>
+        <v-col cols="3" justify="start">
+          <v-btn small text to="find">提问之前，不妨先搜索一下？</v-btn>
         </v-col>
         <v-col cols="5">
           <v-btn
             text
             nuxt
             class="text-capitalize"
+            small
             style="float: right"
+            :title="useMarkdown ? '切换富文本编辑器' : '切换markdown编辑器'"
             @click="useMarkdown = !useMarkdown"
-            ><v-icon small>arrow_forward_ios</v-icon>&nbsp;{{
-              useMarkdown ? '富文本编辑器' : 'Markdown 编辑器'
-            }}</v-btn
+            ><v-icon>{{
+              useMarkdown ? 'mdi-markdown' : 'mdi-textbox'
+            }}</v-icon></v-btn
           >
         </v-col>
       </v-layout>
@@ -31,7 +33,7 @@
             required
             :rules="[rules.min10, rules.max50]"
           ></v-text-field>
-          <v-layout v-show="useMarkdown" justify-space-around class="mt-2">
+          <v-layout v-show="useMarkdown" justify-space-around class="mt-1">
             <v-flex xs6>
               <v-textarea
                 id="markdown-edit"
@@ -47,8 +49,8 @@
             <v-flex xs6>
               <div
                 id="markdown-preview"
+                v-dompurify-html="$md.render(source)"
                 class="simple-scroll"
-                v-html="$md.render(source)"
               ></div>
             </v-flex>
           </v-layout>
@@ -65,7 +67,7 @@
               >
               </quill-editor>
             </no-ssr>
-            <v-row justify="space-between" class="mt-1 mr-1 ml-1">
+            <v-row justify="space-between" class="mr-1 ml-1">
               <div class="v-messages v-messages__message error--text">
                 {{ quillErrorMessage === true ? '' : quillErrorMessage }}
               </div>
@@ -74,7 +76,7 @@
               </div>
             </v-row>
           </div>
-          <v-layout class="mt-5">
+          <v-layout>
             <v-combobox
               ref="tags"
               v-model="selectedTags"
@@ -206,7 +208,7 @@ export default {
     title: null,
     useMarkdown: true,
     maxLength: 3000,
-    source: '# h1 Heading 8-)',
+    source: '# 右上角可切换编辑器哦 8-)',
     selectedTags: [],
     tags: [],
     content: `<h1>试试选中来设置样式哦</h1>`,
