@@ -1,10 +1,10 @@
 <template>
-  <v-app justify-center align-start>
-    <v-layout column>
+  <v-app justify-center align-start shrink>
+    <v-layout column shrink>
       <v-card-title>空间创建</v-card-title>
       <v-divider></v-divider>
     </v-layout>
-    <v-layout justify-center>
+    <v-layout justify-center shrink>
       <v-card class="pa-8 mt-6" width="520px">
         <logo type="form"></logo>
         <v-form ref="form">
