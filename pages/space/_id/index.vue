@@ -1,142 +1,106 @@
 <template>
-  <v-app>
-    <v-treeview
-      v-show="spaceList[0].children && spaceList[0].children.length > 0"
-      item-key="spaceId"
-      item-text="spaceName"
-      :items="spaceList"
-      rounded
-      open-on-click
-      transition
-    >
-    </v-treeview>
-    <v-treeview :items="items" transition open-on-click></v-treeview>
+  <v-app id="home">
+    <v-layout column shrink>
+      <v-layout>
+        <v-flex md6 xs4 shrink hidden-sm-and-down>
+          <v-card-title
+            ><v-btn text outlined color="private" small
+              ><v-icon small>visibility_off</v-icon
+              ><strong class="ml-1">{{ $route.query.spaceName }}</strong></v-btn
+            ></v-card-title
+          >
+        </v-flex>
+        <v-flex md3 align-self-end>
+          <v-tabs centered height="38" @change="loadQuestions">
+            <v-tab @click="listType = 'RECENT'">最新</v-tab>
+            <v-tab @click="listType = 'UN_RESOLVED'">待解决</v-tab>
+            <v-tab @click="listType = 'WEEK_HOT'">周榜</v-tab>
+            <v-tab @click="listType = 'MONTH_HOT'">月榜</v-tab>
+          </v-tabs>
+        </v-flex>
+      </v-layout>
+      <v-divider></v-divider>
+    </v-layout>
+    <v-layout justify-center justify-space-around class="mt-4">
+      <v-flex xs11 lg9 justify-start shrink>
+        <v-list
+          v-show="questionList && questionList.length > 0"
+          style="padding-top:1px"
+        >
+          <div v-for="question in questionList" :key="question.questionId">
+            <v-list-item class="mt-2">
+              <QuestionCard :question="question" />
+            </v-list-item>
+            <div
+              :class="$vuetify.theme.dark ? 'dark-divider' : 'light-divider'"
+            ></div>
+          </div>
+        </v-list>
+      </v-flex>
+      <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
+        <v-list>
+          <div
+            v-for="hotQuestion in hotQuestionList"
+            :key="hotQuestion.questionId"
+          >
+            <v-list-item :to="'/question/' + hotQuestion.questionId">
+              <span class="d-inline-block text-truncate"
+                >{{ hotQuestion.title }}
+              </span>
+            </v-list-item>
+            <v-divider></v-divider>
+          </div>
+        </v-list>
+      </v-flex>
+    </v-layout>
   </v-app>
 </template>
-
 <script>
+import QuestionCard from '../../../components/QuestionCard'
 export default {
-  name: 'App',
-  props: {},
-  data: () => ({
-    mini: false,
-    drawer: null,
-    menuOpen: false,
-    keepAliveRouters: ['question-ask', 'user-signUp', 'user-login'],
-    keywords: null,
-    spaceList: [
-      {
-        spaceId: 1,
-        spaceName: '我的空间',
-        children: []
-      }
-    ],
-    moreSpaceMenu: false,
-    items: [
-      {
-        id: 1,
-        name: 'Applications :',
-        children: [
-          { id: 2, name: '世界是你的 : app' },
-          { id: 3, name: '世界是你的 : app' },
-          { id: 4, name: '世界是你的 : app' }
-        ]
-      },
-      {
-        id: 5,
-        name: 'Documents :',
-        children: [
-          {
-            id: 6,
-            name: 'vuetify :',
-            children: [
-              {
-                id: 7,
-                name: 'src :',
-                children: [
-                  { id: 8, name: 'index : ts' },
-                  { id: 9, name: 'bootstrap : ts' }
-                ]
-              }
-            ]
-          },
-          {
-            id: 10,
-            name: 'material2 :',
-            children: [
-              {
-                id: 11,
-                name: 'src :',
-                children: [
-                  { id: 12, name: 'v-btn : ts' },
-                  { id: 13, name: 'v-card : ts' },
-                  { id: 14, name: 'v-window : ts' }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        id: 15,
-        name: 'Downloads :',
-        children: [
-          { id: 16, name: 'October : pdf' },
-          { id: 17, name: 'November : pdf' },
-          { id: 18, name: 'Tutorial : html' }
-        ]
-      },
-      {
-        id: 19,
-        name: 'Videos :',
-        children: [
-          {
-            id: 20,
-            name: 'Tutorials :',
-            children: [
-              { id: 21, name: 'Basic layouts : mp4' },
-              { id: 22, name: 'Advanced techniques : mp4' },
-              { id: 23, name: 'All about app : dir' }
-            ]
-          },
-          { id: 24, name: 'Intro : mov' },
-          { id: 25, name: 'Conference introduction : avi' }
-        ]
-      }
-    ]
-  }),
-  computed: {
-    needKeepAlive() {
-      return this.keepAliveRouters.includes(this.$route.name)
-    },
-    unReadMessageCount() {
-      return 0
-    }
+  components: {
+    QuestionCard
   },
-  watch: {},
-  created() {},
-  mounted() {},
+  data: () => ({
+    listType: 'RECENT',
+    questionList: null,
+    hotQuestionList: null,
+    page: {
+      current: 1,
+      size: 15
+    }
+  }),
+  created() {
+    this.loadHotQuestions()
+  },
   methods: {
-    logout() {
-      // 使外部api上的JWT Cookie失效
-      this.$store.commit('setUserInfo', null)
-      this.$router.push({
-        path: '/user/login'
-      })
+    loadQuestions() {
+      this.$axios
+        .$post('/questionInfo/listSpaceQuestions', {
+          current: this.page.current,
+          size: this.page.size,
+          listType: this.listType,
+          spaceId: this.$route.params.id
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.questionList = resp.data.records
+          } else {
+            this.questionList = null
+          }
+        })
     },
-    search() {
-      this.$router.push({
-        path: '/search/' + this.keywords
-      })
+    loadHotQuestions() {
+      this.$axios
+        .$post('/questionInfo/listQuestions', {
+          current: 1,
+          size: 15,
+          listType: 'HOT'
+        })
+        .then((resp) => {
+          this.hotQuestionList = resp.data.records
+        })
     }
   }
 }
 </script>
-
-<style></style>
-<style scoped>
-.logo {
-  width: 100px;
-  display: block;
-}
-</style>

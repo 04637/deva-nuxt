@@ -1,5 +1,5 @@
 <template>
-  <v-card flat exact width="100vw" class="px-3">
+  <v-card flat exact width="100vw" class="px-3 pb-1">
     <v-layout>
       <v-layout
         column
@@ -38,9 +38,6 @@
         >
           <strong>已解决</strong>
         </v-chip>
-        <!--<v-card-text class="title d-block sub&#45;&#45;text text-truncate subtitle-1">-->
-        <!--  {{ $md.render(question.content) | filterHtml }}-->
-        <!--</v-card-text>-->
         <v-card-text
           v-dompurify-html:noHtml="$md.render(question.content)"
           style="padding: 8px"
@@ -76,12 +73,13 @@
           >
         </v-row>
         <v-row justify="end" dense style="width:100%">
-          <v-col cols="7" align-self="end">
-            <v-row justify="center">
+          <v-col cols="6" align-self="end">
+            <v-row justify="end">
               <v-btn
                 min-width="0"
                 text
-                class="orange--text text-truncate d-inline-block text-left no-flex px-1"
+                color="primary"
+                class="text-truncate d-inline-block text-left no-flex px-1"
                 :to="'/user/' + question.author.userId"
                 height="21px"
               >
@@ -89,6 +87,7 @@
               </v-btn>
             </v-row>
           </v-col>
+          <v-spacer></v-spacer>
           <!--suppress HtmlDeprecatedAttribute -->
           <v-col cols="5" align-self="end">
             <v-row justify="end" align="end" style="font-size: 14px">

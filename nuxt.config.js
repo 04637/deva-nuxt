@@ -97,13 +97,15 @@ export default {
           success: colors.green.accent3,
           sub: colors.grey.lighten1,
           background_color: '#303030',
-          new_orange: '#d14435'
+          new_orange: '#d14435',
+          private: colors.pink
         },
         light: {
           // primary: colors.cyan,
           primary: '#01a687',
           background_color: '#fafafa',
-          new_orange: '#ff6600'
+          new_orange: '#ff6600',
+          private: colors.pink
         }
       }
     }

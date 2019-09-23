@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app>
-      <v-layout column>
+      <v-layout column shrink>
         <v-card-title
           >{{ questionDetail.title }}&nbsp;&nbsp;
           <v-chip
@@ -400,7 +400,7 @@
                         </v-btn>
                       </v-layout>
                       <!--eslint-disable-next-line-->
-                    <div v-dompurify-html="$md.render(answer.content)"></div>
+                      <div v-dompurify-html="$md.render(answer.content)"></div>
                       <v-card-actions>
                         <v-layout justify-end>
                           <v-card

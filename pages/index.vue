@@ -3,14 +3,38 @@
     <v-layout column shrink>
       <v-layout>
         <v-flex md6 xs4 shrink hidden-sm-and-down>
-          <v-card-title>最新问题</v-card-title>
+          <v-card-title>{{ currentTitle }}</v-card-title>
         </v-flex>
         <v-flex md3 align-self-end>
           <v-tabs centered height="38" @change="loadQuestions">
-            <v-tab @click="listType = 'RECENT'">最新</v-tab>
-            <v-tab @click="listType = 'UN_RESOLVED'">待解决</v-tab>
-            <v-tab @click="listType = 'WEEK_HOT'">周榜</v-tab>
-            <v-tab @click="listType = 'MONTH_HOT'">月榜</v-tab>
+            <v-tab
+              @click="
+                listType = 'RECENT'
+                currentTitle = '最新问题'
+              "
+              >最新</v-tab
+            >
+            <v-tab
+              @click="
+                listType = 'UN_RESOLVED'
+                currentTitle = '待解决'
+              "
+              >待解决</v-tab
+            >
+            <v-tab
+              @click="
+                listType = 'WEEK_HOT'
+                currentTitle = '一周热门'
+              "
+              >周榜</v-tab
+            >
+            <v-tab
+              @click="
+                listType = 'MONTH_HOT'
+                currentTitle = '月度榜单'
+              "
+              >月榜</v-tab
+            >
           </v-tabs>
         </v-flex>
       </v-layout>
@@ -60,6 +84,7 @@ export default {
     listType: 'RECENT',
     questionList: null,
     hotQuestionList: null,
+    currentTitle: '最新问题',
     page: {
       current: 1,
       size: 15

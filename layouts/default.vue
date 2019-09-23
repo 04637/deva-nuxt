@@ -93,25 +93,22 @@
                 <v-icon v-if="item.children">dashboard</v-icon>&nbsp;&nbsp;
               </template>
               <template v-slot:label="{ item }">
-                <!--<v-tooltip right>-->
-                <!--  <template v-slot:activator="{ on }">-->
                 <v-btn
                   v-if="!item.children"
                   text
+                  width="100%"
                   depressed
                   height="21px"
                   class="pa-0 ma-0 no-hover-active text-truncate d-inline-block text-left no-flex"
                   :ripple="false"
                   :class="mini ? 'pl-0' : ''"
-                  :to="'/space/' + item.spaceId"
+                  :to="
+                    '/space/' + item.spaceId + '?spaceName=' + item.spaceName
+                  "
                   :title="item.spaceName"
                 >
                   {{ mini ? '...' : item.spaceName }}
                 </v-btn>
-                <!--</template>-->
-                <!--<span>{{ item.spaceName }}</span>-->
-                <!--</v-tooltip>-->
-
                 <span v-if="item.children">
                   {{ item.spaceName }}
                 </span>
@@ -195,15 +192,6 @@
                   </v-avatar>
                 </template>
                 <v-card min-width="180px" class="pa-0">
-                  <v-row justify="start">
-                    <span
-                      class="d-block text-truncate"
-                      title="用户名"
-                      style="padding-left: 29px"
-                      >{{ userInfo.username }}</span
-                    >
-                  </v-row>
-                  <v-divider></v-divider>
                   <v-list dense nav class="pa-0" shaped>
                     <v-list-item class="pa-0 mb-0">
                       <v-list-item-content class="pa-0">
@@ -364,6 +352,7 @@ export default {
   methods: {
     logout() {
       // 使外部api上的JWT Cookie失效
+      this.disconnectWebsocket()
       this.$store.commit('setUserInfo', null)
       this.userMenu = false
       this.$router.push({
@@ -407,9 +396,12 @@ export default {
         delete this.$options.sockets.onmessage
         this.$options.sockets.onmessage = (data) => {
           const _msg = JSON.parse(data.data)
-          this.showWarnMsg({ message: _msg.title })
+          const _msgTitle = this.$options.filters.filterHtml(_msg.title)
+          this.showWarnMsg({
+            message: _msgTitle
+          })
           this.desktopNotify('DEVA', {
-            body: _msg.title,
+            body: _msgTitle,
             icon: config.domain + '/logo2.png',
             data: {
               ownQuestionId: _msg.ownQuestionId,
@@ -450,16 +442,17 @@ export default {
         } else {
           // denied 用户拒绝
         }
+        // todo 无效
         if (notice) {
-          // notice.onclick = function() {
-          //   const _link =
-          //     config.domain +
-          //     '/question/' +
-          //     options.data.ownQuestionId +
-          //     options.data.anchor
-          //   window.open(_link, '_blank')
-          //   notice.close()
-          // }
+          notice.onclick = function(e) {
+            const _link =
+              config.domain +
+              '/question/' +
+              options.data.ownQuestionId +
+              options.data.anchor
+            window.open(_link, '_blank')
+            notice.close()
+          }
         }
       }
     },
