@@ -1,12 +1,12 @@
 <template>
   <v-app id="home">
     <v-layout column shrink>
-      <v-layout>
+      <v-layout v-if="spaceInfo">
         <v-flex md6 xs4 shrink hidden-sm-and-down>
           <v-card-title
             ><v-btn text outlined color="private" small
               ><v-icon small>visibility_off</v-icon
-              ><strong class="ml-1">{{ $route.query.spaceName }}</strong></v-btn
+              ><strong class="ml-1">{{ spaceInfo.spaceName }}</strong></v-btn
             >
             <v-tooltip top>
               <template v-slot:activator="{ on }">
@@ -81,6 +81,7 @@ export default {
     listType: 'RECENT',
     questionList: null,
     hotQuestionList: null,
+    spaceInfo: null,
     isOwner: false,
     page: {
       current: 1,
@@ -88,6 +89,7 @@ export default {
     }
   }),
   created() {
+    this.loadSpaceInfo()
     this.loadHotQuestions()
   },
   methods: {
@@ -124,7 +126,9 @@ export default {
           spaceId: this.$route.params.id
         })
         .then((resp) => {
-          console.log(resp)
+          if (resp.succeed) {
+            this.spaceInfo = resp.data
+          }
         })
     }
   }
