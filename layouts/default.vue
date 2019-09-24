@@ -102,9 +102,7 @@
                   class="pa-0 ma-0 no-hover-active text-truncate d-inline-block text-left no-flex"
                   :ripple="false"
                   :class="mini ? 'pl-0' : ''"
-                  :to="
-                    '/space/' + item.spaceId + '?spaceName=' + item.spaceName
-                  "
+                  :to="'/space/' + item.spaceId"
                   :title="item.spaceName"
                 >
                   {{ mini ? '...' : item.spaceName }}

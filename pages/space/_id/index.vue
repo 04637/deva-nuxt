@@ -7,10 +7,26 @@
             ><v-btn text outlined color="private" small
               ><v-icon small>visibility_off</v-icon
               ><strong class="ml-1">{{ $route.query.spaceName }}</strong></v-btn
-            ></v-card-title
-          >
+            >
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-btn class="ml-5" text small icon v-on="on"
+                  ><v-icon small>mdi-comment-question</v-icon></v-btn
+                >
+              </template>
+              <span>发布问题</span>
+            </v-tooltip>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-btn text small icon v-on="on"
+                  ><v-icon small>mdi-settings</v-icon></v-btn
+                >
+              </template>
+              <span>管理空间</span>
+            </v-tooltip>
+          </v-card-title>
         </v-flex>
-        <v-flex md3 align-self-end>
+        <v-flex md5 lg3 align-self-end>
           <v-tabs centered height="38" @change="loadQuestions">
             <v-tab @click="listType = 'RECENT'">最新</v-tab>
             <v-tab @click="listType = 'UN_RESOLVED'">待解决</v-tab>
@@ -65,6 +81,7 @@ export default {
     listType: 'RECENT',
     questionList: null,
     hotQuestionList: null,
+    isOwner: false,
     page: {
       current: 1,
       size: 15
@@ -99,6 +116,15 @@ export default {
         })
         .then((resp) => {
           this.hotQuestionList = resp.data.records
+        })
+    },
+    loadSpaceInfo() {
+      this.$axios
+        .$post('/spaceInfo/getSpaceInfo', {
+          spaceId: this.$route.params.id
+        })
+        .then((resp) => {
+          console.log(resp)
         })
     }
   }

@@ -6,7 +6,7 @@
           >{{ questionDetail.title }}&nbsp;&nbsp;
           <v-chip
             v-if="questionDetail.status === 1"
-            color="green"
+            color="primary"
             small
             label
             outlined

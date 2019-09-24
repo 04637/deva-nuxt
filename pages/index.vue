@@ -5,7 +5,7 @@
         <v-flex md6 xs4 shrink hidden-sm-and-down>
           <v-card-title>{{ currentTitle }}</v-card-title>
         </v-flex>
-        <v-flex md3 align-self-end>
+        <v-flex md5 lg3 align-self-end>
           <v-tabs centered height="38" @change="loadQuestions">
             <v-tab
               @click="
