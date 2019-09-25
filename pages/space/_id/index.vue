@@ -10,7 +10,18 @@
             >
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <v-btn class="ml-5" text small icon v-on="on"
+                <v-btn
+                  :to="
+                    '/question/ask?spaceId=' +
+                      spaceInfo.spaceId +
+                      '&spaceName=' +
+                      spaceInfo.spaceName
+                  "
+                  class="ml-5"
+                  text
+                  small
+                  icon
+                  v-on="on"
                   ><v-icon small>mdi-comment-question</v-icon></v-btn
                 >
               </template>

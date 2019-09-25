@@ -98,14 +98,16 @@ export default {
           sub: colors.grey.lighten1,
           background_color: '#303030',
           new_orange: '#d14435',
-          private: colors.pink
+          private: colors.pink,
+          my_gray: '#d3d3d3'
         },
         light: {
           // primary: colors.cyan,
           primary: '#01a687',
           background_color: '#fafafa',
           new_orange: '#ff6600',
-          private: colors.pink
+          private: colors.pink,
+          my_gray: '#808080'
         }
       }
     }

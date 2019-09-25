@@ -1,5 +1,11 @@
 <template>
-  <v-card flat exact width="100vw" class="px-3 pb-1">
+  <v-card
+    flat
+    exact
+    width="100vw"
+    class="px-3 pb-1 no-ripple"
+    :to="'/question/' + question.questionId"
+  >
     <v-layout>
       <v-layout
         column
@@ -23,7 +29,7 @@
       <v-flex xs9>
         <v-btn
           height="30px"
-          class="title d-inline-block text-truncate text-left no-flex px-1"
+          class="no-hover-active title d-inline-block text-truncate text-left no-flex px-1"
           text
           :title="question.title"
           :to="'/question/' + question.questionId"

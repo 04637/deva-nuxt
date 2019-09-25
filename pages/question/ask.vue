@@ -123,7 +123,25 @@
               </template>
             </v-combobox>
           </v-layout>
-          <v-layout justify-end>
+          <v-layout
+            :class="
+              $route.query.spaceId ? 'justify-space-between' : 'justify-end'
+            "
+          >
+            <v-card-text v-if="$route.query.spaceId" class="my_gray--text">
+              该问题将被发布至→
+              <v-btn
+                text
+                outlined
+                color="private"
+                small
+                :to="'/space/' + $route.query.spaceId"
+                ><v-icon small>visibility_off</v-icon
+                ><strong class="ml-1">{{
+                  $route.query.spaceName
+                }}</strong></v-btn
+              ></v-card-text
+            >
             <v-btn
               outlined
               accent
@@ -188,7 +206,7 @@
       </v-card>
     </v-dialog>
     <InfoDialog
-      :msg="['提交成功', '提交失败']"
+      :msg="['提交成功', askResult.resp && askResult.resp.msg]"
       :succeed="askResult.resp != null && askResult.resp.succeed"
       :dialog="askResult.dialog"
       @update:dialog="askResult.dialog = $event"
@@ -345,6 +363,7 @@ export default {
       const _this = this
       this.$axios
         .$post('/questionInfo/askQuestion', {
+          spaceId: this.$route.query.spaceId,
           title: _this.title,
           content: _this.useMarkdown ? _this.source : _this.content,
           tagIds: _this.selectedTags
@@ -482,5 +501,9 @@ export default {
     height: 10rem;
     overflow-y: auto;
   }
+}
+/*编辑器操作区置顶*/
+.ql-tooltip {
+  z-index: 9999;
 }
 </style>

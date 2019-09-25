@@ -123,9 +123,13 @@ pre>code{
   padding-left: 0 !important;
 }
 
-/*去掉按钮样式*/
+/*去掉悬浮按钮样式*/
 .no-hover-active::before,.no-hover-active:focus::before,.no-hover-active::before{
   opacity: 0 !important;
+}
+/*去除点击样式*/
+.no-ripple>.v-ripple__container{
+  display:none;
 }
 
 

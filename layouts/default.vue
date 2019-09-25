@@ -98,7 +98,8 @@
                   text
                   width="100%"
                   depressed
-                  height="21px"
+                  height="35px"
+                  style="line-height: 35px"
                   class="pa-0 ma-0 no-hover-active text-truncate d-inline-block text-left no-flex"
                   :ripple="false"
                   :class="mini ? 'pl-0' : ''"
