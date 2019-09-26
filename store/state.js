@@ -1,4 +1,5 @@
 export default () => ({
   userInfo: null,
-  unReadMessageCount: 0
+  unReadMessageCount: 0,
+  errorMsg: ''
 })

@@ -1,18 +1,16 @@
 <template>
-  <v-app justify-center align-start shrink>
+  <v-app v-if="spaceInfo" justify-center align-start shrink>
     <v-layout column shrink>
       <v-card-title>空间管理</v-card-title>
       <v-divider></v-divider>
     </v-layout>
-    <v-layout justify-center shrink>
+    <v-layout justify-space-around shrink>
       <v-card class="pa-8 mt-6" width="520px">
-        <logo type="form"></logo>
         <v-form ref="form">
           <v-layout justify-space-around column class="mt-3">
             <v-layout class="mt-4">
               <v-text-field
-                v-model="spaceName"
-                hint="空间的名称"
+                v-model="spaceInfo.spaceName"
                 :counter="20"
                 label="空间名"
                 outlined
@@ -22,8 +20,7 @@
             </v-layout>
             <v-layout class="mt-4">
               <v-textarea
-                v-model="description"
-                hint="空间的简短描述"
+                v-model="spaceInfo.description"
                 :counter="200"
                 label="空间描述"
                 outlined
@@ -38,12 +35,14 @@
                 depressed
                 min-width="150px"
                 :loading="createResult.loading"
-                @click="createSpace"
-                >创建空间</v-btn
+                >更新空间信息</v-btn
               >
             </v-layout>
           </v-layout>
         </v-form>
+      </v-card>
+      <v-card>
+        <v-list> </v-list>
       </v-card>
     </v-layout>
     <InfoDialog
@@ -57,44 +56,36 @@
 </template>
 <script>
 import InfoDialog from '../../components/InfoDialog'
-import Logo from '../../components/Logo'
 export default {
   components: {
-    InfoDialog,
-    Logo
+    InfoDialog
   },
   middleware: 'authenticated',
   data: () => ({
-    rules: {
-      min: (v) => (v && v.length >= 2) || '最少两个字符',
-      max: (v) => (v && v.length <= 20) || '最多20个字符'
-    },
-    spaceName: null,
-    description: null,
+    spaceInfo: null,
     createResult: {
       loading: false,
       resp: null,
       dialog: false
+    },
+    rules: {
+      min: (v) => (v && v.length >= 2) || '最少两个字符',
+      max: (v) => (v && v.length <= 20) || '最多20个字符'
     }
   }),
+  created() {
+    this.loadSpaceInfo()
+  },
   methods: {
-    createSpace() {
-      if (!this.$refs.form.validate()) {
-        return false
-      }
-      this.createResult.loading = true
+    loadSpaceInfo() {
       this.$axios
-        .$post('/spaceInfo/createSpace', {
-          spaceName: this.spaceName,
-          description: this.description
+        .$post('/spaceInfo/getSpaceDetail', {
+          spaceId: this.$route.query.spaceId
         })
         .then((resp) => {
-          this.createResult.dialog = true
-          this.createResult.loading = false
-          this.createResult.resp = resp
-        })
-        .catch((e) => {
-          this.createResult.loading = false
+          if (resp.succeed) {
+            this.spaceInfo = resp.data
+          }
         })
     }
   }

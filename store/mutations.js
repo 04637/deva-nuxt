@@ -11,5 +11,8 @@ export default {
     if (state.userInfo) {
       state.unReadMessageCount = m
     }
+  },
+  setErrorMsg(state, msg) {
+    state.errorMsg = msg
   }
 }

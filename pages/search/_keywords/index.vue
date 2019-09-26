@@ -2,7 +2,7 @@
   <v-app>
     <v-layout column shrink>
       <v-layout>
-        <v-flex md6 xs4 shrink hidden-sm-and-down>
+        <v-flex md7 xs4 shrink hidden-sm-and-down>
           <v-card-title>{{ $route.params.keywords }}</v-card-title>
         </v-flex>
         <v-flex md5 lg3 align-self-end>
@@ -17,19 +17,10 @@
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
       <v-flex xs11 lg9 justify-start shrink>
-        <v-list
-          v-show="questionList && questionList.length > 0"
-          style="padding-top:1px"
-        >
-          <div v-for="question in questionList" :key="question.questionId">
-            <v-list-item class="mt-2">
-              <QuestionCard :question="question" />
-            </v-list-item>
-            <div
-              :class="$vuetify.theme.dark ? 'dark-divider' : 'light-divider'"
-            ></div>
-          </div>
-        </v-list>
+        <QuestionCardList
+          v-if="questionList"
+          :question-list="questionList"
+        ></QuestionCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
         <v-list>
@@ -50,10 +41,10 @@
   </v-app>
 </template>
 <script>
-import QuestionCard from '../../../components/QuestionCard'
+import QuestionCardList from '../../../components/QuestionCardList'
 export default {
   components: {
-    QuestionCard
+    QuestionCardList
   },
   data: () => ({
     listType: null,

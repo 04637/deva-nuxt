@@ -10,5 +10,8 @@ export default {
   },
   getUnReadMessageCount(state) {
     return state.userInfo ? state.unReadMessageCount : null
+  },
+  getErrorMsg(state) {
+    return state.errorMsg
   }
 }

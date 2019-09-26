@@ -2,7 +2,7 @@
   <v-app id="home">
     <v-layout column shrink>
       <v-layout v-if="spaceInfo">
-        <v-flex md6 xs4 shrink hidden-sm-and-down>
+        <v-flex md7 xs4 shrink hidden-sm-and-down>
           <v-card-title
             ><v-btn text outlined color="private" small
               ><v-icon small>visibility_off</v-icon
@@ -29,7 +29,12 @@
             </v-tooltip>
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <v-btn text small icon v-on="on"
+                <v-btn
+                  text
+                  small
+                  icon
+                  :to="'/space/manageSpace?spaceId=' + spaceInfo.spaceId"
+                  v-on="on"
                   ><v-icon small>mdi-settings</v-icon></v-btn
                 >
               </template>
@@ -50,19 +55,10 @@
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
       <v-flex xs11 lg9 justify-start shrink>
-        <v-list
-          v-show="questionList && questionList.length > 0"
-          style="padding-top:1px"
-        >
-          <div v-for="question in questionList" :key="question.questionId">
-            <v-list-item class="mt-2">
-              <QuestionCard :question="question" />
-            </v-list-item>
-            <div
-              :class="$vuetify.theme.dark ? 'dark-divider' : 'light-divider'"
-            ></div>
-          </div>
-        </v-list>
+        <QuestionCardList
+          v-if="questionList"
+          :question-list="questionList"
+        ></QuestionCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
         <v-list>
@@ -83,10 +79,10 @@
   </v-app>
 </template>
 <script>
-import QuestionCard from '../../../components/QuestionCard'
+import QuestionCardList from '../../../components/QuestionCardList'
 export default {
   components: {
-    QuestionCard
+    QuestionCardList
   },
   data: () => ({
     listType: 'RECENT',

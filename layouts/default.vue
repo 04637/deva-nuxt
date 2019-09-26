@@ -276,6 +276,11 @@
           </v-col>
         </v-row>
       </v-footer>
+      <ErrorDialog
+        :dialog="errorInfo.dialog"
+        @update:dialog="errorInfo.dialog = $event"
+      >
+      </ErrorDialog>
     </v-app>
   </div>
 </template>
@@ -284,10 +289,12 @@
 import Logo from '../components/Logo'
 // https://github.com/nuxt/nuxt.js/issues/319
 import config from '../nuxt.config.js'
+import ErrorDialog from '../components/ErrorDialog'
 export default {
   name: 'App',
   components: {
-    Logo
+    Logo,
+    ErrorDialog
   },
   data: () => ({
     mini: false,
@@ -303,7 +310,11 @@ export default {
       }
     ],
     userMenu: false,
-    userInfo: null
+    userInfo: null,
+    errorInfo: {
+      dialog: false,
+      msg: ''
+    }
   }),
   computed: {
     needKeepAlive() {
@@ -322,6 +333,14 @@ export default {
   mounted() {
     this.loadSpaceList()
     // 监听状态改变, 🐮🍺   参考 https://dev.to/viniciuskneves/watch-for-vuex-state-changes-2mgj
+    this.$store.watch(
+      ((state, getters) => getters.getErrorMsg,
+      (v) => {
+        if (v.errorMsg) {
+          this.errorInfo.dialog = true
+        }
+      })
+    )
     this.$store.watch(
       ((state, getters) => getters.getUserInfo,
       (v) => {

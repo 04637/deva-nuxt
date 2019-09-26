@@ -28,6 +28,8 @@ export default function({ store, redirect, app: { $axios } }) {
       Cookie.remove('userInfo')
       store.commit('setUserInfo', null)
       redirect('/user/login')
+    } else if (error.response && error.response.status === 403) {
+      store.commit('setErrorMsg', error.response.data)
     }
   })
 }

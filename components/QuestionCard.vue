@@ -3,7 +3,7 @@
     flat
     exact
     width="100vw"
-    class="px-3 pb-1 no-ripple"
+    class="px-3 pr-5 py-1 pt-2 no-ripple"
     :to="'/question/' + question.questionId"
   >
     <v-layout>
