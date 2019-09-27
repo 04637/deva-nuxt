@@ -39,10 +39,10 @@
                 id="markdown-edit"
                 v-model="source"
                 no-resize
-                outlined
                 counter="3000"
                 full-height
                 rows="30"
+                solo
                 :rules="[rules.max3000, rules.min20]"
               ></v-textarea>
             </v-flex>
@@ -62,12 +62,11 @@
                 v-model="content"
                 :options="editorOption"
                 class="mt-2"
-                style="border-radius: 5px"
                 @change="onEditorChange($event)"
               >
               </quill-editor>
             </no-ssr>
-            <v-row justify="space-between" class="mr-1 ml-1">
+            <v-row justify="space-between" class="mr-1 ml-1 mt-2">
               <div class="v-messages v-messages__message error--text">
                 {{ quillErrorMessage === true ? '' : quillErrorMessage }}
               </div>
@@ -438,12 +437,9 @@ export default {
 
 <style>
 #markdown-preview {
-  border: 1px solid rgb(192, 192, 192);
-  border-left: none;
   height: 567px;
   overflow: auto;
   padding: 7px;
-  border-radius: 5px;
 }
 
 #markdown-edit::-webkit-scrollbar {
@@ -453,12 +449,10 @@ export default {
 
 #markdown-edit::-webkit-scrollbar-track {
   background: #f6f6f6;
-  border-radius: 2px;
 }
 
 #markdown-edit::-webkit-scrollbar-thumb {
   background: #aaa;
-  border-radius: 2px;
 }
 
 #markdown-edit::-webkit-scrollbar-thumb:hover {
@@ -484,8 +478,14 @@ export default {
 }
 
 .quill-editor {
-  border: 1px solid #ccc;
-  height: 567px;
+  height: 563px;
+}
+.theme--dark .quill-editor {
+  color: white;
+  background-color: #424242;
+}
+.theme--light .quill-editor {
+  background-color: white;
 }
 
 .quill-code {

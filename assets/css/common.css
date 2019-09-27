@@ -79,16 +79,27 @@ pre>code{
 }
 
 
-/*全局过渡动效*/
-.page-enter-active, .page-leave-active {
-  transition: all 0.3s;
-  /*transform: translate3d(10,10,20px);*/
+ /*Enter and leave animations can use different */
+ /*durations and timing functions.              */
+.page-enter-active {
+  transition: all .3s ease;
 }
-.page-enter, .page-leave-active {
+.page-leave-active {
+  /*transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/
   opacity: 0;
-  /*transform: scale(0);*/
-  /*transform: rotateY(130deg);*/
-  transform: translateX(-1000px);
+}
+.page-enter
+  /* .slide-page-leave-active below version 2.1.8 */ {
+  transform: translateX(-50px);
+  opacity: 0;
+}
+.page-leave {
+  opacity: 0;
+}
+.page-leave-to
+  /* .slide-page-leave-active below version 2.1.8 */ {
+  transform: translateX(50px);
+  opacity: 0;
 }
 [v-cloak]{
   display:none

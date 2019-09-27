@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app v-show="questionList">
     <v-layout column shrink>
       <v-layout>
         <v-flex md7 xs4 shrink hidden-sm-and-down>

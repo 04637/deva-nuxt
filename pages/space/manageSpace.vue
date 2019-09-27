@@ -4,8 +4,8 @@
       <v-card-title>空间管理</v-card-title>
       <v-divider></v-divider>
     </v-layout>
-    <v-layout justify-space-around shrink>
-      <v-card class="pa-8 mt-6" width="520px">
+    <v-layout justify-space-around shrink class="mt-6">
+      <v-card class="pa-8" width="520px">
         <v-form ref="form">
           <v-layout justify-space-around column class="mt-3">
             <v-layout class="mt-4">
@@ -41,8 +41,34 @@
           </v-layout>
         </v-form>
       </v-card>
-      <v-card>
-        <v-list> </v-list>
+      <v-card class="pa-2">
+        <v-toolbar dense flat>
+          <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+          <v-toolbar-title style="font-size: 1rem">空间成员</v-toolbar-title>
+
+          <div class="flex-grow-1"></div>
+
+          <v-btn icon>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-divider></v-divider>
+        <v-list class="pa-0 mt-2" subheader>
+          <v-list-item
+            v-for="user in spaceInfo.members"
+            :key="user.userId"
+            style="min-width: 200px"
+          >
+            <v-list-item-avatar color="grey">
+              <v-img :src="user.avatar"></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              {{ user.nickname || user.username }}
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+        <v-divider></v-divider>
       </v-card>
     </v-layout>
     <InfoDialog

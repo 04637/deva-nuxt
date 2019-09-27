@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app v-show="tagList">
     <v-layout style="width: 30vw" class="mb-3" shrink>
       <v-text-field
         v-model="searchKey"
