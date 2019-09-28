@@ -133,6 +133,7 @@
                 ></v-text-field>
               </v-card-title>
               <v-data-table
+                locale="zh-Hans"
                 :headers="askTab.headers"
                 :items="askTab.items"
                 :search="askTab.search"
@@ -174,9 +175,12 @@
                 :search="answerTab.search"
               >
                 <template #item.questionTitle="{item}">
-                  <router-link :to="'/question/' + item.ownQuestionId">{{
-                    item.questionTitle
-                  }}</router-link>
+                  <router-link
+                    :to="
+                      '/question/' + item.ownQuestionId + '#' + item.answerId
+                    "
+                    >{{ item.questionTitle }}</router-link
+                  >
                 </template>
                 <template #item.isAccepted="{item}">
                   <v-icon v-if="item.isAccepted" color="success" title="已采纳"

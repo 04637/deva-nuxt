@@ -1,15 +1,25 @@
 <template>
-  <v-card class="pa-2" :to="'/user/' + userInfo.userId">
+  <v-card class="pa-2" :to="actionIcon ? null : '/user/' + userInfo.userId">
     <v-layout justify-space-between class="mb-3">
       <v-flex xs3>
         <v-layout justify-center>
-          <v-avatar color="grey">
+          <v-avatar color="grey" :title="'用户名: ' + userInfo.username">
             <v-img :src="userInfo.avatar"></v-img>
           </v-avatar>
         </v-layout>
       </v-flex>
       <v-flex xs8>
         <v-layout justify-space-between fill-height column>
+          <v-btn
+            v-if="actionIcon"
+            :title="actionTitle"
+            color="private"
+            style="position: absolute; right: -2px; top: -3px"
+            icon
+            small
+            @click.stop="actionEvent(userInfo.userId)"
+            ><v-icon color="private" small>{{ actionIcon }}</v-icon></v-btn
+          >
           <v-layout class="label-description ">
             <span :title="userInfo.bio">
               {{ userInfo.bio }}
@@ -42,6 +52,21 @@ export default {
     userInfo: {
       type: Object,
       required: true
+    },
+    actionIcon: {
+      type: String,
+      required: false,
+      default: null
+    },
+    actionEvent: {
+      type: Function,
+      required: false,
+      default: null
+    },
+    actionTitle: {
+      type: String,
+      required: false,
+      default: null
     }
   }
 }

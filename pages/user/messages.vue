@@ -39,7 +39,7 @@
               :to="'/user/' + item.fromUserId"
               style="text-decoration: none; position: relative; top: -1px"
               >{{ item.fromUserNickname }}</router-link
-            >&nbsp;{{ item.content }}
+            >&nbsp;{{ $options.filters.filterHtml(item.content) }}
             <v-btn
               text
               x-small

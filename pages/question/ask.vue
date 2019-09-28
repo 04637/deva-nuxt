@@ -223,7 +223,7 @@ export default {
   middleware: 'authenticated',
   data: () => ({
     title: null,
-    useMarkdown: true,
+    useMarkdown: false,
     maxLength: 3000,
     source: '# 右上角可切换编辑器哦 8-)',
     selectedTags: [],
@@ -501,9 +501,5 @@ export default {
     height: 10rem;
     overflow-y: auto;
   }
-}
-/*编辑器操作区置顶*/
-.ql-tooltip {
-  z-index: 9999;
 }
 </style>

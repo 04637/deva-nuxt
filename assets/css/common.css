@@ -151,3 +151,9 @@ pre>code{
   height: 15px;
   width: 15px;
 }
+
+/*编辑器操作区置顶*/
+.ql-tooltip {
+  z-index: 9999;
+  background-color: #312e2e !important;
+}

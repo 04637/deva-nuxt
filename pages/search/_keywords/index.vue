@@ -71,7 +71,7 @@ export default {
           if (resp.succeed) {
             this.questionList = resp.data.content
           } else {
-            this.questionList = null
+            this.questionList = []
           }
         })
     },

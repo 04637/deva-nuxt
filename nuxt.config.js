@@ -44,6 +44,8 @@ export default {
     '~plugins/filterHtml',
     '~plugins/common',
     '~plugins/dompurify',
+    { src: '~plugins/i18n', ssr: false },
+    { src: '~plugins/clipboard', ssr: false },
     { src: '~plugins/websocket', ssr: false },
     { src: '~plugins/notice', ssr: false },
     { src: '~plugins/quill-editor', ssr: false },
@@ -112,6 +114,10 @@ export default {
           solo_color: colors.white
         }
       }
+    },
+    // todo 语言设置
+    lang: {
+      current: 'zh_Hans'
     }
   },
 

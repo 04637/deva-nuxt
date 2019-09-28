@@ -4,7 +4,7 @@
       <v-text-field
         v-model="searchKey"
         hide-details
-        label="搜索用户"
+        label="用户名/昵称"
         prepend-inner-icon="search"
         rounded
         @keyup.enter.native="loadUserList"

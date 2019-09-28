@@ -326,7 +326,7 @@
                         <v-text-field
                           :ref="'comment' + questionDetail.questionId"
                           v-model="comment.currentComment"
-                          append-outer-icon="send"
+                          append-outer-icon="mdi-reply"
                           autofocus
                           class="pt-0 mt-0"
                           :rules="[rules.requiredComment, rules.max200]"
@@ -358,7 +358,7 @@
               :id="answer.answerId"
               :key="answer.answerId"
             >
-              <v-list-item class="mt-1">
+              <v-list-item class="mt-2">
                 <v-card flat exact width="100vw">
                   <v-layout justify-space-between>
                     <v-flex xs1 class="mt-12" align-center>
@@ -555,7 +555,7 @@
                             ref="answerRef"
                             v-model="comment.currentComment"
                             class="pt-0 mt-0"
-                            append-outer-icon="send"
+                            append-outer-icon="reply"
                             autofocus
                             :rules="[rules.requiredComment, rules.max200]"
                             @keyup.enter.native="sendAnswerComment(aIndex)"
@@ -586,8 +586,8 @@
                 <quill-editor
                   ref="myTextEditor"
                   v-model="answer.content"
+                  style="border:none"
                   :options="editorOption"
-                  style="border-radius: 5px"
                   @change="onEditorChange($event)"
                   @focus="checkLogin"
                 >
@@ -727,7 +727,7 @@ export default {
       resp: null
     },
     answer: {
-      content: `<h3>试试选中来设置样式哦</h3>`,
+      content: `<h3>在此输入你的回答，试试选中来设置样式哦</h3>`,
       maxLength: 3000,
       resp: null,
       dialog: false,
@@ -985,10 +985,15 @@ export default {
 }
 
 .quill-editor {
-  border: 1px solid #ccc;
   height: 300px;
 }
-
+.theme--dark .quill-editor {
+  color: white;
+  background-color: #424242;
+}
+.theme--light .quill-editor {
+  background-color: white;
+}
 .quill-code {
   border: none;
   height: auto;
