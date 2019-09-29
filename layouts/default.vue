@@ -66,8 +66,18 @@
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <v-layout justify-center :class="mini ? 'mt-2' : ''">
-                    <v-btn to="/space/createSpace" icon small v-on="on"
+                    <v-btn icon small @click="joinSpace.dialog = true" v-on="on"
                       ><v-icon>add</v-icon></v-btn
+                    >
+                  </v-layout>
+                </template>
+                <span>加入空间</span>
+              </v-tooltip>
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <v-layout justify-center :class="mini ? 'mt-2' : ''">
+                    <v-btn to="/space/createSpace" icon small v-on="on"
+                      ><v-icon>mdi-new-box</v-icon></v-btn
                     >
                   </v-layout>
                 </template>
@@ -281,6 +291,43 @@
         @update:dialog="errorInfo.dialog = $event"
       >
       </ErrorDialog>
+      <v-dialog v-model="joinSpace.dialog" width="500px" persistent>
+        <v-card>
+          <v-card-text class="pb-0">
+            <v-container class="pb-0">
+              <v-form ref="joinSpaceForm">
+                <v-text-field
+                  v-model="joinSpace.spaceId"
+                  placeholder="空间ID"
+                  :rules="[rules.requireSpaceId]"
+                >
+                </v-text-field>
+                <v-text-field
+                  v-model="joinSpace.inviteCode"
+                  placeholder="邀请码"
+                  :rules="[rules.requireInviteCode]"
+                >
+                </v-text-field>
+                <span class="error--text">{{ joinSpace.errMsg }}</span>
+              </v-form>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <div class="flex-grow-1"></div>
+            <v-btn
+              color="sub"
+              text
+              small
+              @click="
+                joinSpace.dialog = false
+                joinSpace.errMsg = null
+              "
+              >关闭</v-btn
+            >
+            <v-btn color="primary" small text @click="joinToSpace">加入</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-app>
   </div>
 </template>
@@ -311,9 +358,20 @@ export default {
     ],
     userMenu: false,
     userInfo: null,
+    joinSpace: {
+      dialog: false,
+      resp: null,
+      spaceId: null,
+      inviteCode: null,
+      errMsg: null
+    },
     errorInfo: {
       dialog: false,
       msg: ''
+    },
+    rules: {
+      requireSpaceId: (v) => (v && v.length >= 1) || '请输入空间ID',
+      requireInviteCode: (v) => (v && v.length >= 1) || '请输入邀请码'
     }
   }),
   computed: {
@@ -383,6 +441,7 @@ export default {
       })
     },
     loadSpaceList() {
+      console.log('##########################load')
       if (this.$store.state.userInfo) {
         this.$axios.$post('/spaceInfo/listSpace').then((resp) => {
           if (resp.succeed) {
@@ -401,6 +460,26 @@ export default {
           }
         })
       }
+    },
+    joinToSpace() {
+      if (!this.$refs.joinSpaceForm.validate()) {
+        return false
+      }
+      this.$axios
+        .$post('/spaceUser/joinSpace', {
+          spaceId: this.joinSpace.spaceId,
+          inviteCode: this.joinSpace.inviteCode
+        })
+        .then((resp) => {
+          this.joinSpace.resp = resp
+          if (resp.succeed) {
+            this.joinSpace.dialog = false
+            this.loadSpaceList()
+            this.$router.push('/space/' + this.joinSpace.spaceId, () => ({}))
+          } else {
+            this.joinSpace.errMsg = resp.msg
+          }
+        })
     },
     connectWebsocket() {
       if (this.userInfo && process.client) {

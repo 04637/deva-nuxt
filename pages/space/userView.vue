@@ -12,7 +12,7 @@
       ></v-text-field>
       <v-btn
         v-if="spaceInfo"
-        :to="'/space/manageSpace?spaceId=' + spaceInfo.spaceId"
+        :to="'/space/' + spaceInfo.spaceId"
         text
         outlined
         color="private"
@@ -32,36 +32,20 @@
         style="max-height: 75px; max-width: 358px"
         class="ma-4"
       >
-        <UserCard
-          :user-info="userInfo"
-          action-icon="mdi-plus"
-          :action-event="addUser2Space"
-          :action-title="'将用户添加至→' + (spaceInfo && spaceInfo.spaceName)"
-        ></UserCard>
+        <UserCard :user-info="userInfo"></UserCard>
       </v-flex>
     </v-layout>
-    <InfoDialog
-      :msg="[
-        '添加成功',
-        (addResult.resp && addResult.resp.msg) || '添加失败, 用户可能已存在'
-      ]"
-      :succeed="addResult.resp != null && addResult.resp.succeed"
-      :dialog="addResult.dialog"
-      @update:dialog="addResult.dialog = $event"
-    >
-    </InfoDialog>
   </v-app>
 </template>
 <script>
 import UserCard from '../../components/UserCard'
-import InfoDialog from '../../components/InfoDialog'
 export default {
-  components: { UserCard, InfoDialog },
+  components: { UserCard },
   data: () => ({
     userList: null,
     searchKey: null,
     spaceInfo: null,
-    addResult: {
+    removeResult: {
       resp: null,
       dialog: false,
       loading: false
@@ -78,7 +62,7 @@ export default {
   methods: {
     loadUserList() {
       this.$axios
-        .$post('/spaceUser/getNotSpaceMembers', {
+        .$post('/spaceUser/getSpaceMembers', {
           current: this.page.current,
           size: this.page.size,
           searchKey: this.searchKey,
@@ -97,22 +81,6 @@ export default {
         })
         .then((resp) => {
           this.spaceInfo = resp.data
-        })
-    },
-    addUser2Space(_userId) {
-      this.addResult.loading = true
-      this.$axios
-        .$post('/spaceUser/addUser', {
-          spaceId: this.spaceInfo.spaceId,
-          addUserId: _userId
-        })
-        .then((resp) => {
-          this.addResult.resp = resp
-          this.addResult.loading = false
-          this.addResult.dialog = true
-          if (resp.succeed) {
-            this.loadUserList()
-          }
         })
     }
   }

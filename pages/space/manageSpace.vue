@@ -5,178 +5,206 @@
       <v-divider></v-divider>
     </v-layout>
     <v-layout justify-space-around shrink class="mt-6">
-      <v-card class="pa-8" width="520px">
-        <v-form ref="form">
-          <v-layout justify-space-around column class="mt-3">
-            <v-layout class="mt-4">
-              <v-text-field
-                v-model="spaceInfo.spaceName"
-                :counter="20"
-                label="空间名"
-                outlined
-                required
-                :rules="[rules.min, rules.max]"
-              ></v-text-field>
-            </v-layout>
-            <v-layout class="mt-4">
-              <v-textarea
-                v-model="spaceInfo.description"
-                :counter="200"
-                label="空间描述"
-                outlined
-                required
-                no-resize
-                :rules="[rules.max200]"
-              ></v-textarea>
-            </v-layout>
-            <v-layout justify-end class="mt-4">
-              <v-btn
-                outlined
-                accent
-                depressed
-                min-width="150px"
-                :loading="updateResult.loading"
-                @click="updateSpace"
-                >更新空间信息</v-btn
-              >
-            </v-layout>
-          </v-layout>
-        </v-form>
-      </v-card>
-      <v-card class="pa-2" min-width="350px">
-        <v-toolbar dense flat class="mb-1">
-          <span>空间详情</span>
-          <v-row justify="end">
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
+      <v-flex hidden-sm-and-down md5>
+        <v-card class="pa-8">
+          <v-form ref="form">
+            <v-layout justify-space-around column class="mt-3">
+              <v-layout class="mt-4">
+                <v-text-field
+                  v-model="spaceInfo.spaceName"
+                  :counter="20"
+                  label="空间名"
+                  outlined
+                  required
+                  :rules="[rules.min, rules.max]"
+                ></v-text-field>
+              </v-layout>
+              <v-layout class="mt-4">
+                <v-textarea
+                  v-model="spaceInfo.description"
+                  :counter="200"
+                  label="空间描述"
+                  outlined
+                  required
+                  no-resize
+                  :rules="[rules.max200]"
+                ></v-textarea>
+              </v-layout>
+              <v-layout justify-end class="mt-4">
                 <v-btn
-                  icon
-                  :to="'/space/userAdd?spaceId=' + spaceInfo.spaceId"
-                  v-on="on"
-                  ><v-icon>mdi-account-plus</v-icon></v-btn
+                  outlined
+                  accent
+                  depressed
+                  min-width="150px"
+                  :loading="updateResult.loading"
+                  @click="updateSpace"
+                  >更新空间信息</v-btn
                 >
-              </template>
-              <span>添加成员</span>
-            </v-tooltip>
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on" @click="batchAdd.dialog = true"
-                  ><v-icon>mdi-account-multiple-plus</v-icon></v-btn
-                >
-              </template>
-              <span>批量添加成员</span>
-            </v-tooltip>
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  icon
-                  :to="'/space/userRemove?spaceId=' + spaceInfo.spaceId"
-                  v-on="on"
-                  ><v-icon>mdi-account-multiple-minus</v-icon></v-btn
-                >
-              </template>
-              <span>查看/移除成员</span>
-            </v-tooltip>
-          </v-row>
-        </v-toolbar>
-        <v-divider></v-divider>
-        <v-list subheader>
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-icon>mdi-account-group</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              空间成员：{{ spaceInfo.memberNum }}
-              人
-            </v-list-item-content>
-            <v-list-item-action>
+              </v-layout>
+            </v-layout>
+          </v-form>
+        </v-card>
+      </v-flex>
+      <v-flex md4>
+        <v-card class="pa-2">
+          <v-toolbar dense flat class="mb-1">
+            <span>空间详情</span>
+            <v-row justify="end">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    icon
+                    :to="'/space/userAdd?spaceId=' + spaceInfo.spaceId"
+                    v-on="on"
+                    ><v-icon>mdi-account-plus</v-icon></v-btn
+                  >
+                </template>
+                <span>添加成员</span>
+              </v-tooltip>
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
                   <v-btn
                     icon
                     :to="'/space/userRemove?spaceId=' + spaceInfo.spaceId"
                     v-on="on"
-                    ><v-icon>mdi-account-search</v-icon></v-btn
+                    ><v-icon>mdi-account-minus</v-icon></v-btn
                   >
                 </template>
-                <span>查看所有成员信息</span>
+                <span>移除成员</span>
               </v-tooltip>
-            </v-list-item-action>
-          </v-list-item>
-          <v-divider></v-divider>
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-icon>mdi-comment-question</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              发布问题：{{ spaceInfo.memberNum }}
-              个
-            </v-list-item-content>
-          </v-list-item>
-          <v-divider></v-divider>
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-icon>mdi-comment-check</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              解决问题：{{ spaceInfo.memberNum }}
-              个
-            </v-list-item-content>
-          </v-list-item>
-          <v-divider></v-divider>
-          <v-list-item>
-            <v-list-item-avatar>
-              <strong>ID</strong>
-            </v-list-item-avatar>
-            <v-list-item-content title="空间ID"
-              ><v-layout class="primary--text">
-                <strong>{{ spaceInfo.spaceId }}</strong
-                ><v-btn
-                  v-clipboard:copy="spaceInfo.spaceId"
-                  style="position: relative; top: -6px"
-                  icon
-                  x-small
-                  title="复制空间ID"
-                  ><v-icon x-small>mdi-content-copy</v-icon></v-btn
-                ></v-layout
-              >
-            </v-list-item-content>
-          </v-list-item>
-          <v-divider></v-divider>
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-icon>mdi-key-star</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-layout
-                ><strong class="private--text" title="邀请码">86f4b</strong
-                ><span style="position:relative; top:-10px; cursor: pointer">
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on }">
-                      <v-icon x-small class="ml-2" v-on="on"
-                        >mdi-refresh</v-icon
-                      ></template
-                    >
-                    <span>刷新邀请码</span>
-                  </v-tooltip>
-                </span></v-layout
-              >
-            </v-list-item-content>
-            <v-list-item-action>
-              <v-row>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-checkbox color="private" v-on="on"></v-checkbox>
-                  </template>
-                  <span
-                    >勾选启用邀请码，其他用户将可以通过该邀请码及上方空间ID主动加入该空间</span
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <v-btn icon v-on="on" @click="batchAdd.dialog = true"
+                    ><v-icon>mdi-account-multiple-plus</v-icon></v-btn
                   >
+                </template>
+                <span>批量添加成员</span>
+              </v-tooltip>
+            </v-row>
+          </v-toolbar>
+          <v-divider></v-divider>
+          <v-list subheader>
+            <v-list-item>
+              <v-list-item-avatar>
+                <v-icon>mdi-account-group</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                空间成员：{{ spaceInfo.memberNum }}
+                人
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      icon
+                      :to="'/space/userView?spaceId=' + spaceInfo.spaceId"
+                      v-on="on"
+                      ><v-icon>mdi-account-search</v-icon></v-btn
+                    >
+                  </template>
+                  <span>查看所有成员信息</span>
                 </v-tooltip>
-              </v-row>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list>
-      </v-card>
+              </v-list-item-action>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item>
+              <v-list-item-avatar>
+                <v-icon>mdi-comment-question</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                发布问题：{{ spaceInfo.questionNum }}
+                个
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item>
+              <v-list-item-avatar>
+                <v-icon>mdi-comment-check</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                解决问题：{{ spaceInfo.solvedNum }}
+                个
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item>
+              <v-list-item-avatar>
+                <strong>ID</strong>
+              </v-list-item-avatar>
+              <v-list-item-content title="空间ID"
+                ><v-layout class="primary--text">
+                  <strong>{{ spaceInfo.spaceId }}</strong
+                  ><v-btn
+                    v-clipboard:copy="spaceInfo.spaceId"
+                    style="position: relative; top: -6px"
+                    icon
+                    x-small
+                    title="复制空间ID"
+                    ><v-icon x-small>mdi-content-copy</v-icon></v-btn
+                  ></v-layout
+                >
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item>
+              <v-list-item-avatar>
+                <v-icon>mdi-key-star</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-layout
+                  ><strong class="private--text" title="邀请码">{{
+                    spaceInfo.inviteCode
+                  }}</strong
+                  ><span style="position:relative; top:-10px; cursor: pointer">
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <v-icon
+                          x-small
+                          class="ml-2"
+                          v-on="on"
+                          @click="refreshCode"
+                          >mdi-refresh</v-icon
+                        ></template
+                      >
+                      <span>刷新邀请码</span>
+                    </v-tooltip>
+                  </span></v-layout
+                >
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-row align="center">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-checkbox
+                        v-model="spaceInfo.allowInvite"
+                        color="private"
+                        v-on="on"
+                        @click="toggleInvite"
+                      ></v-checkbox>
+                    </template>
+                    <span
+                      >勾选启用邀请模式，其他用户将可以通过该邀请码及上方空间ID主动加入该空间</span
+                    >
+                  </v-tooltip>
+                  <v-btn
+                    v-clipboard:copy="
+                      spaceInfo.spaceName +
+                        ' -- 空间ID: ' +
+                        spaceInfo.spaceId +
+                        '，邀请码：' +
+                        spaceInfo.inviteCode
+                    "
+                    small
+                    color="private"
+                    text
+                    ><strong>复制邀请链</strong></v-btn
+                  >
+                </v-row>
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-flex>
     </v-layout>
     <InfoDialog
       :msg="['更新成功', '更新失败']"
@@ -286,7 +314,7 @@ export default {
     },
     loadSpaceInfo() {
       this.$axios
-        .$post('/spaceInfo/getSpaceInfo', {
+        .$post('/spaceInfo/getSpaceDetail', {
           spaceId: this.$route.query.spaceId
         })
         .then((resp) => {
@@ -313,6 +341,29 @@ export default {
         })
         .catch((e) => {
           this.updateResult.loading = false
+        })
+    },
+    refreshCode() {
+      this.$axios
+        .$post('/spaceInfo/refreshCode', {
+          spaceId: this.spaceInfo.spaceId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.spaceInfo.inviteCode = resp.data
+          }
+        })
+    },
+    toggleInvite() {
+      this.$axios
+        .$post('/spaceInfo/toggleInvite', {
+          spaceId: this.spaceInfo.spaceId,
+          allowInvite: !this.spaceInfo.allowInvite
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.spaceInfo.allowInvite = resp.data
+          }
         })
     }
   }

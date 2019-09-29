@@ -28,9 +28,14 @@
                 </v-avatar>
               </v-layout>
               <v-layout class="mt-2" justify-center>
-                <v-card-title>{{
-                  userProfile.nickname || userProfile.username
-                }}</v-card-title>
+                <v-card-title style="align-items: baseline"
+                  >{{ userProfile.nickname || userProfile.username }}&nbsp;<span
+                    title="用户名"
+                    class="my_gray--text"
+                    style="font-size: 1rem"
+                    >({{ userProfile.username }})</span
+                  ></v-card-title
+                >
               </v-layout>
               <v-layout class="mt-2">
                 <v-divider></v-divider>

@@ -1,14 +1,14 @@
 <template>
   <v-card class="pa-2" :to="actionIcon ? null : '/user/' + userInfo.userId">
-    <v-layout justify-space-between class="mb-3">
-      <v-flex xs3>
+    <v-layout justify-start class="mb-3">
+      <v-flex xs4>
         <v-layout justify-center>
           <v-avatar color="grey" :title="'用户名: ' + userInfo.username">
             <v-img :src="userInfo.avatar"></v-img>
           </v-avatar>
         </v-layout>
       </v-flex>
-      <v-flex xs8>
+      <v-flex xs7>
         <v-layout justify-space-between fill-height column>
           <v-btn
             v-if="actionIcon"
@@ -31,17 +31,18 @@
         </v-layout>
       </v-flex>
     </v-layout>
-    <v-layout justify-space-around style="height: 20px">
+    <v-layout justify-space-between style="height: 20px">
       <v-flex
-        justify-start
-        xs5
-        class="d-inline-block text-truncate text-left no-flex"
+        justify-center
+        xs4
+        class="text-truncate  no-flex"
+        style="text-align: center"
       >
         <span :title="userInfo.nickname || userInfo.username">{{
           userInfo.nickname || userInfo.username
         }}</span>
       </v-flex>
-      <v-flex xs4 class="text-right">
+      <v-flex xs7 class="text-right">
         <svg class="icon heat-icon" aria-hidden="true">
           <use xlink:href="#icon-zuanshi"></use></svg
         >&nbsp;{{ userInfo.reputation }}

@@ -13,5 +13,8 @@ export default {
   },
   getErrorMsg(state) {
     return state.errorMsg
+  },
+  getReloadSpace(state) {
+    return state.reloadSpaceFlag
   }
 }

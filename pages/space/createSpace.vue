@@ -51,7 +51,12 @@
       :msg="['创建成功', '创建失败']"
       :succeed="createResult.resp != null && createResult.resp.succeed"
       :dialog="createResult.dialog"
-      @update:dialog="createResult.dialog = $event"
+      @update:dialog="
+        createResult.dialog = $event
+        $router.push(
+          '/space/manageSpace?spaceId=' + createResult.resp.data.spaceId
+        )
+      "
     >
     </InfoDialog>
   </v-app>
@@ -94,6 +99,9 @@ export default {
           this.createResult.dialog = true
           this.createResult.loading = false
           this.createResult.resp = resp
+          if (resp.succeed) {
+            this.$store.commit('setReloadSpaceFlag')
+          }
         })
         .catch((e) => {
           this.createResult.loading = false

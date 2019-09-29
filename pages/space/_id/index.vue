@@ -31,7 +31,7 @@
               <template v-slot:activator="{ on }">
                 <v-btn
                   icon
-                  :to="'/space/userRemove?spaceId=' + spaceInfo.spaceId"
+                  :to="'/space/userView?spaceId=' + spaceInfo.spaceId"
                   v-on="on"
                   ><v-icon>mdi-account-search</v-icon></v-btn
                 >

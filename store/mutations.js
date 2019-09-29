@@ -14,5 +14,8 @@ export default {
   },
   setErrorMsg(state, msg) {
     state.errorMsg = msg
+  },
+  setReloadSpaceFlag(state) {
+    state.reloadSpaceFlag++
   }
 }
