@@ -39,6 +39,11 @@ export default {
     todo: {
       type: Function,
       required: true
+    },
+    todoParam: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: () => ({}),
@@ -46,7 +51,7 @@ export default {
   watch: {},
   methods: {
     confirm() {
-      this.todo()
+      this.todo(this.todoParam)
     }
   }
 }

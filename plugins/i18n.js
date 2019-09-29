@@ -1,33 +1,7 @@
-import VueI18n from 'vue-i18n'
-import Vue from 'vue'
-import Vuetify from 'vuetify'
+// 国际化  参考 https://vuetifyjs.com/en/customization/internationalization#api
+import zhHans from 'vuetify/es5/locale/zh-Hans'
 
-Vue.use(VueI18n)
-
-const messages = {
-  en: {
-    $vuetify: {
-      dataIterator: {
-        rowsPerPageText: '啊哈哈哈:',
-        pageText: '{0}-{1} of {2}'
-      }
-    }
-  },
-  sv: {
-    $vuetify: {
-      dataIterator: {
-        rowsPerPageText: '啊哈哈哈:',
-        pageText: '{0}-{1} av {2}'
-      }
-    }
-  }
+export default ({ $vuetify }) => {
+  $vuetify.lang.locales = { zhHans }
+  $vuetify.lang.current = 'zhHans'
 }
-const i18n = new VueI18n({
-  locale: 'sv',
-  messages
-})
-export default new Vuetify({
-  lang: {
-    t: (key, ...params) => i18n.t(key, params)
-  }
-})

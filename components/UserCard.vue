@@ -16,9 +16,12 @@
             color="private"
             style="position: absolute; right: -2px; top: -3px"
             icon
-            small
-            @click.stop="actionEvent(userInfo.userId)"
-            ><v-icon color="private" small>{{ actionIcon }}</v-icon></v-btn
+            @click.stop="
+              actionConfirm
+                ? (confirm.dialog = true)
+                : actionEvent(userInfo.userId)
+            "
+            ><v-icon color="private">{{ actionIcon }}</v-icon></v-btn
           >
           <v-layout class="label-description ">
             <span :title="userInfo.bio">
@@ -28,7 +31,7 @@
         </v-layout>
       </v-flex>
     </v-layout>
-    <v-layout justify-space-between style="height: 20px">
+    <v-layout justify-space-around style="height: 20px">
       <v-flex
         justify-start
         xs5
@@ -44,10 +47,22 @@
         >&nbsp;{{ userInfo.reputation }}
       </v-flex>
     </v-layout>
+    <ConfirmDialog
+      v-if="actionConfirm"
+      :msg="confirmMsg"
+      :dialog="confirm.dialog"
+      :todo="actionEvent"
+      :todo-param="userInfo.userId"
+      @update:dialog="confirm.dialog = $event"
+    ></ConfirmDialog>
   </v-card>
 </template>
 <script>
+import ConfirmDialog from './ConfirmDialog'
 export default {
+  components: {
+    ConfirmDialog
+  },
   props: {
     userInfo: {
       type: Object,
@@ -67,8 +82,24 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    actionConfirm: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    confirmMsg: {
+      type: String,
+      required: false,
+      default: ''
     }
-  }
+  },
+  data: () => ({
+    confirm: {
+      result: false,
+      dialog: false
+    }
+  })
 }
 </script>
 <style scoped>

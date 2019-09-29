@@ -34,20 +34,25 @@
       >
         <UserCard
           :user-info="userInfo"
-          action-icon="mdi-plus"
-          :action-event="addUser2Space"
-          :action-title="'将用户添加至→' + (spaceInfo && spaceInfo.spaceName)"
+          action-icon="mdi-close"
+          :action-event="removeFromSpace"
+          :action-title="
+            '将用户从 ' + (spaceInfo && spaceInfo.spaceName) + ' 移除'
+          "
+          :action-confirm="true"
+          confirm-msg="确定将该成员从空间中移除吗?"
         ></UserCard>
       </v-flex>
     </v-layout>
     <InfoDialog
       :msg="[
-        '添加成功',
-        (addResult.resp && addResult.resp.msg) || '添加失败, 用户可能已存在'
+        '移除成功',
+        (removeResult.resp && removeResult.resp.msg) ||
+          '移除失败, 用户可能已被移除'
       ]"
-      :succeed="addResult.resp != null && addResult.resp.succeed"
-      :dialog="addResult.dialog"
-      @update:dialog="addResult.dialog = $event"
+      :succeed="removeResult.resp != null && removeResult.resp.succeed"
+      :dialog="removeResult.dialog"
+      @update:dialog="removeResult.dialog = $event"
     >
     </InfoDialog>
   </v-app>
@@ -61,7 +66,7 @@ export default {
     userList: null,
     searchKey: null,
     spaceInfo: null,
-    addResult: {
+    removeResult: {
       resp: null,
       dialog: false,
       loading: false
@@ -78,10 +83,11 @@ export default {
   methods: {
     loadUserList() {
       this.$axios
-        .$post('/spaceUser/getNotSpaceMembers', {
+        .$post('/spaceUser/getSpaceMembers', {
           current: this.page.current,
           size: this.page.size,
-          searchKey: this.searchKey
+          searchKey: this.searchKey,
+          spaceId: this.$route.query.spaceId
         })
         .then((resp) => {
           if (resp.succeed) {
@@ -98,17 +104,23 @@ export default {
           this.spaceInfo = resp.data
         })
     },
-    addUser2Space(_userId) {
-      this.addResult.loading = true
+    removeFromSpace(_userId) {
+      this.removeResult.loading = true
       this.$axios
-        .$post('/spaceUser/addUser', {
-          spaceId: this.spaceInfo.spaceId,
-          addUserId: _userId
+        .$post('/spaceUser/removeUser', {
+          spaceId: this.$route.query.spaceId,
+          removeUserId: _userId
         })
         .then((resp) => {
-          this.addResult.resp = resp
-          this.addResult.loading = false
-          this.addResult.dialog = true
+          this.removeResult.resp = resp
+          this.removeResult.loading = false
+          this.removeResult.dialog = true
+          if (resp.succeed) {
+            this.loadUserList()
+          }
+        })
+        .catch((e) => {
+          this.removeResult.loading = false
         })
     }
   }

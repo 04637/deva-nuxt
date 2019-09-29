@@ -3,6 +3,9 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   mode: 'universal',
   domain: 'http://localhost:3000',
+  server: {
+    port: 3000
+  },
   /*
    ** Headers of the page
    */
@@ -114,11 +117,11 @@ export default {
           solo_color: colors.white
         }
       }
-    },
-    // todo 语言设置
-    lang: {
-      current: 'zh_Hans'
     }
+    // todo 语言设置
+    // lang: {
+    //   current: 'zhHans'
+    // }
   },
 
   // [optional] markdownit options

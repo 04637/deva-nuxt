@@ -126,7 +126,7 @@
                 <v-text-field
                   v-model="askTab.search"
                   append-icon="search"
-                  label="search"
+                  label="搜索"
                   single-line
                   hide-details
                   class="pt-0"
@@ -163,7 +163,7 @@
                 <v-text-field
                   v-model="answerTab.search"
                   append-icon="search"
-                  label="search"
+                  label="搜索"
                   single-line
                   hide-details
                   class="pt-0"
@@ -199,7 +199,7 @@
                 <v-text-field
                   v-model="collectTab.search"
                   append-icon="search"
-                  label="search"
+                  label="搜索"
                   single-line
                   hide-details
                   class="pt-0"

@@ -179,7 +179,7 @@
                     color="primary"
                     class="d-inline-block no-flex text-truncate text-left mr-1"
                     style="font-weight: bold"
-                    >{{ userInfo.nickname }}</v-btn
+                    >{{ userInfo.nickname || userInfo.username }}</v-btn
                   >
                   <v-avatar
                     color="grey"

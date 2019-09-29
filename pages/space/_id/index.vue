@@ -30,6 +30,20 @@
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <v-btn
+                  icon
+                  :to="'/space/userRemove?spaceId=' + spaceInfo.spaceId"
+                  v-on="on"
+                  ><v-icon>mdi-account-search</v-icon></v-btn
+                >
+              </template>
+              <span>查看所有成员信息</span>
+            </v-tooltip>
+            <v-tooltip
+              v-if="spaceInfo.ownerUserId === $store.getters.getUserId"
+              top
+            >
+              <template v-slot:activator="{ on }">
+                <v-btn
                   text
                   small
                   icon
@@ -89,7 +103,6 @@ export default {
     questionList: null,
     hotQuestionList: null,
     spaceInfo: null,
-    isOwner: false,
     page: {
       current: 1,
       size: 15

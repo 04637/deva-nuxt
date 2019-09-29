@@ -7,7 +7,7 @@
           <v-text-field
             v-model="keywords"
             hide-details
-            label="Search"
+            label="搜索"
             prepend-inner-icon="search"
             outlined
             rounded

@@ -60,7 +60,7 @@
             </v-tooltip>
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on"
+                <v-btn icon v-on="on" @click="batchAdd.dialog = true"
                   ><v-icon>mdi-account-multiple-plus</v-icon></v-btn
                 >
               </template>
@@ -68,7 +68,10 @@
             </v-tooltip>
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on"
+                <v-btn
+                  icon
+                  :to="'/space/userRemove?spaceId=' + spaceInfo.spaceId"
+                  v-on="on"
                   ><v-icon>mdi-account-multiple-minus</v-icon></v-btn
                 >
               </template>
@@ -89,7 +92,10 @@
             <v-list-item-action>
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
-                  <v-btn icon v-on="on"
+                  <v-btn
+                    icon
+                    :to="'/space/userRemove?spaceId=' + spaceInfo.spaceId"
+                    v-on="on"
                     ><v-icon>mdi-account-search</v-icon></v-btn
                   >
                 </template>
@@ -179,6 +185,52 @@
       @update:dialog="updateResult.dialog = $event"
     >
     </InfoDialog>
+    <InfoDialog
+      :msg="[
+        batchAdd.resp && '成功添加' + batchAdd.resp.data + '个成员',
+        '添加失败'
+      ]"
+      :succeed="batchAdd.resp != null && batchAdd.resp.succeed"
+      :dialog="batchAdd.resultDialog"
+      @update:dialog="batchAdd.resultDialog = $event"
+    >
+    </InfoDialog>
+    <v-dialog v-model="batchAdd.dialog" width="500px" persistent>
+      <v-card>
+        <v-card-text class="pb-0">
+          <v-container class="pb-0">
+            <v-form ref="batchAddForm">
+              <v-layout align-center>
+                <v-textarea
+                  v-model="batchAdd.usernames"
+                  rows="30"
+                  clearable
+                  no-resize
+                  hint="输入多个用户名, 每行一个, 最多100个, 系统将自动过滤掉超过的用户名, 筛选有效且不属于空间成员的用户名。"
+                  persistent-hint
+                  :rules="[rules.minOne]"
+                >
+                </v-textarea>
+              </v-layout>
+            </v-form>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn color="sub" text small @click="batchAdd.dialog = false"
+            >关闭</v-btn
+          >
+          <v-btn
+            color="primary"
+            :loading="batchAdd.loading"
+            small
+            text
+            @click="batchAddUser"
+            >添加</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 <script>
@@ -195,16 +247,43 @@ export default {
       resp: null,
       dialog: false
     },
+    batchAdd: {
+      dialog: false,
+      usernames: '',
+      resp: null,
+      resultDialog: false,
+      loading: false
+    },
     rules: {
       min: (v) => (v && v.length >= 2) || '最少两个字符',
       max: (v) => (v && v.length <= 20) || '最多20个字符',
-      max200: (v) => (v && v.length <= 200) || '最多200个字符'
+      max200: (v) => (v && v.length <= 200) || '最多200个字符',
+      minOne: (v) => !!v || '请输入至少一个用户名'
     }
   }),
   created() {
     this.loadSpaceInfo()
   },
   methods: {
+    batchAddUser() {
+      if (!this.$refs.batchAddForm.validate()) {
+        return false
+      }
+      this.batchAdd.loading = true
+      this.$axios
+        .$post('/spaceUser/batchAddUser', {
+          usernames: this.batchAdd.usernames.split('\n'),
+          spaceId: this.spaceInfo.spaceId
+        })
+        .then((resp) => {
+          this.batchAdd.resp = resp
+          this.batchAdd.loading = false
+          this.batchAdd.resultDialog = true
+        })
+        .catch((e) => {
+          this.batchAdd.loading = false
+        })
+    },
     loadSpaceInfo() {
       this.$axios
         .$post('/spaceInfo/getSpaceInfo', {
