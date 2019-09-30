@@ -5,6 +5,9 @@ export default {
   getToken(state) {
     return state.userInfo ? state.userInfo.token : null
   },
+  getUserType(state) {
+    return state.userInfo ? state.userInfo.userType : null
+  },
   getUserId(state) {
     return state.userInfo ? state.userInfo.userId : null
   },
@@ -12,9 +15,12 @@ export default {
     return state.userInfo ? state.unReadMessageCount : null
   },
   getErrorMsg(state) {
-    return state.errorMsg
+    return state.systemError.msg
   },
-  getReloadSpace(state) {
+  getReloadSpaceFlag(state) {
     return state.reloadSpaceFlag
+  },
+  getAlertErrorFlag(state) {
+    return state.systemError.alertFlag
   }
 }

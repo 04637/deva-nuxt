@@ -202,6 +202,15 @@
                 </v-row>
               </v-list-item-action>
             </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item>
+              <v-btn
+                width="100vw"
+                color="red"
+                @click="confirmDelete.dialog = true"
+                >释放该空间</v-btn
+              >
+            </v-list-item>
           </v-list>
         </v-card>
       </v-flex>
@@ -259,6 +268,50 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="confirmDelete.dialog" width="500px" persistent>
+      <v-card>
+        <v-card-title style="font-size: 1rem" class="red--text"
+          >请确认</v-card-title
+        >
+        <v-card-text class="pb-0">
+          <v-text-field
+            ref="confirmCode"
+            v-model="confirmDelete.inviteCode"
+            placeholder="当前邀请码"
+            persistent-hint
+            hint="释放后，所有成员将解散，所有信息删除且无法恢复。如果确认释放，请输入当前邀请码确认"
+            :rules="[
+              rules.rightCode(confirmDelete.inviteCode, spaceInfo.inviteCode)
+            ]"
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn color="sub" text small @click="confirmDelete.dialog = false"
+            >取消</v-btn
+          >
+          <v-btn
+            color="red"
+            :loading="confirmDelete.loading"
+            small
+            text
+            @click="deleteSpace"
+            >确认</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <InfoDialog
+      :msg="['释放成功', '释放失败']"
+      :succeed="confirmDelete.resp != null && confirmDelete.resp.succeed"
+      :dialog="confirmDelete.resultDialog"
+      @update:dialog="
+        confirmDelete.resultDialog = $event
+        $router.push('/')
+      "
+    >
+    </InfoDialog>
   </v-app>
 </template>
 <script>
@@ -282,11 +335,19 @@ export default {
       resultDialog: false,
       loading: false
     },
+    confirmDelete: {
+      dialog: false,
+      resp: null,
+      resultDialog: false,
+      loading: false,
+      inviteCode: null
+    },
     rules: {
       min: (v) => (v && v.length >= 2) || '最少两个字符',
-      max: (v) => (v && v.length <= 20) || '最多20个字符',
-      max200: (v) => (v && v.length <= 200) || '最多200个字符',
-      minOne: (v) => !!v || '请输入至少一个用户名'
+      max: (v) => !v || (v && v.length <= 20) || '最多20个字符',
+      max200: (v) => !v || (v && v.length <= 200) || '最多200个字符',
+      minOne: (v) => !!v || '请输入至少一个用户名',
+      rightCode: (v, _code) => (v && v === _code) || '请输入正确的邀请码'
     }
   }),
   created() {
@@ -364,6 +425,28 @@ export default {
           if (resp.succeed) {
             this.spaceInfo.allowInvite = resp.data
           }
+        })
+    },
+    deleteSpace() {
+      if (!this.$refs.confirmCode.validate()) {
+        return false
+      }
+      this.confirmDelete.loading = true
+      this.$axios
+        .$post('/spaceInfo/deleteSpace', {
+          spaceId: this.spaceInfo.spaceId
+        })
+        .then((resp) => {
+          this.confirmDelete.dialog = false
+          this.confirmDelete.loading = false
+          this.confirmDelete.resultDialog = true
+          this.confirmDelete.resp = resp
+          if (resp.succeed) {
+            this.$store.commit('needReloadSpaceList')
+          }
+        })
+        .catch((e) => {
+          this.confirmDelete.loading = false
         })
     }
   }

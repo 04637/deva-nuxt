@@ -23,27 +23,17 @@
         ></QuestionCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
-        <v-list>
-          <div
-            v-for="hotQuestion in hotQuestionList"
-            :key="hotQuestion.questionId"
-          >
-            <v-list-item :to="'/question/' + hotQuestion.questionId">
-              <span class="d-inline-block text-truncate"
-                >{{ hotQuestion.title }}
-              </span>
-            </v-list-item>
-            <v-divider></v-divider>
-          </div>
-        </v-list>
+        <HotQuestionList></HotQuestionList>
       </v-flex>
     </v-layout>
   </v-app>
 </template>
 <script>
 import QuestionCardList from '../../../components/QuestionCardList'
+import HotQuestionList from '../../../components/HotQuestionList'
 export default {
   components: {
+    HotQuestionList,
     QuestionCardList
   },
   data: () => ({
@@ -55,9 +45,7 @@ export default {
       size: 15
     }
   }),
-  created() {
-    this.loadHotQuestions()
-  },
+  created() {},
   methods: {
     searchQuestions() {
       this.$axios
@@ -73,17 +61,6 @@ export default {
           } else {
             this.questionList = []
           }
-        })
-    },
-    loadHotQuestions() {
-      this.$axios
-        .$post('/questionInfo/listQuestions', {
-          current: 1,
-          size: 15,
-          listType: 'HOT'
-        })
-        .then((resp) => {
-          this.hotQuestionList = resp.data.records
         })
     }
   }

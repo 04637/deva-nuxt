@@ -54,6 +54,19 @@
               </template>
               <span>管理空间</span>
             </v-tooltip>
+            <v-tooltip v-else top>
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  text
+                  small
+                  icon
+                  @click="confirmExit.dialog = true"
+                  v-on="on"
+                  ><v-icon small>mdi-location-exit</v-icon></v-btn
+                >
+              </template>
+              <span>退出空间</span>
+            </v-tooltip>
           </v-card-title>
         </v-flex>
         <v-flex md5 lg3 align-self-end>
@@ -90,18 +103,48 @@
         </v-list>
       </v-flex>
     </v-layout>
+    <ConfirmDialog
+      :dialog="confirmExit.dialog"
+      msg="确定退出该空间吗?"
+      :todo="exitSpace"
+      @update:dialog="confirmExit.dialog = $event"
+    >
+    </ConfirmDialog>
+    <InfoDialog
+      :msg="['退出成功', '退出失败']"
+      :succeed="
+        confirmExit.result.resp != null && confirmExit.result.resp.succeed
+      "
+      :dialog="confirmExit.result.dialog"
+      @update:dialog="
+        confirmExit.result.dialog = $event
+        $router.push('/')
+      "
+    >
+    </InfoDialog>
   </v-app>
 </template>
 <script>
 import QuestionCardList from '../../../components/QuestionCardList'
+import ConfirmDialog from '../../../components/ConfirmDialog'
+import InfoDialog from '../../../components/InfoDialog'
 export default {
   components: {
+    InfoDialog,
+    ConfirmDialog,
     QuestionCardList
   },
   data: () => ({
     listType: 'RECENT',
     questionList: null,
     hotQuestionList: null,
+    confirmExit: {
+      dialog: false,
+      result: {
+        dialog: false,
+        resp: null
+      }
+    },
     spaceInfo: null,
     page: {
       current: 1,
@@ -110,7 +153,6 @@ export default {
   }),
   created() {
     this.loadSpaceInfo()
-    this.loadHotQuestions()
   },
   methods: {
     loadQuestions() {
@@ -148,6 +190,20 @@ export default {
         .then((resp) => {
           if (resp.succeed) {
             this.spaceInfo = resp.data
+          }
+        })
+    },
+    exitSpace() {
+      this.$axios
+        .$post('/spaceUser/exitSpace', {
+          spaceId: this.$route.params.id
+        })
+        .then((resp) => {
+          this.confirmExit.dialog = false
+          this.confirmExit.result.resp = resp
+          this.confirmExit.result.dialog = true
+          if (resp.succeed) {
+            this.$store.commit('needReloadSpaceList')
           }
         })
     }

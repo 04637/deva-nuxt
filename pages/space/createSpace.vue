@@ -73,8 +73,8 @@ export default {
   data: () => ({
     rules: {
       min: (v) => (v && v.length >= 2) || '最少两个字符',
-      max: (v) => (v && v.length <= 20) || '最多20个字符',
-      max200: (v) => (v && v.length <= 200) || '最多200个字符'
+      max: (v) => !v || (v && v.length <= 20) || '最多20个字符',
+      max200: (v) => !v || (v && v.length <= 200) || '最多200个字符'
     },
     spaceName: null,
     description: null,
@@ -100,7 +100,7 @@ export default {
           this.createResult.loading = false
           this.createResult.resp = resp
           if (resp.succeed) {
-            this.$store.commit('setReloadSpaceFlag')
+            this.$store.commit('needReloadSpaceList')
           }
         })
         .catch((e) => {

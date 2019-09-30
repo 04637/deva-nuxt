@@ -1,7 +1,12 @@
 export default () => ({
   userInfo: null,
   unReadMessageCount: 0,
-  errorMsg: '',
-  // 监听该值是否改变来控制重新加载控件列表
+  // 全局异常
+  systemError: {
+    // 监听该值来弹出错误提示
+    alertFlag: 0,
+    msg: ''
+  },
+  // 监听该值来控制重新加载控件列表
   reloadSpaceFlag: 0
 })

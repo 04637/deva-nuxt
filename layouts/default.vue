@@ -96,7 +96,7 @@
               on-icon="group"
               class="mb-2"
               :class="mini ? 'mini' : ''"
-              :active="[currentSpaceId]"
+              :active="[$route.params.id]"
               color="default"
             >
               <template v-slot:prepend="{ item }">
@@ -124,12 +124,21 @@
               </template>
             </v-treeview>
             <v-divider></v-divider>
+            <v-list-item class="mt-3" to="/admin/index">
+              <v-list-item-action>
+                <v-icon color="private">fingerprint</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>管&nbsp;&nbsp;&nbsp;理</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
             <v-list-item class="mt-3" to="/setting/settings">
               <v-list-item-action>
                 <v-icon>settings</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>设置</v-list-item-title>
+                <v-list-item-title>设&nbsp;&nbsp;&nbsp;置</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -173,7 +182,7 @@
             >
               <use xlink:href="#icon-unread"></use>
             </svg>
-            <div v-if="userInfo">
+            <div v-if="$store.getters.getUserInfo">
               <v-menu
                 v-model="userMenu"
                 :close-on-content-click="true"
@@ -189,7 +198,10 @@
                     color="primary"
                     class="d-inline-block no-flex text-truncate text-left mr-1"
                     style="font-weight: bold"
-                    >{{ userInfo.nickname || userInfo.username }}</v-btn
+                    >{{
+                      $store.getters.getUserInfo.nickname ||
+                        $store.getters.getUserInfo.username
+                    }}</v-btn
                   >
                   <v-avatar
                     color="grey"
@@ -197,7 +209,7 @@
                     style="cursor:pointer"
                     v-on="on"
                   >
-                    <v-img :src="userInfo.avatar"></v-img>
+                    <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
                   </v-avatar>
                 </template>
                 <v-card min-width="180px" class="pa-0">
@@ -208,7 +220,7 @@
                           depressed
                           text
                           class="text-left no-flex"
-                          :to="'/user/' + userInfo.userId"
+                          :to="'/user/' + $store.getters.getUserId"
                           >个人中心</v-btn
                         >
                       </v-list-item-content>
@@ -357,7 +369,6 @@ export default {
       }
     ],
     userMenu: false,
-    userInfo: null,
     joinSpace: {
       dialog: false,
       resp: null,
@@ -378,47 +389,38 @@ export default {
     needKeepAlive() {
       return this.keepAliveRouters.includes(this.$route.name)
     },
-    currentSpaceId() {
-      if (/space\/\d+$/.test(this.$route.path)) {
-        return this.$route.path.match(/space\/(\d+)$/)[1]
-      } else {
-        return null
-      }
+    // 监听vuex https://stackoverflow.com/questions/43270159/vuejs-2-how-to-watch-store-values-from-vuex
+    needReloadSpaceList() {
+      return this.$store.getters.getReloadSpaceFlag
+    },
+    needAlertError() {
+      return this.$store.getters.getAlertErrorFlag
+    },
+    toggleUser() {
+      return this.$store.getters.getUserId
     }
   },
-  watch: {},
+  watch: {
+    // 监听vuex https://stackoverflow.com/questions/43270159/vuejs-2-how-to-watch-store-values-from-vuex
+    needReloadSpaceList() {
+      this.loadSpaceList()
+    },
+    needAlertError(v) {
+      if (v) {
+        this.errorInfo.dialog = true
+      }
+    },
+    toggleUser() {
+      // 加载空间列表
+      this.loadSpaceList()
+      // 加载未读消息数
+      this.loadMessageCount()
+      // 连接websocket
+      this.connectWebsocket()
+    }
+  },
   created() {},
   mounted() {
-    this.loadSpaceList()
-    // 监听状态改变, 🐮🍺   参考 https://dev.to/viniciuskneves/watch-for-vuex-state-changes-2mgj
-    this.$store.watch(
-      ((state, getters) => getters.getErrorMsg,
-      (v) => {
-        if (v.errorMsg) {
-          this.errorInfo.dialog = true
-        }
-      })
-    )
-    this.$store.watch(
-      ((state, getters) => getters.getUserInfo,
-      (v) => {
-        // 如果前后相同, 禁止重复操作, 目的是监听用户切换
-        if (
-          v.userInfo &&
-          this.userInfo &&
-          v.userInfo.userId === this.userInfo.userId
-        ) {
-          return
-        }
-        this.userInfo = this.$store.getters.getUserInfo
-        // 加载空间列表
-        this.loadSpaceList()
-        // 加载未读消息数
-        this.loadMessageCount()
-        // 连接websocket
-        this.connectWebsocket()
-      })
-    )
     window.addEventListener('beforeunload', (e) => {
       this.disconnectWebsocket()
     })
@@ -441,7 +443,6 @@ export default {
       })
     },
     loadSpaceList() {
-      console.log('##########################load')
       if (this.$store.state.userInfo) {
         this.$axios.$post('/spaceInfo/listSpace').then((resp) => {
           if (resp.succeed) {

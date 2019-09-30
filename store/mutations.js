@@ -13,9 +13,12 @@ export default {
     }
   },
   setErrorMsg(state, msg) {
-    state.errorMsg = msg
+    state.systemError.msg = msg
   },
-  setReloadSpaceFlag(state) {
+  needReloadSpaceList(state) {
     state.reloadSpaceFlag++
+  },
+  needAlertError(state) {
+    state.systemError.alertFlag++
   }
 }

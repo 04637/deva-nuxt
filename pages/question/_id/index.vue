@@ -615,17 +615,8 @@
             </v-flex>
           </v-layout>
         </v-flex>
-        <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
-          <v-list>
-            <div>
-              <v-list-item>
-                <v-card class="d-inline-block text-truncate" flat>
-                  圣诞快乐放假了看电视的附件上课了
-                </v-card>
-              </v-list-item>
-              <v-divider></v-divider>
-            </div>
-          </v-list>
+        <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
+          <HotQuestionList></HotQuestionList>
         </v-flex>
       </v-layout>
     </v-app>
@@ -694,10 +685,12 @@
 </template>
 <script>
 import InfoDialog from '../../../components/InfoDialog'
+import HotQuestionList from '../../../components/HotQuestionList'
 
 export default {
   name: 'QuestionDetail',
   components: {
+    HotQuestionList,
     InfoDialog
   },
   validate({ params }) {
