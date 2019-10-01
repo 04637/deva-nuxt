@@ -208,7 +208,11 @@
       :msg="['提交成功', askResult.resp && askResult.resp.msg]"
       :succeed="askResult.resp != null && askResult.resp.succeed"
       :dialog="askResult.dialog"
-      @update:dialog="askResult.dialog = $event"
+      close-txt="去查看"
+      @update:dialog="
+        askResult.dialog = $event
+        $router.push('/question/' + askResult.resp.data.questionId)
+      "
     >
     </InfoDialog>
   </v-app>
@@ -225,10 +229,11 @@ export default {
     title: null,
     useMarkdown: false,
     maxLength: 3000,
-    source: '# 右上角可切换编辑器哦 8-)',
+    source:
+      '### 第一次使用markdown❓  [查看语法说明]( http://www.markdown.cn/) <a href="http://www.markdown.cn/" target="_blank">新标签页打开</a>',
     selectedTags: [],
     tags: [],
-    content: `<h1>试试选中来设置样式哦</h1>`,
+    content: `<h3>试试选中来设置样式, 右上角可切换markdown编辑器哦😄</h3>`,
     newTag: {
       name: null,
       description: null
@@ -413,7 +418,6 @@ export default {
       this.selectedTags = [...this.selectedTags]
     },
     onEditorChange({ editor, html, text }) {
-      // console.log('editor change!', editor, html, text)
       this.content = html
     },
     //  加载标签

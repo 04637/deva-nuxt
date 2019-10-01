@@ -69,7 +69,7 @@
                         text
                         color="pink"
                         @click.stop="similarMark.dialog = !similarMark.dialog"
-                        >问题重复？标记相似
+                        ><strong>问题重复？标记相似</strong>
                       </v-btn>
                       <v-btn
                         v-if="
@@ -84,54 +84,66 @@
                         "
                       >
                         <v-icon size="15">edit</v-icon>
-                        编辑问题
+                        <strong>编辑问题</strong>
                       </v-btn>
                     </v-layout>
                     <div
                       v-dompurify-html="$md.render(questionDetail.content)"
                     ></div>
                     <!--color="cyan"  知更鸟蓝-->
-                    <v-layout v-if="questionDetail.similarMarkId" align-center>
+                    <v-layout
+                      v-if="questionDetail.similarMark"
+                      align-center
+                      class="mt-2"
+                    >
                       <v-alert
                         dense
                         border="left"
-                        elevation="1"
                         colored-border
-                        color="orange"
-                        width="100vw"
-                      >
-                        <v-layout justify-space-between>
-                          <v-flex xs9>
-                            该问题已有相似问题:
-                            <router-link
-                              :to="questionDetail.similarMark.toQuestionId"
-                              >{{ questionDetail.similarMark.toQuestionTitle }}
-                            </router-link>
-                          </v-flex>
-                          <v-layout
-                            justify-end
-                            xs3
-                            class="text-truncate d-inline-block"
-                          >
-                            --&nbsp;
-                            <router-link
-                              :title="questionDetail.similarMark.nickname"
-                              :to="'/user/' + questionDetail.similarMark.userId"
-                              >{{ questionDetail.similarMark.nickname }}
-                            </router-link>
-                          </v-layout>
-                        </v-layout>
+                        color="warning"
+                        width="100%"
+                        class="inverted_color--text"
+                        elevation="1"
+                        >相似问题：
+                        <router-link
+                          style="text-decoration: none"
+                          :to="questionDetail.similarMark.toQuestionId"
+                          >{{ questionDetail.similarMark.toQuestionTitle }}
+                        </router-link>
+                        <span
+                          class="inverted_color--text"
+                          style="font-size: 0.8rem; cursor: pointer"
+                          :title="questionDetail.similarMark.nickname"
+                          @click="
+                            $router.push(
+                              '/user/' + questionDetail.similarMark.userId
+                            )
+                          "
+                          >--&nbsp;{{ questionDetail.similarMark.nickname }}
+                        </span>
+                        <span
+                          class="my_gray--text ml-2"
+                          style="font-size: 0.8rem"
+                          :title="
+                            $options.filters.moment(
+                              questionDetail.similarMark.createTime
+                            )
+                          "
+                          >&nbsp;标记于&nbsp;{{
+                            questionDetail.similarMark.createTime | timeago
+                          }}</span
+                        >
                       </v-alert>
-                      <v-btn class="mb-4" icon>
-                        <v-tooltip right>
-                          <template v-slot:activator="{ on }">
-                            <v-icon color="orange" dark v-on="on"
-                              >report
-                            </v-icon>
-                          </template>
-                          <span>举报滥用</span>
-                        </v-tooltip>
-                      </v-btn>
+                      <!--<v-btn class="mb-4" icon>-->
+                      <!--  <v-tooltip right>-->
+                      <!--    <template v-slot:activator="{ on }">-->
+                      <!--      <v-icon color="orange" dark v-on="on"-->
+                      <!--        >report-->
+                      <!--      </v-icon>-->
+                      <!--    </template>-->
+                      <!--    <span>举报滥用</span>-->
+                      <!--  </v-tooltip>-->
+                      <!--</v-btn>-->
                     </v-layout>
                     <v-card-actions>
                       <v-layout>
@@ -244,45 +256,40 @@
                       <v-layout>
                         <v-list width="100vw" dense class="pb-5">
                           <div
-                            v-for="(comment, index) in questionDetail.comments"
+                            v-for="(comment, _index) in questionDetail.comments"
                             :key="comment.commentId"
                           >
-                            <!-- 妙啊!!! -->
                             <div
                               v-show="
                                 showAllComments[questionDetail.questionId]
                                   ? true
-                                  : index < 3
+                                  : _index < 3
                               "
                             >
                               <v-list-item style="min-height: 28px">
-                                <v-layout justify-space-between>
-                                  <v-flex xs10>{{ comment.content }}</v-flex>
-                                  <v-flex
-                                    xs2
-                                    class="text-truncate d-inline-block text-left no-flex"
-                                    >--
-                                    <router-link
-                                      style="text-decoration: none"
-                                      :to="'/user/' + comment.author.userId"
-                                      >{{
-                                        comment.author.nickname ||
-                                          comment.author.username
-                                      }}
-                                    </router-link>
-                                    <span
-                                      style="font-size: 14px;color:gray"
-                                      :title="
-                                        $options.filters.moment(
-                                          comment.createTime
-                                        )
-                                      "
-                                      >&nbsp;{{
-                                        comment.createTime | timeago
-                                      }}</span
-                                    >
-                                  </v-flex>
-                                </v-layout>
+                                <span>
+                                  {{ comment.content }}&nbsp;&nbsp;--&nbsp;
+                                  <router-link
+                                    style="text-decoration: none;font-size:0.8rem"
+                                    :to="'/user/' + comment.author.userId"
+                                    >{{
+                                      comment.author.nickname ||
+                                        comment.author.username
+                                    }}
+                                  </router-link>
+                                  <span
+                                    class="my_gray--text"
+                                    style="font-size: 0.8rem;"
+                                    :title="
+                                      $options.filters.moment(
+                                        comment.createTime
+                                      )
+                                    "
+                                    >&nbsp;{{
+                                      comment.createTime | timeago
+                                    }}</span
+                                  >
+                                </span>
                               </v-list-item>
                               <v-divider></v-divider>
                             </div>
@@ -322,6 +329,7 @@
                       <!--  评论输入区-->
                       <v-layout
                         v-show="showCommentInput[questionDetail.questionId]"
+                        class="pb-2"
                       >
                         <v-text-field
                           :ref="'comment' + questionDetail.questionId"
@@ -488,33 +496,29 @@
                                 "
                               >
                                 <v-list-item style="min-height: 28px">
-                                  <v-layout justify-space-between>
-                                    <v-flex xs10>{{ comment.content }}</v-flex>
-                                    <v-flex
-                                      xs2
-                                      class="text-truncate d-inline-block text-left no-flex"
-                                      >--
-                                      <router-link
-                                        style="text-decoration: none"
-                                        :to="'/user/' + comment.author.userId"
-                                        >{{
-                                          comment.author.nickname ||
-                                            comment.author.username
-                                        }}
-                                      </router-link>
-                                      <span
-                                        style="font-size: 14px;color:gray"
-                                        :title="
-                                          $options.filters.moment(
-                                            comment.createTime
-                                          )
-                                        "
-                                        >&nbsp;{{
-                                          comment.createTime | timeago
-                                        }}</span
-                                      >
-                                    </v-flex>
-                                  </v-layout>
+                                  <span>
+                                    {{ comment.content }}&nbsp;&nbsp;--&nbsp;
+                                    <router-link
+                                      style="text-decoration: none;font-size:0.8rem"
+                                      :to="'/user/' + comment.author.userId"
+                                      >{{
+                                        comment.author.nickname ||
+                                          comment.author.username
+                                      }}
+                                    </router-link>
+                                    <span
+                                      class="my_gray--text"
+                                      style="font-size: 0.8rem;"
+                                      :title="
+                                        $options.filters.moment(
+                                          comment.createTime
+                                        )
+                                      "
+                                      >&nbsp;{{
+                                        comment.createTime | timeago
+                                      }}</span
+                                    >
+                                  </span>
                                 </v-list-item>
                                 <v-divider></v-divider>
                               </div>
@@ -550,7 +554,10 @@
                           </v-btn>
                         </v-layout>
                         <!--  评论输入区-->
-                        <v-layout v-show="showCommentInput[answer.answerId]">
+                        <v-layout
+                          v-show="showCommentInput[answer.answerId]"
+                          class="pb-2"
+                        >
                           <v-text-field
                             ref="answerRef"
                             v-model="comment.currentComment"
@@ -639,11 +646,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="similarMark.dialog = false"
-            >关闭
-          </v-btn>
+          <v-btn text @click="similarMark.dialog = false">关闭 </v-btn>
           <v-btn
-            color="blue darken-1"
+            color="primary"
             :loading="similarMark.loading"
             text
             @click="markQuestion"
@@ -675,7 +680,7 @@
     >
     </InfoDialog>
     <InfoDialog
-      :msg="['标记成功', '标记失败']"
+      :msg="['标记成功', similarMark.resp && similarMark.resp.msg]"
       :succeed="similarMark.resp != null && similarMark.resp.succeed"
       :dialog="similarMark.respDialog"
       @update:dialog="similarMark.respDialog = $event"
@@ -798,8 +803,10 @@ export default {
         .then((resp) => {
           this.similarMark.loading = false
           this.similarMark.resp = resp
+          this.similarMark.respDialog = true
           if (resp.succeed) {
             this.similarMark.dialog = false
+            this.questionDetail.similarMark = resp.data
           }
         })
         .catch((e) => {
@@ -874,10 +881,11 @@ export default {
         })
         .then((resp) => {
           _this.comment.resp = resp
-          _this.comment.dialog = true
           if (resp.succeed) {
             _this.questionDetail.comments.push(resp.data)
             _this.comment.currentComment = null
+          } else {
+            _this.comment.dialog = true
           }
           this.$set(this.showCommentInput, id, false)
         })
@@ -899,16 +907,16 @@ export default {
         })
         .then((resp) => {
           _this.comment.resp = resp
-          _this.comment.dialog = true
           if (resp.succeed) {
             _answer.comments.push(resp.data)
             _this.comment.currentComment = null
+          } else {
+            _this.comment.dialog = true
           }
           this.$set(this.showCommentInput, _answer.answerId, false)
         })
     },
     onEditorChange({ editor, html, text }) {
-      // console.log('editor change!', editor, html, text)
       this.answer.content = html
     },
     submitAnswer() {

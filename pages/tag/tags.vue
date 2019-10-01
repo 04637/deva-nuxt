@@ -24,23 +24,29 @@
       >
         <v-card class="px-3 py-2" :to="'/search/' + tagInfo.tagName">
           <v-layout>
-            <v-btn
-              x-small
-              text
-              :title="tagInfo.tagName"
-              style="max-width:80%;font-weight: bold"
-              class="d-inline-block text-truncate text-left no-flex"
-              >{{ tagInfo.tagName }}</v-btn
+            <v-flex
+              justify-start
+              xs9
+              class="text-truncate  no-flex"
+              style="text-align: left"
             >
-            <span style="height: 20px; line-height: 20px" class="ml-2"
-              >× {{ tagInfo.totalCount }}</span
-            >
+              <span
+                :title="tagInfo.tagName"
+                class="d-inline-block text-truncate text-left no-flex"
+                >{{ tagInfo.tagName }}</span
+              >
+            </v-flex>
+            <v-flex xs2 class="text-right my_gray--text">
+              <span style="height: 20px; line-height: 20px" class="ml-2"
+                >× {{ tagInfo.totalCount }}</span
+              >
+            </v-flex>
           </v-layout>
           <v-layout class="mt-1">
             <!--展示一行省略-->
             <v-card-text
               style="height: 22px"
-              class="d-inline-block text-truncate pa-0"
+              class="d-inline-block text-truncate pa-0 my_gray--text"
               :title="tagInfo.description"
             >
               {{ tagInfo.description }}

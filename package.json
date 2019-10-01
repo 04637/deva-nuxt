@@ -21,6 +21,7 @@
     "markdown-it-attrs": "^3.0.0",
     "markdown-it-div": "^1.1.0",
     "markdown-it-emoji": "^1.4.0",
+    "markdown-it-highlightjs": "^3.0.0",
     "moment": "^2.24.0",
     "nuxt": "^2.0.0",
     "timeago.js": "^4.0.0-beta.2",

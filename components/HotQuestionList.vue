@@ -1,5 +1,5 @@
 <template>
-  <v-list>
+  <v-list v-show="hotQuestionList" class="pt-0">
     <div v-for="hotQuestion in hotQuestionList" :key="hotQuestion.questionId">
       <v-list-item :to="'/question/' + hotQuestion.questionId">
         <span class="d-inline-block text-truncate"

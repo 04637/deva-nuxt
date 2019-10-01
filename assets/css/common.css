@@ -56,7 +56,7 @@ pre {
   padding:3px;
 }
 pre>code{
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 .logo-md{

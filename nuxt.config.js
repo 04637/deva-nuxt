@@ -29,13 +29,15 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: { color: '#01a687' },
   /*
    ** Global CSS
    */
   css: [
     '~assets/css/common.css',
-    'material-design-icons-iconfont/dist/material-design-icons.css'
+    'material-design-icons-iconfont/dist/material-design-icons.css',
+    // markdown-it 高亮 https://samuelcoe.com/blog/nuxt-markdownit-highlight/
+    { src: '~node_modules/highlight.js/styles/hopscotch.css', lang: 'css' }
   ],
   /*
    ** Plugins to load before mounting the App
@@ -51,6 +53,7 @@ export default {
     { src: '~plugins/clipboard', ssr: false },
     { src: '~plugins/websocket', ssr: false },
     { src: '~plugins/notice', ssr: false },
+    // https://surmon-china.github.io/vue-quill-editor/
     { src: '~plugins/quill-editor', ssr: false },
     { src: '~/plugins/persistedStorage', ssr: false }
   ],
@@ -76,11 +79,11 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://localhost:8088',
+    baseURL: 'http://localhost:8080',
     debug: false
   },
   websocket: {
-    server: 'ws://localhost:8088/'
+    server: 'ws://localhost:8080/'
   },
   /*
    ** vuetify module configuration
@@ -105,7 +108,8 @@ export default {
           new_orange: '#d14435',
           private: colors.pink,
           my_gray: '#d3d3d3',
-          solo_color: '#424242'
+          solo_color: '#424242',
+          inverted_color: colors.white
         },
         light: {
           // primary: colors.cyan,
@@ -114,7 +118,8 @@ export default {
           new_orange: '#ff6600',
           private: colors.pink,
           my_gray: '#808080',
-          solo_color: colors.white
+          solo_color: colors.white,
+          inverted_color: colors.black
         }
       }
     }
@@ -133,7 +138,12 @@ export default {
     injected: true,
     emoji: true,
     html: true,
-    use: ['markdown-it-div', 'markdown-it-attrs', 'markdown-it-emoji']
+    use: [
+      'markdown-it-div',
+      'markdown-it-attrs',
+      'markdown-it-emoji',
+      'markdown-it-highlightjs'
+    ]
   },
 
   /*

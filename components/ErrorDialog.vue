@@ -1,6 +1,10 @@
 <!-- 自定义组件参考 https://codesandbox.io/s/o29j95wx9 -->
 <template>
-  <v-dialog v-model="dialog" persistent max-width="20vw">
+  <v-dialog
+    :value="dialog && $store.getters.getErrorMsg"
+    persistent
+    max-width="20vw"
+  >
     <v-card>
       <v-card-title class="error--text subtitle-1">
         {{ $store.getters.getErrorMsg }}

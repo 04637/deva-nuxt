@@ -124,15 +124,17 @@
               </template>
             </v-treeview>
             <v-divider></v-divider>
-            <v-list-item class="mt-3" to="/admin/index">
-              <v-list-item-action>
-                <v-icon color="private">fingerprint</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>管&nbsp;&nbsp;&nbsp;理</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-divider></v-divider>
+            <div v-if="$store.getters.getUserType === 'ADMIN'">
+              <v-list-item class="mt-3" to="/admin/index">
+                <v-list-item-action>
+                  <v-icon color="private">fingerprint</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>管&nbsp;&nbsp;&nbsp;理</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider></v-divider>
+            </div>
             <v-list-item class="mt-3" to="/setting/settings">
               <v-list-item-action>
                 <v-icon>settings</v-icon>
@@ -169,7 +171,7 @@
               v-if="$store.state.userInfo"
               style="position: fixed; right: 157px"
               icon
-              class="mr-5"
+              class="mr-9"
               to="/user/messages"
               small
             >
@@ -426,6 +428,11 @@ export default {
     })
     // 请求桌面通知权限
     this.requestNotifyPermission()
+    this.connectWebsocket()
+    // 加载空间列表
+    this.loadSpaceList()
+    // 加载未读消息数
+    this.loadMessageCount()
   },
   methods: {
     logout() {
@@ -438,9 +445,11 @@ export default {
       })
     },
     search() {
-      this.$router.push({
-        path: '/search/' + this.keywords
-      })
+      if (this.keywords) {
+        this.$router.push({
+          path: '/search/' + this.keywords
+        })
+      }
     },
     loadSpaceList() {
       if (this.$store.state.userInfo) {
@@ -483,19 +492,20 @@ export default {
         })
     },
     connectWebsocket() {
-      if (this.userInfo && process.client) {
-        this.$connect(config.websocket.server + this.userInfo.userId)
+      if (this.$store.getters.getUserId && process.client) {
+        this.disconnectWebsocket()
+        this.$connect(config.websocket.server + this.$store.getters.getUserId)
         this.listenSocket()
       }
     },
     listenSocket() {
-      if (this.userInfo && process.client) {
+      if (this.$store.getters.getUserId && process.client) {
         // 监听前删除已有监听器
         delete this.$options.sockets.onmessage
         this.$options.sockets.onmessage = (data) => {
           const _msg = JSON.parse(data.data)
           const _msgTitle = this.$options.filters.filterHtml(_msg.title)
-          this.showWarnMsg({
+          this.showInfoMsg({
             message: _msgTitle
           })
           this.desktopNotify('DEVA', {
@@ -601,8 +611,8 @@ export default {
 }
 .unread-icon {
   width: 13px;
-  position: relative;
-  top: -7px;
-  left: -31px;
+  position: absolute;
+  top: 9px;
+  right: 191px;
 }
 </style>

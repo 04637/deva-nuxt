@@ -9,8 +9,9 @@
             class="ml-5"
             text
             to="editProfile"
+            color="private"
           >
-            点此编辑
+            <strong>点此编辑</strong>
             <v-icon class="ml-2">edit</v-icon>
           </v-btn>
         </v-card-title>

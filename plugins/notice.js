@@ -5,7 +5,11 @@ import Vue from 'vue'
 
 function toast({ title, message, type, timeout, cb }) {
   if (type === VueNotifications.types.warn) type = 'show'
-  return Vue.toasted[type](message, { duration: timeout })
+  return Vue.toasted[type](message, {
+    duration: timeout,
+    theme: 'bubble',
+    keepOnHover: true
+  })
 }
 
 Vue.use(VueToasted)

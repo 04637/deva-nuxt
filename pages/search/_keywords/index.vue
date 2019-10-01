@@ -3,7 +3,23 @@
     <v-layout column shrink>
       <v-layout>
         <v-flex md7 xs4 shrink hidden-sm-and-down>
-          <v-card-title>{{ $route.params.keywords }}</v-card-title>
+          <v-card-title
+            ><v-row align="center"
+              ><v-btn
+                v-if="$route.query.spaceId"
+                :to="'/space/' + $route.query.spaceId"
+                text
+                outlined
+                color="private"
+                small
+                class="mr-5"
+                ><v-icon small>visibility_off</v-icon
+                ><strong class="ml-1">{{
+                  $route.query.spaceName
+                }}</strong></v-btn
+              >{{ $route.params.keywords }}</v-row
+            ></v-card-title
+          >
         </v-flex>
         <v-flex md5 lg3 align-self-end>
           <v-tabs centered height="38" @change="searchQuestions">
@@ -43,17 +59,32 @@ export default {
     page: {
       current: 1,
       size: 15
+    },
+    loadMore: {
+      isLoading: false,
+      noMore: false
     }
   }),
   created() {},
+  mounted() {
+    this.scroll()
+  },
   methods: {
     searchQuestions() {
+      let _url = '/esQuestionInfo/search'
+      if (this.$route.query.spaceId) {
+        _url = '/esQuestionInfo/searchFromSpace'
+      }
+      this.page.current = 1
+      this.loadMore.isLoading = false
+      this.loadMore.noMore = false
       this.$axios
-        .$post('/esQuestionInfo/search', {
+        .$post(_url, {
           keywords: this.$route.params.keywords,
-          current: this.current,
-          size: this.size,
-          sortType: this.listType
+          current: this.page.current,
+          size: this.page.size,
+          sortType: this.listType,
+          spaceId: this.$route.query.spaceId
         })
         .then((resp) => {
           if (resp.succeed) {
@@ -62,6 +93,46 @@ export default {
             this.questionList = []
           }
         })
+    },
+    scroll() {
+      window.onscroll = () => {
+        // 距离底部200px时加载一次
+        const bottomOfWindow =
+          document.documentElement.offsetHeight -
+            document.documentElement.scrollTop -
+            window.innerHeight <=
+          200
+        if (
+          bottomOfWindow &&
+          !this.loadMore.isLoading &&
+          !this.loadMore.noMore
+        ) {
+          this.loadMore.isLoading = true
+          let _url = '/esQuestionInfo/search'
+          if (this.$route.query.spaceId) {
+            _url = '/esQuestionInfo/searchFromSpace'
+          }
+          this.$axios
+            .$post(_url, {
+              current: ++this.page.current,
+              size: this.page.size,
+              sortType: this.listType,
+              keywords: this.$route.params.keywords,
+              spaceId: this.$route.query.spaceId
+            })
+            .then((resp) => {
+              this.loadMore.isLoading = false
+              if (resp.succeed) {
+                this.questionList = this.questionList.concat(resp.data.content)
+              } else {
+                this.loadMore.noMore = true
+              }
+            })
+            .catch((e) => {
+              this.loadMore.isLoading = false
+            })
+        }
+      }
     }
   }
 }

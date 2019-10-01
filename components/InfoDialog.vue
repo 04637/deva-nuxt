@@ -11,7 +11,9 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <!-- 组件事件绑定https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model -->
-        <v-btn text @click="$emit('update:dialog', false)">关闭 </v-btn>
+        <v-btn text @click="$emit('update:dialog', false)">{{
+          closeTxt
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -32,6 +34,11 @@ export default {
     msg: {
       type: Array,
       required: true
+    },
+    closeTxt: {
+      type: String,
+      required: false,
+      default: '关闭'
     }
   },
   data: () => ({}),

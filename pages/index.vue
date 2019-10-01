@@ -66,11 +66,21 @@ export default {
     page: {
       current: 1,
       size: 15
+    },
+    loadMore: {
+      isLoading: false,
+      noMore: false
     }
   }),
   created() {},
+  mounted() {
+    this.scroll()
+  },
   methods: {
     loadQuestions() {
+      this.page.current = 1
+      this.loadMore.isLoading = false
+      this.loadMore.noMore = false
       this.$axios
         .$post('/questionInfo/listQuestions', {
           current: this.page.current,
@@ -81,9 +91,43 @@ export default {
           if (resp.succeed) {
             this.questionList = resp.data.records
           } else {
-            this.questionList = null
+            this.questionList = []
           }
         })
+    },
+    scroll() {
+      window.onscroll = () => {
+        // 距离底部200px时加载一次
+        const bottomOfWindow =
+          document.documentElement.offsetHeight -
+            document.documentElement.scrollTop -
+            window.innerHeight <=
+          200
+        if (
+          bottomOfWindow &&
+          !this.loadMore.isLoading &&
+          !this.loadMore.noMore
+        ) {
+          this.loadMore.isLoading = true
+          this.$axios
+            .$post('/questionInfo/listQuestions', {
+              current: ++this.page.current,
+              size: this.page.size,
+              listType: this.listType
+            })
+            .then((resp) => {
+              this.loadMore.isLoading = false
+              if (resp.succeed) {
+                this.questionList = this.questionList.concat(resp.data.records)
+              } else {
+                this.loadMore.noMore = true
+              }
+            })
+            .catch((e) => {
+              this.loadMore.isLoading = false
+            })
+        }
+      }
     }
   }
 }
