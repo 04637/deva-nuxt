@@ -1,155 +1,166 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-navigation-drawer
-        v-model="drawer"
-        app
-        clipped
-        permanent
-        :mini-variant="mini"
-        width="200px"
-      >
-        <v-list nav>
-          <v-layout justify-center>
-            <v-icon color="grey" @click="mini = !mini">
-              {{ 'keyboard_arrow_' + (mini ? 'right' : 'left') }}
-            </v-icon>
-          </v-layout>
-          <v-list-item-group>
-            <v-list-item to="/">
-              <v-list-item-action>
-                <v-icon>trip_origin</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>主&nbsp;&nbsp;&nbsp;页</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-subheader v-show="!mini" class="letter-space">DEVA</v-subheader>
-            <v-list-item to="/question/ask">
-              <v-list-item-action>
-                <v-icon>question_answer</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>提&nbsp;&nbsp;&nbsp;问</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item to="/question/find">
-              <v-list-item-action>
-                <v-icon>search</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>发&nbsp;&nbsp;&nbsp;现</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item to="/user/users">
-              <v-list-item-action>
-                <v-icon>people</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>用&nbsp;&nbsp;&nbsp;户</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item to="/tag/tags">
-              <v-list-item-action>
-                <v-icon>bookmarks</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>标&nbsp;&nbsp;&nbsp;签</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-divider></v-divider>
-            <v-layout align-center justify-space-between>
-              <v-subheader v-show="!mini" class="letter-space"
-                >PRIVATE</v-subheader
-              >
-              <v-tooltip right>
-                <template v-slot:activator="{ on }">
-                  <v-layout justify-center :class="mini ? 'mt-2' : ''">
-                    <v-btn icon small @click="joinSpace.dialog = true" v-on="on"
-                      ><v-icon>add</v-icon></v-btn
-                    >
-                  </v-layout>
-                </template>
-                <span>加入空间</span>
-              </v-tooltip>
-              <v-tooltip right>
-                <template v-slot:activator="{ on }">
-                  <v-layout justify-center :class="mini ? 'mt-2' : ''">
-                    <v-btn to="/space/createSpace" icon small v-on="on"
-                      ><v-icon>mdi-new-box</v-icon></v-btn
-                    >
-                  </v-layout>
-                </template>
-                <span>创建空间</span>
-              </v-tooltip>
+      <v-flex hidden-sm-and-down shrink>
+        <v-navigation-drawer
+          v-model="drawer"
+          app
+          clipped
+          permanent
+          :mini-variant="mini"
+          width="200px"
+        >
+          <v-list nav>
+            <v-layout justify-center>
+              <v-icon color="grey" @click="mini = !mini">
+                {{ 'keyboard_arrow_' + (mini ? 'right' : 'left') }}
+              </v-icon>
             </v-layout>
-            <v-treeview
-              v-show="spaceList[0].children && spaceList[0].children.length > 0"
-              dense
-              item-key="spaceId"
-              item-text="spaceName"
-              :items="spaceList"
-              open-on-click
-              transition
-              indeterminate-icon="group"
-              on-icon="group"
-              class="mb-2"
-              :class="mini ? 'mini' : ''"
-              :active="[$route.params.id]"
-              color="default"
-            >
-              <template v-slot:prepend="{ item }">
-                <v-icon v-if="item.children">dashboard</v-icon>&nbsp;&nbsp;
-              </template>
-              <template v-slot:label="{ item }">
-                <v-btn
-                  v-if="!item.children"
-                  text
-                  width="100%"
-                  depressed
-                  height="35px"
-                  style="line-height: 35px"
-                  class="pa-0 ma-0 no-hover-active text-truncate d-inline-block text-left no-flex"
-                  :ripple="false"
-                  :class="mini ? 'pl-0' : ''"
-                  :to="'/space/' + item.spaceId"
-                  :title="item.spaceName"
-                >
-                  {{ mini ? '...' : item.spaceName }}
-                </v-btn>
-                <span v-if="item.children">
-                  {{ item.spaceName }}
-                </span>
-              </template>
-            </v-treeview>
-            <v-divider></v-divider>
-            <div v-if="$store.getters.getUserType === 'ADMIN'">
-              <v-list-item class="mt-3" to="/admin/index">
+            <v-list-item-group>
+              <v-list-item to="/">
                 <v-list-item-action>
-                  <v-icon color="private">fingerprint</v-icon>
+                  <v-icon>trip_origin</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
-                  <v-list-item-title>管&nbsp;&nbsp;&nbsp;理</v-list-item-title>
+                  <v-list-item-title>主&nbsp;&nbsp;&nbsp;页</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-subheader v-show="!mini" class="letter-space"
+                >DEVA</v-subheader
+              >
+              <v-list-item to="/question/ask">
+                <v-list-item-action>
+                  <v-icon>question_answer</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>提&nbsp;&nbsp;&nbsp;问</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item to="/question/find">
+                <v-list-item-action>
+                  <v-icon>search</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>发&nbsp;&nbsp;&nbsp;现</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item to="/user/users">
+                <v-list-item-action>
+                  <v-icon>people</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>用&nbsp;&nbsp;&nbsp;户</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item to="/tag/tags">
+                <v-list-item-action>
+                  <v-icon>bookmarks</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>标&nbsp;&nbsp;&nbsp;签</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-divider></v-divider>
-            </div>
-            <v-list-item class="mt-3" to="/setting/settings">
-              <v-list-item-action>
-                <v-icon>settings</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>设&nbsp;&nbsp;&nbsp;置</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-navigation-drawer>
-
+              <v-layout align-center justify-space-between>
+                <v-subheader v-show="!mini" class="letter-space"
+                  >PRIVATE</v-subheader
+                >
+                <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                    <v-layout justify-center :class="mini ? 'mt-2' : ''">
+                      <v-btn
+                        icon
+                        small
+                        @click="joinSpace.dialog = true"
+                        v-on="on"
+                        ><v-icon>add</v-icon></v-btn
+                      >
+                    </v-layout>
+                  </template>
+                  <span>加入空间</span>
+                </v-tooltip>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                    <v-layout justify-center :class="mini ? 'mt-2' : ''">
+                      <v-btn to="/space/createSpace" icon small v-on="on"
+                        ><v-icon>mdi-new-box</v-icon></v-btn
+                      >
+                    </v-layout>
+                  </template>
+                  <span>创建空间</span>
+                </v-tooltip>
+              </v-layout>
+              <v-treeview
+                v-show="
+                  spaceList[0].children && spaceList[0].children.length > 0
+                "
+                dense
+                item-key="spaceId"
+                item-text="spaceName"
+                :items="spaceList"
+                open-on-click
+                transition
+                indeterminate-icon="group"
+                on-icon="group"
+                class="mb-2"
+                :class="mini ? 'mini' : ''"
+                :active="[$route.params.id]"
+                color="default"
+              >
+                <template v-slot:prepend="{ item }">
+                  <v-icon v-if="item.children">dashboard</v-icon>&nbsp;&nbsp;
+                </template>
+                <template v-slot:label="{ item }">
+                  <v-btn
+                    v-if="!item.children"
+                    text
+                    width="100%"
+                    depressed
+                    height="35px"
+                    style="line-height: 35px"
+                    class="pa-0 ma-0 no-hover-active text-truncate d-inline-block text-left no-flex"
+                    :ripple="false"
+                    :class="mini ? 'pl-0' : ''"
+                    :to="'/space/' + item.spaceId"
+                    :title="item.spaceName"
+                  >
+                    {{ mini ? '...' : item.spaceName }}
+                  </v-btn>
+                  <span v-if="item.children">
+                    {{ item.spaceName }}
+                  </span>
+                </template>
+              </v-treeview>
+              <v-divider></v-divider>
+              <div v-if="$store.getters.getUserType === 'ADMIN'">
+                <v-list-item class="mt-3" to="/admin/index">
+                  <v-list-item-action>
+                    <v-icon color="private">fingerprint</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      >管&nbsp;&nbsp;&nbsp;理</v-list-item-title
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+                <v-divider></v-divider>
+              </div>
+              <v-list-item class="mt-3" to="/setting/settings">
+                <v-list-item-action>
+                  <v-icon>settings</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>设&nbsp;&nbsp;&nbsp;置</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-navigation-drawer>
+      </v-flex>
       <v-app-bar app dense clipped-left>
         <v-container row align-center justify-space-between fluid>
-          <v-flex justify-start row>
+          <v-flex justify-start row hidden-sm-and-down>
             <v-toolbar-title>
               <logo type="header" class="ml-5"></logo>
             </v-toolbar-title>
@@ -272,22 +283,22 @@
           </v-layout>
         </v-container>
       </v-app-bar>
-      <v-content
-        :class="mini ? 'ml-mini' : 'ml-max'"
-        style="padding-left: 80px"
-      >
-        <!--<v-banner single-line>-->
-        <!--  该产品正处于测试阶段-->
-        <!--  <template v-slot:actions>-->
-        <!--    <v-btn text color="deep-purple accent-4">-->
-        <!--      Action-->
-        <!--    </v-btn>-->
-        <!--  </template>-->
-        <!--</v-banner>-->
-        <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
-        <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
-        <nuxt v-else class="pa-2" />
-      </v-content>
+      <v-flex>
+        <v-content :class="isSmall ? 'ml-small' : mini ? 'ml-mini' : 'ml-max'">
+          <!--<v-banner single-line>-->
+          <!--  该产品正处于测试阶段-->
+          <!--  <template v-slot:actions>-->
+          <!--    <v-btn text color="deep-purple accent-4">-->
+          <!--      Action-->
+          <!--    </v-btn>-->
+          <!--  </template>-->
+          <!--</v-banner>-->
+          <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
+          <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
+          <nuxt v-else class="pa-2" />
+          <FloatMenu></FloatMenu>
+        </v-content>
+      </v-flex>
       <v-footer app>
         <v-row justify="center" no-gutters>
           <v-col class="py-2 text-right primary--text" cols="12">
@@ -351,9 +362,11 @@ import Logo from '../components/Logo'
 // https://github.com/nuxt/nuxt.js/issues/319
 import config from '../nuxt.config.js'
 import ErrorDialog from '../components/ErrorDialog'
+import FloatMenu from '../components/FloatMenu'
 export default {
   name: 'App',
   components: {
+    FloatMenu,
     Logo,
     ErrorDialog
   },
@@ -400,6 +413,12 @@ export default {
     },
     toggleUser() {
       return this.$store.getters.getUserId
+    },
+    isSmall() {
+      return (
+        this.$vuetify.breakpoint.name === 'sm' ||
+        this.$vuetify.breakpoint.name === 'xs'
+      )
     }
   },
   watch: {
@@ -604,10 +623,16 @@ export default {
 <style></style>
 <style scoped>
 .ml-max {
-  margin-left: 120px;
+  margin-left: 120px !important;
+  padding-left: 80px !important;
 }
 .ml-mini {
-  margin-left: 0;
+  margin-left: 0 !important;
+  padding-left: 80px !important;
+}
+.ml-small {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
 }
 .unread-icon {
   width: 13px;

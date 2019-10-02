@@ -32,6 +32,9 @@
                 :rules="[rules.max200]"
               ></v-textarea>
             </v-layout>
+            <small class="my_gray--text"
+              >空间是一个私密社区, 空间内的问答只有其成员可见</small
+            >
             <v-layout justify-end class="mt-4">
               <v-btn
                 outlined

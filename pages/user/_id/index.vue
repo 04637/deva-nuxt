@@ -12,7 +12,7 @@
             color="private"
           >
             <strong>点此编辑</strong>
-            <v-icon class="ml-2">edit</v-icon>
+            <v-icon class="ml-2" small>edit</v-icon>
           </v-btn>
         </v-card-title>
       </v-layout>
@@ -105,7 +105,7 @@
           </v-layout>
         </v-card>
       </v-flex>
-      <v-flex lg7 md8 class="ml-8">
+      <v-flex lg7 md8 sm12 class="ml-8">
         <v-tabs v-model="tab" fixed-tabs>
           <v-tab>
             提问

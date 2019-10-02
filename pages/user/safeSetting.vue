@@ -19,15 +19,10 @@
                   disabled
                   :value="userInfo.email"
                   hint=""
-                  class="mt-3"
+                  class="mt-3 center-text"
                 ></v-text-field>
-                <v-btn
-                  class="ml-5"
-                  text
-                  small
-                  outlined
-                  @click="editEmail.dialog = true"
-                  >修改</v-btn
+                <v-btn icon @click="editEmail.dialog = true"
+                  ><v-icon>edit</v-icon></v-btn
                 >
               </v-layout>
               <v-layout align-center>
@@ -36,15 +31,24 @@
                   disabled
                   :value="userInfo.phone"
                   hint=""
-                  class="mt-3"
+                  class="mt-3 center-text"
                 ></v-text-field>
+                <v-btn icon @click="editPhone.dialog = true"
+                  ><v-icon>edit</v-icon></v-btn
+                >
+              </v-layout>
+              <v-divider></v-divider>
+              <v-layout align-center class="mt-3">
+                <span>上次登录IP：</span>
+                <span class="my_gray--text">{{ userInfo.lastLoginIp }}</span>
+              </v-layout>
+              <v-layout justify-end>
                 <v-btn
-                  class="ml-5"
+                  class="mt-2"
+                  color="private"
                   text
-                  small
-                  outlined
-                  @click="editPhone.dialog = true"
-                  >修改</v-btn
+                  @click="editPassword.dialog = true"
+                  ><strong>修改密码</strong></v-btn
                 >
               </v-layout>
             </v-form>
@@ -167,6 +171,69 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <!--密码修改弹框-->
+    <v-dialog v-model="editPassword.dialog" width="500px" persistent>
+      <v-card>
+        <v-card-text class="pb-0">
+          <v-container class="pb-0">
+            <v-form ref="passwordForm">
+              <v-layout align-center>
+                <v-text-field
+                  ref="editPhoneRef"
+                  v-model="editPassword.newPassword"
+                  :append-icon="
+                    editPassword.show ? 'visibility' : 'visibility_off'
+                  "
+                  :rules="[rules.password]"
+                  :type="editPassword.show ? 'text' : 'password'"
+                  required
+                  label="输入新密码"
+                  @click:append="editPassword.show = !editPassword.show"
+                >
+                </v-text-field>
+              </v-layout>
+
+              <v-layout align-center>
+                <v-text-field
+                  v-model="editPassword.smsCode"
+                  label="验证码"
+                  :rules="[rules.requireCode]"
+                >
+                </v-text-field>
+                <v-btn
+                  v-show="smsCodeResult.timeInterval <= 0"
+                  class="ml-5"
+                  text
+                  outlined
+                  small
+                  :loading="smsCodeResult.loading"
+                  @click="sendPasswordSmsCode"
+                  >获取短信验证码</v-btn
+                >
+                <v-btn
+                  v-show="smsCodeResult.timeInterval > 0"
+                  class="ml-5"
+                  text
+                  outlined
+                  small
+                  disabled
+                  >{{ smsCodeResult.timeInterval }}&nbsp;s后重发</v-btn
+                >
+              </v-layout>
+            </v-form>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn color="sub" text small @click="editPassword.dialog = false"
+            >关闭</v-btn
+          >
+          <v-btn color="primary" outlined small text @click="updatePassword"
+            >提交</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <InfoDialog
       :msg="['修改成功', saveEmailResult.errorMsg]"
       :succeed="saveEmailResult.resp != null && saveEmailResult.resp.succeed"
@@ -179,6 +246,15 @@
       :succeed="savePhoneResult.resp != null && savePhoneResult.resp.succeed"
       :dialog="savePhoneResult.dialog"
       @update:dialog="savePhoneResult.dialog = $event"
+    >
+    </InfoDialog>
+    <InfoDialog
+      :msg="['密码修改成功, 请使用新密码重新登录', savePasswordResult.errorMsg]"
+      :succeed="
+        savePasswordResult.resp != null && savePasswordResult.resp.succeed
+      "
+      :dialog="savePasswordResult.dialog"
+      @update:dialog="savePasswordResult.dialog = $event"
     >
     </InfoDialog>
     <InfoDialog
@@ -228,6 +304,15 @@ export default {
         } else {
           return true
         }
+      },
+      password(v) {
+        if (!v) {
+          return '密码不能为空'
+        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,20}$/.test(v)) {
+          return '至少包含1个大写字母，1个小写字母和1个数字，8-16位'
+        } else {
+          return true
+        }
       }
     },
     saveEmailResult: {
@@ -237,6 +322,12 @@ export default {
       errorMsg: null
     },
     savePhoneResult: {
+      dialog: false,
+      resp: null,
+      loading: false,
+      errorMsg: null
+    },
+    savePasswordResult: {
       dialog: false,
       resp: null,
       loading: false,
@@ -253,6 +344,12 @@ export default {
       phone: null,
       smsCode: null,
       phoneCheck: null
+    },
+    editPassword: {
+      dialog: false,
+      newPassword: null,
+      smsCode: null,
+      show: false
     },
     emailCodeResult: {
       dialog: false,
@@ -396,8 +493,71 @@ export default {
         .catch((e) => {
           this.savePhoneResult.loading = false
         })
+    },
+    updatePassword() {
+      if (!this.$refs.passwordForm.validate()) {
+        return false
+      }
+      this.savePasswordResult.loading = true
+      this.$axios
+        .$post('/safeSetting/updatePassword', {
+          newPassword: this.editPassword.newPassword,
+          smsCode: this.editPassword.smsCode.trim()
+        })
+        .then((resp) => {
+          this.savePasswordResult.dialog = true
+          this.savePasswordResult.resp = resp
+          this.savePasswordResult.loading = false
+          this.savePasswordResult.errorMsg = resp.msg
+          if (resp.succeed) {
+            this.editPassword.dialog = false
+          }
+        })
+        .catch((e) => {
+          this.savePasswordResult.loading = false
+        })
+    },
+    sendPasswordSmsCode() {
+      if (this.smsCodeResult.timeInterval > 0) {
+        this.smsCodeResult.showSendWarning = true
+        return false
+      }
+      this.smsCodeResult.loading = true
+      this.$axios
+        .$post('/sms/sendCode', {
+          phone: this.userInfo.phone
+        })
+        .then((resp) => {
+          this.smsCodeResult.resp = resp
+          this.smsCodeResult.loading = false
+          if (!resp.succeed) {
+            this.smsCodeResult.dialog = true
+          }
+          const _self = this
+          _self.smsCodeResult.timeInterval = 60
+          const _interval = setInterval(function() {
+            _self.smsCodeResult.timeInterval--
+            if (_self.smsCodeResult.timeInterval <= 0) {
+              clearInterval(_interval)
+            }
+          }, 1000)
+        })
+        .catch((e) => {
+          this.smsCodeResult.loading = false
+        })
+    },
+    logout() {
+      this.disconnectWebsocket()
+      this.$store.commit('setUserInfo', null)
+      this.$router.push({
+        path: '/user/login'
+      })
     }
   }
 }
 </script>
-<style scoped></style>
+<style>
+.center-text input {
+  text-indent: 20px;
+}
+</style>

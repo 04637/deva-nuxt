@@ -35,14 +35,24 @@ export default {
     searchKey: null,
     page: {
       current: 1,
-      size: 100
+      size: 50
+    },
+    loadMore: {
+      isLoading: false,
+      noMore: false
     }
   }),
   created() {
     this.loadUserList()
   },
+  mounted() {
+    this.scroll()
+  },
   methods: {
     loadUserList() {
+      this.page.current = 1
+      this.loadMore.isLoading = false
+      this.loadMore.noMore = false
       this.$axios
         .$post('/userInfo/listUsers', {
           current: this.page.current,
@@ -52,8 +62,44 @@ export default {
         .then((resp) => {
           if (resp.succeed) {
             this.userList = resp.data.records
+          } else {
+            this.userList = []
           }
         })
+    },
+    scroll() {
+      window.onscroll = () => {
+        // 距离底部200px时加载一次
+        const bottomOfWindow =
+          document.documentElement.offsetHeight -
+            document.documentElement.scrollTop -
+            window.innerHeight <=
+          200
+        if (
+          bottomOfWindow &&
+          !this.loadMore.isLoading &&
+          !this.loadMore.noMore
+        ) {
+          this.loadMore.isLoading = true
+          this.$axios
+            .$post('/userInfo/listUsers', {
+              current: ++this.page.current,
+              size: this.page.size,
+              searchKey: this.searchKey
+            })
+            .then((resp) => {
+              this.loadMore.isLoading = false
+              if (resp.succeed) {
+                this.userList = this.userList.concat(resp.data.records)
+              } else {
+                this.loadMore.noMore = true
+              }
+            })
+            .catch((e) => {
+              this.loadMore.isLoading = false
+            })
+        }
+      }
     }
   }
 }

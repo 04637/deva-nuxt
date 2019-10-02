@@ -89,7 +89,9 @@
                 :to="'/user/' + question.author.userId"
                 height="21px"
               >
-                {{ question.author.nickname || question.author.username }}
+                <strong>{{
+                  question.author.nickname || question.author.username
+                }}</strong>
               </v-btn>
             </v-row>
           </v-col>

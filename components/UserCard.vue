@@ -1,9 +1,26 @@
 <template>
-  <v-card class="pa-2" :to="actionIcon ? null : '/user/' + userInfo.userId">
+  <v-card
+    min-width="231px"
+    class="pa-2"
+    :to="
+      actionIcon || $store.getters.getUserType === 'ADMIN'
+        ? null
+        : '/user/' + userInfo.userId
+    "
+  >
     <v-layout justify-start class="mb-3">
       <v-flex xs4>
         <v-layout justify-center>
-          <v-avatar color="grey" :title="'用户名: ' + userInfo.username">
+          <v-avatar
+            style="cursor:pointer"
+            color="grey"
+            :title="'用户名: ' + userInfo.username"
+            @click="
+              actionIcon || $store.getters.getUserType === 'ADMIN'
+                ? $router.push('/user/' + userInfo.userId)
+                : ''
+            "
+          >
             <v-img :src="userInfo.avatar"></v-img>
           </v-avatar>
         </v-layout>
@@ -29,6 +46,16 @@
             </span>
           </v-layout>
         </v-layout>
+      </v-flex>
+      <v-flex v-if="$store.getters.getUserType === 'ADMIN'" xs1>
+        <v-btn
+          :color="userInfo.status === 0 ? 'primary' : 'private'"
+          x-small
+          text
+          style="position: relative; top:-10px;left:-6px"
+          @click="userInfo.status === 0 ? unBanUser() : banUser()"
+          ><strong>{{ userInfo.status === 0 ? '解封' : '封禁' }}</strong></v-btn
+        >
       </v-flex>
     </v-layout>
     <v-layout justify-space-between style="height: 20px">
@@ -100,7 +127,31 @@ export default {
       result: false,
       dialog: false
     }
-  })
+  }),
+  methods: {
+    banUser() {
+      this.$axios
+        .$post('/admin/banUser', {
+          userId: this.userInfo.userId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.userInfo.status = 0
+          }
+        })
+    },
+    unBanUser() {
+      this.$axios
+        .$post('/admin/unBanUser', {
+          userId: this.userInfo.userId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.userInfo.status = 1
+          }
+        })
+    }
+  }
 }
 </script>
 <style scoped>

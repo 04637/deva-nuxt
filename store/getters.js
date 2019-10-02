@@ -11,6 +11,9 @@ export default {
   getUserId(state) {
     return state.userInfo ? state.userInfo.userId : null
   },
+  getRep(state) {
+    return state.userInfo ? state.userInfo.reputation : null
+  },
   getUnReadMessageCount(state) {
     return state.userInfo ? state.unReadMessageCount : null
   },

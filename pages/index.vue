@@ -51,11 +51,13 @@
         <HotQuestionList></HotQuestionList>
       </v-flex>
     </v-layout>
+    <!--<FloatMenu></FloatMenu>-->
   </v-app>
 </template>
 <script>
 import QuestionCardList from '../components/QuestionCardList'
 import HotQuestionList from '../components/HotQuestionList'
+// import FloatMenu from '../components/FloatMenu'
 export default {
   components: { HotQuestionList, QuestionCardList },
   data: () => ({
