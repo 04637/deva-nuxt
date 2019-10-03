@@ -8,6 +8,9 @@ export default {
   getUserType(state) {
     return state.userInfo ? state.userInfo.userType : null
   },
+  isAdmin(state) {
+    return state.userInfo ? state.userInfo.userType === 'ADMIN' : false
+  },
   getUserId(state) {
     return state.userInfo ? state.userInfo.userId : null
   },

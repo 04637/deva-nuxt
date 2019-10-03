@@ -48,7 +48,7 @@
               <v-text-field
                 ref="phone"
                 v-model="phone"
-                class="mt-4"
+                class="mt-2"
                 label="绑定手机号"
                 required
                 :error-messages="phoneCheck"
@@ -80,12 +80,28 @@
                 >{{ smsCodeResult.timeInterval }}&nbsp;s后重发</v-btn
               >
             </v-layout>
-            <v-layout justify-end class="mt-4">
+            <v-layout justify-space-between class="mt-4" align-center>
+              <v-layout align-center>
+                <v-checkbox
+                  v-model="termsCheck"
+                  color="primary"
+                  label="注册即代表同意"
+                  :rules="[rules.agreeTerms]"
+                ></v-checkbox>
+                <div style="margin-top: -6px">
+                  <a class="ml-2" href="http://www.baidu.com" target="_blank"
+                    >条款声明</a
+                  >
+                </div>
+              </v-layout>
+            </v-layout>
+            <v-layout>
               <v-btn
-                outlined
                 accent
                 depressed
-                min-width="150px"
+                width="100vw"
+                color="primary"
+                class="mt-4"
                 :loading="signUpResult.loading"
                 @click="submitSignUp"
                 >注册</v-btn
@@ -149,6 +165,7 @@ export default {
       resp: null,
       loading: false
     },
+    termsCheck: false,
     rules: {
       username(v) {
         if (!v) {
@@ -192,7 +209,8 @@ export default {
           return true
         }
       },
-      requireCode: (v) => (v && v.length > 0) || '请输入验证码'
+      requireCode: (v) => (v && v.length > 0) || '请输入验证码',
+      agreeTerms: (v) => (v && v === true) || '阅读并同意相关条款后方可进行注册'
     }
   }),
   watch: {},

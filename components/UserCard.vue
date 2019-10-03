@@ -53,7 +53,11 @@
           x-small
           text
           style="position: relative; top:-10px;left:-6px"
-          @click="userInfo.status === 0 ? unBanUser() : banUser()"
+          @click="
+            userInfo.status === 0
+              ? (confirmUnBan.dialog = true)
+              : (confirmBan.dialog = true)
+          "
           ><strong>{{ userInfo.status === 0 ? '解封' : '封禁' }}</strong></v-btn
         >
       </v-flex>
@@ -83,6 +87,22 @@
       :todo-param="userInfo.userId"
       @update:dialog="confirm.dialog = $event"
     ></ConfirmDialog>
+    <ConfirmDialog
+      v-if="$store.getters.isAdmin"
+      msg="确定 [封禁] 该用户？"
+      :dialog="confirmBan.dialog"
+      :todo="banUser"
+      @update:dialog="confirmBan.dialog = $event"
+    >
+    </ConfirmDialog>
+    <ConfirmDialog
+      v-if="$store.getters.isAdmin"
+      msg="确定 [解封] 该用户？"
+      :dialog="confirmUnBan.dialog"
+      :todo="unBanUser"
+      @update:dialog="confirmUnBan.dialog = $event"
+    >
+    </ConfirmDialog>
   </v-card>
 </template>
 <script>
@@ -125,6 +145,12 @@ export default {
   data: () => ({
     confirm: {
       result: false,
+      dialog: false
+    },
+    confirmBan: {
+      dialog: false
+    },
+    confirmUnBan: {
       dialog: false
     }
   }),

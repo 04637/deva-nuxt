@@ -57,7 +57,7 @@
                     </v-layout>
                   </v-flex>
                   <v-flex xs11 class="ml-4">
-                    <v-layout justify-end>
+                    <v-layout justify-end style="min-height: 36px">
                       <v-btn
                         v-if="
                           $store.state.userInfo &&
@@ -761,7 +761,8 @@ export default {
           ['clean']
         ]
       }
-    }
+    },
+    keywords: null
   }),
   computed: {
     quillErrorMessage() {
@@ -782,7 +783,29 @@ export default {
       questionId: params.id
     })
     const questionDetail = resp.data
-    return { questionDetail }
+    const keywords1 = questionDetail.title.split(' ')
+    const keywords2 = questionDetail.tagInfos.map((t) => {
+      return t.tagName
+    })
+    const _keywords = keywords1.concat(keywords2)
+    const keywords = _keywords.join(',')
+    return { questionDetail, keywords }
+  },
+  head() {
+    // 不能写成 head:()=>({}) https://stackoverflow.com/questions/46064245/nuxt-js-ssr-title-undefined
+    return {
+      title: this.questionDetail.title,
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: this.keywords },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.$options.filters.filterHtml(
+            this.$md.render(this.questionDetail.content)
+          )
+        }
+      ]
+    }
   },
   mounted() {},
   methods: {
