@@ -35,32 +35,46 @@
           :loading="loading"
         >
           <template v-slot:item.content="{ item }">
-            <router-link
-              :to="'/user/' + item.fromUserId"
-              style="text-decoration: none; position: relative; top: -1px"
-              >{{ item.fromUserNickname }}</router-link
-            >&nbsp;{{ $options.filters.filterHtml(item.content) }}
-            <v-btn
-              text
-              x-small
-              color="warning"
-              style="position:relative; top:-2px;"
-              @click="
-                readMessage(item.messageId)
-                $router.push(
-                  '/question/' +
-                    item.ownQuestionId +
-                    (item.anchor ? item.anchor : '')
-                )
-              "
-              >查看</v-btn
-            ><svg
-              v-if="!item.isRead"
-              class="icon"
-              style="width: 13px;height: 13px; position: relative; top: -6px; left: -9px"
-            >
-              <use xlink:href="#icon-unread"></use>
-            </svg>
+            <v-row align="center">
+              <router-link
+                :to="'/user/' + item.fromUserId"
+                style="text-decoration: none; position: relative; top: -1px"
+                >{{ item.fromUserNickname }}</router-link
+              >&nbsp;{{ $options.filters.filterHtml(item.content) }}
+              <v-btn
+                v-if="item.ownQuestionId"
+                text
+                x-small
+                color="warning"
+                @click="
+                  readMessage(item)
+                  $router.push(
+                    '/question/' +
+                      item.ownQuestionId +
+                      (item.anchor ? item.anchor : '')
+                  )
+                "
+                >查看</v-btn
+              >
+              <v-btn
+                v-else
+                text
+                x-small
+                color="warning"
+                @click="
+                  readMessage(item)
+                  viewTask(item.relateTaskId)
+                "
+                >查看</v-btn
+              >
+              <svg
+                v-if="!item.isRead"
+                class="icon"
+                style="width: 13px;height: 13px; position: relative; top: -6px; left: -9px"
+              >
+                <use xlink:href="#icon-unread"></use>
+              </svg>
+            </v-row>
           </template>
           <template v-slot:item.createTime="{ item }">
             <span>{{ item.createTime | moment }}</span>
@@ -108,6 +122,37 @@
       :todo="deleteSelected"
       @update:dialog="deleteConfirm.dialog = $event"
     ></ConfirmDialog>
+    <v-dialog v-model="taskView.dialog" persistent max-width="40vw">
+      <v-card>
+        <v-card-title>
+          <!--<span class="headline">回复内容</span>-->
+        </v-card-title>
+        <v-card-text class="pt-0">
+          <span>您的提议</span>
+          <v-textarea
+            v-if="taskView.taskInfo"
+            hide-details
+            readonly
+            rows="10"
+            :value="taskView.taskInfo.content"
+          ></v-textarea>
+        </v-card-text>
+        <v-card-text class="pt-0 pb-0">
+          <span>管理员回复</span>
+          <v-textarea
+            v-if="taskView.taskInfo"
+            hide-details
+            readonly
+            rows="10"
+            :value="taskView.taskInfo.replyContent"
+          ></v-textarea>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="taskView.dialog = false">关闭 </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 <script>
@@ -138,6 +183,10 @@ export default {
       result: false,
       dialog: false,
       msg: '您确定要删除选中消息吗?'
+    },
+    taskView: {
+      dialog: false,
+      taskInfo: null
     }
   }),
   computed: {
@@ -159,6 +208,18 @@ export default {
   },
   mounted() {},
   methods: {
+    viewTask(_taskId) {
+      this.$axios
+        .$post('/adminTask/getTaskInfo', {
+          taskId: _taskId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.taskView.taskInfo = resp.data
+            this.taskView.dialog = true
+          }
+        })
+    },
     toggleSelectAll() {
       const _table = this.$refs.table
       this.allSelected = !this.allSelected
@@ -219,13 +280,16 @@ export default {
           }
         })
     },
-    readMessage(_messageId) {
+    readMessage(item) {
       this.$axios
         .$post('/messageInfo/readMessage', {
-          messageId: _messageId
+          messageId: item.messageId
         })
         .then((resp) => {
-          this.countUnRead()
+          if (resp.succeed) {
+            this.countUnRead()
+            item.isRead = true
+          }
         })
     },
     loadMessages() {

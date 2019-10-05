@@ -134,7 +134,7 @@
               </v-treeview>
               <v-divider></v-divider>
               <div v-if="$store.getters.getUserType === 'ADMIN'">
-                <v-list-item class="mt-3" to="/admin/index">
+                <v-list-item class="mt-3" to="/admin/task">
                   <v-list-item-action>
                     <v-icon color="private">fingerprint</v-icon>
                   </v-list-item-action>
@@ -146,12 +146,18 @@
                 </v-list-item>
                 <v-divider></v-divider>
               </div>
-              <v-list-item class="mt-3" to="/setting/settings">
+              <v-list-item
+                class="mt-3"
+                @click="$vuetify.theme.dark = !$vuetify.theme.dark"
+              >
                 <v-list-item-action>
-                  <v-icon>settings</v-icon>
+                  <v-icon v-show="$vuetify.theme.dark">mdi-brightness-4</v-icon>
+                  <v-icon v-show="!$vuetify.theme.dark"
+                    >mdi-brightness-5</v-icon
+                  >
                 </v-list-item-action>
                 <v-list-item-content>
-                  <v-list-item-title>设&nbsp;&nbsp;&nbsp;置</v-list-item-title>
+                  <v-list-item-title>切换主题</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
@@ -285,14 +291,6 @@
       </v-app-bar>
       <v-flex>
         <v-content :class="isSmall ? 'ml-small' : mini ? 'ml-mini' : 'ml-max'">
-          <!--<v-banner single-line>-->
-          <!--  该产品正处于测试阶段-->
-          <!--  <template v-slot:actions>-->
-          <!--    <v-btn text color="deep-purple accent-4">-->
-          <!--      Action-->
-          <!--    </v-btn>-->
-          <!--  </template>-->
-          <!--</v-banner>-->
           <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
           <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
           <nuxt v-else class="pa-2" />
@@ -300,15 +298,23 @@
         </v-content>
       </v-flex>
       <v-footer app>
-        <v-row justify="center" no-gutters>
-          <v-col class="py-2 text-right primary--text" cols="12">
+        <v-row justify="start" align="center" no-gutters>
+          <v-flex class="py-2 text-left primary--text" sm3>
             <strong
               >&copy;2019-{{ new Date().getFullYear() }}&nbsp;<router-link
                 to="/"
                 >aid.dev</router-link
               ></strong
             >
-          </v-col>
+            <strong class="pl-4">联系我们：<span>admin@aid.dev</span></strong>
+          </v-flex>
+          <v-flex
+            class="py-2 text-left my_gray--text d-inline-block text-truncate"
+            sm7
+          >
+            <v-icon></v-icon
+            >啊哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
+          </v-flex>
         </v-row>
       </v-footer>
       <ErrorDialog
@@ -349,7 +355,9 @@
               "
               >关闭</v-btn
             >
-            <v-btn color="primary" small text @click="joinToSpace">加入</v-btn>
+            <v-btn color="primary" small text @click="joinToSpace"
+              ><strong>加入</strong></v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>

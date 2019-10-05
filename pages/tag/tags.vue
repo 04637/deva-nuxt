@@ -115,7 +115,7 @@
             color="primary"
             :loading="editDescription.loading"
             @click="updateDescription"
-            >更新
+            ><strong>更新</strong>
           </v-btn>
         </v-card-actions>
       </v-card>

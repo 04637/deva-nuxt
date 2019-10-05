@@ -90,7 +90,7 @@
                 ></v-checkbox>
                 <div style="margin-top: -6px">
                   <a class="ml-2" href="http://www.baidu.com" target="_blank"
-                    >条款声明</a
+                    >法律声明和隐私权政策</a
                   >
                 </div>
               </v-layout>

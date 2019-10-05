@@ -63,7 +63,7 @@
                           $store.state.userInfo &&
                             $store.getters.getUserId !==
                               questionDetail.author.userId &&
-                            $store.getters.getUserInfo.reputation >= 500
+                            $store.getters.getUserInfo.reputation >= 200
                         "
                         id="markDialogBtn"
                         text
@@ -611,7 +611,7 @@
               <v-layout justify-end class="my-5">
                 <v-btn
                   :loading="answer.loading"
-                  outlined
+                  color="primary"
                   accent
                   depressed
                   min-width="150px"

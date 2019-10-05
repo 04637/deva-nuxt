@@ -35,7 +35,7 @@
                 >短信验证码登录</v-btn
               >
               <v-btn
-                outlined
+                color="primary"
                 accent
                 depressed
                 min-width="150px"

@@ -142,7 +142,7 @@
               ></v-card-text
             >
             <v-btn
-              outlined
+              color="primary"
               accent
               depressed
               min-width="150px"
@@ -199,7 +199,7 @@
             color="primary"
             :loading="createTag.loading"
             @click="submitCreateTag"
-            >创建
+            ><strong>创建</strong>
           </v-btn>
         </v-card-actions>
       </v-card>

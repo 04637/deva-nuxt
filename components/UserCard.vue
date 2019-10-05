@@ -47,7 +47,7 @@
           </v-layout>
         </v-layout>
       </v-flex>
-      <v-flex v-if="$store.getters.getUserType === 'ADMIN'" xs1>
+      <v-flex v-if="$store.getters.getUserType === 'ADMIN' && !actionEvent" xs1>
         <v-btn
           :color="userInfo.status === 0 ? 'primary' : 'private'"
           x-small
@@ -88,7 +88,7 @@
       @update:dialog="confirm.dialog = $event"
     ></ConfirmDialog>
     <ConfirmDialog
-      v-if="$store.getters.isAdmin"
+      v-if="$store.getters.isAdmin && !actionEvent"
       msg="确定 [封禁] 该用户？"
       :dialog="confirmBan.dialog"
       :todo="banUser"
@@ -96,7 +96,7 @@
     >
     </ConfirmDialog>
     <ConfirmDialog
-      v-if="$store.getters.isAdmin"
+      v-if="$store.getters.isAdmin && !actionEvent"
       msg="确定 [解封] 该用户？"
       :dialog="confirmUnBan.dialog"
       :todo="unBanUser"
