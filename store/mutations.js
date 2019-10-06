@@ -20,5 +20,11 @@ export default {
   },
   needAlertError(state) {
     state.systemError.alertFlag++
+  },
+  setDarkTheme(state, val) {
+    state.darkTheme = val
+  },
+  toggleDarkTheme(state) {
+    state.darkTheme = !state.darkTheme
   }
 }

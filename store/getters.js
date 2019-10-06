@@ -28,5 +28,8 @@ export default {
   },
   getAlertErrorFlag(state) {
     return state.systemError.alertFlag
+  },
+  isDarkTheme(state) {
+    return state.darkTheme
   }
 }

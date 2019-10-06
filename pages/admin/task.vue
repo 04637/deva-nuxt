@@ -4,138 +4,182 @@
       <v-card-title>建议/举报管理</v-card-title>
       <v-divider></v-divider>
     </v-layout>
-    <v-layout class="mt-5" justify-center shrink>
-      <v-card width="60vw">
-        <v-card-title>
-          <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            append-icon="search"
-            label="搜索"
-            single-line
-            hide-details
-            class="pa-0 mt-0"
-          ></v-text-field>
-        </v-card-title>
-        <v-data-table
-          v-if="$store.getters.isAdmin"
-          ref="table"
-          locale="zh-CN"
-          :headers="headers"
-          :items="tasks"
-          class="elevation-1"
-          item-key="messageId"
-          :search="search"
-          :loading="loading"
-        >
-          <template v-slot:item.content="{ item }">
-            <v-row align="center">
-              <span
-                style="width: 300px"
-                class="pl-2 d-inline-block text-truncate"
-                >{{ item.content }}</span
+    <v-flex justify-center md9 sm12 class="ml-10">
+      <v-layout class="mt-5" justify-center shrink>
+        <v-card width="100%">
+          <v-card-title>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              append-icon="search"
+              label="搜索"
+              single-line
+              hide-details
+              class="pa-0 mt-0"
+            ></v-text-field>
+          </v-card-title>
+          <no-ssr>
+            <v-data-table
+              v-if="$store.getters.isAdmin"
+              ref="table"
+              locale="zh-CN"
+              :headers="headers"
+              :items="tasks"
+              class="elevation-1"
+              item-key="messageId"
+              :search="search"
+              :loading="loading"
+            >
+              <template v-slot:item.content="{ item }">
+                <v-row align="center">
+                  <span
+                    style="max-width: 300px"
+                    class="pl-2 d-inline-block text-truncate"
+                    >{{ item.content }}</span
+                  >
+                  <v-btn
+                    text
+                    x-small
+                    color="warning"
+                    style="position:relative;"
+                    @click="
+                      taskDialog.task = item
+                      taskDialog.viewDetail = true
+                    "
+                  >
+                    查看详情
+                  </v-btn>
+                  <v-btn
+                    v-if="item.relateQuestionId"
+                    text
+                    x-small
+                    color="warning"
+                    style="position:relative; top:-2px;"
+                    @click="$router.push('/question/' + item.relateQuestionId)"
+                    >查看相关问题</v-btn
+                  >
+                  <v-btn
+                    v-if="item.relateUserId"
+                    text
+                    x-small
+                    color="warning"
+                    style="position:relative; top:-2px;"
+                    @click="$router.push('/user/' + item.relateUserId)"
+                    >查看相关用户</v-btn
+                  ></v-row
+                >
+              </template>
+              <template v-slot:item.creator.nickname="{ item }">
+                <v-btn
+                  v-if="item.creator"
+                  text
+                  x-small
+                  color="primary"
+                  style="position:relative; top:-2px;"
+                  @click="$router.push('/user/' + item.creatorId)"
+                  >{{ item.creator.nickname }}</v-btn
+                >
+              </template>
+              <template v-slot:item.replyUser.nickname="{ item }">
+                <v-btn
+                  v-if="item.replyUser"
+                  text
+                  x-small
+                  color="primary"
+                  style="position:relative; top:-2px;"
+                  @click="$router.push('/user/' + item.creatorId)"
+                  >{{ item.replyUser.nickname }}</v-btn
+                >
+              </template>
+              <template v-slot:item.createTime="{ item }">
+                <span :title="$options.filters.moment(item.createTime)">{{
+                  item.createTime | timeago
+                }}</span>
+              </template>
+              <template v-slot:item.modifiedTime="{ item }">
+                <span
+                  v-if="item.status !== 0"
+                  :title="$options.filters.moment(item.modifiedTime)"
+                  >{{ item.modifiedTime | timeago }}</span
+                >
+              </template>
+              <template v-slot:item.status="{ item }">
+                <v-icon v-if="item.status === 1" color="success" title="已处理"
+                  >check</v-icon
+                >
+                <v-icon v-else color="error" title="待处理">minimize</v-icon>
+              </template>
+              <template v-slot:item.action="{ item }">
+                <v-icon
+                  v-if="item.status === 0"
+                  title="回复用户"
+                  small
+                  class="mr-2"
+                  @click="dealTask(item)"
+                >
+                  mdi-comment
+                </v-icon>
+                <v-icon
+                  v-else
+                  title="查看回复内容"
+                  small
+                  class="mr-2"
+                  @click="
+                    taskDialog.task = item
+                    taskDialog.viewDialog = true
+                  "
+                >
+                  mdi-comment-eye
+                </v-icon>
+              </template>
+              <template v-slot:no-data>
+                <v-btn color="primary" @click="initialize">Reset</v-btn>
+              </template>
+            </v-data-table>
+          </no-ssr>
+        </v-card>
+      </v-layout>
+      <v-layout class="mt-5" justify-center shrink>
+        <v-card width="100%">
+          <v-card-text>
+            <v-form ref="noticeForm">
+              <v-text-field
+                v-model="newSystemNotice.content"
+                label="发布公告"
+                append-icon="volume_down"
+                :counter="300"
+                :rules="[rules.max300]"
+                @click:append="newSystemNotice.confirmDialog = true"
               >
-              <v-btn
-                text
-                x-small
-                color="warning"
-                style="position:relative;"
-                @click="
-                  taskDialog.task = item
-                  taskDialog.viewDetail = true
-                "
-              >
-                查看详情
-              </v-btn>
-              <v-btn
-                v-if="item.relateQuestionId"
-                text
-                x-small
-                color="warning"
-                style="position:relative; top:-2px;"
-                @click="$router.push('/question/' + item.relateQuestionId)"
-                >查看相关问题</v-btn
-              >
-              <v-btn
-                v-if="item.relateUserId"
-                text
-                x-small
-                color="warning"
-                style="position:relative; top:-2px;"
-                @click="$router.push('/user/' + item.relateUserId)"
-                >查看相关用户</v-btn
-              ></v-row
+              </v-text-field>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-layout>
+      <v-layout class="mt-5" justify-center shrink>
+        <v-card width="100%">
+          <v-card-text
+            ><span
+              >当前在线人数：<strong class="red--text">{{
+                onlineCount
+              }}</strong></span
             >
-          </template>
-          <template v-slot:item.creator.nickname="{ item }">
-            <v-btn
-              v-if="item.creator"
-              text
-              x-small
-              color="primary"
-              style="position:relative; top:-2px;"
-              @click="$router.push('/user/' + item.creatorId)"
-              >{{ item.creator.nickname }}</v-btn
+
+            <span class="ml-5"
+              >问题总数：<strong class="red--text">{{
+                questionCount
+              }}</strong></span
             >
-          </template>
-          <template v-slot:item.replyUser.nickname="{ item }">
-            <v-btn
-              v-if="item.replyUser"
-              text
-              x-small
-              color="primary"
-              style="position:relative; top:-2px;"
-              @click="$router.push('/user/' + item.creatorId)"
-              >{{ item.replyUser.nickname }}</v-btn
+
+            <span class="ml-5"
+              >已解决：<strong class="red--text">{{
+                solvedQuestionCount
+              }}</strong></span
             >
-          </template>
-          <template v-slot:item.createTime="{ item }">
-            <span :title="$options.filters.moment(item.createTime)">{{
-              item.createTime | timeago
-            }}</span>
-          </template>
-          <template v-slot:item.modifiedTime="{ item }">
-            <span
-              v-if="item.status !== 0"
-              :title="$options.filters.moment(item.modifiedTime)"
-              >{{ item.modifiedTime | timeago }}</span
-            >
-          </template>
-          <template v-slot:item.status="{ item }">
-            <v-icon v-if="item.status === 1" color="success" title="已处理"
-              >check</v-icon
-            >
-            <v-icon v-else color="error" title="待处理">minimize</v-icon>
-          </template>
-          <template v-slot:item.action="{ item }">
-            <v-icon
-              v-if="item.status === 0"
-              title="回复用户"
-              small
-              class="mr-2"
-              @click="dealTask(item)"
-            >
-              mdi-comment
-            </v-icon>
-            <v-icon
-              v-else
-              title="查看回复内容"
-              small
-              class="mr-2"
-              @click="
-                taskDialog.task = item
-                taskDialog.viewDialog = true
-              "
-            >
-              mdi-comment-eye
-            </v-icon>
-          </template>
-          <template v-slot:no-data>
-            <v-btn color="primary" @click="initialize">Reset</v-btn>
-          </template>
-        </v-data-table>
-      </v-card>
-    </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-layout>
+    </v-flex>
     <v-dialog
       v-if="taskDialog.task"
       v-model="taskDialog.dialog"
@@ -221,10 +265,33 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <ConfirmDialog
+      :dialog="newSystemNotice.confirmDialog"
+      msg="确定发布公告吗?"
+      :todo="sendSystemNotice"
+      @update:dialog="newSystemNotice.confirmDialog = $event"
+    ></ConfirmDialog>
+    <InfoDialog
+      :msg="[
+        '发布成功',
+        newSystemNotice.result.resp && newSystemNotice.result.resp.msg
+      ]"
+      :succeed="
+        newSystemNotice.result.resp != null &&
+          newSystemNotice.result.resp.succeed
+      "
+      :dialog="newSystemNotice.result.dialog"
+      close-txt="关闭"
+      @update:dialog="newSystemNotice.result.dialog = $event"
+    >
+    </InfoDialog>
   </v-app>
 </template>
 <script>
+import ConfirmDialog from '../../components/ConfirmDialog'
+import InfoDialog from '../../components/InfoDialog'
 export default {
+  components: { InfoDialog, ConfirmDialog },
   data: () => ({
     search: '',
     loading: false,
@@ -260,13 +327,27 @@ export default {
       viewDialog: false,
       viewDetail: false
     },
+    onlineCount: null,
+    questionCount: null,
+    solvedQuestionCount: null,
+    newSystemNotice: {
+      content: null,
+      confirmDialog: false,
+      result: {
+        resp: null,
+        dialog: false
+      }
+    },
     rules: {
       max1000: (v) => (v && v.length <= 1000) || '不能超过1000个字符',
-      min10: (v) => (v && v.length > 10) || '最少为10个字符哦'
-    }
+      min10: (v) => (v && v.length > 10) || '最少为10个字符哦',
+      max300: (v) => !v || (v && v.length <= 300) || '不能超过300个字符'
+    },
+    currentInterval: null
   }),
   created() {
     this.loadTasks()
+    this.loadInterval()
   },
   methods: {
     loadTasks() {
@@ -282,7 +363,44 @@ export default {
       this.taskDialog.task = item
       this.taskDialog.dialog = true
     },
-
+    loadInterval() {
+      const _this = this
+      _this.$axios.$post('/admin/getOnlineCount').then((resp) => {
+        if (resp.succeed) {
+          _this.onlineCount = resp.data
+        }
+      })
+      _this.$axios.$post('/admin/getQuestionCount').then((resp) => {
+        if (resp.succeed) {
+          _this.questionCount = resp.data
+        }
+      })
+      _this.$axios.$post('/admin/getSolvedQuestionCount').then((resp) => {
+        if (resp.succeed) {
+          _this.solvedQuestionCount = resp.data
+        }
+      })
+      clearInterval(_this.currentInterval)
+      _this.currentInterval = setInterval(function() {
+        if (_this.$store.getters.isAdmin) {
+          _this.$axios.$post('/admin/getOnlineCount').then((resp) => {
+            if (resp.succeed) {
+              _this.onlineCount = resp.data
+            }
+          })
+          _this.$axios.$post('/admin/getQuestionCount').then((resp) => {
+            if (resp.succeed) {
+              _this.questionCount = resp.data
+            }
+          })
+          _this.$axios.$post('/admin/getSolvedQuestionCount').then((resp) => {
+            if (resp.succeed) {
+              _this.solvedQuestionCount = resp.data
+            }
+          })
+        }
+      }, 30000)
+    },
     submitReply() {
       if (!this.$refs.dealTaskForm.validate()) {
         return false
@@ -305,6 +423,19 @@ export default {
         })
         .catch((e) => {
           this.taskDialog.loading = false
+        })
+    },
+    sendSystemNotice() {
+      if (!this.$refs.noticeForm.validate()) {
+        return false
+      }
+      this.$axios
+        .$post('/systemNotice/create', {
+          content: this.newSystemNotice.content
+        })
+        .then((resp) => {
+          this.newSystemNotice.result.resp = resp
+          this.newSystemNotice.result.dialog = true
         })
     }
   }

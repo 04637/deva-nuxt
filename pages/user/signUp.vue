@@ -88,11 +88,15 @@
                   label="注册即代表同意"
                   :rules="[rules.agreeTerms]"
                 ></v-checkbox>
-                <div style="margin-top: -6px">
-                  <a class="ml-2" href="http://www.baidu.com" target="_blank"
-                    >法律声明和隐私权政策</a
-                  >
-                </div>
+                <v-btn
+                  small
+                  text
+                  color="private"
+                  style="margin-top: -6px"
+                  @click="termsDialog = true"
+                >
+                  <strong>法律声明和隐私权政策</strong>
+                </v-btn>
               </v-layout>
             </v-layout>
             <v-layout>
@@ -134,13 +138,19 @@
       @update:dialog="signUpResult.dialog = $event"
     >
     </InfoDialog>
+    <TermsDialog
+      :dialog="termsDialog"
+      @update:dialog="termsDialog = $event"
+    ></TermsDialog>
   </v-app>
 </template>
 <script>
 import Logo from '../../components/Logo'
 import InfoDialog from '../../components/InfoDialog'
+import TermsDialog from '../../components/TermsDialog'
 export default {
   components: {
+    TermsDialog,
     Logo,
     InfoDialog
   },
@@ -166,6 +176,7 @@ export default {
       loading: false
     },
     termsCheck: false,
+    termsDialog: false,
     rules: {
       username(v) {
         if (!v) {

@@ -148,7 +148,7 @@
               </div>
               <v-list-item
                 class="mt-3"
-                @click="$vuetify.theme.dark = !$vuetify.theme.dark"
+                @click="$store.commit('toggleDarkTheme')"
               >
                 <v-list-item-action>
                   <v-icon v-show="$vuetify.theme.dark">mdi-brightness-4</v-icon>
@@ -299,21 +299,47 @@
       </v-flex>
       <v-footer app>
         <v-row justify="start" align="center" no-gutters>
-          <v-flex class="py-2 text-left primary--text" sm3>
+          <v-flex hidden-sm-and-down class="py-2 text-left primary--text" md5>
             <strong
               >&copy;2019-{{ new Date().getFullYear() }}&nbsp;<router-link
                 to="/"
                 >aid.dev</router-link
               ></strong
             >
-            <strong class="pl-4">联系我们：<span>admin@aid.dev</span></strong>
+            <span class="pl-4">联系我们：<strong>admin@aid.dev</strong></span>
           </v-flex>
-          <v-flex
-            class="py-2 text-left my_gray--text d-inline-block text-truncate"
-            sm7
-          >
-            <v-icon></v-icon
-            >啊哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
+          <v-flex v-if="systemNotice && systemNotice.content" class="py-2" md7>
+            <v-row align="center" justify="end" class="pr-5">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <v-icon
+                    style="position: relative; top: 1px"
+                    color="warning"
+                    v-on="on"
+                    >double_arrow</v-icon
+                  >
+                </template>
+                <span>公告</span>
+              </v-tooltip>
+              <strong class="warning--text">：</strong
+              ><span
+                class="d-inline-block text-truncate warning--text"
+                style="max-width: 700px"
+                :title="systemNotice.content"
+              >
+                {{ systemNotice.content }}
+              </span>
+              <v-btn
+                v-if="systemNotice.content.length > 40"
+                text
+                x-small
+                color="warning"
+                style="position:relative;"
+                @click="viewNotice.dialog = true"
+              >
+                查看详情
+              </v-btn>
+            </v-row>
           </v-flex>
         </v-row>
       </v-footer>
@@ -361,6 +387,26 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
+      <v-dialog v-model="viewNotice.dialog" persistent max-width="40vw">
+        <v-card>
+          <v-card-title>
+            <!--<span class="headline">回复内容</span>-->
+          </v-card-title>
+          <v-card-text class="pb-0">
+            <v-textarea
+              hide-details
+              readonly
+              rows="20"
+              :value="systemNotice.content"
+            ></v-textarea>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text @click="viewNotice.dialog = false">关闭 </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-app>
   </div>
 </template>
@@ -391,6 +437,9 @@ export default {
         children: []
       }
     ],
+    viewNotice: {
+      dialog: false
+    },
     userMenu: false,
     joinSpace: {
       dialog: false,
@@ -403,10 +452,14 @@ export default {
       dialog: false,
       msg: ''
     },
+    systemNotice: {
+      content: null
+    },
     rules: {
       requireSpaceId: (v) => (v && v.length >= 1) || '请输入空间ID',
       requireInviteCode: (v) => (v && v.length >= 1) || '请输入邀请码'
-    }
+    },
+    currentNoticeInterval: null
   }),
   computed: {
     needKeepAlive() {
@@ -427,6 +480,9 @@ export default {
         this.$vuetify.breakpoint.name === 'sm' ||
         this.$vuetify.breakpoint.name === 'xs'
       )
+    },
+    toggleTheme() {
+      return this.$store.getters.isDarkTheme
     }
   },
   watch: {
@@ -446,9 +502,17 @@ export default {
       this.loadMessageCount()
       // 连接websocket
       this.connectWebsocket()
+    },
+    toggleTheme() {
+      this.$vuetify.theme.dark = this.$store.getters.isDarkTheme
     }
   },
-  created() {},
+  created() {
+    this.getSystemNotice()
+    // console.log(this.$store.getters.getUserTheme)
+    // this.$vuetify.theme = this.$store.getters.getUserTheme
+    // console.log(this.$vuetify.theme)
+  },
   mounted() {
     window.addEventListener('beforeunload', (e) => {
       this.disconnectWebsocket()
@@ -462,6 +526,22 @@ export default {
     this.loadMessageCount()
   },
   methods: {
+    getSystemNotice() {
+      const _this = this
+      _this.$axios.$post('/systemNotice/getLast').then((resp) => {
+        if (resp.succeed) {
+          _this.systemNotice = resp.data
+        }
+      })
+      clearInterval(_this.currentNoticeInterval)
+      _this.currentNoticeInterval = setInterval(function() {
+        _this.$axios.$post('/systemNotice/getLast').then((resp) => {
+          if (resp.succeed) {
+            _this.systemNotice = resp.data
+          }
+        })
+      }, 600000)
+    },
     logout() {
       // 使外部api上的JWT Cookie失效
       this.disconnectWebsocket()

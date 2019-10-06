@@ -230,7 +230,8 @@ export default {
     useMarkdown: false,
     maxLength: 3000,
     source:
-      '### 第一次使用markdown❓  [查看语法说明]( http://www.markdown.cn/) <a href="http://www.markdown.cn/" target="_blank">新标签页打开</a>',
+      '###' +
+      '3 第一次使用markdown❓  [右键新标签页打开查看语法说明]( http://www.markdown.cn/)',
     selectedTags: [],
     tags: [],
     content: `<h3>试试选中来设置样式, 右上角可切换markdown编辑器哦😄</h3>`,

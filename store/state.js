@@ -1,5 +1,6 @@
 export default () => ({
   userInfo: null,
+  darkTheme: true,
   unReadMessageCount: 0,
   // 全局异常
   systemError: {
