@@ -44,10 +44,10 @@
               <v-layout justify-center>
                 <v-card-text>{{ userProfile.bio }}</v-card-text>
               </v-layout>
-              <v-layout justify-center>
-                <v-icon class="mr-2">email</v-icon>
-                {{ userProfile.email }}
-              </v-layout>
+              <!--<v-layout justify-center>-->
+              <!--  <v-icon class="mr-2">email</v-icon>-->
+              <!--  {{ userProfile.email }}-->
+              <!--</v-layout>-->
             </v-flex>
             <v-flex lg4 md12>
               <v-card flat>
@@ -75,31 +75,37 @@
                   >声望: &nbsp;&nbsp;{{ userProfile.reputation }}</v-card-text
                 >
               </v-card>
-              <v-layout justify-start class="mt-5">
-                <v-btn
-                  v-show="isFollowed"
-                  text
-                  icon
-                  :color="isFollowed ? 'pink' : ''"
-                  @click="unWatchUser"
-                >
-                  <v-icon>favorite</v-icon>
-                </v-btn>
-                <v-btn
-                  v-if="userProfile.userId !== $store.getters.getUserId"
-                  v-show="!isFollowed"
-                  text
-                  icon
-                  :color="isFollowed ? 'pink' : ''"
-                  @click="followUser"
-                >
-                  <v-icon>favorite</v-icon>
-                </v-btn>
-                <v-card-text
-                  v-if="userProfile.userId !== $store.getters.getUserId"
-                  class="pa-2"
-                  >← 关注他</v-card-text
-                >
+              <v-layout justify-center class="mt-2">
+                <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      v-show="isFollowed"
+                      text
+                      icon
+                      :color="isFollowed ? 'pink' : ''"
+                      v-on="on"
+                      @click="unWatchUser"
+                    >
+                      <v-icon>favorite</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>取消关注</span>
+                </v-tooltip>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      v-if="userProfile.userId !== $store.getters.getUserId"
+                      v-show="!isFollowed"
+                      text
+                      icon
+                      :color="isFollowed ? 'pink' : ''"
+                      @click="followUser"
+                    >
+                      <v-icon>favorite</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>关注他/她</span>
+                </v-tooltip>
               </v-layout>
             </v-flex>
           </v-layout>

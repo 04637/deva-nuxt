@@ -509,9 +509,6 @@ export default {
   },
   created() {
     this.getSystemNotice()
-    // console.log(this.$store.getters.getUserTheme)
-    // this.$vuetify.theme = this.$store.getters.getUserTheme
-    // console.log(this.$vuetify.theme)
   },
   mounted() {
     window.addEventListener('beforeunload', (e) => {

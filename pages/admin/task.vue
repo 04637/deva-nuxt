@@ -160,21 +160,17 @@
         <v-card width="100%">
           <v-card-text
             ><span
-              >当前在线人数：<strong class="red--text">{{
-                onlineCount
-              }}</strong></span
+              >在线人数：<strong class="red--text">{{
+                monitor.onlineCount
+              }}</strong>
+              / {{ monitor.userCount }}</span
             >
 
             <span class="ml-5"
-              >问题总数：<strong class="red--text">{{
-                questionCount
-              }}</strong></span
-            >
-
-            <span class="ml-5"
-              >已解决：<strong class="red--text">{{
-                solvedQuestionCount
-              }}</strong></span
+              >已解决问题：<strong class="red--text">{{
+                monitor.solvedQuestionCount
+              }}</strong>
+              / {{ monitor.questionCount }}</span
             >
           </v-card-text>
         </v-card>
@@ -327,9 +323,12 @@ export default {
       viewDialog: false,
       viewDetail: false
     },
-    onlineCount: null,
-    questionCount: null,
-    solvedQuestionCount: null,
+    monitor: {
+      onlineCount: null,
+      userCount: null,
+      questionCount: null,
+      solvedQuestionCount: null
+    },
     newSystemNotice: {
       content: null,
       confirmDialog: false,
@@ -342,10 +341,10 @@ export default {
       max1000: (v) => (v && v.length <= 1000) || '不能超过1000个字符',
       min10: (v) => (v && v.length > 10) || '最少为10个字符哦',
       max300: (v) => !v || (v && v.length <= 300) || '不能超过300个字符'
-    },
-    currentInterval: null
+    }
   }),
-  created() {
+  created() {},
+  mounted() {
     this.loadTasks()
     this.loadInterval()
   },
@@ -364,42 +363,28 @@ export default {
       this.taskDialog.dialog = true
     },
     loadInterval() {
+      clearInterval(this.$store.getters.getMonitorInterval)
       const _this = this
-      _this.$axios.$post('/admin/getOnlineCount').then((resp) => {
+      _this.$axios.$post('/admin/monitor').then((resp) => {
         if (resp.succeed) {
-          _this.onlineCount = resp.data
+          _this.monitor = resp.data
         }
       })
-      _this.$axios.$post('/admin/getQuestionCount').then((resp) => {
-        if (resp.succeed) {
-          _this.questionCount = resp.data
-        }
-      })
-      _this.$axios.$post('/admin/getSolvedQuestionCount').then((resp) => {
-        if (resp.succeed) {
-          _this.solvedQuestionCount = resp.data
-        }
-      })
-      clearInterval(_this.currentInterval)
-      _this.currentInterval = setInterval(function() {
-        if (_this.$store.getters.isAdmin) {
-          _this.$axios.$post('/admin/getOnlineCount').then((resp) => {
+      const intervalId = setInterval(function() {
+        if (
+          _this.$store.getters.isAdmin &&
+          _this.$route.path === '/admin/task'
+        ) {
+          _this.$axios.$post('/admin/monitor').then((resp) => {
             if (resp.succeed) {
-              _this.onlineCount = resp.data
+              _this.monitor = resp.data
             }
           })
-          _this.$axios.$post('/admin/getQuestionCount').then((resp) => {
-            if (resp.succeed) {
-              _this.questionCount = resp.data
-            }
-          })
-          _this.$axios.$post('/admin/getSolvedQuestionCount').then((resp) => {
-            if (resp.succeed) {
-              _this.solvedQuestionCount = resp.data
-            }
-          })
+        } else {
+          clearInterval(_this.$store.getters.getMonitorInterval)
         }
       }, 30000)
+      _this.$store.commit('setMonitorInterval', intervalId)
     },
     submitReply() {
       if (!this.$refs.dealTaskForm.validate()) {

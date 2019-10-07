@@ -31,5 +31,8 @@ export default {
   },
   isDarkTheme(state) {
     return state.darkTheme
+  },
+  getMonitorInterval(state) {
+    return state.monitorInterval
   }
 }

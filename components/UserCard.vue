@@ -74,9 +74,11 @@
         }}</span>
       </v-flex>
       <v-flex xs7 class="text-right">
-        <svg class="icon heat-icon" aria-hidden="true">
-          <use xlink:href="#icon-zuanshi"></use></svg
-        >&nbsp;{{ userInfo.reputation }}
+        <span title="用户声望">
+          <svg class="icon heat-icon" aria-hidden="true">
+            <use xlink:href="#icon-zuanshi"></use></svg
+          >&nbsp;{{ userInfo.reputation }}</span
+        >
       </v-flex>
     </v-layout>
     <ConfirmDialog

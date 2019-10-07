@@ -9,5 +9,7 @@ export default () => ({
     msg: ''
   },
   // 监听该值来控制重新加载控件列表
-  reloadSpaceFlag: 0
+  reloadSpaceFlag: 0,
+  // 管理员定时监控, 全局唯一用来销毁定时器
+  monitorInterval: null
 })

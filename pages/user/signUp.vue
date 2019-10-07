@@ -135,7 +135,10 @@
       :msg="['注册成功', signUpResult.resp && signUpResult.resp.msg]"
       :succeed="signUpResult.resp != null && signUpResult.resp.succeed"
       :dialog="signUpResult.dialog"
-      @update:dialog="signUpResult.dialog = $event"
+      @update:dialog="
+        signUpResult.dialog = $event
+        signUpResult.resp.succeed ? $router.push('/user/login') : ''
+      "
     >
     </InfoDialog>
     <TermsDialog
@@ -226,6 +229,7 @@ export default {
   }),
   watch: {},
   created() {},
+  middleware: 'notAuthenticated',
   methods: {
     checkUsername() {
       this.$axios
@@ -246,7 +250,7 @@ export default {
         })
         .then((resp) => {
           this.phoneCheck = resp.data ? '' : '手机号码已被使用'
-          if (resp.succeed) {
+          if (resp.data) {
             if (this.smsCodeResult.timeInterval > 0) {
               this.smsCodeResult.showSendWarning = true
               return false

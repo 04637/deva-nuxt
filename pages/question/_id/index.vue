@@ -399,6 +399,10 @@
                     <v-flex xs11 class="ml-4">
                       <v-layout v-if="questionDetail.status === 0" justify-end>
                         <v-btn
+                          v-if="
+                            $store.getters.getUserId ===
+                              questionDetail.author.userId
+                          "
                           color="success"
                           text
                           @click="acceptAnswer(answer)"
@@ -842,7 +846,6 @@ export default {
         })
     },
     acceptAnswer(answer) {
-      this.accept.dialog = true
       this.$axios
         .$post('/questionInfo/acceptAnswer', {
           ownQuestionId: this.questionDetail.questionId,
@@ -850,6 +853,7 @@ export default {
         })
         .then((resp) => {
           this.accept.resp = resp
+          this.accept.dialog = true
           if (resp.succeed) {
             this.questionDetail.status = 1
             answer.isAccepted = true

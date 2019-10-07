@@ -26,5 +26,8 @@ export default {
   },
   toggleDarkTheme(state) {
     state.darkTheme = !state.darkTheme
+  },
+  setMonitorInterval(state, val) {
+    state.monitorInterval = val
   }
 }

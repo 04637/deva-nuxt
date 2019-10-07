@@ -287,8 +287,8 @@ export default {
         })
         .then((resp) => {
           if (resp.succeed) {
-            this.countUnRead()
             item.isRead = true
+            this.countUnRead()
           }
         })
     },
