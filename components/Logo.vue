@@ -1,5 +1,6 @@
 <template>
   <!-- logo 设计 https://www.logogenie.net/-->
+  <!-- logo做头像 米色背景色 #e9e5de -->
   <!-- 雪碧图 http://www.spritecow.com/-->
   <v-layout v-if="type === 'form'" justify-center style="height: 48px">
     <div class="logo" @click="$router.push('/', () => ({}))"></div>
