@@ -41,7 +41,11 @@
                   class="d-inline-block text-truncate text-left no-flex"
                   :to="'/search/' + tagInfo.tagName"
                   v-on="on"
-                  ><strong>{{ tagInfo.tagName }}</strong></v-btn
+                >
+                  <!-- 字体有点不舒服 -->
+                  <span style="font-size: 16px">{{
+                    tagInfo.tagName
+                  }}</span></v-btn
                 ></template
               ><v-btn
                 v-if="$store.getters.getRep >= 200"
@@ -208,6 +212,9 @@ export default {
     },
     scroll() {
       window.onscroll = () => {
+        if (!/\/tags/.test(this.$route.path)) {
+          return false
+        }
         // 距离底部200px时加载一次
         const bottomOfWindow =
           document.documentElement.offsetHeight -
@@ -247,8 +254,8 @@ export default {
 <style scoped>
 /* 控制展示两行 */
 .label-description {
-  font-size: 12px;
-  text-indent: 12px;
+  font-size: 14px;
+  /*text-indent: 12px;*/
   overflow: hidden;
   -webkit-line-clamp: 2;
   text-overflow: ellipsis;

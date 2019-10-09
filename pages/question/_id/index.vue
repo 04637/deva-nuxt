@@ -360,11 +360,12 @@
             >
           </v-layout>
           <v-divider></v-divider>
-          <v-list v-show="questionDetail.answers.length > 0">
+          <v-list v-show="questionDetail.answers.length > 0" class="pt-0">
             <div
               v-for="(answer, aIndex) in questionDetail.answers"
               :id="answer.answerId"
               :key="answer.answerId"
+              class="pt-2"
             >
               <v-list-item class="mt-2">
                 <v-card flat exact width="100vw">

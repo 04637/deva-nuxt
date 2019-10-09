@@ -96,6 +96,9 @@ export default {
     },
     scroll() {
       window.onscroll = () => {
+        if (!/\/search\//.test(this.$route.path)) {
+          return false
+        }
         // 距离底部200px时加载一次
         const bottomOfWindow =
           document.documentElement.offsetHeight -

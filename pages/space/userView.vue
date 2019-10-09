@@ -53,13 +53,58 @@ export default {
     page: {
       current: 1,
       size: 100
+    },
+    loadMore: {
+      isLoading: false,
+      noMore: false
     }
   }),
   created() {
     this.loadUserList()
     this.loadSpaceInfo()
   },
+  mounted() {
+    this.scroll()
+  },
   methods: {
+    scroll() {
+      window.onscroll = () => {
+        if (!/\/space\/userView/.test(this.$route.path)) {
+          return false
+        }
+        // 距离底部200px时加载一次
+        const bottomOfWindow =
+          document.documentElement.offsetHeight -
+            document.documentElement.scrollTop -
+            window.innerHeight <=
+          200
+        if (
+          bottomOfWindow &&
+          !this.loadMore.isLoading &&
+          !this.loadMore.noMore
+        ) {
+          this.loadMore.isLoading = true
+          this.$axios
+            .$post('/spaceUser/getSpaceMembers', {
+              current: ++this.page.current,
+              size: this.page.size,
+              searchKey: this.searchKey,
+              spaceId: this.$route.query.spaceId
+            })
+            .then((resp) => {
+              this.loadMore.isLoading = false
+              if (resp.succeed) {
+                this.userList = this.userList.concat(resp.data.records)
+              } else {
+                this.loadMore.noMore = true
+              }
+            })
+            .catch((e) => {
+              this.loadMore.isLoading = false
+            })
+        }
+      }
+    },
     loadUserList() {
       this.$axios
         .$post('/spaceUser/getSpaceMembers', {

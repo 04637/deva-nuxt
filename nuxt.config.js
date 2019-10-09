@@ -1,6 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+  // todo 仔细选择考虑下 spa   还有生产模式字体变大的问题
   mode: 'universal',
   domain: 'http://localhost:3000',
   server: {
@@ -12,7 +13,7 @@ export default {
   head: {
     // titleTemplate: '%s - ' + process.env.npm_package_name,
     titleTemplate: '%s',
-    title: process.env.npm_package_name || 'DEVA - 开发者的专属问答社区',
+    title: 'DEVA - 开发者的专属问答社区',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
