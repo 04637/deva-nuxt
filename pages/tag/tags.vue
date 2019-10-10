@@ -22,7 +22,7 @@
         style="max-width: 358px"
         shrink
       >
-        <v-card min-width="250px" class="px-3 py-2">
+        <v-card min-width="250px" class="px-3 pb-2" style="padding-top:1px">
           <v-layout align-center>
             <v-menu
               open-on-hover
@@ -42,7 +42,6 @@
                   :to="'/search/' + tagInfo.tagName"
                   v-on="on"
                 >
-                  <!-- 字体有点不舒服 -->
                   <span style="font-size: 16px">{{
                     tagInfo.tagName
                   }}</span></v-btn
@@ -65,16 +64,16 @@
               >× {{ tagInfo.totalCount }}</span
             >
           </v-layout>
-          <v-flex class="label-description">
+          <v-flex class="label-description" style="margin-top:5px">
             <!--展示一行省略-->
             <span :title="tagInfo.description" class="my_gray--text">
               {{ tagInfo.description }}
             </span>
           </v-flex>
           <v-layout style="font-size: 14px" class="mt-1" justify-space-between>
-            <v-layout> 今日使用 {{ tagInfo.dayFrequency }} 次 </v-layout>
+            <v-layout> 近一周使用 {{ tagInfo.weekFrequency }} 次 </v-layout>
             <v-layout justify-end>
-              近一周使用 {{ tagInfo.weekFrequency }} 次
+              近一月使用 {{ tagInfo.monthFrequency }} 次
             </v-layout>
           </v-layout>
         </v-card>

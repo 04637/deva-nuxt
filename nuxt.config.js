@@ -1,8 +1,8 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  // todo 仔细选择考虑下 spa   还有生产模式字体变大的问题
-  mode: 'universal',
+  // todo 仔细选择考虑下 spa
+  mode: 'spa',
   domain: 'http://localhost:3000',
   server: {
     port: 3000
