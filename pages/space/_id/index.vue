@@ -100,7 +100,7 @@
         ></QuestionCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
-        <HotQuestionList></HotQuestionList>
+        <HotTag></HotTag>
       </v-flex>
     </v-layout>
     <ConfirmDialog
@@ -128,10 +128,10 @@
 import QuestionCardList from '../../../components/QuestionCardList'
 import ConfirmDialog from '../../../components/ConfirmDialog'
 import InfoDialog from '../../../components/InfoDialog'
-import HotQuestionList from '../../../components/HotQuestionList'
+import HotTag from '../../../components/HotTag'
 export default {
   components: {
-    HotQuestionList,
+    HotTag,
     InfoDialog,
     ConfirmDialog,
     QuestionCardList

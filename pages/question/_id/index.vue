@@ -627,8 +627,8 @@
             </v-flex>
           </v-layout>
         </v-flex>
-        <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
-          <HotQuestionList></HotQuestionList>
+        <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
+          <HotTag></HotTag>
         </v-flex>
       </v-layout>
     </v-app>
@@ -695,12 +695,12 @@
 </template>
 <script>
 import InfoDialog from '../../../components/InfoDialog'
-import HotQuestionList from '../../../components/HotQuestionList'
+import HotTag from '../../../components/HotTag'
 
 export default {
   name: 'QuestionDetail',
   components: {
-    HotQuestionList,
+    HotTag,
     InfoDialog
   },
   validate({ params }) {

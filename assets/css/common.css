@@ -160,3 +160,7 @@ pre>code{
   z-index: 9999;
   background-color: #312e2e !important;
 }
+
+.v-application .theme--light .my_gray--text{
+  color: #808080 !important;
+}

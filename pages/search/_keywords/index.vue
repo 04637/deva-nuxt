@@ -39,17 +39,17 @@
         ></QuestionCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
-        <HotQuestionList></HotQuestionList>
+        <HotTag></HotTag>
       </v-flex>
     </v-layout>
   </v-app>
 </template>
 <script>
 import QuestionCardList from '../../../components/QuestionCardList'
-import HotQuestionList from '../../../components/HotQuestionList'
+import HotTag from '../../../components/HotTag'
 export default {
   components: {
-    HotQuestionList,
+    HotTag,
     QuestionCardList
   },
   data: () => ({

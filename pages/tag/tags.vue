@@ -22,7 +22,7 @@
         style="max-width: 358px"
         shrink
       >
-        <v-card min-width="250px" class="px-3 pb-2" style="padding-top:1px">
+        <v-card min-width="250px" class="px-3 pb-2" style="padding-top:10px">
           <v-layout align-center>
             <v-menu
               open-on-hover
@@ -32,11 +32,11 @@
               max-width="103px"
             >
               <template v-slot:activator="{ on }">
-                <v-btn
-                  x-small
+                <v-chip
+                  small
                   color="primary"
                   text
-                  style="max-width:170px; cursor: pointer; text-decoration: none;"
+                  style="max-width:170px; cursor: pointer; text-decoration: none;border-radius: 0"
                   :title="tagInfo.tagName"
                   class="d-inline-block text-truncate text-left no-flex"
                   :to="'/search/' + tagInfo.tagName"
@@ -44,7 +44,7 @@
                 >
                   <span style="font-size: 16px">{{
                     tagInfo.tagName
-                  }}</span></v-btn
+                  }}</span></v-chip
                 ></template
               ><v-btn
                 v-if="$store.getters.getRep >= 200"

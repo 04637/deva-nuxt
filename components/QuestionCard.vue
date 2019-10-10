@@ -33,6 +33,7 @@
               height="30px"
               class="no-hover-active title d-inline-block text-truncate text-left no-flex px-1"
               text
+              max-width="85%"
               :title="question.title"
               :to="'/question/' + question.questionId"
               >{{ question.title }}</v-btn
@@ -49,7 +50,7 @@
             <v-card-text
               v-dompurify-html:noHtml="$md.render(question.content)"
               style="padding: 8px"
-              class="title d-block sub--text text-truncate subtitle-1"
+              class="title d-block my_gray--text text-truncate subtitle-1"
             >
             </v-card-text>
             <v-card-actions>

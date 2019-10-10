@@ -48,7 +48,8 @@
         ></QuestionCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
-        <HotQuestionList></HotQuestionList>
+        <HotTag></HotTag>
+        <!--<HotQuestionList></HotQuestionList>-->
       </v-flex>
     </v-layout>
     <!--<FloatMenu></FloatMenu>-->
@@ -56,10 +57,11 @@
 </template>
 <script>
 import QuestionCardList from '../components/QuestionCardList'
-import HotQuestionList from '../components/HotQuestionList'
+// import HotQuestionList from '../components/HotQuestionList'
+import HotTag from '../components/HotTag'
 // import FloatMenu from '../components/FloatMenu'
 export default {
-  components: { HotQuestionList, QuestionCardList },
+  components: { HotTag, QuestionCardList },
   data: () => ({
     listType: 'RECENT',
     questionList: null,
