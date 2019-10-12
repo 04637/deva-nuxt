@@ -125,7 +125,7 @@
       </v-card>
     </v-layout>
     <InfoDialog
-      :msg="['验证码发送成功', '操作频繁, 验证码发送失败, 请稍后重试']"
+      :msg="['验证码发送成功', '验证码发送失败, 请稍后重试']"
       :succeed="smsCodeResult.resp != null && smsCodeResult.resp.succeed"
       :dialog="smsCodeResult.dialog"
       @update:dialog="smsCodeResult.dialog = $event"
@@ -135,6 +135,7 @@
       :msg="['注册成功', signUpResult.resp && signUpResult.resp.msg]"
       :succeed="signUpResult.resp != null && signUpResult.resp.succeed"
       :dialog="signUpResult.dialog"
+      close-txt="去登录"
       @update:dialog="
         signUpResult.dialog = $event
         signUpResult.resp.succeed ? $router.push('/user/login') : ''
@@ -262,7 +263,9 @@ export default {
               })
               .then((resp) => {
                 this.smsCodeResult.resp = resp
-                this.smsCodeResult.dialog = true
+                if (!resp.succeed) {
+                  this.smsCodeResult.dialog = true
+                }
                 this.smsCodeResult.loading = false
                 const _self = this
                 _self.smsCodeResult.timeInterval = 60

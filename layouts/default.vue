@@ -297,16 +297,16 @@
           <FloatMenu></FloatMenu>
         </v-content>
       </v-flex>
-      <v-footer app>
+      <v-footer app tile>
         <v-row justify="start" align="center" no-gutters>
           <v-flex hidden-sm-and-down class="py-2 text-left primary--text" md5>
-            <strong
+            <span
               >&copy;2019-{{ new Date().getFullYear() }}&nbsp;<router-link
                 to="/"
                 >aid.dev</router-link
-              ></strong
+              ></span
             >
-            <span class="pl-4">联系我们：<strong>admin@aid.dev</strong></span>
+            <span class="pl-4">联系我们：<span>admin@aid.dev</span></span>
           </v-flex>
           <v-flex v-if="systemNotice && systemNotice.content" class="py-2" md7>
             <v-row align="center" justify="end" class="pr-5">

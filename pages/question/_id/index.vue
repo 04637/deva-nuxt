@@ -730,7 +730,7 @@ export default {
       resp: null
     },
     answer: {
-      content: `<h3>在此输入你的回答，试试选中来设置样式哦</h3>`,
+      content: `在此输入你的回答，试试选中来设置样式哦`,
       maxLength: 3000,
       resp: null,
       dialog: false,

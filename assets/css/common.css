@@ -49,6 +49,8 @@ code {
 }
 pre,code{
   font-family: consolas, monospace !important;
+  margin: 0 3px !important;
+  box-shadow: none !important;
   /*todo 考虑一下?*/
   /*font-family: CharlieSans !important;*/
 }
@@ -60,6 +62,7 @@ pre {
 }
 pre>code{
   box-shadow: none !important;
+  margin: 0 !important;
 }
 
 .logo-md{

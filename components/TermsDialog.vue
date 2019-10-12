@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title>法律声明及隐私权政策</v-card-title>
       <v-card-text
-        ><v-textarea v-model="content" rows="40" readonly></v-textarea
+        ><v-textarea v-model="content" rows="30" readonly></v-textarea
       ></v-card-text>
       <v-card-actions>
         <v-layout justify-end>

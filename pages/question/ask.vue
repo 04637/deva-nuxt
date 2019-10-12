@@ -211,7 +211,10 @@
       close-txt="去查看"
       @update:dialog="
         askResult.dialog = $event
-        $router.push('/question/' + askResult.resp.data.questionId)
+        $router.push(
+          '/question/' + $route.query.questionId ||
+            askResult.resp.data.questionId
+        )
       "
     >
     </InfoDialog>
@@ -231,10 +234,10 @@ export default {
     maxLength: 3000,
     source:
       '###' +
-      '3 第一次使用markdown❓  [右键新标签页打开查看语法说明]( http://www.markdown.cn/)',
+      '3 第一次使用markdown❓  [右键此处 新标签页打开查看语法说明]( http://www.markdown.cn/)',
     selectedTags: [],
     tags: [],
-    content: `<h3>试试选中来设置样式, 右上角可切换markdown编辑器哦😄</h3>`,
+    content: `试试选中来设置样式, 右上角可切换markdown编辑器哦😄`,
     newTag: {
       name: null,
       description: null
