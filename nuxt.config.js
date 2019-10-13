@@ -1,8 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  // todo 仔细选择考虑下 spa
-  mode: 'spa',
+  mode: 'universal',
   domain: 'http://localhost:3000',
   server: {
     port: 3000
@@ -30,7 +29,8 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#01a687' },
+  // loading: { color: '#01a687' },
+  loading: false,
   /*
    ** Global CSS
    */

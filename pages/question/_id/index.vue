@@ -337,7 +337,7 @@
                           append-outer-icon="mdi-reply"
                           autofocus
                           class="pt-0 mt-0"
-                          :rules="[rules.requiredComment, rules.max200]"
+                          :rules="[rules.requiredComment, rules.max400]"
                           @keyup.enter.native="
                             sendComment(questionDetail.questionId)
                           "
@@ -569,7 +569,7 @@
                             class="pt-0 mt-0"
                             append-outer-icon="reply"
                             autofocus
-                            :rules="[rules.requiredComment, rules.max200]"
+                            :rules="[rules.requiredComment, rules.max400]"
                             @keyup.enter.native="sendAnswerComment(aIndex)"
                             @click:append-outer="sendAnswerComment(aIndex)"
                           ></v-text-field>
@@ -731,7 +731,7 @@ export default {
     },
     answer: {
       content: `在此输入你的回答，试试选中来设置样式哦`,
-      maxLength: 3000,
+      maxLength: 10000,
       resp: null,
       dialog: false,
       loading: false
@@ -743,9 +743,9 @@ export default {
     rules: {
       min10: (v) => (v && v.length >= 10) || '不能少于10个字符',
       min20: (v) => (v && v.length >= 20) || '不能少于20个字符',
-      max50: (v) => (v && v.length <= 50) || '不能超过50个字符',
-      max3000: (v) => (v && v.length <= 3000) || '不能超过3000个字符',
-      max200: (v) => (v && v.length) <= 200 || '不能超过200个字符',
+      max100: (v) => (v && v.length <= 100) || '不能超过100个字符',
+      max10000: (v) => (v && v.length <= 10000) || '不能超过10000个字符',
+      max400: (v) => (v && v.length) <= 400 || '不能超过400个字符',
       requiredComment: (v) => (v && v.trim().length > 0) || '评论不能为空',
       matchQuestionLink: (v) =>
         (v && /question\/(\d{18})/.test(v)) || '请输入有效的问题链接'
@@ -774,7 +774,7 @@ export default {
       if (this.rules.min20(this.answer.content) !== true) {
         return this.rules.min20(this.answer.content)
       } else {
-        return this.rules.max3000(this.answer.content)
+        return this.rules.max10000(this.answer.content)
       }
     },
     editor() {

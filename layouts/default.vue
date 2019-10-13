@@ -215,7 +215,7 @@
                     text
                     x-small
                     color="primary"
-                    class="d-inline-block no-flex text-truncate text-left mr-1"
+                    class="no-hover-active d-inline-block no-flex text-truncate text-left mr-1"
                     style="font-weight: bold"
                     >{{
                       $store.getters.getUserInfo.nickname ||

@@ -42,7 +42,7 @@
                   :to="'/search/' + tagInfo.tagName"
                   v-on="on"
                 >
-                  <span style="font-size: 16px">{{
+                  <span style="font-size: 14px">{{
                     tagInfo.tagName
                   }}</span></v-chip
                 ></template
@@ -148,7 +148,7 @@ export default {
     },
     rules: {
       tagDescription: (v) =>
-        (v && v.length <= 100) || !v || '标签描述不能超过100个字符'
+        (v && v.length <= 400) || !v || '标签描述不能超过400个字符'
     }
   }),
   created() {

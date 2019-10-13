@@ -23,6 +23,7 @@
               label="密码"
               outlined
               required
+              type="password"
               @keyup.enter.native="submitLogin"
             ></v-text-field>
             <v-layout justify-space-between align-center class="mt-4">

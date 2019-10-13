@@ -28,10 +28,10 @@
             autofocus
             prepend-icon="title"
             hint="简短的描述下你的问题"
-            :counter="50"
+            :counter="100"
             label="问题标题"
             required
-            :rules="[rules.min10, rules.max50]"
+            :rules="[rules.min10, rules.max100]"
           ></v-text-field>
           <v-layout v-show="useMarkdown" justify-space-around class="mt-1">
             <v-flex xs6>
@@ -39,11 +39,11 @@
                 id="markdown-edit"
                 v-model="source"
                 no-resize
-                counter="3000"
+                counter="10000"
                 full-height
                 rows="30"
                 solo
-                :rules="[rules.max3000, rules.min20]"
+                :rules="[rules.max10000, rules.min20]"
               ></v-textarea>
             </v-flex>
             <v-flex xs6>
@@ -172,7 +172,7 @@
               v-model="newTag.description"
               label="输入标签描述"
               :rules="[rules.tagDescription]"
-              :counter="100"
+              :counter="400"
             ></v-text-field>
           </v-form>
           <div v-if="createTag.resp">
@@ -211,10 +211,7 @@
       close-txt="去查看"
       @update:dialog="
         askResult.dialog = $event
-        $router.push(
-          '/question/' + $route.query.questionId ||
-            askResult.resp.data.questionId
-        )
+        $router.push('/question/' + askResult.resp.data.questionId)
       "
     >
     </InfoDialog>
@@ -231,7 +228,7 @@ export default {
   data: () => ({
     title: null,
     useMarkdown: false,
-    maxLength: 3000,
+    maxLength: 10000,
     source:
       '###' +
       '3 第一次使用markdown❓  [右键此处 新标签页打开查看语法说明]( http://www.markdown.cn/)',
@@ -256,14 +253,14 @@ export default {
     rules: {
       min10: (v) => (v && v.length >= 10) || '不能少于10个字符',
       min20: (v) => (v && v.length >= 20) || '不能少于20个字符',
-      max50: (v) => (v && v.length <= 50) || '不能超过50个字符',
+      max100: (v) => (v && v.length <= 100) || '不能超过100个字符',
       max20: (v) => (v && v.length <= 20) || '不能超过20个字符',
-      max3000: (v) => (v && v.length <= 3000) || '不能超过3000个字符',
+      max10000: (v) => (v && v.length <= 10000) || '不能超过10000个字符',
       tags: (v) => (v && v.length <= 5) || '最多选择五个标签哦',
       tagsRequired: (v) => (v && v.length > 0) || '标签不能为空哦',
       tagName: (v) => (v && v.trim().length > 1) || '标签名称必填',
       tagDescription: (v) =>
-        (v && v.length <= 100) || !v || '标签描述不能超过100个字符'
+        (v && v.length <= 400) || !v || '标签描述不能超过400个字符'
     },
     editorOption: {
       theme: 'bubble',
@@ -291,7 +288,7 @@ export default {
       if (this.rules.min20(this.content) !== true) {
         return this.rules.min20(this.content)
       } else {
-        return this.rules.max3000(this.content)
+        return this.rules.max10000(this.content)
       }
     }
   },
@@ -394,7 +391,7 @@ export default {
         return false
       }
       const _this = this
-      _this.createTagLoding = true
+      _this.createTag.loading = true
       this.$axios
         .$post('/tagInfo/insertTag', {
           tagName: this.newTag.name,

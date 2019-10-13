@@ -58,7 +58,7 @@ pre {
   background-image: initial;
   background-color: #616161 !important;
   color: #ffffff !important;
-  padding:3px;
+  padding:3px 15px;
 }
 pre>code{
   box-shadow: none !important;
@@ -166,4 +166,18 @@ pre>code{
 
 .v-application .theme--light .my_gray--text{
   color: #808080 !important;
+}
+
+.v-application .theme--dark .my_gray--text{
+    color: #d3d3d3 !important;
+}
+
+pre{
+  overflow: auto !important;
+  max-height: 500px !important;
+  display: block !important;
+  margin-bottom: 1em !important;
+}
+p{
+  padding-bottom: 1em !important;
 }
