@@ -16,7 +16,7 @@
                 ><strong class="ml-1">{{
                   $route.query.spaceName
                 }}</strong></v-btn
-              >{{ $route.params.keywords }}</v-row
+              ><span class="ml-3">{{ $route.params.keywords }}</span></v-row
             ></v-card-title
           >
         </v-flex>

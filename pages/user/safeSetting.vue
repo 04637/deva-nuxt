@@ -228,9 +228,7 @@
           <v-btn color="sub" text small @click="editPassword.dialog = false"
             >关闭</v-btn
           >
-          <v-btn color="primary" outlined small text @click="updatePassword"
-            >提交</v-btn
-          >
+          <v-btn color="primary" small text @click="updatePassword">提交</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -254,7 +252,10 @@
         savePasswordResult.resp != null && savePasswordResult.resp.succeed
       "
       :dialog="savePasswordResult.dialog"
-      @update:dialog="savePasswordResult.dialog = $event"
+      @update:dialog="
+        savePasswordResult.dialog = $event
+        savePasswordResult.resp.succeed ? $router.push('/user/login') : ''
+      "
     >
     </InfoDialog>
     <InfoDialog
@@ -511,6 +512,7 @@ export default {
           this.savePasswordResult.errorMsg = resp.msg
           if (resp.succeed) {
             this.editPassword.dialog = false
+            this.$store.commit('setUserInfo', null)
           }
         })
         .catch((e) => {
@@ -545,13 +547,6 @@ export default {
         .catch((e) => {
           this.smsCodeResult.loading = false
         })
-    },
-    logout() {
-      this.disconnectWebsocket()
-      this.$store.commit('setUserInfo', null)
-      this.$router.push({
-        path: '/user/login'
-      })
     }
   }
 }

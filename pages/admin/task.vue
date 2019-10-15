@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-layout column shrink>
-      <v-card-title>建议/举报管理</v-card-title>
+      <v-card-title class="private--text">管理</v-card-title>
       <v-divider></v-divider>
     </v-layout>
     <v-flex justify-center md9 sm12 class="ml-10">
@@ -158,16 +158,32 @@
       </v-layout>
       <v-layout class="mt-5" justify-center shrink>
         <v-card width="100%">
+          <v-layout align-center>
+            <v-btn color="private" text to="/"><strong>问题管理</strong></v-btn
+            >|
+            <v-btn color="private" text to="/user/users"
+              ><strong>用户管理</strong></v-btn
+            >|
+            <v-btn color="private" text to="/tag/tags"
+              ><strong>标签管理</strong></v-btn
+            >|<v-btn color="private" text to="/admin/space"
+              ><strong>空间管理</strong></v-btn
+            >
+          </v-layout>
+        </v-card>
+      </v-layout>
+      <v-layout class="mt-5" justify-center shrink>
+        <v-card width="100%">
           <v-card-text
             ><span
-              >在线人数：<strong class="red--text">{{
+              >在线人数：<strong class="primary--text">{{
                 monitor.onlineCount
               }}</strong>
               / {{ monitor.userCount }}</span
             >
 
             <span class="ml-5"
-              >已解决问题：<strong class="red--text">{{
+              >已解决问题：<strong class="primary--text">{{
                 monitor.solvedQuestionCount
               }}</strong>
               / {{ monitor.questionCount }}</span
@@ -293,7 +309,7 @@ export default {
     loading: false,
     headers: [
       {
-        text: '内容',
+        text: '建议/投诉',
         sortable: false,
         align: 'left',
         value: 'content'
