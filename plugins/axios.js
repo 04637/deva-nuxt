@@ -1,5 +1,4 @@
 import $qs from 'qs'
-const Cookie = require('js-cookie')
 
 export default function({ store, redirect, app: { $axios } }) {
   // 参考 https://github.com/nuxt/nuxt.js/issues/2680
@@ -25,7 +24,6 @@ export default function({ store, redirect, app: { $axios } }) {
   $axios.onError((error) => {
     if (error.response && error.response.status === 401) {
       // 使外部api上的JWT Cookie失效
-      Cookie.remove('userInfo')
       store.commit('setUserInfo', null)
       redirect('/user/login')
     } else if (error.response && error.response.status === 403) {
