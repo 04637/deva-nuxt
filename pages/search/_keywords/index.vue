@@ -13,7 +13,6 @@
                 color="private"
                 small
                 class="mr-5"
-                ><v-icon small>visibility_off</v-icon
                 ><strong class="ml-1">{{
                   $route.query.spaceName
                 }}</strong></v-btn

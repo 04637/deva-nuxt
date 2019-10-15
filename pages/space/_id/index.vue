@@ -3,82 +3,97 @@
     <v-layout column shrink>
       <v-layout v-if="spaceInfo">
         <v-flex md7 xs4 shrink hidden-sm-and-down>
-          <v-card-title>
-            <v-row align="center">
-              <v-btn text outlined color="private" small
-                ><v-icon small>visibility_off</v-icon
-                ><strong class="ml-1">{{ spaceInfo.spaceName }}</strong></v-btn
-              >
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    :to="
-                      '/question/ask?spaceId=' +
-                        spaceInfo.spaceId +
-                        '&spaceName=' +
-                        spaceInfo.spaceName
-                    "
-                    class="ml-5"
-                    text
-                    small
-                    icon
-                    v-on="on"
-                    ><v-icon small>mdi-comment-question</v-icon></v-btn
-                  >
-                </template>
-                <span>发布问题</span>
-              </v-tooltip>
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    icon
-                    :to="'/space/userView?spaceId=' + spaceInfo.spaceId"
-                    v-on="on"
-                    ><v-icon>mdi-account-search</v-icon></v-btn
-                  >
-                </template>
-                <span>查看所有成员信息</span>
-              </v-tooltip>
-              <v-tooltip
-                v-if="spaceInfo.ownerUserId === $store.getters.getUserId"
-                top
-              >
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    text
-                    small
-                    icon
-                    :to="'/space/manageSpace?spaceId=' + spaceInfo.spaceId"
-                    v-on="on"
-                    ><v-icon small>mdi-settings</v-icon></v-btn
-                  >
-                </template>
-                <span>管理空间</span>
-              </v-tooltip>
-              <v-tooltip v-else top>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    text
-                    small
-                    icon
-                    @click="confirmExit.dialog = true"
-                    v-on="on"
-                    ><v-icon small>mdi-location-exit</v-icon></v-btn
-                  >
-                </template>
-                <span>退出空间</span>
-              </v-tooltip>
-              <v-text-field
-                v-model="keywords"
-                translate="yes"
-                class="ml-10 pt-0 mt-0 mr-2"
-                label="空间内搜索"
-                hide-details
-                prepend-inner-icon="search"
-                flat
-                @keyup.enter.native="search"
-              ></v-text-field>
-            </v-row>
+          <v-card-title class="pt-0 pb-0">
+            <v-layout column>
+              <v-row align="center">
+                <v-btn text outlined color="private" small
+                  ><strong class="ml-1">{{
+                    spaceInfo.spaceName
+                  }}</strong></v-btn
+                >
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      :to="
+                        '/question/ask?spaceId=' +
+                          spaceInfo.spaceId +
+                          '&spaceName=' +
+                          spaceInfo.spaceName
+                      "
+                      class="ml-5"
+                      text
+                      small
+                      icon
+                      v-on="on"
+                      ><v-icon small>mdi-comment-question</v-icon></v-btn
+                    >
+                  </template>
+                  <span>发布问题</span>
+                </v-tooltip>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      icon
+                      :to="'/space/userView?spaceId=' + spaceInfo.spaceId"
+                      v-on="on"
+                      ><v-icon>mdi-account-multiple</v-icon></v-btn
+                    >
+                  </template>
+                  <span>查看所有成员信息</span>
+                </v-tooltip>
+                <v-tooltip
+                  v-if="spaceInfo.ownerUserId === $store.getters.getUserId"
+                  top
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      text
+                      small
+                      icon
+                      :to="'/space/manageSpace?spaceId=' + spaceInfo.spaceId"
+                      v-on="on"
+                      ><v-icon small>mdi-settings</v-icon></v-btn
+                    >
+                  </template>
+                  <span>管理空间</span>
+                </v-tooltip>
+                <v-tooltip v-else top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      text
+                      small
+                      icon
+                      @click="confirmExit.dialog = true"
+                      v-on="on"
+                      ><v-icon small>mdi-location-exit</v-icon></v-btn
+                    >
+                  </template>
+                  <span>退出空间</span>
+                </v-tooltip>
+                <v-spacer></v-spacer>
+                <v-row align="center" style="position: absolute; right: 20px;">
+                  <v-card-text class="pa-0"
+                    ><span class="my_gray--text">我在本空间的昵称：</span
+                    >{{ $store.getters.getUserInfo.nickname }}
+                    <v-btn icon small
+                      ><v-icon small>mdi-rename-box</v-icon></v-btn
+                    >
+                  </v-card-text>
+                </v-row>
+              </v-row>
+              <v-row
+                ><v-text-field
+                  v-model="keywords"
+                  translate="yes"
+                  class="pt-0 mt-0 mr-2"
+                  placeholder="空间内搜索"
+                  hide-details
+                  prepend-inner-icon="search"
+                  flat
+                  @keyup.enter.native="search"
+                ></v-text-field
+              ></v-row>
+            </v-layout>
           </v-card-title>
         </v-flex>
         <v-flex md5 lg3 align-self-end>
@@ -100,6 +115,14 @@
         ></QuestionCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
+        <v-textarea
+          v-if="spaceInfo"
+          v-model="spaceInfo.description"
+          solo
+          readonly
+          style="font-size: 0.9rem"
+        >
+        </v-textarea>
         <HotTag></HotTag>
       </v-flex>
     </v-layout>

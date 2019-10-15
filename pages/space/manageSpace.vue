@@ -132,7 +132,7 @@
                 <strong>ID</strong>
               </v-list-item-avatar>
               <v-list-item-content title="空间ID"
-                ><v-layout class="primary--text">
+                ><v-layout class="primary--text" align-center>
                   <strong>{{ spaceInfo.spaceId }}</strong
                   ><v-btn
                     v-clipboard:copy="spaceInfo.spaceId"
