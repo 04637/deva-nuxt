@@ -17,7 +17,6 @@
         outlined
         color="private"
         small
-        ><v-icon small>visibility_off</v-icon
         ><strong class="ml-1">{{ spaceInfo.spaceName }}</strong></v-btn
       >
     </v-layout>

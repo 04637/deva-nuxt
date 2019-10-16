@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-layout column shrink>
-      <v-card-title class="private--text">管理</v-card-title>
+      <v-card-title>管理</v-card-title>
       <v-divider></v-divider>
     </v-layout>
     <v-flex justify-center md9 sm12 class="ml-10">

@@ -12,7 +12,7 @@
           <v-layout v-if="usernameLogin" class="mt-3" column>
             <v-text-field
               v-model="username"
-              label="用户名"
+              placeholder="用户名"
               outlined
               required
               class="mt-4"
@@ -20,7 +20,7 @@
             <v-text-field
               v-model="password"
               class="mt-4"
-              label="密码"
+              placeholder="密码"
               outlined
               required
               type="password"

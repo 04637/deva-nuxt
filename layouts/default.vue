@@ -178,7 +178,6 @@
               hide-details
               prepend-inner-icon="search"
               solo
-              flat
               @keyup.enter.native="search"
             ></v-text-field>
             <v-spacer></v-spacer>

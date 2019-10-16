@@ -70,12 +70,15 @@
                   </template>
                   <span>退出空间</span>
                 </v-tooltip>
-                <v-spacer></v-spacer>
                 <v-row align="center" style="position: absolute; right: 20px;">
                   <v-card-text class="pa-0"
-                    ><span class="my_gray--text">我在本空间的昵称：</span
+                    ><span class="my_gray--text">空间昵称：</span
                     >{{ $store.getters.getUserInfo.nickname }}
-                    <v-btn icon small
+                    <v-btn
+                      icon
+                      small
+                      title="修改"
+                      style="position:relative;top:-1px"
                       ><v-icon small>mdi-rename-box</v-icon></v-btn
                     >
                   </v-card-text>

@@ -2,6 +2,7 @@
   <div v-if="!deleted">
     <v-list-item class="px-0">
       <v-card
+        :style="question.status !== 0 ? 'border: 1px solid #01a687' : ''"
         flat
         exact
         width="100vw"
@@ -37,16 +38,17 @@
               :title="question.title"
               :to="'/question/' + question.questionId"
               >{{ question.title }}</v-btn
-            ><v-chip
-              v-if="question.status === 1"
-              color="primary"
-              small
-              label
-              outlined
-              class="ml-2"
             >
-              <strong>已解决</strong>
-            </v-chip>
+            <!--<v-chip-->
+            <!--  v-if="question.status === 1"-->
+            <!--  color="primary"-->
+            <!--  small-->
+            <!--  label-->
+            <!--  outlined-->
+            <!--  class="ml-2"-->
+            <!--&gt;-->
+            <!--  <strong>已解决</strong>-->
+            <!--</v-chip>-->
             <v-card-text
               v-dompurify-html:noHtml="$md.render(question.content)"
               style="padding: 8px"
