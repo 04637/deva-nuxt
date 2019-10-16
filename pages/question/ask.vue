@@ -126,6 +126,7 @@
             :class="
               $route.query.spaceId ? 'justify-space-between' : 'justify-end'
             "
+            align-center
           >
             <v-card-text v-if="$route.query.spaceId" class="my_gray--text">
               该问题将被发布至→
@@ -135,7 +136,6 @@
                 color="private"
                 small
                 :to="'/space/' + $route.query.spaceId"
-                ><v-icon small>visibility_off</v-icon
                 ><strong class="ml-1">{{
                   $route.query.spaceName
                 }}</strong></v-btn

@@ -5,7 +5,7 @@
         <v-flex md7 xs4 shrink hidden-sm-and-down>
           <v-card-title class="pt-0 pb-0">
             <v-layout column>
-              <v-row align="center">
+              <v-row align="center" justify="center">
                 <v-btn text outlined color="private" small
                   ><strong class="ml-1">{{
                     spaceInfo.spaceName
@@ -70,19 +70,19 @@
                   </template>
                   <span>退出空间</span>
                 </v-tooltip>
-                <v-row align="center" style="position: absolute; right: 20px;">
-                  <v-card-text class="pa-0"
-                    ><span class="my_gray--text">空间昵称：</span
-                    >{{ $store.getters.getUserInfo.nickname }}
-                    <v-btn
-                      icon
-                      small
-                      title="修改"
-                      style="position:relative;top:-1px"
-                      ><v-icon small>mdi-rename-box</v-icon></v-btn
-                    >
-                  </v-card-text>
-                </v-row>
+                <!--<v-row align="center" style="position: absolute; right: 20px;">-->
+                <!--  <v-card-text class="pa-0"-->
+                <!--    ><span class="my_gray&#45;&#45;text">空间昵称：</span-->
+                <!--    >{{ $store.getters.getUserInfo.nickname }}-->
+                <!--    <v-btn-->
+                <!--      icon-->
+                <!--      small-->
+                <!--      title="修改"-->
+                <!--      style="position:relative;top:-1px"-->
+                <!--      ><v-icon small>mdi-rename-box</v-icon></v-btn-->
+                <!--    >-->
+                <!--  </v-card-text>-->
+                <!--</v-row>-->
               </v-row>
               <v-row
                 ><v-text-field
@@ -93,14 +93,24 @@
                   hide-details
                   prepend-inner-icon="search"
                   flat
-                  @keyup.enter.native="search"
+                  @keyup.enter.native="searchQuestions"
                 ></v-text-field
               ></v-row>
             </v-layout>
           </v-card-title>
         </v-flex>
         <v-flex md5 lg3 align-self-end>
-          <v-tabs centered height="38" @change="loadQuestions">
+          <v-tabs
+            v-if="search.flag"
+            centered
+            height="38"
+            @change="searchQuestions"
+          >
+            <v-tab @click="listType = 'RELEVANCE'">相关</v-tab>
+            <v-tab @click="listType = 'NEWEST'">最新</v-tab>
+            <v-tab @click="listType = 'ACTIVE'">活跃</v-tab>
+          </v-tabs>
+          <v-tabs v-else centered height="38" @change="loadQuestions">
             <v-tab @click="listType = 'RECENT'">最新</v-tab>
             <v-tab @click="listType = 'UN_RESOLVED'">待解决</v-tab>
             <v-tab @click="listType = 'WEEK_HOT'">周榜</v-tab>
@@ -182,6 +192,17 @@ export default {
     loadMore: {
       isLoading: false,
       noMore: false
+    },
+    search: {
+      flag: false,
+      page: {
+        current: 1,
+        size: 15
+      },
+      loadMore: {
+        isLoading: false,
+        noMore: false
+      }
     }
   }),
   created() {
@@ -210,6 +231,38 @@ export default {
           }
         })
     },
+    searchQuestions() {
+      if (!this.keywords) {
+        this.search.flag = false
+        this.listType = 'RECENT'
+        this.loadQuestions()
+        return
+      }
+      if (!this.search.flag) {
+        this.search.flag = true
+        this.listType = 'RELEVANCE'
+      }
+      const _url = '/esQuestionInfo/searchFromSpace'
+
+      this.search.page.current = 1
+      this.search.loadMore.isLoading = false
+      this.search.loadMore.noMore = false
+      this.$axios
+        .$post(_url, {
+          keywords: this.keywords,
+          current: this.search.page.current,
+          size: this.search.page.size,
+          sortType: this.listType,
+          spaceId: this.spaceInfo.spaceId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.questionList = resp.data.content
+          } else {
+            this.questionList = []
+          }
+        })
+    },
     loadHotQuestions() {
       this.$axios
         .$post('/questionInfo/listQuestions', {
@@ -231,6 +284,9 @@ export default {
             this.spaceInfo = resp.data
           }
         })
+        .catch((e) => {
+          this.$router.push('/')
+        })
     },
     exitSpace() {
       this.$axios
@@ -246,19 +302,6 @@ export default {
           }
         })
     },
-    search() {
-      if (this.keywords) {
-        this.$router.push({
-          path:
-            '/search/' +
-            this.keywords +
-            '?spaceId=' +
-            this.$route.params.id +
-            '&spaceName=' +
-            this.spaceInfo.spaceName
-        })
-      }
-    },
     scroll() {
       window.onscroll = () => {
         if (!/\/space\/\d+/.test(this.$route.path)) {
@@ -273,7 +316,8 @@ export default {
         if (
           bottomOfWindow &&
           !this.loadMore.isLoading &&
-          !this.loadMore.noMore
+          !this.loadMore.noMore &&
+          !this.search.flag
         ) {
           this.loadMore.isLoading = true
           this.$axios
@@ -289,6 +333,33 @@ export default {
                 this.questionList = this.questionList.concat(resp.data.records)
               } else {
                 this.loadMore.noMore = true
+              }
+            })
+            .catch((e) => {
+              this.loadMore.isLoading = false
+            })
+        } else if (
+          bottomOfWindow &&
+          !this.search.loadMore.isLoading &&
+          !this.search.loadMore.noMore &&
+          this.search.flag
+        ) {
+          this.search.loadMore.isLoading = true
+          const _url = '/esQuestionInfo/searchFromSpace'
+          this.$axios
+            .$post(_url, {
+              current: ++this.search.page.current,
+              size: this.search.page.size,
+              sortType: this.listType,
+              keywords: this.keywords,
+              spaceId: this.spaceInfo.spaceId
+            })
+            .then((resp) => {
+              this.search.loadMore.isLoading = false
+              if (resp.succeed) {
+                this.questionList = this.questionList.concat(resp.data.content)
+              } else {
+                this.search.loadMore.noMore = true
               }
             })
             .catch((e) => {

@@ -54,6 +54,7 @@
       :msg="['创建成功', '创建失败']"
       :succeed="createResult.resp != null && createResult.resp.succeed"
       :dialog="createResult.dialog"
+      close-txt="去查看"
       @update:dialog="
         createResult.dialog = $event
         $router.push(

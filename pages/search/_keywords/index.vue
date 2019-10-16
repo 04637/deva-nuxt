@@ -70,10 +70,7 @@ export default {
   },
   methods: {
     searchQuestions() {
-      let _url = '/esQuestionInfo/search'
-      if (this.$route.query.spaceId) {
-        _url = '/esQuestionInfo/searchFromSpace'
-      }
+      const _url = '/esQuestionInfo/search'
       this.page.current = 1
       this.loadMore.isLoading = false
       this.loadMore.noMore = false
@@ -82,8 +79,7 @@ export default {
           keywords: this.$route.params.keywords,
           current: this.page.current,
           size: this.page.size,
-          sortType: this.listType,
-          spaceId: this.$route.query.spaceId
+          sortType: this.listType
         })
         .then((resp) => {
           if (resp.succeed) {
@@ -110,17 +106,13 @@ export default {
           !this.loadMore.noMore
         ) {
           this.loadMore.isLoading = true
-          let _url = '/esQuestionInfo/search'
-          if (this.$route.query.spaceId) {
-            _url = '/esQuestionInfo/searchFromSpace'
-          }
+          const _url = '/esQuestionInfo/search'
           this.$axios
             .$post(_url, {
               current: ++this.page.current,
               size: this.page.size,
               sortType: this.listType,
-              keywords: this.$route.params.keywords,
-              spaceId: this.$route.query.spaceId
+              keywords: this.$route.params.keywords
             })
             .then((resp) => {
               this.loadMore.isLoading = false

@@ -89,22 +89,15 @@
                 <v-icon>mdi-account-group</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
-                空间成员：{{ spaceInfo.memberNum }}
-                人
+                <v-layout>
+                  空间成员：<router-link
+                    class="d-inline"
+                    :to="'/space/userView?spaceId=' + spaceInfo.spaceId"
+                    >{{ spaceInfo.memberNum }}</router-link
+                  >
+                  &nbsp;&nbsp;人</v-layout
+                >
               </v-list-item-content>
-              <v-list-item-action>
-                <v-tooltip top>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      icon
-                      :to="'/space/userView?spaceId=' + spaceInfo.spaceId"
-                      v-on="on"
-                      ><v-icon>mdi-account-search</v-icon></v-btn
-                    >
-                  </template>
-                  <span>查看所有成员信息</span>
-                </v-tooltip>
-              </v-list-item-action>
             </v-list-item>
             <v-divider></v-divider>
             <v-list-item>
@@ -112,8 +105,12 @@
                 <v-icon>mdi-comment-question</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
-                发布问题：{{ spaceInfo.questionNum }}
-                个
+                <v-layout>
+                  发布问题：<router-link :to="'/space/' + spaceInfo.spaceId">{{
+                    spaceInfo.questionNum
+                  }}</router-link>
+                  &nbsp;&nbsp;个
+                </v-layout>
               </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
@@ -122,8 +119,12 @@
                 <v-icon>mdi-comment-check</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
-                解决问题：{{ spaceInfo.solvedNum }}
-                个
+                <v-layout>
+                  解决问题：<router-link :to="'/space/' + spaceInfo.spaceId">{{
+                    spaceInfo.solvedNum
+                  }}</router-link>
+                  &nbsp;&nbsp;个
+                </v-layout>
               </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
@@ -380,6 +381,7 @@ export default {
         })
         .then((resp) => {
           if (resp.succeed) {
+            console.log(resp)
             this.spaceInfo = resp.data
           }
         })

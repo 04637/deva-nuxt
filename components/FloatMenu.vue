@@ -11,7 +11,7 @@
         transition="slide-x-reverse-transition"
       >
         <template v-slot:activator>
-          <v-btn v-model="fab" color="primary" fab>
+          <v-btn v-model="fab" color="private" fab>
             <v-icon v-if="fab" title="回到顶部" @click="toTop"
               >vertical_align_top</v-icon
             >
