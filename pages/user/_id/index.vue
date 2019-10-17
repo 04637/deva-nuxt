@@ -67,7 +67,7 @@
                   }}%</v-card-text
                 >
                 <v-card-text
-                  >关注者: &nbsp;&nbsp;{{
+                  >粉丝: &nbsp;&nbsp;{{
                     userProfile.followers.length
                   }}</v-card-text
                 >
@@ -236,7 +236,8 @@
               <div
                 v-for="watch in userProfile.watchUsers"
                 :key="watch.userId"
-                style="width:220px;margin-right:10px;margin-top:10px"
+                class="ma-2"
+                style="width:220px;"
               >
                 <UserCard :user-info="watch"> </UserCard>
               </div>
@@ -248,7 +249,8 @@
               <div
                 v-for="follower in userProfile.followers"
                 :key="follower.userId"
-                style="width:220px;margin-right:10px;margin-top:10px"
+                class="ma-2"
+                style="width:220px;"
               >
                 <UserCard :user-info="follower"> </UserCard>
               </div>

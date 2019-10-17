@@ -85,6 +85,8 @@
                   outlined
                   class="mt-3"
                   :rules="[rules.max16]"
+                  :error-messages="nicknameCheck"
+                  @blur="checkNickname"
                 ></v-text-field>
                 <v-textarea
                   v-model="userInfo.bio"
@@ -139,25 +141,9 @@ export default {
     validPasswordLoading: false,
     rules: {
       max100: (v) => !v || (v && v.length <= 100) || '最多100个字符',
-      max16: (v) => !v || (v && v.length <= 16) || '最多16个字符',
-      email: (v) =>
-        !v ||
-        ((v &&
-          /^([A-Za-z0-9_\-.\u4E00-\u9FA5])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,8})$/.test(
-            v
-          )) ||
-          '请输入正确的邮箱账号'),
-      requireCode: (v) => (v && v.length > 0) || '请输入验证码',
-      phone(v) {
-        if (!v) {
-          return '手机号不能为空'
-        } else if (!/^1[3456789]\d{9}$/.test(v)) {
-          return '请输入正确的手机号码'
-        } else {
-          return true
-        }
-      }
+      max16: (v) => !v || (v && v.length <= 16) || '最多16个字符'
     },
+    nicknameCheck: '',
     userInfo: null,
     saveResult: {
       dialog: false,
@@ -203,8 +189,24 @@ export default {
           }
         })
     },
+    checkNickname() {
+      if (
+        !this.userInfo.nickname ||
+        this.userInfo.nickname === this.$store.getters.getUserInfo.nickname
+      ) {
+        this.nicknameCheck = ''
+        return false
+      }
+      this.$axios
+        .$post('/userInfo/checkNickname', {
+          nickname: this.userInfo.nickname
+        })
+        .then((resp) => {
+          this.nicknameCheck = resp.data ? '' : '昵称已被使用'
+        })
+    },
     saveProfile() {
-      if (!this.$refs.form.validate()) {
+      if (!this.$refs.form.validate() || this.nicknameCheck) {
         return false
       } else {
         this.saveResult.loading = true
@@ -213,10 +215,8 @@ export default {
         this.$axios
           .$post('/userInfo/updateUserInfo', {
             nickname: this.userInfo.nickname,
-            email: this.userInfo.email,
             bio: this.userInfo.bio,
-            newAvatar: this.avatarFile,
-            emailCode: this.emailCode
+            newAvatar: this.avatarFile
           })
           .then((resp) => {
             this.saveResult.loading = false

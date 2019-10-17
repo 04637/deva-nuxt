@@ -223,12 +223,13 @@
                                   ></v-layout
                                 >
                                 <v-layout justify-end align-end>
-                                  <svg
-                                    class="icon heat-icon"
-                                    aria-hidden="true"
-                                  >
-                                    <use xlink:href="#icon-zuanshi"></use></svg
-                                  >&nbsp;{{ questionDetail.author.reputation }}
+                                  <v-layout align-center>
+                                    <v-icon small color="red" title="用户声望"
+                                      >mdi-music-clef-bass</v-icon
+                                    >&nbsp;{{
+                                      questionDetail.author.reputation
+                                    }}
+                                  </v-layout>
                                 </v-layout>
                               </v-layout>
                             </v-flex>
@@ -337,6 +338,7 @@
                           append-outer-icon="mdi-reply"
                           autofocus
                           class="pt-0 mt-0"
+                          placeholder="@用户昵称 可回复/召唤⚡该用户，最多可召唤五个哦"
                           :rules="[rules.requiredComment, rules.max400]"
                           @keyup.enter.native="
                             sendComment(questionDetail.questionId)
@@ -458,11 +460,11 @@
                                     >
                                   </v-layout>
                                   <v-layout justify-end align-end>
-                                    <svg class="icon" aria-hidden="true">
-                                      <use
-                                        xlink:href="#icon-zuanshi"
-                                      ></use></svg
-                                    >&nbsp;{{ answer.author.reputation }}
+                                    <v-layout align-center>
+                                      <v-icon small color="red" title="用户声望"
+                                        >mdi-music-clef-bass</v-icon
+                                      >&nbsp;{{ answer.author.reputation }}
+                                    </v-layout>
                                   </v-layout>
                                 </v-layout>
                               </v-flex>
@@ -566,6 +568,7 @@
                           <v-text-field
                             ref="answerRef"
                             v-model="comment.currentComment"
+                            placeholder="@用户昵称 可回复/召唤⚡该用户，最多可召唤五个哦"
                             class="pt-0 mt-0"
                             append-outer-icon="reply"
                             autofocus

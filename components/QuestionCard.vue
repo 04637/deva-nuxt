@@ -72,7 +72,7 @@
             </v-card-actions>
           </v-flex>
           <v-row class="pr-2 ml-2" cols="2" justify="end" style="width:15%">
-            <v-row justify="end" dense>
+            <v-row justify="end" dense class="my_gray--text">
               <small
                 v-if="question.createTime === question.modifiedTime"
                 :title="$options.filters.moment(question.createTime)"
@@ -117,13 +117,11 @@
               <!--suppress HtmlDeprecatedAttribute -->
               <v-col cols="5" align-self="end">
                 <v-row justify="end" align="end" style="font-size: 14px">
-                  <svg
-                    class="icon"
-                    aria-hidden="true"
-                    style="width:17px;height:17px; position:relative;top:-1px"
-                  >
-                    <use xlink:href="#icon-zuanshi"></use></svg
-                  >{{ question.author.reputation }}
+                  <v-layout justify-center align-center>
+                    <v-icon small color="red" title="用户声望"
+                      >mdi-music-clef-bass</v-icon
+                    >&nbsp;{{ question.author.reputation }}
+                  </v-layout>
                 </v-row>
               </v-col>
             </v-row>
