@@ -109,6 +109,12 @@
               </v-layout>
             </v-flex>
           </v-layout>
+          <v-divider></v-divider>
+          <v-layout wrap class="mt-2">
+            <div v-for="tag in likeTagList" :key="tag.tagId" class="mr-2 mb-2">
+              <TagChip :tag-info="tag"></TagChip>
+            </div>
+          </v-layout>
         </v-card>
       </v-flex>
       <v-flex lg7 md8 sm12 class="ml-8">
@@ -263,11 +269,13 @@
 </template>
 <script>
 import UserCard from '../../../components/UserCard'
+import TagChip from '../../../components/TagChip'
 export default {
-  components: { UserCard },
+  components: { TagChip, UserCard },
   data: () => ({
     tab: null,
     userProfile: null,
+    likeTagList: null,
     // 提问tab
     askTab: {
       search: '',
@@ -331,6 +339,7 @@ export default {
   },
   created() {
     this.loadUserProfile()
+    this.loadLikeTags()
   },
   methods: {
     loadUserProfile() {
@@ -346,6 +355,17 @@ export default {
             this.collectTab.items = this.userProfile.questionCollection
           }
         })
+    },
+    loadLikeTags() {
+      if (this.$store.getters.getUserId) {
+        this.$axios
+          .$post('/tagLike/listOtherLikeTags', {
+            userId: this.$route.params.id
+          })
+          .then((resp) => {
+            this.likeTagList = resp.data
+          })
+      }
     },
     followUser() {
       this.$axios

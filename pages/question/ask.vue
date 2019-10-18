@@ -164,7 +164,7 @@
             <v-text-field
               v-model="newTag.name"
               label="输入标签名称"
-              :rules="[rules.tagName, rules.max20]"
+              :rules="[rules.tagName, rules.max20, rules.noSpace]"
               autofocus
               :counter="20"
             ></v-text-field>
@@ -259,6 +259,7 @@ export default {
       tags: (v) => (v && v.length <= 5) || '最多选择五个标签哦',
       tagsRequired: (v) => (v && v.length > 0) || '标签不能为空哦',
       tagName: (v) => (v && v.trim().length > 1) || '标签名称必填',
+      noSpace: (v) => /^[^\s]*$/.test(v) || "不能使用空格，如需分隔请使用 '-' ",
       tagDescription: (v) =>
         (v && v.length <= 400) || !v || '标签描述不能超过400个字符'
     },

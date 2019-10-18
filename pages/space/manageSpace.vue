@@ -381,7 +381,6 @@ export default {
         })
         .then((resp) => {
           if (resp.succeed) {
-            console.log(resp)
             this.spaceInfo = resp.data
           }
         })

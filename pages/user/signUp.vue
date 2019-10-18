@@ -12,7 +12,7 @@
             <v-text-field
               v-model="username"
               class="mt-4"
-              hint="8-16位，字母开头"
+              hint="由8-16位字母/数字/下划线组成"
               counter="16"
               label="用户名"
               outlined
@@ -185,10 +185,10 @@ export default {
       username(v) {
         if (!v) {
           return '用户名不能为空'
-        } else if (!/^[A-z]+.*/.test(v)) {
-          return '用户名需以字母开头'
+        } else if (!/^[A-z][\w]+$/.test(v)) {
+          return '用户名需以字母开头，由8-16字母/数字/下划线组成'
         } else if (v.length < 8 || v.length > 16) {
-          return '请输入8-16位用户名'
+          return '请输入用户名'
         } else {
           return true
         }

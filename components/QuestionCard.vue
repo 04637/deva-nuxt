@@ -57,13 +57,12 @@
             </v-card-text>
             <v-card-actions>
               <v-layout>
-                <!--todo tag搜索时添加匹配列只匹配 tag-->
                 <v-chip
                   v-for="tag in question.tagInfos"
                   :key="tag.tagId"
                   small
                   link
-                  :to="'/search/' + tag.tagName"
+                  :to="'/search/' + tag.tagName + '?match=tags'"
                   :title="tag.tagName"
                   class="question-tag d-inline-block text-truncate"
                   >{{ tag.tagName }}</v-chip

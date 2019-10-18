@@ -152,7 +152,7 @@
                           :key="tag.tagId"
                           small
                           link
-                          :to="'/search/' + tag.tagName"
+                          :to="'/search/' + tag.tagName + '?match=tags'"
                           :title="tag.tagName"
                           class="question-tag d-inline-block text-truncate"
                           >{{ tag.tagName }}</v-chip

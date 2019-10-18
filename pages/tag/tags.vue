@@ -23,45 +23,47 @@
         shrink
       >
         <v-card min-width="250px" class="px-3 pb-2" style="padding-top:10px">
-          <v-layout align-center>
-            <v-menu
-              open-on-hover
-              offset-y
-              top
-              min-width="103px"
-              max-width="103px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-chip
+          <v-layout align-center justify-space-between>
+            <v-layout align-center>
+              <v-menu
+                open-on-hover
+                offset-y
+                top
+                min-width="103px"
+                max-width="103px"
+              >
+                <template v-slot:activator="{ on }">
+                  <TagChip :tag-info="tagInfo" :von="on"></TagChip></template
+                ><v-btn
                   small
-                  color="primary"
                   text
-                  style="max-width:170px; cursor: pointer; text-decoration: none;border-radius: 0"
-                  :title="tagInfo.tagName"
-                  class="d-inline-block text-truncate text-left no-flex"
-                  :to="'/search/' + tagInfo.tagName"
-                  v-on="on"
-                >
-                  <span style="font-size: 14px">{{
-                    tagInfo.tagName
-                  }}</span></v-chip
-                ></template
-              ><v-btn
-                v-if="$store.getters.getRep >= 200"
-                small
-                text
-                color="private"
-                @click="
-                  editDescription.description = tagInfo.description
-                  editDescription.tagName = tagInfo.tagName
-                  editDescription.tagId = tagInfo.tagId
-                  editDescription.dialog = true
-                "
-                ><v-icon color="private" small>edit</v-icon>编辑描述</v-btn
-              ></v-menu
+                  :title="
+                    $store.getters.getRep >= 200
+                      ? ''
+                      : '声望值达到200将可以编辑标签描述'
+                  "
+                  :color="$store.getters.getRep >= 200 ? 'private' : 'grey'"
+                  @click="
+                    editDescription.description = tagInfo.description
+                    editDescription.tagName = tagInfo.tagName
+                    editDescription.tagId = tagInfo.tagId
+                    editDescription.dialog = $store.getters.getRep >= 200
+                  "
+                  ><v-icon
+                    :color="$store.getters.getRep >= 200 ? 'private' : 'grey'"
+                    small
+                    >edit</v-icon
+                  >编辑描述</v-btn
+                ></v-menu
+              >
+              <span class="ml-2 my_gray--text" title="总使用次数"
+                >× {{ tagInfo.totalCount }}</span
+              ></v-layout
             >
-            <span class="ml-2 my_gray--text" title="总使用次数"
-              >× {{ tagInfo.totalCount }}</span
+            <v-btn class="ml-1" icon small @click="likeTag(tagInfo)"
+              ><v-icon :color="tagInfo.liked ? 'pink' : ''" small
+                >mdi-heart</v-icon
+              ></v-btn
             >
           </v-layout>
           <v-flex class="label-description" style="margin-top:5px">
@@ -85,12 +87,13 @@
           <span class="headline">{{ editDescription.tagName }}</span>
         </v-card-title>
         <v-card-text>
-          <v-text-field
+          <v-textarea
             v-model="editDescription.description"
-            label="输入标签描述"
+            style="font-size: 0.8rem"
+            placeholder="输入标签描述"
             :rules="[rules.tagDescription]"
-            :counter="100"
-          ></v-text-field>
+            :counter="400"
+          ></v-textarea>
           <div v-if="editDescription.resp">
             <small v-if="editDescription.resp.succeed" class="success--text">{{
               editDescription.resp.msg
@@ -126,9 +129,12 @@
   </v-app>
 </template>
 <script>
+import TagChip from '../../components/TagChip'
 export default {
+  components: { TagChip },
   data: () => ({
     tagList: null,
+    likeTags: null,
     searchKey: null,
     page: {
       current: 1,
@@ -151,6 +157,7 @@ export default {
         (v && v.length <= 400) || !v || '标签描述不能超过400个字符'
     }
   }),
+  computed: {},
   created() {
     this.loadTagList()
   },
@@ -158,6 +165,18 @@ export default {
     this.scroll()
   },
   methods: {
+    renderLiked() {
+      this.tagList.forEach((item) => {
+        let liked = false
+        this.likeTags.some((_item) => {
+          if (_item.tagId === item.tagId) {
+            liked = true
+            return true
+          }
+        })
+        this.$set(item, 'liked', liked)
+      })
+    },
     updateDescription() {
       if (
         !(
@@ -191,6 +210,27 @@ export default {
           this.editDescription.loading = false
         })
     },
+    loadLikeTags() {
+      if (this.$store.getters.getUserId) {
+        this.$axios.$post('/tagLike/listLikeTags').then((resp) => {
+          if (resp.succeed) {
+            this.likeTags = resp.data
+            this.renderLiked()
+          }
+        })
+      }
+    },
+    likeTag(_tag) {
+      this.$axios
+        .$post('/tagLike/likeTag', {
+          tagId: _tag.tagId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.$set(_tag, 'liked', resp.data)
+          }
+        })
+    },
     loadTagList() {
       this.page.current = 1
       this.loadMore.isLoading = false
@@ -204,6 +244,7 @@ export default {
         .then((resp) => {
           if (resp.succeed) {
             this.tagList = resp.data.records
+            this.loadLikeTags()
           } else {
             this.tagList = []
           }

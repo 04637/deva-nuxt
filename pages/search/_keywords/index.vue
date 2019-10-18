@@ -16,12 +16,25 @@
                 ><strong class="ml-1">{{
                   $route.query.spaceName
                 }}</strong></v-btn
-              ><span class="ml-3">{{ $route.params.keywords }}</span></v-row
+              >
+              <v-chip
+                v-if="$route.query.match === 'tags'"
+                color="primary"
+                text
+                style="max-width:170px; cursor: pointer; text-decoration: none;border-radius: 0"
+                :title="$route.params.keywords"
+                class="ml-3 d-inline-block text-truncate text-left no-flex"
+              >
+                <span>{{ $route.params.keywords }}</span></v-chip
+              >
+              <span v-else class="ml-3">{{
+                $route.params.keywords
+              }}</span></v-row
             ></v-card-title
           >
         </v-flex>
         <v-flex md5 lg3 align-self-end>
-          <v-tabs centered height="38" @change="searchQuestions">
+          <v-tabs center-active height="38" @change="searchQuestions">
             <v-tab @click="listType = 'RELEVANCE'">相关</v-tab>
             <v-tab @click="listType = 'NEWEST'">最新</v-tab>
             <v-tab @click="listType = 'ACTIVE'">活跃</v-tab>
@@ -79,7 +92,8 @@ export default {
           keywords: this.$route.params.keywords,
           current: this.page.current,
           size: this.page.size,
-          sortType: this.listType
+          sortType: this.listType,
+          matchColumns: this.$route.query.match
         })
         .then((resp) => {
           if (resp.succeed) {

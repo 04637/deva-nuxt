@@ -6,7 +6,7 @@
           <v-card-title>{{ currentTitle }}</v-card-title>
         </v-flex>
         <v-flex md5 lg3 align-self-end>
-          <v-tabs centered height="38" @change="loadQuestions">
+          <v-tabs center-active height="38" @change="loadQuestions">
             <v-tab
               @click="
                 listType = 'RECENT'
@@ -14,6 +14,14 @@
               "
               >最新</v-tab
             >
+            <v-tab
+              v-if="this.$store.getters.getUserId"
+              @click="
+                listType = 'RECOMMEND'
+                currentTitle = '推荐'
+              "
+              >推荐
+            </v-tab>
             <v-tab
               @click="
                 listType = 'UN_RESOLVED'
@@ -49,17 +57,13 @@
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
         <HotTag></HotTag>
-        <!--<HotQuestionList></HotQuestionList>-->
       </v-flex>
     </v-layout>
-    <!--<FloatMenu></FloatMenu>-->
   </v-app>
 </template>
 <script>
 import QuestionCardList from '../components/QuestionCardList'
-// import HotQuestionList from '../components/HotQuestionList'
 import HotTag from '../components/HotTag'
-// import FloatMenu from '../components/FloatMenu'
 export default {
   components: { HotTag, QuestionCardList },
   data: () => ({
@@ -67,6 +71,7 @@ export default {
     questionList: null,
     hotQuestionList: null,
     currentTitle: '最新问题',
+    likeKeywords: null,
     page: {
       current: 1,
       size: 15
@@ -78,6 +83,7 @@ export default {
   }),
   created() {},
   mounted() {
+    this.loadLikeTags()
     this.scroll()
   },
   methods: {
@@ -85,19 +91,47 @@ export default {
       this.page.current = 1
       this.loadMore.isLoading = false
       this.loadMore.noMore = false
+      let _url = '/questionInfo/listQuestions'
+      let _sortType = null
+      if (this.listType === 'RECOMMEND') {
+        _url = '/esQuestionInfo/search'
+        _sortType = 'NEWEST'
+      }
       this.$axios
-        .$post('/questionInfo/listQuestions', {
+        .$post(_url, {
           current: this.page.current,
           size: this.page.size,
-          listType: this.listType
+          listType: this.listType,
+          sortType: _sortType,
+          keywords: this.likeKeywords
         })
         .then((resp) => {
           if (resp.succeed) {
-            this.questionList = resp.data.records
+            if (this.listType === 'RECOMMEND') {
+              this.questionList = resp.data.content
+            } else {
+              this.questionList = resp.data.records
+            }
           } else {
             this.questionList = []
           }
         })
+    },
+    loadLikeTags() {
+      if (this.$store.getters.getUserId) {
+        this.$axios.$post('/tagLike/listLikeTags').then((resp) => {
+          let likeTags = resp.data
+          const randTag = []
+          if (likeTags.length > 5) {
+            for (let i = 0; i < 5; ++i) {
+              const rand = Math.floor(Math.random() * likeTags.length)
+              randTag.push(likeTags[rand])
+            }
+            likeTags = randTag
+          }
+          this.likeKeywords = likeTags.map((item) => item.tagName).join(' ')
+        })
+      }
     },
     scroll() {
       window.onscroll = () => {
@@ -117,16 +151,32 @@ export default {
           !this.loadMore.noMore
         ) {
           this.loadMore.isLoading = true
+          let _url = '/questionInfo/listQuestions'
+          let _sortType = null
+          if (this.listType === 'RECOMMEND') {
+            _url = '/esQuestionInfo/search'
+            _sortType = 'NEWEST'
+          }
           this.$axios
-            .$post('/questionInfo/listQuestions', {
+            .$post(_url, {
               current: ++this.page.current,
               size: this.page.size,
-              listType: this.listType
+              listType: this.listType,
+              sortType: _sortType,
+              keywords: this.likeKeywords
             })
             .then((resp) => {
               this.loadMore.isLoading = false
               if (resp.succeed) {
-                this.questionList = this.questionList.concat(resp.data.records)
+                if (this.listType === 'RECOMMEND') {
+                  this.questionList = this.questionList.concat(
+                    resp.data.content
+                  )
+                } else {
+                  this.questionList = this.questionList.concat(
+                    resp.data.records
+                  )
+                }
               } else {
                 this.loadMore.noMore = true
               }

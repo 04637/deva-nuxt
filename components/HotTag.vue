@@ -1,33 +1,53 @@
 <template>
   <div>
+    <span v-if="likeTagList && likeTagList.length > 0">我的标签</span>
+    <div v-for="tag in likeTagList" :key="'like' + tag.tagId" class="mt-4">
+      <TagChip :tag-info="tag"></TagChip>&nbsp;<span class="my_gray--text"
+        >× {{ tag.totalCount }}</span
+      >
+    </div>
+    <v-divider
+      v-if="likeTagList && likeTagList.length > 0"
+      class="my-3"
+    ></v-divider>
     <span>热门标签</span>
     <div v-for="tag in hotTagList" :key="tag.tagId" class="mt-4">
-      <v-chip
-        style="border-radius: 0"
-        color="primary"
-        small
-        :to="'/search/' + tag.tagName"
-        class="d-inline-block text-truncate"
-        >{{ tag.tagName }} </v-chip
-      >&nbsp;<span class="my_gray--text">× {{ tag.totalCount }}</span>
+      <TagChip :tag-info="tag"></TagChip>&nbsp;<span class="my_gray--text"
+        >× {{ tag.totalCount }}</span
+      >
     </div>
   </div>
 </template>
 <script>
+import TagChip from './TagChip'
 export default {
+  components: { TagChip },
   data: () => ({
-    hotTagList: null
+    hotTagList: null,
+    likeTagList: null
   }),
   created() {
-    this.$axios
-      .$post('/tagInfo/listTags', {
-        current: 1,
-        size: 15
-      })
-      .then((resp) => {
-        this.hotTagList = resp.data.records
-      })
+    this.loadLikeTags()
+    this.loadHotTags()
   },
-  methods: {}
+  methods: {
+    loadHotTags() {
+      this.$axios
+        .$post('/tagInfo/listTags', {
+          current: 1,
+          size: 15
+        })
+        .then((resp) => {
+          this.hotTagList = resp.data.records
+        })
+    },
+    loadLikeTags() {
+      if (this.$store.getters.getUserId) {
+        this.$axios.$post('/tagLike/listLikeTags').then((resp) => {
+          this.likeTagList = resp.data
+        })
+      }
+    }
+  }
 }
 </script>
