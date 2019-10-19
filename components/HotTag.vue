@@ -1,8 +1,14 @@
 <template>
   <div>
-    <span v-if="likeTagList && likeTagList.length > 0">我的标签</span>
+    <v-layout align-center
+      ><v-icon small color="red">mdi-heart</v-icon>&nbsp;<span
+        v-if="likeTagList && likeTagList.length > 0"
+        >我的标签</span
+      ></v-layout
+    >
     <div v-for="tag in likeTagList" :key="'like' + tag.tagId" class="mt-4">
-      <TagChip :tag-info="tag"></TagChip>&nbsp;<span class="my_gray--text"
+      <TagChip color="blue" :tag-info="tag"></TagChip>&nbsp;<span
+        class="my_gray--text"
         >× {{ tag.totalCount }}</span
       >
     </div>
@@ -10,7 +16,11 @@
       v-if="likeTagList && likeTagList.length > 0"
       class="my-3"
     ></v-divider>
-    <span>热门标签</span>
+    <v-layout align-center
+      ><v-icon small color="red">mdi-fire</v-icon>&nbsp;<span
+        >热门标签</span
+      ></v-layout
+    >
     <div v-for="tag in hotTagList" :key="tag.tagId" class="mt-4">
       <TagChip :tag-info="tag"></TagChip>&nbsp;<span class="my_gray--text"
         >× {{ tag.totalCount }}</span

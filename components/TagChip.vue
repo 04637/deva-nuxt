@@ -1,7 +1,7 @@
 <template>
   <v-chip
     small
-    color="primary"
+    :color="color"
     text
     style="max-width:170px; cursor: pointer; text-decoration: none;border-radius: 0"
     :title="tagInfo.tagName"
@@ -18,6 +18,11 @@ export default {
     tagInfo: {
       required: true,
       type: Object
+    },
+    color: {
+      required: false,
+      type: String,
+      default: 'primary'
     },
     von: {
       required: false,

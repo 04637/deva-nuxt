@@ -38,7 +38,7 @@ export default {
     '~assets/css/common.css',
     'material-design-icons-iconfont/dist/material-design-icons.css',
     // markdown-it 高亮 https://samuelcoe.com/blog/nuxt-markdownit-highlight/
-    { src: '~node_modules/highlight.js/styles/hopscotch.css', lang: 'css' }
+    { src: '~node_modules/highlight.js/styles/sunburst.css', lang: 'css' }
   ],
   /*
    ** Plugins to load before mounting the App

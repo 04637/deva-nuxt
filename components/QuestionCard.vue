@@ -57,16 +57,22 @@
             </v-card-text>
             <v-card-actions>
               <v-layout>
-                <v-chip
+                <!--<v-chip-->
+                <!--  v-for="tag in question.tagInfos"-->
+                <!--  :key="tag.tagId"-->
+                <!--  small-->
+                <!--  link-->
+                <!--  :to="'/search/' + tag.tagName + '?match=tags'"-->
+                <!--  :title="tag.tagName"-->
+                <!--  class="question-tag d-inline-block text-truncate"-->
+                <!--  >{{ tag.tagName }}</v-chip-->
+                <!--&gt;-->
+                <TagChip
                   v-for="tag in question.tagInfos"
                   :key="tag.tagId"
-                  small
-                  link
-                  :to="'/search/' + tag.tagName + '?match=tags'"
-                  :title="tag.tagName"
-                  class="question-tag d-inline-block text-truncate"
-                  >{{ tag.tagName }}</v-chip
-                >
+                  :tag-info="tag"
+                  class="mr-3"
+                ></TagChip>
               </v-layout>
             </v-card-actions>
           </v-flex>
@@ -101,7 +107,7 @@
                   <v-btn
                     min-width="0"
                     text
-                    color="primary"
+                    color="my_gray"
                     class="text-truncate d-inline-block text-left no-flex px-1"
                     :to="'/user/' + question.author.userId"
                     height="21px"
@@ -140,8 +146,10 @@
 </template>
 <script>
 import ConfirmDialog from './ConfirmDialog'
+import TagChip from './TagChip'
 export default {
   components: {
+    TagChip,
     ConfirmDialog
   },
   props: {

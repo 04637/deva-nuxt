@@ -2,8 +2,13 @@
   <v-app>
     <v-app>
       <v-layout justify-space-between shrink>
-        <v-col cols="3" justify="start">
-          <v-btn small text to="find">提问之前，不妨先搜索一下？</v-btn>
+        <v-col cols="6" justify="start">
+          <v-btn small text class="my_gray--text"
+            >小提示：如需粘贴大段代码，可在&nbsp;
+            <a href="https://codeshare.io/" target="_blank"
+              ><strong>codeshare</strong></a
+            >&nbsp; 中创建后分享至此哦</v-btn
+          >
         </v-col>
         <v-col cols="5">
           <v-btn
@@ -25,7 +30,6 @@
           <v-text-field
             ref="title"
             v-model="title"
-            autofocus
             prepend-icon="title"
             hint="简短的描述下你的问题"
             :counter="100"
@@ -218,6 +222,7 @@
   </v-app>
 </template>
 <script>
+import hljs from 'highlight.js'
 import InfoDialog from '../../components/InfoDialog'
 export default {
   name: 'Ask',
@@ -277,7 +282,12 @@ export default {
           [{ align: [] }],
           ['link', 'image'],
           ['clean']
-        ]
+        ],
+        syntax: {
+          highlight: (text) => {
+            return hljs.highlightAuto(text).value
+          }
+        }
       }
     }
   }),

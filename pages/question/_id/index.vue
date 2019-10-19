@@ -18,342 +18,335 @@
       </v-layout>
       <v-layout justify-center justify-space-around>
         <v-flex xs11 lg9 justify-start class="mt-4">
-          <v-list>
-            <v-list-item>
-              <v-card flat exact width="100vw">
-                <v-layout justify-space-between>
-                  <v-flex xs1 class="mt-12" align-center>
-                    <v-layout column align-center>
-                      <v-btn icon fab @click="voteQuestion(true)">
-                        <v-icon
-                          size="80"
-                          :color="
-                            questionDetail.isUseful === true ? 'success' : ''
-                          "
-                          >arrow_drop_up</v-icon
-                        >
-                      </v-btn>
-                      <strong>{{ questionDetail.voteNum }}</strong>
-                      <v-btn icon fab @click="voteQuestion(false)">
-                        <v-icon
-                          size="80"
-                          :color="
-                            questionDetail.isUseful === false ? 'success' : ''
-                          "
-                          >arrow_drop_down</v-icon
-                        >
-                      </v-btn>
-                      <v-btn icon fab @click="collectQuestion">
-                        <v-icon
-                          size="40"
-                          :color="questionDetail.isCollected ? 'pink' : ''"
-                          >{{
-                            questionDetail.isCollected
-                              ? 'favorite'
-                              : 'favorite_border'
-                          }}</v-icon
-                        >
-                      </v-btn>
-                    </v-layout>
-                  </v-flex>
-                  <v-flex xs11 class="ml-4">
-                    <v-layout justify-end style="min-height: 36px">
-                      <v-btn
-                        v-if="
-                          $store.state.userInfo &&
-                            $store.getters.getUserId !==
-                              questionDetail.author.userId &&
-                            $store.getters.getUserInfo.reputation >= 200
-                        "
-                        id="markDialogBtn"
-                        text
-                        color="pink"
-                        @click.stop="similarMark.dialog = !similarMark.dialog"
-                        ><strong>问题重复？标记相似</strong>
-                      </v-btn>
-                      <v-btn
-                        v-if="
-                          $store.getters.getUserId ===
-                            questionDetail.author.userId
-                        "
-                        text
-                        color="pink"
-                        :to="
-                          '/question/ask?questionId=' +
-                            questionDetail.questionId
-                        "
-                      >
-                        <v-icon size="15">edit</v-icon>
-                        <strong>编辑问题</strong>
-                      </v-btn>
-                    </v-layout>
-                    <div
-                      v-dompurify-html="$md.render(questionDetail.content)"
-                    ></div>
-                    <!--color="cyan"  知更鸟蓝-->
-                    <v-layout
-                      v-if="questionDetail.similarMark"
-                      align-center
-                      class="mt-2"
+          <v-card flat exact width="100vw">
+            <v-layout justify-space-between>
+              <v-flex xs1 class="mt-12" align-center>
+                <v-layout column align-center>
+                  <v-btn icon fab @click="voteQuestion(true)">
+                    <v-icon
+                      size="80"
+                      :color="questionDetail.isUseful === true ? 'success' : ''"
+                      >arrow_drop_up</v-icon
                     >
-                      <v-alert
-                        dense
-                        border="left"
-                        colored-border
-                        color="warning"
-                        width="100%"
-                        class="inverted_color--text"
-                        elevation="1"
-                        >相似问题：
-                        <router-link
-                          style="text-decoration: none"
-                          :to="questionDetail.similarMark.toQuestionId"
-                          >{{ questionDetail.similarMark.toQuestionTitle }}
-                        </router-link>
-                        <span
-                          class="inverted_color--text"
-                          style="font-size: 0.8rem; cursor: pointer"
-                          :title="questionDetail.similarMark.nickname"
-                          @click="
-                            $router.push(
-                              '/user/' + questionDetail.similarMark.userId
-                            )
-                          "
-                          >--&nbsp;{{ questionDetail.similarMark.nickname }}
-                        </span>
-                        <span
-                          class="my_gray--text ml-2"
-                          style="font-size: 0.8rem"
-                          :title="
-                            $options.filters.moment(
-                              questionDetail.similarMark.createTime
-                            )
-                          "
-                          >&nbsp;标记于&nbsp;{{
-                            questionDetail.similarMark.createTime | timeago
-                          }}</span
-                        >
-                      </v-alert>
-                      <!--<v-btn class="mb-4" icon>-->
-                      <!--  <v-tooltip right>-->
-                      <!--    <template v-slot:activator="{ on }">-->
-                      <!--      <v-icon color="orange" dark v-on="on"-->
-                      <!--        >report-->
-                      <!--      </v-icon>-->
-                      <!--    </template>-->
-                      <!--    <span>举报滥用</span>-->
-                      <!--  </v-tooltip>-->
-                      <!--</v-btn>-->
-                    </v-layout>
-                    <v-card-actions>
-                      <v-layout>
-                        <v-chip
-                          v-for="tag in questionDetail.tagInfos"
-                          :key="tag.tagId"
-                          small
-                          link
-                          :to="'/search/' + tag.tagName + '?match=tags'"
-                          :title="tag.tagName"
-                          class="question-tag d-inline-block text-truncate"
-                          >{{ tag.tagName }}</v-chip
-                        >
-                      </v-layout>
-                      <v-layout justify-end style="min-width: 230px">
-                        <v-card
-                          class="px-8 pt-3 pb-1 user_card"
-                          :to="'/user/' + questionDetail.author.userId"
-                        >
-                          <v-layout justify-space-between>
-                            <v-flex xs5>
-                              <v-layout justify-center>
-                                <v-avatar color="grey">
-                                  <v-img
-                                    :src="questionDetail.author.avatar"
-                                  ></v-img>
-                                </v-avatar>
-                              </v-layout>
-                              <v-layout justify-center class="mt-2">
-                                <span
-                                  class="subtitle-2 text-no-wrap text-truncate d-block"
-                                  >{{
-                                    questionDetail.author.nickname ||
-                                      questionDetail.username
-                                  }}</span
-                                >
-                              </v-layout>
-                            </v-flex>
-                            <v-flex xs7>
-                              <v-layout
-                                column
-                                align-end
-                                justify-space-between
-                                style="height:100%"
-                              >
-                                <v-layout>
-                                  <small
-                                    :title="
-                                      $options.filters.moment(
-                                        questionDetail.createTime
-                                      )
-                                    "
-                                  >
-                                    提问于&nbsp;
-                                    {{
-                                      questionDetail.createTime | timeago
-                                    }}</small
-                                  >
-                                </v-layout>
-                                <v-layout
-                                  v-if="
-                                    questionDetail.createTime !==
-                                      questionDetail.modifiedTime
-                                  "
-                                >
-                                  <small
-                                    :title="
-                                      $options.filters.moment(
-                                        questionDetail.modifiedTime
-                                      )
-                                    "
-                                  >
-                                    更新于&nbsp;
-                                    {{
-                                      questionDetail.modifiedTime | timeago
-                                    }}</small
-                                  ></v-layout
-                                >
-                                <v-layout justify-end align-end>
-                                  <v-layout align-center>
-                                    <v-icon small color="red" title="用户声望"
-                                      >mdi-music-clef-bass</v-icon
-                                    >&nbsp;{{
-                                      questionDetail.author.reputation
-                                    }}
-                                  </v-layout>
-                                </v-layout>
-                              </v-layout>
-                            </v-flex>
+                  </v-btn>
+                  <strong>{{ questionDetail.voteNum }}</strong>
+                  <v-btn icon fab @click="voteQuestion(false)">
+                    <v-icon
+                      size="80"
+                      :color="
+                        questionDetail.isUseful === false ? 'success' : ''
+                      "
+                      >arrow_drop_down</v-icon
+                    >
+                  </v-btn>
+                  <v-btn icon fab @click="collectQuestion">
+                    <v-icon
+                      size="40"
+                      :color="questionDetail.isCollected ? 'pink' : ''"
+                      >{{
+                        questionDetail.isCollected
+                          ? 'favorite'
+                          : 'favorite_border'
+                      }}</v-icon
+                    >
+                  </v-btn>
+                </v-layout>
+              </v-flex>
+              <v-flex xs11 class="ml-4">
+                <v-layout justify-end style="min-height: 36px">
+                  <v-btn
+                    v-if="
+                      $store.state.userInfo &&
+                        $store.getters.getUserId !==
+                          questionDetail.author.userId &&
+                        $store.getters.getUserInfo.reputation >= 200
+                    "
+                    id="markDialogBtn"
+                    text
+                    color="pink"
+                    @click.stop="similarMark.dialog = !similarMark.dialog"
+                    ><strong>问题重复？标记相似</strong>
+                  </v-btn>
+                  <v-btn v-else text color="my_gray" title="声望达到200方可标记"
+                    ><strong>问题重复？标记相似</strong>
+                  </v-btn>
+                  <v-btn
+                    v-if="
+                      $store.getters.getUserId === questionDetail.author.userId
+                    "
+                    text
+                    color="pink"
+                    :to="
+                      '/question/ask?questionId=' + questionDetail.questionId
+                    "
+                  >
+                    <v-icon size="15">edit</v-icon>
+                    <strong>编辑问题</strong>
+                  </v-btn>
+                </v-layout>
+                <div
+                  v-dompurify-html="$md.render(questionDetail.content)"
+                ></div>
+                <!--color="cyan"  知更鸟蓝-->
+                <v-layout
+                  v-if="questionDetail.similarMark"
+                  align-center
+                  class="mt-2"
+                >
+                  <v-alert
+                    dense
+                    border="left"
+                    colored-border
+                    color="warning"
+                    width="100%"
+                    class="inverted_color--text"
+                    elevation="1"
+                    >相似问题：
+                    <router-link
+                      style="text-decoration: none"
+                      :to="questionDetail.similarMark.toQuestionId"
+                      >{{ questionDetail.similarMark.toQuestionTitle }}
+                    </router-link>
+                    <span
+                      class="inverted_color--text"
+                      style="font-size: 0.8rem; cursor: pointer"
+                      :title="questionDetail.similarMark.nickname"
+                      @click="
+                        $router.push(
+                          '/user/' + questionDetail.similarMark.userId
+                        )
+                      "
+                      >--&nbsp;{{ questionDetail.similarMark.nickname }}
+                    </span>
+                    <span
+                      class="my_gray--text ml-2"
+                      style="font-size: 0.8rem"
+                      :title="
+                        $options.filters.moment(
+                          questionDetail.similarMark.createTime
+                        )
+                      "
+                      >&nbsp;标记于&nbsp;{{
+                        questionDetail.similarMark.createTime | timeago
+                      }}</span
+                    >
+                  </v-alert>
+                  <!--<v-btn class="mb-4" icon>-->
+                  <!--  <v-tooltip right>-->
+                  <!--    <template v-slot:activator="{ on }">-->
+                  <!--      <v-icon color="orange" dark v-on="on"-->
+                  <!--        >report-->
+                  <!--      </v-icon>-->
+                  <!--    </template>-->
+                  <!--    <span>举报滥用</span>-->
+                  <!--  </v-tooltip>-->
+                  <!--</v-btn>-->
+                </v-layout>
+                <v-card-actions>
+                  <v-layout>
+                    <!--<v-chip-->
+                    <!--  v-for="tag in questionDetail.tagInfos"-->
+                    <!--  :key="tag.tagId"-->
+                    <!--  small-->
+                    <!--  link-->
+                    <!--  :to="'/search/' + tag.tagName + '?match=tags'"-->
+                    <!--  :title="tag.tagName"-->
+                    <!--  class="question-tag d-inline-block text-truncate"-->
+                    <!--  >{{ tag.tagName }}</v-chip-->
+                    <!--&gt;-->
+                    <TagChip
+                      v-for="tag in questionDetail.tagInfos"
+                      :key="tag.tagId"
+                      class="mr-3"
+                      :tag-info="tag"
+                    ></TagChip>
+                  </v-layout>
+                  <v-layout justify-end style="min-width: 230px">
+                    <v-card
+                      class="px-8 pt-3 pb-1 user_card"
+                      :to="'/user/' + questionDetail.author.userId"
+                    >
+                      <v-layout justify-space-between>
+                        <v-flex xs5>
+                          <v-layout justify-center>
+                            <v-avatar color="grey">
+                              <v-img
+                                :src="questionDetail.author.avatar"
+                              ></v-img>
+                            </v-avatar>
                           </v-layout>
-                        </v-card>
-                      </v-layout>
-                    </v-card-actions>
-                    <!-- 评论区 -->
-                    <v-divider></v-divider>
-                    <v-layout justify-center column class="mt-2">
-                      <v-layout justify-end>
-                        <v-btn
-                          text
-                          small
-                          @click="
-                            $set(
-                              showCommentInput,
-                              questionDetail.questionId,
-                              !showCommentInput[questionDetail.questionId]
-                            )
-                          "
-                          >添加评论</v-btn
-                        >
-                      </v-layout>
-                      <v-layout>
-                        <v-list width="100vw" dense class="pb-5">
-                          <div
-                            v-for="(comment, _index) in questionDetail.comments"
-                            :key="comment.commentId"
+                          <v-layout justify-center class="mt-2">
+                            <span
+                              class="subtitle-2 text-no-wrap text-truncate d-block"
+                              >{{
+                                questionDetail.author.nickname ||
+                                  questionDetail.username
+                              }}</span
+                            >
+                          </v-layout>
+                        </v-flex>
+                        <v-flex xs7>
+                          <v-layout
+                            column
+                            align-end
+                            justify-space-between
+                            style="height:100%"
                           >
-                            <div
-                              v-show="
-                                showAllComments[questionDetail.questionId]
-                                  ? true
-                                  : _index < 3
+                            <v-layout>
+                              <small
+                                :title="
+                                  $options.filters.moment(
+                                    questionDetail.createTime
+                                  )
+                                "
+                              >
+                                提问于&nbsp;
+                                {{ questionDetail.createTime | timeago }}</small
+                              >
+                            </v-layout>
+                            <v-layout
+                              v-if="
+                                questionDetail.createTime !==
+                                  questionDetail.modifiedTime
                               "
                             >
-                              <v-list-item style="min-height: 28px">
-                                <span>
-                                  {{ comment.content }}&nbsp;&nbsp;--&nbsp;
-                                  <router-link
-                                    style="text-decoration: none;font-size:0.8rem"
-                                    :to="'/user/' + comment.author.userId"
-                                    >{{
-                                      comment.author.nickname ||
-                                        comment.author.username
-                                    }}
-                                  </router-link>
-                                  <span
-                                    class="my_gray--text"
-                                    style="font-size: 0.8rem;"
-                                    :title="
-                                      $options.filters.moment(
-                                        comment.createTime
-                                      )
-                                    "
-                                    >&nbsp;{{
-                                      comment.createTime | timeago
-                                    }}</span
-                                  >
-                                </span>
-                              </v-list-item>
-                              <v-divider></v-divider>
-                            </div>
-                          </div>
-                        </v-list>
+                              <small
+                                :title="
+                                  $options.filters.moment(
+                                    questionDetail.modifiedTime
+                                  )
+                                "
+                              >
+                                更新于&nbsp;
+                                {{
+                                  questionDetail.modifiedTime | timeago
+                                }}</small
+                              ></v-layout
+                            >
+                            <v-layout justify-end align-end>
+                              <v-layout align-center>
+                                <v-icon small color="red" title="用户声望"
+                                  >mdi-music-clef-bass</v-icon
+                                >&nbsp;{{ questionDetail.author.reputation }}
+                              </v-layout>
+                            </v-layout>
+                          </v-layout>
+                        </v-flex>
                       </v-layout>
-                      <v-layout
-                        v-if="questionDetail.comments.length > 3"
-                        justify-center
-                        class="mb-1"
+                    </v-card>
+                  </v-layout>
+                </v-card-actions>
+                <!-- 评论区 -->
+                <v-divider></v-divider>
+                <v-layout justify-center column class="mt-2">
+                  <v-layout justify-end>
+                    <v-btn
+                      text
+                      small
+                      @click="
+                        $set(
+                          showCommentInput,
+                          questionDetail.questionId,
+                          !showCommentInput[questionDetail.questionId]
+                        )
+                      "
+                      >添加评论</v-btn
+                    >
+                  </v-layout>
+                  <v-layout>
+                    <v-list width="100vw" dense class="pb-5">
+                      <div
+                        v-for="(comment, _index) in questionDetail.comments"
+                        :key="comment.commentId"
                       >
-                        <v-btn
-                          icon
-                          small
-                          :title="
+                        <div
+                          v-show="
                             showAllComments[questionDetail.questionId]
-                              ? '收起'
-                              : '展开'
-                          "
-                          @click="
-                            $set(
-                              showAllComments,
-                              questionDetail.questionId,
-                              !showAllComments[questionDetail.questionId]
-                            )
+                              ? true
+                              : _index < 3
                           "
                         >
-                          <v-icon
-                            >expand_{{
-                              showAllComments[questionDetail.questionId]
-                                ? 'less'
-                                : 'more'
-                            }}</v-icon
-                          >
-                        </v-btn>
-                      </v-layout>
-                      <!--  评论输入区-->
-                      <v-layout
-                        v-show="showCommentInput[questionDetail.questionId]"
-                        class="pb-2"
+                          <v-list-item style="min-height: 28px">
+                            <span>
+                              {{ comment.content }}&nbsp;&nbsp;--&nbsp;
+                              <router-link
+                                style="text-decoration: none;font-size:0.8rem"
+                                :to="'/user/' + comment.author.userId"
+                                >{{
+                                  comment.author.nickname ||
+                                    comment.author.username
+                                }}
+                              </router-link>
+                              <span
+                                class="my_gray--text"
+                                style="font-size: 0.8rem;"
+                                :title="
+                                  $options.filters.moment(comment.createTime)
+                                "
+                                >&nbsp;{{ comment.createTime | timeago }}</span
+                              >
+                            </span>
+                          </v-list-item>
+                          <v-divider></v-divider>
+                        </div>
+                      </div>
+                    </v-list>
+                  </v-layout>
+                  <v-layout
+                    v-if="questionDetail.comments.length > 3"
+                    justify-center
+                    class="mb-1"
+                  >
+                    <v-btn
+                      icon
+                      small
+                      :title="
+                        showAllComments[questionDetail.questionId]
+                          ? '收起'
+                          : '展开'
+                      "
+                      @click="
+                        $set(
+                          showAllComments,
+                          questionDetail.questionId,
+                          !showAllComments[questionDetail.questionId]
+                        )
+                      "
+                    >
+                      <v-icon
+                        >expand_{{
+                          showAllComments[questionDetail.questionId]
+                            ? 'less'
+                            : 'more'
+                        }}</v-icon
                       >
-                        <v-text-field
-                          :ref="'comment' + questionDetail.questionId"
-                          v-model="comment.currentComment"
-                          append-outer-icon="mdi-reply"
-                          autofocus
-                          class="pt-0 mt-0"
-                          placeholder="@用户昵称 可回复/召唤⚡该用户，最多可召唤五个哦"
-                          :rules="[rules.requiredComment, rules.max400]"
-                          @keyup.enter.native="
-                            sendComment(questionDetail.questionId)
-                          "
-                          @click:append-outer="
-                            sendComment(questionDetail.questionId)
-                          "
-                        ></v-text-field>
-                      </v-layout>
-                    </v-layout>
-                  </v-flex>
+                    </v-btn>
+                  </v-layout>
+                  <!--  评论输入区-->
+                  <v-layout
+                    v-show="showCommentInput[questionDetail.questionId]"
+                    class="pb-2"
+                  >
+                    <v-text-field
+                      :ref="'comment' + questionDetail.questionId"
+                      v-model="comment.currentComment"
+                      append-outer-icon="mdi-reply"
+                      autofocus
+                      class="pt-0 mt-0"
+                      placeholder="@用户昵称 可回复/召唤⚡该用户，最多可召唤五个哦"
+                      :rules="[rules.requiredComment, rules.max400]"
+                      @keyup.enter.native="
+                        sendComment(questionDetail.questionId)
+                      "
+                      @click:append-outer="
+                        sendComment(questionDetail.questionId)
+                      "
+                    ></v-text-field>
+                  </v-layout>
                 </v-layout>
-              </v-card>
-            </v-list-item>
-          </v-list>
+              </v-flex>
+            </v-layout>
+          </v-card>
           <v-divider></v-divider>
           <!--所有回答-->
           <v-layout class="transparent" justify-space-between align-center
@@ -362,235 +355,220 @@
             >
           </v-layout>
           <v-divider></v-divider>
-          <v-list v-show="questionDetail.answers.length > 0" class="pt-0">
-            <div
-              v-for="(answer, aIndex) in questionDetail.answers"
-              :id="answer.answerId"
-              :key="answer.answerId"
-              class="pt-2"
-            >
-              <v-list-item class="mt-2">
-                <v-card flat exact width="100vw">
-                  <v-layout justify-space-between>
-                    <v-flex xs1 class="mt-12" align-center>
-                      <v-layout column align-center>
-                        <v-btn icon fab @click="voteAnswer(answer, true)">
-                          <v-icon
-                            size="80"
-                            :color="answer.isUseful === true ? 'success' : ''"
-                            >arrow_drop_up</v-icon
-                          >
-                        </v-btn>
-                        <strong>{{ answer.voteNum }}</strong>
-                        <v-btn icon fab @click="voteAnswer(answer, false)">
-                          <v-icon
-                            size="80"
-                            :color="answer.isUseful === false ? 'success' : ''"
-                            >arrow_drop_down</v-icon
-                          >
-                        </v-btn>
-                        <v-btn
-                          v-if="answer.isAccepted"
-                          icon
-                          color="success"
-                          fab
-                        >
-                          <v-icon size="40">check</v-icon>
-                        </v-btn>
-                      </v-layout>
-                    </v-flex>
-                    <v-flex xs11 class="ml-4">
-                      <v-layout v-if="questionDetail.status === 0" justify-end>
-                        <v-btn
-                          v-if="
-                            $store.getters.getUserId ===
-                              questionDetail.author.userId
-                          "
-                          color="success"
-                          text
-                          @click="acceptAnswer(answer)"
-                        >
-                          <v-icon>check</v-icon>
-                          采纳
-                        </v-btn>
-                      </v-layout>
-                      <!--eslint-disable-next-line-->
-                      <div v-dompurify-html="$md.render(answer.content)"></div>
-                      <v-card-actions>
-                        <v-layout justify-end>
-                          <v-card
-                            class="px-8 pt-3 pb-1 user_card"
-                            :to="'/user/' + answer.author.userId"
-                          >
-                            <v-layout justify-space-between>
-                              <v-flex xs5>
-                                <v-layout justify-center>
-                                  <v-avatar color="grey">
-                                    <v-img :src="answer.author.avatar"></v-img>
-                                  </v-avatar>
-                                </v-layout>
-                                <v-layout justify-center class="mt-2">
-                                  <span
-                                    class="subtitle-2 text-no-wrap text-truncate d-block"
-                                    >{{
-                                      answer.author.nickname ||
-                                        answer.author.username
-                                    }}</span
-                                  >
-                                </v-layout>
-                              </v-flex>
-                              <v-flex xs7>
-                                <v-layout
-                                  column
-                                  align-end
-                                  justify-space-between
-                                  style="height:100%"
-                                >
-                                  <v-layout>
-                                    <small
-                                      :title="
-                                        $options.filters.moment(
-                                          answer.createTime
-                                        )
-                                      "
-                                    >
-                                      回答于&nbsp;{{
-                                        answer.createTime | timeago
-                                      }}</small
-                                    >
-                                  </v-layout>
-                                  <v-layout justify-end align-end>
-                                    <v-layout align-center>
-                                      <v-icon small color="red" title="用户声望"
-                                        >mdi-music-clef-bass</v-icon
-                                      >&nbsp;{{ answer.author.reputation }}
-                                    </v-layout>
-                                  </v-layout>
-                                </v-layout>
-                              </v-flex>
-                            </v-layout>
-                          </v-card>
-                        </v-layout>
-                      </v-card-actions>
-                      <!-- 评论区 -->
-                      <v-divider></v-divider>
-                      <v-layout justify-center column class="mt-2">
-                        <v-layout justify-end>
-                          <v-btn
-                            small
-                            text
-                            @click="
-                              $set(
-                                showCommentInput,
-                                answer.answerId,
-                                !showCommentInput[answer.answerId]
-                              )
-                            "
-                            >添加评论</v-btn
-                          >
-                        </v-layout>
-                        <v-layout>
-                          <v-list width="100vw" dense class="pb-5">
-                            <div
-                              v-for="(comment, _index) in answer.comments"
-                              :key="comment.commentId"
-                            >
-                              <div
-                                v-show="
-                                  showAllComments[answer.answerId]
-                                    ? true
-                                    : _index < 3
-                                "
-                              >
-                                <v-list-item style="min-height: 28px">
-                                  <span>
-                                    {{ comment.content }}&nbsp;&nbsp;--&nbsp;
-                                    <router-link
-                                      style="text-decoration: none;font-size:0.8rem"
-                                      :to="'/user/' + comment.author.userId"
-                                      >{{
-                                        comment.author.nickname ||
-                                          comment.author.username
-                                      }}
-                                    </router-link>
-                                    <span
-                                      class="my_gray--text"
-                                      style="font-size: 0.8rem;"
-                                      :title="
-                                        $options.filters.moment(
-                                          comment.createTime
-                                        )
-                                      "
-                                      >&nbsp;{{
-                                        comment.createTime | timeago
-                                      }}</span
-                                    >
-                                  </span>
-                                </v-list-item>
-                                <v-divider></v-divider>
-                              </div>
-                            </div>
-                          </v-list>
-                        </v-layout>
-                        <v-layout
-                          v-if="answer.comments.length > 3"
-                          justify-center
-                          class="mb-1"
-                        >
-                          <v-btn
-                            icon
-                            small
-                            :title="
-                              showAllComments[answer.answerId] ? '收起' : '展开'
-                            "
-                            @click="
-                              $set(
-                                showAllComments,
-                                answer.answerId,
-                                !showAllComments[answer.answerId]
-                              )
-                            "
-                          >
-                            <v-icon
-                              >expand_{{
-                                showAllComments[answer.answerId]
-                                  ? 'less'
-                                  : 'more'
-                              }}</v-icon
-                            >
-                          </v-btn>
-                        </v-layout>
-                        <!--  评论输入区-->
-                        <v-layout
-                          v-show="showCommentInput[answer.answerId]"
-                          class="pb-2"
-                        >
-                          <v-text-field
-                            ref="answerRef"
-                            v-model="comment.currentComment"
-                            placeholder="@用户昵称 可回复/召唤⚡该用户，最多可召唤五个哦"
-                            class="pt-0 mt-0"
-                            append-outer-icon="reply"
-                            autofocus
-                            :rules="[rules.requiredComment, rules.max400]"
-                            @keyup.enter.native="sendAnswerComment(aIndex)"
-                            @click:append-outer="sendAnswerComment(aIndex)"
-                          ></v-text-field>
-                        </v-layout>
-                      </v-layout>
-                    </v-flex>
+          <div
+            v-for="(answer, aIndex) in questionDetail.answers"
+            :id="answer.answerId"
+            :key="answer.answerId"
+            class="pt-2"
+          >
+            <v-card flat exact width="100vw" class="pt-6">
+              <v-layout justify-space-between>
+                <v-flex xs1 class="mt-12" align-center>
+                  <v-layout column align-center>
+                    <v-btn icon fab @click="voteAnswer(answer, true)">
+                      <v-icon
+                        size="80"
+                        :color="answer.isUseful === true ? 'success' : ''"
+                        >arrow_drop_up</v-icon
+                      >
+                    </v-btn>
+                    <strong>{{ answer.voteNum }}</strong>
+                    <v-btn icon fab @click="voteAnswer(answer, false)">
+                      <v-icon
+                        size="80"
+                        :color="answer.isUseful === false ? 'success' : ''"
+                        >arrow_drop_down</v-icon
+                      >
+                    </v-btn>
+                    <v-btn v-if="answer.isAccepted" icon color="success" fab>
+                      <v-icon size="40">check</v-icon>
+                    </v-btn>
                   </v-layout>
-                </v-card>
-              </v-list-item>
-              <v-divider
-                v-show="aIndex + 1 < questionDetail.answers.length"
-              ></v-divider>
-              <div
-                v-show="aIndex + 1 < questionDetail.answers.length"
-                :class="$vuetify.theme.dark ? 'dark-divider' : 'light-divider'"
-              ></div>
-            </div>
-          </v-list>
+                </v-flex>
+                <v-flex xs11 class="ml-4">
+                  <v-layout v-if="questionDetail.status === 0" justify-end>
+                    <v-btn
+                      v-if="
+                        $store.getters.getUserId ===
+                          questionDetail.author.userId
+                      "
+                      color="success"
+                      text
+                      @click="acceptAnswer(answer)"
+                    >
+                      <v-icon>check</v-icon>
+                      采纳
+                    </v-btn>
+                  </v-layout>
+                  <!--eslint-disable-next-line-->
+                  <div v-dompurify-html="$md.render(answer.content)"></div>
+                  <v-card-actions>
+                    <v-layout justify-end>
+                      <v-card
+                        class="px-8 pt-3 pb-1 user_card"
+                        :to="'/user/' + answer.author.userId"
+                      >
+                        <v-layout justify-space-between>
+                          <v-flex xs5>
+                            <v-layout justify-center>
+                              <v-avatar color="grey">
+                                <v-img :src="answer.author.avatar"></v-img>
+                              </v-avatar>
+                            </v-layout>
+                            <v-layout justify-center class="mt-2">
+                              <span
+                                class="subtitle-2 text-no-wrap text-truncate d-block"
+                                >{{
+                                  answer.author.nickname ||
+                                    answer.author.username
+                                }}</span
+                              >
+                            </v-layout>
+                          </v-flex>
+                          <v-flex xs7>
+                            <v-layout
+                              column
+                              align-end
+                              justify-space-between
+                              style="height:100%"
+                            >
+                              <v-layout>
+                                <small
+                                  :title="
+                                    $options.filters.moment(answer.createTime)
+                                  "
+                                >
+                                  回答于&nbsp;{{
+                                    answer.createTime | timeago
+                                  }}</small
+                                >
+                              </v-layout>
+                              <v-layout justify-end align-end>
+                                <v-layout align-center>
+                                  <v-icon small color="red" title="用户声望"
+                                    >mdi-music-clef-bass</v-icon
+                                  >&nbsp;{{ answer.author.reputation }}
+                                </v-layout>
+                              </v-layout>
+                            </v-layout>
+                          </v-flex>
+                        </v-layout>
+                      </v-card>
+                    </v-layout>
+                  </v-card-actions>
+                  <!-- 评论区 -->
+                  <v-divider></v-divider>
+                  <v-layout justify-center column class="mt-2">
+                    <v-layout justify-end>
+                      <v-btn
+                        small
+                        text
+                        @click="
+                          $set(
+                            showCommentInput,
+                            answer.answerId,
+                            !showCommentInput[answer.answerId]
+                          )
+                        "
+                        >添加评论</v-btn
+                      >
+                    </v-layout>
+                    <v-layout>
+                      <v-list width="100vw" dense class="pb-5">
+                        <div
+                          v-for="(comment, _index) in answer.comments"
+                          :key="comment.commentId"
+                        >
+                          <div
+                            v-show="
+                              showAllComments[answer.answerId]
+                                ? true
+                                : _index < 3
+                            "
+                          >
+                            <v-list-item style="min-height: 28px">
+                              <span>
+                                {{ comment.content }}&nbsp;&nbsp;--&nbsp;
+                                <router-link
+                                  style="text-decoration: none;font-size:0.8rem"
+                                  :to="'/user/' + comment.author.userId"
+                                  >{{
+                                    comment.author.nickname ||
+                                      comment.author.username
+                                  }}
+                                </router-link>
+                                <span
+                                  class="my_gray--text"
+                                  style="font-size: 0.8rem;"
+                                  :title="
+                                    $options.filters.moment(comment.createTime)
+                                  "
+                                  >&nbsp;{{
+                                    comment.createTime | timeago
+                                  }}</span
+                                >
+                              </span>
+                            </v-list-item>
+                            <v-divider></v-divider>
+                          </div>
+                        </div>
+                      </v-list>
+                    </v-layout>
+                    <v-layout
+                      v-if="answer.comments.length > 3"
+                      justify-center
+                      class="mb-1"
+                    >
+                      <v-btn
+                        icon
+                        small
+                        :title="
+                          showAllComments[answer.answerId] ? '收起' : '展开'
+                        "
+                        @click="
+                          $set(
+                            showAllComments,
+                            answer.answerId,
+                            !showAllComments[answer.answerId]
+                          )
+                        "
+                      >
+                        <v-icon
+                          >expand_{{
+                            showAllComments[answer.answerId] ? 'less' : 'more'
+                          }}</v-icon
+                        >
+                      </v-btn>
+                    </v-layout>
+                    <!--  评论输入区-->
+                    <v-layout
+                      v-show="showCommentInput[answer.answerId]"
+                      class="pb-2"
+                    >
+                      <v-text-field
+                        ref="answerRef"
+                        v-model="comment.currentComment"
+                        placeholder="@用户昵称 可回复/召唤⚡该用户，最多可召唤五个哦"
+                        class="pt-0 mt-0"
+                        append-outer-icon="reply"
+                        autofocus
+                        :rules="[rules.requiredComment, rules.max400]"
+                        @keyup.enter.native="sendAnswerComment(aIndex)"
+                        @click:append-outer="sendAnswerComment(aIndex)"
+                      ></v-text-field>
+                    </v-layout>
+                  </v-layout>
+                </v-flex>
+              </v-layout>
+            </v-card>
+            <v-divider
+              v-show="aIndex + 1 < questionDetail.answers.length"
+            ></v-divider>
+            <div
+              v-show="aIndex + 1 < questionDetail.answers.length"
+              :class="$vuetify.theme.dark ? 'dark-divider' : 'light-divider'"
+            ></div>
+          </div>
           <v-divider></v-divider>
           <v-layout class="transparent" justify-space-between align-center
             ><v-card-title class="sub--text">我的回答</v-card-title>
@@ -697,12 +675,15 @@
   </v-app>
 </template>
 <script>
+import hljs from 'highlight.js'
 import InfoDialog from '../../../components/InfoDialog'
 import HotTag from '../../../components/HotTag'
+import TagChip from '../../../components/TagChip'
 
 export default {
   name: 'QuestionDetail',
   components: {
+    TagChip,
     HotTag,
     InfoDialog
   },
@@ -767,7 +748,12 @@ export default {
           [{ align: [] }],
           ['link', 'image'],
           ['clean']
-        ]
+        ],
+        syntax: {
+          highlight: (text) => {
+            return hljs.highlightAuto(text).value
+          }
+        }
       }
     },
     keywords: null

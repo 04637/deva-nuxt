@@ -161,6 +161,7 @@ export default {
     dialog: false,
     usernameLogin: true
   }),
+  mounted() {},
   middleware: 'notAuthenticated',
   methods: {
     submitLogin() {
