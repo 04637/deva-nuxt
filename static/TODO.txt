@@ -39,6 +39,11 @@
 代码块无法复制 ✔  不能使用list
 刷新来不及获取token  忘记改server init  cookie key ✔
 
+用户卡片添加标签展示, 现在过于单一 ✔
+tooltip bug修复  更换新版本vuetify nuxt ✔
+
+安全设置页面美化
+
 待定:
     富文本编辑器代码高亮失效  展示渲染时无hljs关键字
     富文本图片上传(将base64上传后替换为url) 图片有效期考虑下

@@ -32,3 +32,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.theme--light.v-chip {
+  color: white !important;
+}
+</style>

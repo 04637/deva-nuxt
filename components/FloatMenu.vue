@@ -11,14 +11,14 @@
         transition="slide-x-reverse-transition"
       >
         <template v-slot:activator>
-          <v-btn v-model="fab" color="private" fab>
+          <v-btn id="floatRoot" v-model="fab" color="private" fab>
             <v-icon v-if="fab" title="回到顶部" @click="toTop"
               >vertical_align_top</v-icon
             >
             <v-icon v-else>scatter_plot</v-icon>
           </v-btn>
         </template>
-        <v-tooltip top>
+        <v-tooltip top internal-activator>
           <template v-slot:activator="{ on }">
             <v-btn fab dark small color="blue" v-on="on">
               <v-icon>mdi-email</v-icon>
@@ -26,7 +26,7 @@
           </template>
           <span>联系我们：admin@aid.dev</span>
         </v-tooltip>
-        <v-tooltip top>
+        <v-tooltip top fixed>
           <template v-slot:activator="{ on }">
             <a
               style="text-decoration: none"
@@ -39,7 +39,7 @@
           </template>
           <span>如果您需要帮助，点击加入我们的官方QQ群：930562002</span>
         </v-tooltip>
-        <v-tooltip top>
+        <v-tooltip top fixed>
           <template v-slot:activator="{ on }">
             <v-btn
               fab

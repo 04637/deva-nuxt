@@ -1,6 +1,6 @@
 <template>
   <v-card
-    min-width="231px"
+    :min-width="minWidth"
     class="pa-2"
     :to="
       actionIcon || $store.getters.getUserType === 'ADMIN'
@@ -8,9 +8,9 @@
         : '/user/' + userInfo.userId
     "
   >
-    <v-layout justify-start class="mb-3">
+    <v-layout justify-start>
       <v-flex xs4>
-        <v-layout justify-center>
+        <v-layout justify-center class="pt-1">
           <v-avatar
             style="cursor:pointer"
             color="grey"
@@ -40,9 +40,21 @@
             "
             ><v-icon color="private">{{ actionIcon }}</v-icon></v-btn
           >
-          <v-layout class="label-description ">
+          <v-layout class="label-description " style="min-height: 44px">
             <span :title="userInfo.bio">
               {{ userInfo.bio }}
+            </span>
+          </v-layout>
+          <v-layout
+            class="d-inline-block text-truncate"
+            style="min-height: 24px;"
+            wrap
+          >
+            <span v-for="tag in userInfo.likeTags" :key="tag.tagId"
+              ><router-link :to="'/search/' + tag.tagName + '?match=tags'">{{
+                tag.tagName
+              }}</router-link
+              >,
             </span>
           </v-layout>
         </v-layout>
@@ -142,6 +154,11 @@ export default {
       type: String,
       required: false,
       default: ''
+    },
+    minWidth: {
+      type: String,
+      required: false,
+      default: '358px'
     }
   },
   data: () => ({

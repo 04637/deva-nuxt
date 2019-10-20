@@ -19,7 +19,7 @@
         md4
         lg3
         style="max-height: 75px; max-width: 358px"
-        class="ma-4"
+        class="ma-4 mb-6 mr-2"
       >
         <UserCard :user-info="userInfo"></UserCard>
       </v-flex>

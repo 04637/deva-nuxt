@@ -1,8 +1,7 @@
 <template>
   <div>
-    <v-layout align-center
+    <v-layout v-if="likeTagList && likeTagList.length > 0" align-center
       ><v-icon small color="red">mdi-heart</v-icon>&nbsp;<span
-        v-if="likeTagList && likeTagList.length > 0"
         >我的标签</span
       ></v-layout
     >

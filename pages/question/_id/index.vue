@@ -18,7 +18,7 @@
       </v-layout>
       <v-layout justify-center justify-space-around>
         <v-flex xs11 lg9 justify-start class="mt-4">
-          <v-card flat exact width="100vw">
+          <v-card flat exact width="100vw" class="pr-2">
             <v-layout justify-space-between>
               <v-flex xs1 class="mt-12" align-center>
                 <v-layout column align-center>
@@ -67,7 +67,15 @@
                     @click.stop="similarMark.dialog = !similarMark.dialog"
                     ><strong>问题重复？标记相似</strong>
                   </v-btn>
-                  <v-btn v-else text color="my_gray" title="声望达到200方可标记"
+                  <v-btn
+                    v-else-if="
+                      $store.state.userInfo &&
+                        $store.getters.getUserId !==
+                          questionDetail.author.userId
+                    "
+                    text
+                    color="my_gray"
+                    title="声望达到200方可标记"
                     ><strong>问题重复？标记相似</strong>
                   </v-btn>
                   <v-btn
@@ -144,16 +152,6 @@
                 </v-layout>
                 <v-card-actions>
                   <v-layout>
-                    <!--<v-chip-->
-                    <!--  v-for="tag in questionDetail.tagInfos"-->
-                    <!--  :key="tag.tagId"-->
-                    <!--  small-->
-                    <!--  link-->
-                    <!--  :to="'/search/' + tag.tagName + '?match=tags'"-->
-                    <!--  :title="tag.tagName"-->
-                    <!--  class="question-tag d-inline-block text-truncate"-->
-                    <!--  >{{ tag.tagName }}</v-chip-->
-                    <!--&gt;-->
                     <TagChip
                       v-for="tag in questionDetail.tagInfos"
                       :key="tag.tagId"
@@ -361,7 +359,7 @@
             :key="answer.answerId"
             class="pt-2"
           >
-            <v-card flat exact width="100vw" class="pt-6">
+            <v-card flat exact width="100vw" class="pt-6 pr-2">
               <v-layout justify-space-between>
                 <v-flex xs1 class="mt-12" align-center>
                   <v-layout column align-center>

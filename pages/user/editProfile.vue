@@ -8,110 +8,108 @@
       </v-layout>
       <v-divider></v-divider>
     </v-layout>
-    <v-layout class="mt-5" justify-center>
-      <v-flex>
-        <v-card class="pa-4">
-          <v-layout justify-space-between>
-            <v-flex align-center xs3 hidden-md-and-down>
-              <v-layout justify-center>
-                <v-avatar color="grey" size="200" tile right>
-                  <v-img :aspect-ratio="16 / 9" :src="userInfo.avatar">
-                    <template v-slot:placeholder>
-                      <v-layout justify-center align-center fill-height>
-                        <v-progress-circular
-                          indeterminate
-                          color="grey lighten-5"
-                        ></v-progress-circular>
-                      </v-layout>
-                    </template>
-                    <v-layout
-                      pa-2
-                      column
-                      fill-height
-                      class="lightbox white--text"
-                    >
-                      <v-spacer></v-spacer>
-                      <v-flex shrink>
-                        <input
-                          v-show="false"
-                          ref="selectAvatar"
-                          accept="image/png, image/jpeg, image/bmp"
-                          type="file"
-                          @change="uploadAvatar($event)"
-                        />
-                        <v-btn
-                          text
-                          block
-                          class="subheading font-weight-bold"
-                          @click="$refs.selectAvatar.click()"
-                          >修改头像
-                        </v-btn>
-                      </v-flex>
+    <v-layout class="mt-5" shrink>
+      <v-layout align-center justify-space-around>
+        <v-flex align-center xs3 hidden-md-and-down>
+          <v-card class="pa-6">
+            <v-layout justify-center>
+              <v-avatar color="grey" size="200" tile right>
+                <v-img :aspect-ratio="16 / 9" :src="userInfo.avatar">
+                  <template v-slot:placeholder>
+                    <v-layout justify-center align-center fill-height>
+                      <v-progress-circular
+                        indeterminate
+                        color="grey lighten-5"
+                      ></v-progress-circular>
                     </v-layout>
-                  </v-img>
-                </v-avatar>
-              </v-layout>
-              <v-layout class="mt-2" justify-center>
-                <v-card-title>{{
-                  userInfo.nickname || userInfo.username
-                }}</v-card-title>
-              </v-layout>
-              <v-layout class="mt-2">
-                <v-divider></v-divider>
-              </v-layout>
-              <v-layout justify-center>
-                <v-card-text>{{ userInfo.bio }}</v-card-text>
-              </v-layout>
-              <v-layout v-show="userInfo.email" justify-center>
-                <v-icon class="mr-2">email</v-icon>
-                {{ userInfo.email }}
-              </v-layout>
-            </v-flex>
-            <v-spacer></v-spacer>
-            <v-flex xs9 lg6>
-              <v-form ref="form" class="mt-0" style="width: 100%">
-                <v-text-field
-                  v-model="userInfo.username"
-                  label="用户名"
-                  outlined
-                  class="mt-3"
-                  disabled
-                ></v-text-field>
-                <v-text-field
-                  v-model="userInfo.nickname"
-                  hint=""
-                  :counter="16"
-                  label="昵称"
-                  outlined
-                  class="mt-3"
-                  :rules="[rules.max16]"
-                  :error-messages="nicknameCheck"
-                  @blur="checkNickname"
-                ></v-text-field>
-                <v-textarea
-                  v-model="userInfo.bio"
-                  hint=""
-                  :counter="100"
-                  label="简介"
-                  outlined
-                  no-resize
-                  :rules="[rules.max100]"
-                ></v-textarea>
-                <v-layout class="justify-end mt-3">
-                  <v-btn
-                    outlined
-                    min-width="150px"
-                    :loading="saveResult.loading"
-                    @click="saveProfile"
-                    >保存</v-btn
+                  </template>
+                  <v-layout
+                    pa-2
+                    column
+                    fill-height
+                    class="lightbox white--text"
                   >
-                </v-layout>
-              </v-form>
-            </v-flex>
-            <v-spacer></v-spacer>
-          </v-layout>
-        </v-card>
-      </v-flex>
+                    <v-spacer></v-spacer>
+                    <v-flex shrink>
+                      <input
+                        v-show="false"
+                        ref="selectAvatar"
+                        accept="image/png, image/jpeg, image/bmp"
+                        type="file"
+                        @change="uploadAvatar($event)"
+                      />
+                      <v-btn
+                        text
+                        block
+                        class="subheading font-weight-bold"
+                        @click="$refs.selectAvatar.click()"
+                        >修改头像
+                      </v-btn>
+                    </v-flex>
+                  </v-layout>
+                </v-img>
+              </v-avatar>
+            </v-layout>
+            <v-layout class="mt-2" justify-center>
+              <v-card-title>{{
+                userInfo.nickname || userInfo.username
+              }}</v-card-title>
+            </v-layout>
+            <v-layout class="mt-2">
+              <v-divider></v-divider>
+            </v-layout>
+            <v-layout justify-center>
+              <v-card-text>{{ userInfo.bio }}</v-card-text>
+            </v-layout>
+            <v-layout v-show="userInfo.email" justify-center>
+              <v-icon class="mr-2">email</v-icon>
+              {{ userInfo.email }}
+            </v-layout>
+          </v-card>
+        </v-flex>
+        <v-flex xs9 lg6>
+          <v-card class="pa-6">
+            <v-form ref="form" class="mt-0" style="width: 100%">
+              <v-text-field
+                v-model="userInfo.username"
+                label="用户名"
+                outlined
+                class="mt-3"
+                disabled
+              ></v-text-field>
+              <v-text-field
+                v-model="userInfo.nickname"
+                hint=""
+                :counter="16"
+                label="昵称"
+                outlined
+                class="mt-3"
+                :rules="[rules.max16]"
+                :error-messages="nicknameCheck"
+                @blur="checkNickname"
+              ></v-text-field>
+              <v-textarea
+                v-model="userInfo.bio"
+                hint=""
+                :counter="100"
+                label="简介"
+                outlined
+                no-resize
+                :rules="[rules.max100]"
+              ></v-textarea>
+              <v-layout class="justify-end mt-3">
+                <v-btn
+                  outlined
+                  min-width="150px"
+                  :loading="saveResult.loading"
+                  @click="saveProfile"
+                  >保存</v-btn
+                >
+              </v-layout>
+            </v-form>
+          </v-card>
+        </v-flex>
+      </v-layout>
     </v-layout>
     <InfoDialog
       :msg="['保存成功', saveResult.errorMsg]"

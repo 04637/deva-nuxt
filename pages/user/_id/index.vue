@@ -243,9 +243,8 @@
                 v-for="watch in userProfile.watchUsers"
                 :key="watch.userId"
                 class="ma-2"
-                style="width:220px;"
               >
-                <UserCard :user-info="watch"> </UserCard>
+                <UserCard min-width="220px" :user-info="watch"> </UserCard>
               </div>
             </v-layout>
           </v-tab-item>
@@ -256,9 +255,8 @@
                 v-for="follower in userProfile.followers"
                 :key="follower.userId"
                 class="ma-2"
-                style="width:220px;"
               >
-                <UserCard :user-info="follower"> </UserCard>
+                <UserCard min-width="220px" :user-info="follower"> </UserCard>
               </div>
             </v-layout>
           </v-tab-item>
