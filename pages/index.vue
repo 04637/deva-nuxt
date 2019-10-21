@@ -14,14 +14,7 @@
               "
               >最新</v-tab
             >
-            <v-tab
-              v-if="this.$store.getters.getUserId"
-              @click="
-                listType = 'RECOMMEND'
-                currentTitle = '推荐'
-              "
-              >推荐
-            </v-tab>
+            <v-tab @click="clickRecommend">推荐 </v-tab>
             <v-tab
               @click="
                 listType = 'UN_RESOLVED'
@@ -131,6 +124,14 @@ export default {
           }
           this.likeKeywords = likeTags.map((item) => item.tagName).join(' ')
         })
+      }
+    },
+    clickRecommend() {
+      if (!this.$store.getters.getUserInfo) {
+        this.$router.push('/user/login')
+      } else {
+        this.listType = 'RECOMMEND'
+        this.currentTitle = '推荐'
       }
     },
     scroll() {
