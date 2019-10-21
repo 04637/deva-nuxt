@@ -239,7 +239,7 @@
                           text
                           class="text-left no-flex"
                           :to="'/user/' + $store.getters.getUserId"
-                          >个人中心</v-btn
+                          >个人档案</v-btn
                         >
                       </v-list-item-content>
                     </v-list-item>
@@ -261,7 +261,7 @@
                           text
                           to="/user/safeSetting"
                           class="text-left no-flex"
-                          >安全设置</v-btn
+                          >安全中心</v-btn
                         >
                       </v-list-item-content>
                     </v-list-item>

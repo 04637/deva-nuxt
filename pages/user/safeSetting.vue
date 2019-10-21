@@ -9,44 +9,64 @@
       <v-divider></v-divider>
     </v-layout>
     <v-layout class="mt-5" justify-center>
-      <v-flex sm7>
+      <v-flex sm6>
         <v-card class="pa-4">
+          <v-layout justify-center>
+            <small class="my_gray--text"
+              >承诺：我们不会给您发送任何广告邮件或短信</small
+            >
+          </v-layout>
           <v-layout justify-space-between>
             <v-form ref="form" class="pa-4" style="width: 100%">
               <v-layout align-center>
-                <span>绑定邮箱：</span>
+                <span>绑定邮箱：<v-icon>mdi-at</v-icon></span>
                 <v-text-field
-                  disabled
+                  readonly
+                  hint="绑定邮箱可用来订阅站内消息，随时随地关注问题进展"
+                  persistent-hint
                   :value="userInfo.email"
-                  hint=""
-                  class="mt-3 center-text"
+                  class="center-text"
+                  append-icon="mdi-pencil"
+                  @click:append="editEmail.dialog = true"
                 ></v-text-field>
-                <v-btn icon @click="editEmail.dialog = true"
-                  ><v-icon>edit</v-icon></v-btn
-                >
+                <v-checkbox
+                  color="private"
+                  class="ml-5 mb-0"
+                  label="开启邮件消息推送"
+                ></v-checkbox>
               </v-layout>
               <v-layout align-center>
-                <span>绑定手机：</span>
+                <span>绑定手机：<v-icon>mdi-cellphone</v-icon></span>
                 <v-text-field
-                  disabled
+                  readonly
+                  hint="绑定手机用来修改密码等敏感操作时接收验证码"
+                  persistent-hint
                   :value="userInfo.phone"
-                  hint=""
-                  class="mt-3 center-text"
+                  class="center-text"
+                  append-icon="mdi-pencil"
+                  @click:append="editPhone.dialog = true"
                 ></v-text-field>
-                <v-btn icon @click="editPhone.dialog = true"
-                  ><v-icon>edit</v-icon></v-btn
-                >
+                <v-checkbox
+                  color="private"
+                  class="ml-5 mb-0"
+                  label="接收敏感操作提示"
+                ></v-checkbox>
               </v-layout>
-              <v-divider></v-divider>
+              <v-divider class="mt-7"></v-divider>
               <v-layout align-center class="mt-3">
-                <span>上次登录IP：</span>
-                <span class="my_gray--text">{{ userInfo.lastLoginIp }}</span>
+                <span>上次登录：<v-icon>mdi-gesture-double-tap</v-icon></span>
+                <v-text-field
+                  readonly
+                  :value="userInfo.lastLoginIp"
+                  class="center-text"
+                ></v-text-field>
               </v-layout>
               <v-layout justify-end>
                 <v-btn
-                  class="mt-2"
+                  class="mt-2 bg"
                   color="private"
                   text
+                  style="background: rgba(233, 30, 99, 0.1)"
                   @click="editPassword.dialog = true"
                   ><strong>修改密码</strong></v-btn
                 >
@@ -107,9 +127,7 @@
           <v-btn color="sub" text small @click="editEmail.dialog = false"
             >关闭</v-btn
           >
-          <v-btn color="primary" outlined small text @click="updateEmail"
-            >提交</v-btn
-          >
+          <v-btn color="primary" small text @click="updateEmail">提交</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -165,8 +183,8 @@
           <v-btn color="sub" text small @click="editPhone.dialog = false"
             >关闭</v-btn
           >
-          <v-btn color="primary" outlined small text @click="updatePhone"
-            >提交</v-btn
+          <v-btn color="primary" small text @click="updatePhone"
+            ><strong>提交</strong></v-btn
           >
         </v-card-actions>
       </v-card>
@@ -228,7 +246,9 @@
           <v-btn color="sub" text small @click="editPassword.dialog = false"
             >关闭</v-btn
           >
-          <v-btn color="primary" small text @click="updatePassword">提交</v-btn>
+          <v-btn color="primary" small text @click="updatePassword"
+            ><strong>提交</strong></v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>

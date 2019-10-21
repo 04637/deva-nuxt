@@ -181,3 +181,8 @@ pre{
 p{
   padding-bottom: 1em !important;
 }
+
+/* checkbox 下边距*/
+.v-input.mb-0 .v-input__slot{
+  margin-bottom: 0 !important;
+}

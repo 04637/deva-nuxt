@@ -177,13 +177,13 @@ export default {
       this.$axios
         .$post('/userInfo/updateUserAvatar', _formData)
         .then((resp) => {
-          this.uploadResult.dialog = true
           this.uploadResult.resp = resp
           if (resp.succeed) {
             this.userInfo.avatar = resp.data
             this.$store.commit('setAvatar', resp.data)
           } else {
             this.uploadResult.errorMsg = resp.msg
+            this.uploadResult.dialog = true
           }
         })
     },
