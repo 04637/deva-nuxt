@@ -44,7 +44,7 @@ html{
 /* 替换 code 样式 参考vuetify kbd*/
 code {
   background-image: initial;
-  background-color: #616161 !important;
+  background-color: #2f2e2e !important;
   color: #ffffff !important;
 }
 pre,code{
@@ -56,7 +56,7 @@ pre,code{
 }
 pre {
   background-image: initial;
-  background-color: #616161 !important;
+  background-color: #2f2e2e !important;
   color: #ffffff !important;
   padding:3px 15px;
 }

@@ -24,7 +24,7 @@
                 <v-layout column align-center>
                   <v-btn icon fab @click="voteQuestion(true)">
                     <v-icon
-                      size="80"
+                      size="60"
                       :color="questionDetail.isUseful === true ? 'success' : ''"
                       >arrow_drop_up</v-icon
                     >
@@ -32,7 +32,7 @@
                   <strong>{{ questionDetail.voteNum }}</strong>
                   <v-btn icon fab @click="voteQuestion(false)">
                     <v-icon
-                      size="80"
+                      size="60"
                       :color="
                         questionDetail.isUseful === false ? 'success' : ''
                       "
@@ -40,15 +40,11 @@
                     >
                   </v-btn>
                   <v-btn icon fab @click="collectQuestion">
-                    <v-icon
-                      size="40"
-                      :color="questionDetail.isCollected ? 'pink' : ''"
-                      >{{
-                        questionDetail.isCollected
-                          ? 'favorite'
-                          : 'favorite_border'
-                      }}</v-icon
-                    >
+                    <v-icon :color="questionDetail.isCollected ? 'pink' : ''">{{
+                      questionDetail.isCollected
+                        ? 'favorite'
+                        : 'favorite_border'
+                    }}</v-icon>
                   </v-btn>
                 </v-layout>
               </v-flex>
@@ -265,7 +261,7 @@
                           "
                         >
                           <v-list-item style="min-height: 28px">
-                            <span>
+                            <span style="font-size: 0.8rem">
                               {{ comment.content }}&nbsp;&nbsp;--&nbsp;
                               <router-link
                                 style="text-decoration: none;font-size:0.8rem"
@@ -365,7 +361,7 @@
                   <v-layout column align-center>
                     <v-btn icon fab @click="voteAnswer(answer, true)">
                       <v-icon
-                        size="80"
+                        size="60"
                         :color="answer.isUseful === true ? 'success' : ''"
                         >arrow_drop_up</v-icon
                       >
@@ -373,13 +369,13 @@
                     <strong>{{ answer.voteNum }}</strong>
                     <v-btn icon fab @click="voteAnswer(answer, false)">
                       <v-icon
-                        size="80"
+                        size="60"
                         :color="answer.isUseful === false ? 'success' : ''"
                         >arrow_drop_down</v-icon
                       >
                     </v-btn>
                     <v-btn v-if="answer.isAccepted" icon color="success" fab>
-                      <v-icon size="40">check</v-icon>
+                      <v-icon>check</v-icon>
                     </v-btn>
                   </v-layout>
                 </v-flex>
@@ -485,7 +481,7 @@
                             "
                           >
                             <v-list-item style="min-height: 28px">
-                              <span>
+                              <span style="font-size: 0.8rem">
                                 {{ comment.content }}&nbsp;&nbsp;--&nbsp;
                                 <router-link
                                   style="text-decoration: none;font-size:0.8rem"
