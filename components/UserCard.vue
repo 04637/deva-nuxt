@@ -50,11 +50,17 @@
             style="min-height: 24px;"
             wrap
           >
-            <span v-for="tag in userInfo.likeTags" :key="tag.tagId"
-              ><router-link :to="'/search/' + tag.tagName + '?match=tags'">{{
-                tag.tagName
-              }}</router-link
-              >,
+            <span v-for="(tag, index) in userInfo.likeTags" :key="tag.tagId"
+              ><router-link
+                style="text-decoration: none"
+                :to="'/search/' + tag.tagName + '?match=tags'"
+                >{{ tag.tagName }}</router-link
+              ><span
+                v-if="index < userInfo.likeTags.length - 1"
+                class="my_gray--text"
+              >
+                ,
+              </span>
             </span>
           </v-layout>
         </v-layout>
