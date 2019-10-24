@@ -54,6 +54,9 @@ pre,code{
   /*todo 考虑一下?*/
   /*font-family: CharlieSans !important;*/
 }
+span[class*='hljs']{
+  font-family: consolas, monospace !important;
+}
 pre {
   background-image: initial;
   background-color: #2f2e2e !important;

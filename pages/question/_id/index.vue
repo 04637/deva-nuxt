@@ -708,7 +708,7 @@ export default {
       resp: null
     },
     answer: {
-      content: `在此输入你的回答，试试选中来设置样式哦`,
+      content: `在此输入你的回答，试试选中来设置样式哦😄`,
       maxLength: 10000,
       resp: null,
       dialog: false,

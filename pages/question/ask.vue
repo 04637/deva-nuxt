@@ -37,7 +37,7 @@
             required
             :rules="[rules.min10, rules.max100]"
           ></v-text-field>
-          <v-layout v-show="useMarkdown" justify-space-around class="mt-1">
+          <v-layout v-if="useMarkdown" justify-space-around class="mt-1">
             <v-flex xs6>
               <v-textarea
                 id="markdown-edit"
@@ -59,7 +59,7 @@
             </v-flex>
           </v-layout>
           <!--富文本编辑器-->
-          <div v-show="!useMarkdown" style="height: 597px;">
+          <div v-if="!useMarkdown" style="height: 597px;">
             <no-ssr>
               <quill-editor
                 ref="myTextEditor"
@@ -169,7 +169,6 @@
               v-model="newTag.name"
               label="输入标签名称"
               :rules="[rules.tagName, rules.max20, rules.noSpace]"
-              autofocus
               :counter="20"
             ></v-text-field>
             <v-text-field
@@ -284,9 +283,7 @@ export default {
           ['clean']
         ],
         syntax: {
-          highlight: (text) => {
-            return hljs.highlightAuto(text).value
-          }
+          highlight: (text) => hljs.highlightAuto(text).value
         }
       }
     }
@@ -319,6 +316,9 @@ export default {
         }
       }
     },
+    contentCode() {
+      return this.editor.scrollingContainer.innerHTML
+    },
     loadEditQuestion() {
       const questionId = this.$route.query.questionId
       if (!questionId) {
@@ -343,7 +343,7 @@ export default {
         .$post('/questionInfo/editQuestion', {
           questionId: _questionId,
           title: this.title,
-          content: this.useMarkdown ? this.source : this.content,
+          content: this.useMarkdown ? this.source : this.contentCode(),
           tagIds: this.selectedTags
             .map((e) => {
               return e.tagId
@@ -365,8 +365,7 @@ export default {
           return false
         }
       } else if (
-        !this.$refs.title.validate() ||
-        !this.$refs.tags.validate() ||
+        !this.$refs.form.validate() ||
         this.quillErrorMessage !== true
       ) {
         return false
@@ -381,7 +380,7 @@ export default {
         .$post('/questionInfo/askQuestion', {
           spaceId: this.$route.query.spaceId,
           title: _this.title,
-          content: _this.useMarkdown ? _this.source : _this.content,
+          content: _this.useMarkdown ? _this.source : _this.contentCode(),
           tagIds: _this.selectedTags
             .map((e) => {
               return e.tagId
