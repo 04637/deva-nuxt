@@ -1,5 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
-
+const api = '39.99.134.158:8080'
 export default {
   mode: 'universal',
   domain: 'http://localhost:3000',
@@ -80,11 +80,13 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://localhost:8080',
+    // baseURL: 'http://localhost:8080',
+    baseURL: 'http://' + api,
     debug: false
   },
   websocket: {
-    server: 'ws://localhost:8080/'
+    // server: 'ws://localhost:8080/'
+    server: 'ws://' + api + '/'
   },
   /*
    ** vuetify module configuration
