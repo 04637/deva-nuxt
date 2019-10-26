@@ -30,16 +30,18 @@
                   @click:append="editEmail.dialog = true"
                 ></v-text-field>
                 <v-checkbox
+                  v-model="userSetting.emailNotice"
                   color="private"
                   class="ml-5 mb-0"
                   label="开启邮件消息推送"
+                  @change="toggleEmailNotice"
                 ></v-checkbox>
               </v-layout>
               <v-layout align-center>
                 <span>绑定手机：<v-icon>mdi-cellphone</v-icon></span>
                 <v-text-field
                   readonly
-                  hint="绑定手机用来修改密码等敏感操作时接收验证码"
+                  hint="绑定手机用于接收验证码及敏感操作提示"
                   persistent-hint
                   :value="userInfo.phone"
                   class="center-text"
@@ -47,9 +49,11 @@
                   @click:append="editPhone.dialog = true"
                 ></v-text-field>
                 <v-checkbox
+                  v-model="userSetting.phoneNotice"
                   color="private"
                   class="ml-5 mb-0"
                   label="接收敏感操作提示"
+                  @change="togglePhoneNotice"
                 ></v-checkbox>
               </v-layout>
               <v-divider class="mt-7"></v-divider>
@@ -61,14 +65,20 @@
                   class="center-text"
                 ></v-text-field>
               </v-layout>
-              <v-layout justify-end>
-                <v-btn
-                  class="mt-2 bg"
-                  color="private"
-                  text
-                  style="background: rgba(233, 30, 99, 0.1)"
-                  @click="editPassword.dialog = true"
-                  ><strong>修改密码</strong></v-btn
+              <v-layout justify-space-between align-center class="mt-2">
+                <small v-show="!userInfo.phone" class="warning--text mr-4"
+                  >修改密码需获取手机验证码，请绑定您的手机号码</small
+                >
+                <v-layout justify-end>
+                  <v-btn
+                    :disabled="!userInfo.phone"
+                    class="bg"
+                    color="private"
+                    text
+                    style="background: rgba(233, 30, 99, 0.1)"
+                    @click="editPassword.dialog = true"
+                    ><strong>修改密码</strong></v-btn
+                  ></v-layout
                 >
               </v-layout>
             </v-form>
@@ -336,6 +346,10 @@ export default {
         }
       }
     },
+    userSetting: {
+      phoneNotice: false,
+      emailNotice: false
+    },
     saveEmailResult: {
       dialog: false,
       resp: null,
@@ -389,8 +403,46 @@ export default {
   created() {
     // 深层拷贝一个userInfo
     this.userInfo = this.$store.getters.getUserInfo
+    this.loadUserSetting()
   },
   methods: {
+    loadUserSetting() {
+      this.$axios
+        .$post('/userSetting/getSetting', {
+          userId: this.userInfo.userId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.userSetting = resp.data
+          }
+        })
+    },
+    toggleEmailNotice() {
+      this.$axios
+        .$post('/userSetting/updateEmailNotice', {
+          val: this.userSetting.emailNotice
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.userSetting.emailNotice = resp.data
+          } else {
+            this.userSetting.emailNotice = !resp.data
+          }
+        })
+    },
+    togglePhoneNotice() {
+      this.$axios
+        .$post('/userSetting/updatePhoneNotice', {
+          val: this.userSetting.phoneNotice
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.userSetting.phoneNotice = resp.data
+          } else {
+            this.userSetting.phoneNotice = !resp.data
+          }
+        })
+    },
     sendEmailCode() {
       if (!this.$refs.editEmailRef.validate()) {
         return false

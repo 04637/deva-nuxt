@@ -355,7 +355,7 @@
             :key="answer.answerId"
             class="pt-2"
           >
-            <v-card flat exact width="100vw" class="pt-6 pr-2">
+            <v-card flat exact width="100vw" class="pt-1 pr-2">
               <v-layout justify-space-between>
                 <v-flex xs1 class="mt-12" align-center>
                   <v-layout column align-center>
@@ -380,11 +380,12 @@
                   </v-layout>
                 </v-flex>
                 <v-flex xs11 class="ml-4">
-                  <v-layout v-if="questionDetail.status === 0" justify-end>
+                  <v-layout justify-end style="min-height: 36px" class="mb-2">
                     <v-btn
                       v-if="
-                        $store.getters.getUserId ===
-                          questionDetail.author.userId
+                        questionDetail.status === 0 &&
+                          $store.getters.getUserId ===
+                            questionDetail.author.userId
                       "
                       color="success"
                       text
@@ -393,8 +394,16 @@
                       <v-icon>check</v-icon>
                       采纳
                     </v-btn>
+                    <v-btn
+                      v-if="$store.getters.getUserId === answer.author.userId"
+                      color="success"
+                      text
+                      @click="editAnswer(answer)"
+                    >
+                      <v-icon>edit</v-icon>
+                      编辑
+                    </v-btn>
                   </v-layout>
-                  <!--eslint-disable-next-line-->
                   <div v-dompurify-html="$md.render(answer.content)"></div>
                   <v-card-actions>
                     <v-layout justify-end>
@@ -437,6 +446,18 @@
                                   }}</small
                                 >
                               </v-layout>
+                              <v-layout
+                                v-if="answer.createTime !== answer.modifiedTime"
+                              >
+                                <small
+                                  :title="
+                                    $options.filters.moment(answer.modifiedTime)
+                                  "
+                                >
+                                  更新于&nbsp;
+                                  {{ answer.modifiedTime | timeago }}</small
+                                ></v-layout
+                              >
                               <v-layout justify-end align-end>
                                 <v-layout align-center>
                                   <v-icon small color="red" title="用户声望"
@@ -638,7 +659,7 @@
       </v-card>
     </v-dialog>
     <InfoDialog
-      :msg="['回答成功', '回答失败']"
+      :msg="['提交成功', '提交失败']"
       :succeed="answer.resp != null && answer.resp.succeed"
       :dialog="answer.dialog"
       @update:dialog="answer.dialog = $event"
@@ -708,6 +729,7 @@ export default {
       resp: null
     },
     answer: {
+      answerId: null,
       content: `在此输入你的回答，试试选中来设置样式哦😄`,
       maxLength: 10000,
       resp: null,
@@ -797,6 +819,18 @@ export default {
   },
   mounted() {},
   methods: {
+    editAnswer(_answer) {
+      this.answer.content = _answer.content
+      this.answer.answerId = _answer.answerId
+      this.$vuetify.goTo(9999, {
+        duration: 245,
+        offset: 0,
+        easing: 'easeInCubic'
+      })
+    },
+    contentCode() {
+      return this.editor.scrollingContainer.innerHTML
+    },
     markQuestion() {
       const questionId = this.similarMark.toQuestionLink.match(
         /question\/(\d{18})$/
@@ -936,17 +970,33 @@ export default {
       }
       this.answer.loading = true
       const _this = this
+      let _url = '/answerInfo/answerQuestion'
+      if (this.answer.answerId) {
+        _url = '/answerInfo/editAnswer'
+      }
       this.$axios
-        .$post('/answerInfo/answerQuestion', {
+        .$post(_url, {
+          answerId: _this.answer.answerId,
           ownQuestionId: _this.questionDetail.questionId,
-          content: _this.answer.content
+          content: _this.contentCode()
         })
         .then((resp) => {
           _this.answer.resp = resp
           _this.answer.loading = false
           if (resp.succeed) {
-            _this.questionDetail.answers.push(resp.data)
+            if (!this.answer.answerId) {
+              // 不是编辑问题
+              _this.questionDetail.answers.push(resp.data)
+            } else {
+              // 是编辑问题
+              _this.questionDetail.answers.forEach((item) => {
+                if (item.answerId === _this.answer.answerId) {
+                  item.content = _this.answer.content
+                }
+              })
+            }
             _this.answer.content = `<h3>试试选中来设置样式哦</h3>`
+            _this.answer.answerId = null
           }
           _this.answer.dialog = true
         })

@@ -46,7 +46,6 @@
               >
             </v-layout>
           </v-layout>
-
           <!-- 短信验证码登录 -->
           <v-layout v-if="!usernameLogin" class="mt-3" column>
             <v-layout align-center>
@@ -86,7 +85,6 @@
                 >{{ smsCodeResult.timeInterval }}&nbsp;s后重发</v-btn
               >
             </v-layout>
-
             <v-layout justify-space-between align-center class="mt-4">
               <v-btn
                 x-small
@@ -106,6 +104,12 @@
                 >登录</v-btn
               >
             </v-layout>
+          </v-layout>
+          <v-layout class="mt-1 pl-1" align-center>
+            <a :href="githubLoginUrl" style="text-decoration: none"
+              ><v-btn icon><v-icon>mdi-github-circle</v-icon></v-btn></a
+            >
+            <!--<v-btn icon class="ml-1"><v-icon>mdi-wechat</v-icon></v-btn>-->
           </v-layout>
         </v-form>
       </v-card>
@@ -138,6 +142,7 @@
 <script>
 import Logo from '../../components/Logo'
 import InfoDialog from '../../components/InfoDialog'
+import config from '../../nuxt.config.js'
 export default {
   components: {
     Logo,
@@ -159,11 +164,37 @@ export default {
       timeInterval: 0
     },
     dialog: false,
-    usernameLogin: true
+    usernameLogin: true,
+    githubLoginUrl: config.githubLoginUrl
   }),
-  mounted() {},
+  mounted() {
+    this.githubLogin()
+  },
+  created() {},
   middleware: 'notAuthenticated',
   methods: {
+    githubLogin() {
+      if (this.$route.query.code) {
+        this.loading = true
+        this.$axios
+          .$post('/userInfo/githubLogin', {
+            code: this.$route.query.code
+          })
+          .then((resp) => {
+            this.loading = false
+            if (resp.succeed) {
+              this.$store.commit('setUserInfo', resp.data)
+              this.$router.push('/')
+            } else {
+              this.loginResp = resp
+              this.dialog = true
+            }
+          })
+          .catch((e) => {
+            this.loading = false
+          })
+      }
+    },
     submitLogin() {
       const _this = this
       const _data = {}

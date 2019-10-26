@@ -1,8 +1,11 @@
 import colors from 'vuetify/es5/util/colors'
-const api = '39.99.134.158:8080'
+const api = 'localhost:8080'
 export default {
   mode: 'universal',
   domain: 'http://localhost:3000',
+  githubLoginUrl:
+    'https://github.com/login/oauth/authorize?client_id=174cf0a9106fd1c53d24&scope=user:id',
+
   server: {
     port: 3000
   },
@@ -61,7 +64,7 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  devModules: [
+  buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify'

@@ -1,15 +1,32 @@
 <template>
   <div>
     <v-layout v-if="likeTagList && likeTagList.length > 0" align-center
-      ><v-icon small color="red">mdi-heart</v-icon>&nbsp;<span
-        >我的标签</span
+      ><v-icon small color="red">mdi-heart</v-icon>&nbsp;<span>我的标签</span
+      ><v-btn
+        class="ml-1"
+        small
+        text
+        icon
+        color="blue"
+        @click="editable = !editable"
+        ><v-icon small>edit</v-icon></v-btn
       ></v-layout
     >
     <div v-for="tag in likeTagList" :key="'like' + tag.tagId" class="mt-4">
-      <TagChip color="blue" :tag-info="tag"></TagChip>&nbsp;<span
-        class="my_gray--text"
-        >× {{ tag.totalCount }}</span
-      >
+      <v-layout align-center>
+        <TagChip color="blue" :tag-info="tag"></TagChip>&nbsp;<span
+          class="my_gray--text"
+          >× {{ tag.totalCount }}</span
+        ><v-btn
+          v-show="editable"
+          small
+          icon
+          title="取消关注"
+          style="height: 24px"
+          @click="toggleLikeTag(tag)"
+          ><v-icon small color="warning">mdi-close</v-icon></v-btn
+        >
+      </v-layout>
     </div>
     <v-divider
       v-if="likeTagList && likeTagList.length > 0"
@@ -33,7 +50,8 @@ export default {
   components: { TagChip },
   data: () => ({
     hotTagList: null,
-    likeTagList: null
+    likeTagList: null,
+    editable: false
   }),
   created() {
     this.loadLikeTags()
@@ -56,6 +74,22 @@ export default {
           this.likeTagList = resp.data
         })
       }
+    },
+    toggleLikeTag(_tag) {
+      this.$axios
+        .$post('/tagLike/likeTag', {
+          tagId: _tag.tagId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            for (let i = 0; i < this.likeTagList.length; ++i) {
+              if (this.likeTagList[i].tagId === _tag.tagId) {
+                this.likeTagList.splice(i, 1)
+                break
+              }
+            }
+          }
+        })
     }
   }
 }

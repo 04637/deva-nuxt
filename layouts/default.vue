@@ -653,7 +653,6 @@ export default {
         } else {
           // denied 用户拒绝
         }
-        // todo 无效
         if (notice) {
           notice.onclick = function(e) {
             const _link =
