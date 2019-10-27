@@ -36,7 +36,7 @@
       v-if="likeTagList && likeTagList.length > 0"
       class="my-3"
     ></v-divider>
-    <v-layout align-center
+    <v-layout v-if="hotTagList && hotTagList.length > 0" align-center
       ><v-icon small color="red">mdi-fire</v-icon>&nbsp;<span
         >热门标签</span
       ></v-layout
