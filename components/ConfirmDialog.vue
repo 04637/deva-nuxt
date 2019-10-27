@@ -10,12 +10,13 @@
         <!-- 组件事件绑定https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model -->
         <v-btn text @click="$emit('update:dialog', false)">取消 </v-btn>
         <v-btn
+          color="primary"
           text
           @click="
             $emit('update:dialog', false)
             confirm()
           "
-          >确定
+          ><strong>确定</strong>
         </v-btn>
       </v-card-actions>
     </v-card>

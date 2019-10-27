@@ -106,10 +106,30 @@
             </v-layout>
           </v-layout>
           <v-layout class="mt-1 pl-1" align-center>
-            <a :href="githubLoginUrl" style="text-decoration: none"
+            <a
+              :href="loginUrl.stackOverflow"
+              style="text-decoration: none"
+              title="使用 stackoverflow 帐号登录"
+              ><v-btn icon><v-icon>mdi-stack-overflow</v-icon></v-btn></a
+            >
+            <a
+              :href="loginUrl.github"
+              style="text-decoration: none"
+              title="使用 github 帐号登录"
               ><v-btn icon><v-icon>mdi-github-circle</v-icon></v-btn></a
             >
-            <!--<v-btn icon class="ml-1"><v-icon>mdi-wechat</v-icon></v-btn>-->
+            <a
+              :href="loginUrl.gitlab"
+              style="text-decoration: none"
+              title="使用 gitlab 帐号登录"
+              ><v-btn icon><v-icon>mdi-gitlab</v-icon></v-btn></a
+            >
+            <!--<a-->
+            <!--  :href="loginUrl.google"-->
+            <!--  style="text-decoration: none"-->
+            <!--  title="使用 google 帐号登录"-->
+            <!--  ><v-btn icon><v-icon>mdi-google</v-icon></v-btn></a-->
+            <!--&gt;-->
           </v-layout>
         </v-form>
       </v-card>
@@ -165,7 +185,12 @@ export default {
     },
     dialog: false,
     usernameLogin: true,
-    githubLoginUrl: config.githubLoginUrl
+    loginUrl: {
+      github: config.githubLoginUrl,
+      gitlab: config.gitlabLoginUrl,
+      stackOverflow: config.stackOverflowLoginUrl,
+      google: config.googleLoginUrl
+    }
   }),
   mounted() {
     this.githubLogin()
@@ -177,7 +202,7 @@ export default {
       if (this.$route.query.code) {
         this.loading = true
         this.$axios
-          .$post('/userInfo/githubLogin', {
+          .$post('/userInfo/' + this.$route.query.auth + 'Login', {
             code: this.$route.query.code
           })
           .then((resp) => {

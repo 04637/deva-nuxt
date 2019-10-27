@@ -1,8 +1,10 @@
 <template>
-  <v-list v-show="questionList && questionList.length > 0" class="pa-0 ma-0">
-    <div v-for="question in questionList" :key="question.questionId">
-      <QuestionCard :question="question"></QuestionCard>
-    </div>
+  <v-list class="pa-0 ma-0">
+    <transition-group name="list-down">
+      <div v-for="question in questionList" :key="question.questionId">
+        <QuestionCard :question="question"></QuestionCard>
+      </div>
+    </transition-group>
   </v-list>
 </template>
 <script>

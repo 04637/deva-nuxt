@@ -149,9 +149,11 @@
                 append-icon="volume_down"
                 :counter="300"
                 :rules="[rules.max300]"
+                @keyup.enter.native="newSystemNotice.confirmDialog = true"
                 @click:append="newSystemNotice.confirmDialog = true"
               >
               </v-text-field>
+              <v-text-field v-show="false"> </v-text-field>
             </v-form>
           </v-card-text>
         </v-card>

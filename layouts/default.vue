@@ -9,6 +9,7 @@
           permanent
           :mini-variant="mini"
           width="200px"
+          style="height: 100%; max-height: 100%"
         >
           <v-list nav>
             <v-layout justify-center>
@@ -59,6 +60,14 @@
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>标&nbsp;&nbsp;&nbsp;签</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item to="/blog/blogList">
+                <v-list-item-action>
+                  <v-icon>mdi-post</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>博&nbsp;&nbsp;&nbsp;文</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-divider></v-divider>
@@ -182,6 +191,33 @@
             ></v-text-field>
             <v-spacer></v-spacer>
           </v-flex>
+          <v-flex
+            v-if="systemNotice && systemNotice.content"
+            hidden-md-and-down
+            class="py-2"
+            style="font-size:0.9rem"
+            md6
+          >
+            <v-row align="center" justify="start" class="pr-5">
+              <span
+                class="d-inline-block text-truncate my_gray--text"
+                style="max-width: 500px"
+                :title="systemNotice.content"
+              >
+                公告：{{ systemNotice.content }}
+              </span>
+              <v-btn
+                v-if="systemNotice.content.length > 40"
+                text
+                x-small
+                color="warning"
+                style="position:relative;"
+                @click="viewNotice.dialog = true"
+              >
+                查看详情
+              </v-btn>
+            </v-row>
+          </v-flex>
           <v-layout justify-end align-center>
             <v-btn
               v-if="$store.state.userInfo"
@@ -289,56 +325,31 @@
         </v-container>
       </v-app-bar>
       <v-flex>
-        <v-content :class="isSmall ? 'ml-small' : mini ? 'ml-mini' : 'ml-max'">
+        <v-content
+          style="max-height: calc(100% - 100px)"
+          :class="isSmall ? 'ml-small' : mini ? 'ml-mini' : 'ml-max'"
+        >
           <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
           <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
           <nuxt v-else class="pa-2" />
           <FloatMenu></FloatMenu>
         </v-content>
       </v-flex>
-      <v-footer app tile>
-        <v-row justify="start" align="center" no-gutters>
-          <v-flex hidden-sm-and-down class="py-2 text-left primary--text" md5>
+      <v-footer
+        v-show="$store.getters.getShowFooter"
+        app
+        tile
+        style="z-index: 999;margin-top: 100px"
+      >
+        <v-row justify="center" align="center" no-gutters>
+          <v-flex class="py-2 text-left my_gray--text">
             <span
               >&copy;2019-{{ new Date().getFullYear() }}&nbsp;<router-link
                 to="/"
                 >aid.dev</router-link
-              ></span
+              >&nbsp;版权所有&nbsp;沪ICP备19037749号-1</span
             >
-            <span class="pl-4">联系我们：<span>admin@aid.dev</span></span>
-          </v-flex>
-          <v-flex v-if="systemNotice && systemNotice.content" class="py-2" md7>
-            <v-row align="center" justify="end" class="pr-5">
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                  <v-icon
-                    style="position: relative; top: 1px"
-                    color="warning"
-                    v-on="on"
-                    >double_arrow</v-icon
-                  >
-                </template>
-                <span>公告</span>
-              </v-tooltip>
-              <strong class="warning--text">：</strong
-              ><span
-                class="d-inline-block text-truncate warning--text"
-                style="max-width: 700px"
-                :title="systemNotice.content"
-              >
-                {{ systemNotice.content }}
-              </span>
-              <v-btn
-                v-if="systemNotice.content.length > 40"
-                text
-                x-small
-                color="warning"
-                style="position:relative;"
-                @click="viewNotice.dialog = true"
-              >
-                查看详情
-              </v-btn>
-            </v-row>
+            <!--<span class="pl-4">联系我们：<span>admin@aid.dev</span></span>-->
           </v-flex>
         </v-row>
       </v-footer>
@@ -396,7 +407,7 @@
             <v-textarea
               hide-details
               readonly
-              rows="20"
+              rows="10"
               :value="systemNotice.content"
             ></v-textarea>
           </v-card-text>

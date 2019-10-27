@@ -12,22 +12,26 @@
         ><v-icon small>edit</v-icon></v-btn
       ></v-layout
     >
-    <div v-for="tag in likeTagList" :key="'like' + tag.tagId" class="mt-4">
-      <v-layout align-center>
-        <TagChip color="blue" :tag-info="tag"></TagChip>&nbsp;<span
-          class="my_gray--text"
-          >× {{ tag.totalCount }}</span
-        ><v-btn
-          v-show="editable"
-          small
-          icon
-          title="取消关注"
-          style="height: 24px"
-          @click="toggleLikeTag(tag)"
-          ><v-icon small color="warning">mdi-close</v-icon></v-btn
-        >
-      </v-layout>
-    </div>
+    <transition-group name="list">
+      <div v-for="tag in likeTagList" :key="'like' + tag.tagId" class="mt-4">
+        <v-layout align-center>
+          <TagChip color="blue" :tag-info="tag"></TagChip>&nbsp;<span
+            class="my_gray--text"
+            >× {{ tag.totalCount }}</span
+          ><transition name="fade"
+            ><v-btn
+              v-show="editable"
+              small
+              icon
+              title="取消关注"
+              style="height: 24px"
+              @click="toggleLikeTag(tag)"
+              ><v-icon small color="warning">mdi-close</v-icon></v-btn
+            ></transition
+          >
+        </v-layout>
+      </div>
+    </transition-group>
     <v-divider
       v-if="likeTagList && likeTagList.length > 0"
       class="my-3"
@@ -37,11 +41,13 @@
         >热门标签</span
       ></v-layout
     >
-    <div v-for="tag in hotTagList" :key="tag.tagId" class="mt-4">
-      <TagChip :tag-info="tag"></TagChip>&nbsp;<span class="my_gray--text"
-        >× {{ tag.totalCount }}</span
-      >
-    </div>
+    <transition-group name="list">
+      <div v-for="tag in hotTagList" :key="tag.tagId" class="mt-4">
+        <TagChip :tag-info="tag"></TagChip>&nbsp;<span class="my_gray--text"
+          >× {{ tag.totalCount }}</span
+        >
+      </div>
+    </transition-group>
   </div>
 </template>
 <script>

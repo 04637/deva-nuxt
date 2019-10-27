@@ -1,15 +1,7 @@
 <template>
   <v-app>
     <v-app>
-      <v-layout justify-space-between shrink>
-        <v-col cols="6" justify="start">
-          <v-btn small text class="my_gray--text"
-            >小提示：如需粘贴大段代码，可在&nbsp;
-            <a href="https://codeshare.io/" target="_blank"
-              ><strong>codeshare</strong></a
-            >&nbsp; 中创建后分享至此哦</v-btn
-          >
-        </v-col>
+      <v-layout justify-end shrink>
         <v-col cols="5">
           <v-btn
             text
@@ -30,10 +22,10 @@
           <v-text-field
             ref="title"
             v-model="title"
+            class="mt-0 pt-0"
             prepend-icon="title"
-            hint="简短的描述下你的问题"
             :counter="100"
-            label="问题标题"
+            label="博文标题"
             required
             :rules="[rules.min10, rules.max100]"
           ></v-text-field>
@@ -43,11 +35,11 @@
                 id="markdown-edit"
                 v-model="source"
                 no-resize
-                counter="10000"
+                counter="16000"
                 full-height
-                rows="30"
+                rows="50"
                 solo
-                :rules="[rules.max10000, rules.min20]"
+                :rules="[rules.max16000, rules.min20]"
               ></v-textarea>
             </v-flex>
             <v-flex xs6>
@@ -59,7 +51,7 @@
             </v-flex>
           </v-layout>
           <!--富文本编辑器-->
-          <div v-if="!useMarkdown" style="height: 597px;">
+          <div v-if="!useMarkdown" style="height: 953px;">
             <no-ssr>
               <quill-editor
                 ref="myTextEditor"
@@ -87,7 +79,7 @@
               chips
               clearable
               :counter="5"
-              label="输入问题的标签"
+              label="输入相关标签"
               multiple
               prepend-icon="filter_list"
               hide-selected
@@ -133,7 +125,7 @@
             align-center
           >
             <v-card-text v-if="$route.query.spaceId" class="my_gray--text">
-              该问题将被发布至→
+              该博文将被发布至→
               <v-btn
                 text
                 outlined
@@ -145,14 +137,30 @@
                 }}</strong></v-btn
               ></v-card-text
             >
+            <v-checkbox
+              v-model="isPublic"
+              :label="
+                ($route.query.spaceId
+                  ? $route.query.spaceName + ' 成员'
+                  : '公共') + '可见'
+              "
+              color="blue"
+              class="mr-5 mt-0 pt-0"
+              persistent-hint
+              :hint="
+                '勾选将对' +
+                  ($route.query.spaceId ? '空间成员' : '所有人') +
+                  '可见，不勾选则只对自己可见'
+              "
+            ></v-checkbox>
             <v-btn
               color="primary"
               accent
               depressed
               min-width="150px"
-              :loading="askResult.loading"
+              :loading="postResult.loading"
               @click="submitQuestion"
-              >提交</v-btn
+              >发布</v-btn
             >
           </v-layout>
         </v-form>
@@ -208,13 +216,13 @@
       </v-card>
     </v-dialog>
     <InfoDialog
-      :msg="['提交成功', askResult.resp && askResult.resp.msg]"
-      :succeed="askResult.resp != null && askResult.resp.succeed"
-      :dialog="askResult.dialog"
+      :msg="['发布成功', postResult.resp && postResult.resp.msg]"
+      :succeed="postResult.resp != null && postResult.resp.succeed"
+      :dialog="postResult.dialog"
       close-txt="去查看"
       @update:dialog="
-        askResult.dialog = $event
-        $router.push('/question/' + askResult.resp.data.questionId)
+        postResult.dialog = $event
+        $router.push('/blog/' + postResult.resp.data.blogId)
       "
     >
     </InfoDialog>
@@ -238,15 +246,17 @@ export default {
   },
   middleware: 'authenticated',
   data: () => ({
+    keywords: null,
     title: null,
     useMarkdown: false,
-    maxLength: 10000,
+    maxLength: 16000,
     source:
       '###' +
       '3 第一次使用markdown❓  [右键此处 新标签页打开查看语法说明]( http://www.markdown.cn/)',
     selectedTags: [],
     tags: [],
     content: `试试选中来设置样式, 右上角可切换markdown编辑器哦😄`,
+    isPublic: true,
     newTag: {
       name: null,
       description: null
@@ -257,7 +267,7 @@ export default {
       loading: false
     },
     // 创建结果的提示
-    askResult: {
+    postResult: {
       resp: null,
       dialog: false,
       loading: false
@@ -272,7 +282,7 @@ export default {
       min20: (v) => (v && v.length >= 20) || '不能少于20个字符',
       max100: (v) => (v && v.length <= 100) || '不能超过100个字符',
       max20: (v) => (v && v.length <= 20) || '不能超过20个字符',
-      max10000: (v) => (v && v.length <= 10000) || '不能超过10000个字符',
+      max16000: (v) => (v && v.length <= 16000) || '不能超过16000个字符',
       tags: (v) => (v && v.length <= 5) || '最多选择五个标签哦',
       tagsRequired: (v) => (v && v.length > 0) || '标签不能为空哦',
       tagName: (v) => (v && v.trim().length > 1) || '标签名称必填',
@@ -309,7 +319,7 @@ export default {
       if (this.rules.min20(this.content) !== true) {
         return this.rules.min20(this.content)
       } else {
-        return this.rules.max10000(this.content)
+        return this.rules.max16000(this.content)
       }
     }
   },
@@ -381,7 +391,7 @@ export default {
         })
     },
     editQuestion(_questionId) {
-      this.askResult.loading = true
+      this.postResult.loading = true
       this.$axios
         .$post('/questionInfo/editQuestion', {
           questionId: _questionId,
@@ -394,12 +404,12 @@ export default {
             .join(',')
         })
         .then((resp) => {
-          this.askResult.resp = resp
-          this.askResult.dialog = true
-          this.askResult.loading = false
+          this.postResult.resp = resp
+          this.postResult.dialog = true
+          this.postResult.loading = false
         })
         .catch((e) => {
-          this.askResult.loading = false
+          this.postResult.loading = false
         })
     },
     submitQuestion() {
@@ -417,10 +427,10 @@ export default {
         this.editQuestion(this.$route.query.questionId)
         return
       }
-      this.askResult.loading = true
+      this.postResult.loading = true
       const _this = this
       this.$axios
-        .$post('/questionInfo/askQuestion', {
+        .$post('/blogInfo/postBlog', {
           spaceId: this.$route.query.spaceId,
           title: _this.title,
           content: _this.useMarkdown ? _this.source : _this.contentCode(),
@@ -431,12 +441,12 @@ export default {
             .join(',')
         })
         .then((resp) => {
-          _this.askResult.resp = resp
-          _this.askResult.dialog = true
-          _this.askResult.loading = false
+          _this.postResult.resp = resp
+          _this.postResult.dialog = true
+          _this.postResult.loading = false
         })
         .catch((e) => {
-          _this.askResult.loading = false
+          _this.postResult.loading = false
         })
     },
     submitCreateTag() {
@@ -499,7 +509,9 @@ export default {
   overflow: auto;
   padding: 7px;
 }
-
+.quill-editor {
+  height: 923px;
+}
 #markdown-edit::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -524,7 +536,6 @@ export default {
 </style>
 <!--quill editor-->
 <style lang="scss" scoped>
-.quill-editor,
 .quill-code {
   height: 40rem;
 }
@@ -535,9 +546,6 @@ export default {
   font-weight: bold;
 }
 
-.quill-editor {
-  height: 563px;
-}
 .theme--dark .quill-editor {
   color: white;
   background-color: #424242;

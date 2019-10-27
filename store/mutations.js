@@ -29,5 +29,8 @@ export default {
   },
   setMonitorInterval(state, val) {
     state.monitorInterval = val
+  },
+  setShowFooter(state, val) {
+    state.showFooter = val
   }
 }

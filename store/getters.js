@@ -34,5 +34,8 @@ export default {
   },
   getMonitorInterval(state) {
     return state.monitorInterval
+  },
+  getShowFooter(state) {
+    return state.showFooter
   }
 }

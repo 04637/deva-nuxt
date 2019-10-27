@@ -189,3 +189,40 @@ p{
 .v-input.mb-0 .v-input__slot{
   margin-bottom: 0 !important;
 }
+
+/* 动效 */
+.fade-enter-active{
+  transition: opacity .3s;
+}
+.fade-leave-active{
+  transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+/*---list */
+.list-enter-active, .list-leave-active {
+  transition: all 0.2s;
+}
+.list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+.list-enter {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+/*---list down*/
+.list-down-enter-active {
+  transition: all 0.2s;
+}
+.list-down-leave-active {
+  transition: all 0s;
+}
+.list-down-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.list-down-enter {
+  opacity: 0;
+  transform: translateY(-15px);
+}

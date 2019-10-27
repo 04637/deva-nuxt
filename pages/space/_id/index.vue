@@ -70,19 +70,6 @@
                   </template>
                   <span>退出空间</span>
                 </v-tooltip>
-                <!--<v-row align="center" style="position: absolute; right: 20px;">-->
-                <!--  <v-card-text class="pa-0"-->
-                <!--    ><span class="my_gray&#45;&#45;text">空间昵称：</span-->
-                <!--    >{{ $store.getters.getUserInfo.nickname }}-->
-                <!--    <v-btn-->
-                <!--      icon-->
-                <!--      small-->
-                <!--      title="修改"-->
-                <!--      style="position:relative;top:-1px"-->
-                <!--      ><v-icon small>mdi-rename-box</v-icon></v-btn-->
-                <!--    >-->
-                <!--  </v-card-text>-->
-                <!--</v-row>-->
               </v-row>
               <v-row
                 ><v-text-field

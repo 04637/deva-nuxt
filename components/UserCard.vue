@@ -41,7 +41,7 @@
             ><v-icon color="private">{{ actionIcon }}</v-icon></v-btn
           >
           <v-layout class="label-description " style="min-height: 44px">
-            <span :title="userInfo.bio">
+            <span :title="userInfo.bio" class="my_gray--text">
               {{ userInfo.bio }}
             </span>
           </v-layout>
@@ -52,7 +52,7 @@
           >
             <span v-for="(tag, index) in userInfo.likeTags" :key="tag.tagId"
               ><router-link
-                style="text-decoration: none"
+                style="text-decoration: none; color: #2196f3; font-weight: bold; font-size:0.9rem"
                 :to="'/search/' + tag.tagName + '?match=tags'"
                 >{{ tag.tagName }}</router-link
               ><span

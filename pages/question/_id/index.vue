@@ -374,7 +374,7 @@
                         >arrow_drop_down</v-icon
                       >
                     </v-btn>
-                    <v-btn v-if="answer.isAccepted" icon color="success" fab>
+                    <v-btn v-if="answer.isAccepted" color="success" icon fab>
                       <v-icon>check</v-icon>
                     </v-btn>
                   </v-layout>
@@ -387,9 +387,12 @@
                           $store.getters.getUserId ===
                             questionDetail.author.userId
                       "
-                      color="success"
+                      color="private"
                       text
-                      @click="acceptAnswer(answer)"
+                      @click="
+                        acceptConfirm.dialog = true
+                        acceptConfirm.answer = answer
+                      "
                     >
                       <v-icon>check</v-icon>
                       采纳
@@ -400,9 +403,17 @@
                       text
                       @click="editAnswer(answer)"
                     >
-                      <v-icon>edit</v-icon>
+                      <v-icon small>edit</v-icon>
                       编辑
                     </v-btn>
+                    <v-chip
+                      v-if="answer.isAccepted"
+                      style="max-width:170px; text-decoration: none;border-radius: 0"
+                      color="new_orange"
+                      small
+                    >
+                      已采纳
+                    </v-chip>
                   </v-layout>
                   <div v-dompurify-html="$md.render(answer.content)"></div>
                   <v-card-actions>
@@ -687,6 +698,12 @@
       @update:dialog="similarMark.respDialog = $event"
     >
     </InfoDialog>
+    <ConfirmDialog
+      :dialog="acceptConfirm.dialog"
+      msg="确定采纳该回答?"
+      :todo="acceptAnswer"
+      @update:dialog="acceptConfirm.dialog = $event"
+    ></ConfirmDialog>
   </v-app>
 </template>
 <script>
@@ -694,10 +711,12 @@ import hljs from 'highlight.js'
 import InfoDialog from '../../../components/InfoDialog'
 import HotTag from '../../../components/HotTag'
 import TagChip from '../../../components/TagChip'
+import ConfirmDialog from '../../../components/ConfirmDialog'
 
 export default {
   name: 'QuestionDetail',
   components: {
+    ConfirmDialog,
     TagChip,
     HotTag,
     InfoDialog
@@ -719,6 +738,10 @@ export default {
       loading: false,
       respDialog: false,
       errorMsg: null
+    },
+    acceptConfirm: {
+      dialog: false,
+      answer: null
     },
     comment: {
       // 当前正在输入的评论
@@ -863,7 +886,11 @@ export default {
           }
         })
     },
-    acceptAnswer(answer) {
+    acceptAnswer() {
+      const answer = this.acceptConfirm.answer
+      if (!answer) {
+        return false
+      }
       this.$axios
         .$post('/questionInfo/acceptAnswer', {
           ownQuestionId: this.questionDetail.questionId,
@@ -875,6 +902,7 @@ export default {
           if (resp.succeed) {
             this.questionDetail.status = 1
             answer.isAccepted = true
+            this.acceptConfirm.answer = null
           }
         })
     },

@@ -1,6 +1,8 @@
 export default () => ({
   userInfo: null,
   darkTheme: true,
+  // 控制显示底部条
+  showFooter: false,
   unReadMessageCount: 0,
   // 全局异常
   systemError: {

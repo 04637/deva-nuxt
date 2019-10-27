@@ -1,11 +1,27 @@
 import colors from 'vuetify/es5/util/colors'
 const api = 'localhost:8080'
+const redirectUri = 'http://localhost:3000/user/login?auth='
 export default {
   mode: 'universal',
   domain: 'http://localhost:3000',
   githubLoginUrl:
     'https://github.com/login/oauth/authorize?client_id=174cf0a9106fd1c53d24&scope=user:id',
-
+  gitlabLoginUrl:
+    'https://gitlab.com/oauth/authorize?client_id=c42e2553ea1eb4a95d8db0a01b0255a26c4a0bf476f34e94fba77432859ec5cd' +
+    '&response_type=code&redirect_uri=' +
+    redirectUri +
+    'gitlab' +
+    '&scope=read_user',
+  stackOverflowLoginUrl:
+    'https://stackoverflow.com/oauth?client_id=16509&scope=read_inbox' +
+    '&redirect_uri=http://localhost:3000/user/login?auth=stackOverflow',
+  googleLoginUrl:
+    'https://accounts.google.com/o/oauth2/v2/auth' +
+    '?redirect_uri=' +
+    redirectUri +
+    'google' +
+    '&response_type=code&client_id=102188439022-dk2vafrfd5a50h8rhhpctnf8lj00u8at.apps.googleusercontent.com' +
+    '&scope=https://www.googleapis.com/auth/plus.me+https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile',
   server: {
     port: 3000
   },
@@ -15,7 +31,7 @@ export default {
   head: {
     // titleTemplate: '%s - ' + process.env.npm_package_name,
     titleTemplate: '%s',
-    title: 'DEVA - 开发者的专属问答社区',
+    title: 'DEVA - 开发者的专属社区',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

@@ -3,25 +3,39 @@
     <v-layout column shrink>
       <v-layout>
         <v-flex md7 xs4 shrink hidden-sm-and-down>
-          <v-card-title>{{ currentTitle }}</v-card-title>
+          <v-card-title class="pt-0 pb-0">
+            <v-layout column>
+              <v-row align="center" class="mb-2" justify="end">
+                <v-btn small color="primary" to="/blog/postBlog"
+                  ><v-icon small>mdi-file-document-edit-outline</v-icon
+                  >发布博文</v-btn
+                >
+              </v-row>
+              <v-row
+                ><v-text-field
+                  v-model="keywords"
+                  translate="yes"
+                  class="pt-0 mt-0 mr-2"
+                  placeholder="搜索博文"
+                  hide-details
+                  prepend-inner-icon="search"
+                  flat
+                  @keyup.enter.native="searchQuestions"
+                ></v-text-field
+              ></v-row>
+            </v-layout>
+          </v-card-title>
         </v-flex>
         <v-flex md5 lg3 align-self-end>
-          <v-tabs center-active height="38" @change="loadQuestions">
+          <v-tabs center-active height="38" @change="loadBlogs">
             <v-tab
               @click="
                 listType = 'RECENT'
-                currentTitle = '最新问题'
+                currentTitle = '最新博文'
               "
               >最新</v-tab
             >
             <v-tab @click="clickRecommend">推荐 </v-tab>
-            <v-tab
-              @click="
-                listType = 'UN_RESOLVED'
-                currentTitle = '待解决'
-              "
-              >待解决</v-tab
-            >
             <v-tab
               @click="
                 listType = 'WEEK_HOT'
@@ -36,6 +50,13 @@
               "
               >月榜</v-tab
             >
+            <v-tab
+              @click="
+                listType = 'MY_POST'
+                currentTitle = '我的发布'
+              "
+              >我的</v-tab
+            >
           </v-tabs>
         </v-flex>
       </v-layout>
@@ -43,10 +64,7 @@
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
       <v-flex xs11 lg9 justify-start shrink>
-        <QuestionCardList
-          v-if="questionList"
-          :question-list="questionList"
-        ></QuestionCardList>
+        <BlogCardList v-if="blogList" :blog-list="blogList"></BlogCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
         <HotTag></HotTag>
@@ -55,13 +73,14 @@
   </v-app>
 </template>
 <script>
-import QuestionCardList from '../components/QuestionCardList'
-import HotTag from '../components/HotTag'
+import HotTag from '../../components/HotTag'
+import BlogCardList from '../../components/BlogCardList'
 export default {
-  components: { HotTag, QuestionCardList },
+  components: { BlogCardList, HotTag },
   data: () => ({
     listType: 'RECENT',
-    questionList: null,
+    blogList: null,
+    keywords: null,
     hotQuestionList: null,
     currentTitle: '最新问题',
     likeKeywords: null,
@@ -80,14 +99,14 @@ export default {
     this.scroll()
   },
   methods: {
-    loadQuestions() {
+    loadBlogs() {
       this.page.current = 1
       this.loadMore.isLoading = false
       this.loadMore.noMore = false
-      let _url = '/questionInfo/listQuestions'
+      let _url = '/blogInfo/listBlogs'
       let _sortType = null
       if (this.listType === 'RECOMMEND') {
-        _url = '/esQuestionInfo/search'
+        _url = '/esBlogInfo/search'
         _sortType = 'NEWEST'
       }
       this.$axios
@@ -101,12 +120,12 @@ export default {
         .then((resp) => {
           if (resp.succeed) {
             if (this.listType === 'RECOMMEND') {
-              this.questionList = resp.data.content
+              this.blogList = resp.data.content
             } else {
-              this.questionList = resp.data.records
+              this.blogList = resp.data.records
             }
           } else {
-            this.questionList = []
+            this.blogList = []
           }
         })
     },
@@ -175,13 +194,9 @@ export default {
               this.loadMore.isLoading = false
               if (resp.succeed) {
                 if (this.listType === 'RECOMMEND') {
-                  this.questionList = this.questionList.concat(
-                    resp.data.content
-                  )
+                  this.blogList = this.blogList.concat(resp.data.content)
                 } else {
-                  this.questionList = this.questionList.concat(
-                    resp.data.records
-                  )
+                  this.blogList = this.blogList.concat(resp.data.records)
                 }
               } else {
                 this.loadMore.noMore = true
