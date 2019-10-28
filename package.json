@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "nuxt start -H 0.0.0.0 -p 3000",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
   },
@@ -34,19 +34,19 @@
     "vue-quill-editor": "^3.0.6",
     "vue-toasted": "^1.1.27",
     "vuex-persistedstate": "^2.5.4",
-    "ws": "^7.1.2"
+    "ws": "^7.1.2",
+    "@nuxtjs/vuetify": "^1.9.0",
+    "material-design-icons-iconfont": "^5.0.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",
     "@nuxtjs/eslint-module": "^1.0.0",
-    "@nuxtjs/vuetify": "^1.9.0",
     "@vue/devtools": "^5.1.1",
     "babel-eslint": "^10.0.1",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-nuxt": ">=0.4.2",
     "eslint-plugin-prettier": "^3.0.1",
-    "material-design-icons-iconfont": "^5.0.1",
     "prettier": "^1.16.4"
   }
 }

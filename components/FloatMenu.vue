@@ -1,5 +1,5 @@
 <template>
-  <no-ssr>
+  <client-only>
     <div>
       <v-speed-dial
         v-model="fab"
@@ -110,7 +110,7 @@
       >
       </InfoDialog>
     </div>
-  </no-ssr>
+  </client-only>
 </template>
 <script>
 import InfoDialog from './InfoDialog'

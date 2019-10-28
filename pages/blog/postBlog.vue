@@ -52,7 +52,7 @@
           </v-layout>
           <!--富文本编辑器-->
           <div v-if="!useMarkdown" style="height: 953px;">
-            <no-ssr>
+            <client-only>
               <quill-editor
                 ref="myTextEditor"
                 v-model="content"
@@ -61,7 +61,7 @@
                 @change="onEditorChange($event)"
               >
               </quill-editor>
-            </no-ssr>
+            </client-only>
             <v-row justify="space-between" class="mr-1 ml-1 mt-2">
               <div class="v-messages v-messages__message error--text">
                 {{ quillErrorMessage === true ? '' : quillErrorMessage }}

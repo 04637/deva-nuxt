@@ -601,7 +601,7 @@
           </v-layout>
           <v-layout>
             <v-flex>
-              <no-ssr>
+              <client-only>
                 <quill-editor
                   ref="myTextEditor"
                   v-model="answer.content"
@@ -611,7 +611,7 @@
                   @focus="checkLogin"
                 >
                 </quill-editor>
-              </no-ssr>
+              </client-only>
               <v-row justify="space-around" class="mt-1 mr-1 ml-1">
                 <div class="v-messages v-messages__message error--text">
                   {{ quillErrorMessage === true ? '' : quillErrorMessage }}

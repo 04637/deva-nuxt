@@ -18,7 +18,7 @@
               class="pa-0 mt-0"
             ></v-text-field>
           </v-card-title>
-          <no-ssr>
+          <client-only>
             <v-data-table
               v-if="$store.getters.isAdmin"
               ref="table"
@@ -136,7 +136,7 @@
                 <v-btn color="primary" @click="initialize">Reset</v-btn>
               </template>
             </v-data-table>
-          </no-ssr>
+          </client-only>
         </v-card>
       </v-layout>
       <v-layout class="mt-5" justify-center shrink>
