@@ -1,5 +1,5 @@
 <template>
-  <v-app v-show="questionList">
+  <v-app>
     <v-layout column shrink>
       <v-layout>
         <v-flex md7 xs4 shrink hidden-sm-and-down>
@@ -33,8 +33,14 @@
             ></v-card-title
           >
         </v-flex>
-        <v-flex md5 lg3 align-self-end>
-          <v-tabs center-active height="38" @change="searchQuestions">
+        <v-flex md4 lg3 align-self-end>
+          <v-tabs
+            grow
+            centered
+            center-active
+            height="38"
+            @change="searchQuestions"
+          >
             <v-tab @click="listType = 'RELEVANCE'">相关</v-tab>
             <v-tab @click="listType = 'NEWEST'">最新</v-tab>
             <v-tab @click="listType = 'ACTIVE'">活跃</v-tab>

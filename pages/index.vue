@@ -6,7 +6,13 @@
           <v-card-title>{{ currentTitle }}</v-card-title>
         </v-flex>
         <v-flex md5 lg3 align-self-end>
-          <v-tabs center-active height="38" @change="loadQuestions">
+          <v-tabs
+            centered
+            center-active
+            height="38"
+            grow
+            @change="loadQuestions"
+          >
             <v-tab
               @click="
                 listType = 'RECENT'

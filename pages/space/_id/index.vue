@@ -89,6 +89,7 @@
         <v-flex md5 lg3 align-self-end>
           <v-tabs
             v-if="search.flag"
+            centered
             center-active
             height="38"
             @change="searchQuestions"
@@ -97,7 +98,13 @@
             <v-tab @click="listType = 'NEWEST'">最新</v-tab>
             <v-tab @click="listType = 'ACTIVE'">活跃</v-tab>
           </v-tabs>
-          <v-tabs v-else center-active height="38" @change="loadQuestions">
+          <v-tabs
+            v-else
+            centered
+            center-active
+            height="38"
+            @change="loadQuestions"
+          >
             <v-tab @click="listType = 'RECENT'">最新</v-tab>
             <v-tab @click="listType = 'UN_RESOLVED'">待解决</v-tab>
             <v-tab @click="listType = 'WEEK_HOT'">周榜</v-tab>

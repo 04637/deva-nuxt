@@ -326,7 +326,7 @@
       </v-app-bar>
       <v-flex>
         <v-content
-          style="max-height: calc(100% - 100px)"
+          style="max-height: calc(100% - 100px); margin-bottom: 80px"
           :class="isSmall ? 'ml-small' : mini ? 'ml-mini' : 'ml-max'"
         >
           <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
@@ -339,7 +339,7 @@
         v-show="$store.getters.getShowFooter"
         app
         tile
-        style="z-index: 999;margin-top: 100px"
+        style="z-index: 999;"
       >
         <v-row justify="center" align="center" no-gutters>
           <v-flex class="py-2 text-left my_gray--text">
@@ -518,6 +518,7 @@ export default {
     }
   },
   created() {
+    this.$vuetify.theme.dark = this.$store.getters.isDarkTheme
     this.getSystemNotice()
   },
   mounted() {

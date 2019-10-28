@@ -27,7 +27,7 @@
           </v-card-title>
         </v-flex>
         <v-flex md5 lg3 align-self-end>
-          <v-tabs center-active height="38" @change="loadBlogs">
+          <v-tabs grow centered center-active height="38" @change="loadBlogs">
             <v-tab
               @click="
                 listType = 'RECENT'

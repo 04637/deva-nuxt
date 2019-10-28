@@ -107,16 +107,29 @@
           </v-layout>
           <v-layout class="mt-1 pl-1" align-center>
             <a
-              :href="loginUrl.stackOverflow"
+              :href="loginUrl.wechat"
               style="text-decoration: none"
-              title="使用 stackoverflow 帐号登录"
-              ><v-btn icon><v-icon>mdi-stack-overflow</v-icon></v-btn></a
+              title="使用 微信 帐号登录"
+              ><v-btn icon><v-icon>mdi-wechat</v-icon></v-btn></a
             >
             <a
               :href="loginUrl.github"
               style="text-decoration: none"
               title="使用 github 帐号登录"
               ><v-btn icon><v-icon>mdi-github-circle</v-icon></v-btn></a
+            >
+            <a
+              :href="loginUrl.stackOverflow"
+              style="text-decoration: none"
+              title="使用 stackoverflow 帐号登录"
+              ><v-btn icon><v-icon>mdi-stack-overflow</v-icon></v-btn></a
+            >
+
+            <a
+              :href="loginUrl.qqchat"
+              style="text-decoration: none"
+              title="使用 QQ 帐号登录"
+              ><v-btn icon><v-icon>mdi-qqchat</v-icon></v-btn></a
             >
             <a
               :href="loginUrl.gitlab"

@@ -69,9 +69,10 @@ stackoverflow登录接入 ✔
 富文本图片上传(将base64上传后替换为url) 图片有效期考虑下 ✔
 no-ssr 替换为 client-only ✔
 
+tabs闪烁  (不能外层使用v-show/v-if) ✔
 cannot set headers 错误解决
-生产环境页面闪烁检查
-更换主题闪烁加载问题
+生产环境页面闪烁检查 ✔
+更换主题闪烁加载问题 ✔ (nuxtServerInit 中读取cookie中设置的主题)
 QQ登录接入
 
 博客系统:
