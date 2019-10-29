@@ -23,7 +23,7 @@ export default {
 </script>
 <style scoped>
 .logo {
-  background: url('/logo2.png') no-repeat 0 0;
+  background: url('/sylogo2.png') no-repeat 0 0;
   width: 140px;
   height: 48px;
   background-size: auto 50px;

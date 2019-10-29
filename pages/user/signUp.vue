@@ -33,6 +33,7 @@
             <v-text-field
               v-model="password"
               class="mt-4"
+              :autocomplete="false"
               hint="8-16位，包含大小写及数字"
               counter="16"
               label="密码"
