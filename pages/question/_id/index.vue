@@ -3,16 +3,17 @@
     <v-app>
       <v-layout column shrink>
         <v-card-title
-          >{{ questionDetail.title }}&nbsp;&nbsp;
-          <v-chip
-            v-if="questionDetail.status === 1"
-            color="primary"
-            small
-            label
-            outlined
-          >
-            <strong>已解决</strong>
-          </v-chip></v-card-title
+          ><v-row align="center"
+            >{{ questionDetail.title }}&nbsp;&nbsp;
+            <v-chip
+              v-if="questionDetail.status === 1"
+              color="primary"
+              small
+              label
+            >
+              已解决
+            </v-chip></v-row
+          ></v-card-title
         >
         <v-divider></v-divider>
       </v-layout>

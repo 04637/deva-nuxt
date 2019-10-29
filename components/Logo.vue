@@ -26,8 +26,8 @@ export default {
   background: url('/logo2.png') no-repeat 0 0;
   width: 140px;
   height: 48px;
-  background-size: auto 115px;
-  background-position: -40px;
+  background-size: auto 50px;
+  background-position: 0px;
   cursor: pointer;
   margin: 0 auto;
 }

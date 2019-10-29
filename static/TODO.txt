@@ -74,6 +74,9 @@ cannot set headers 错误解决
 生产环境页面闪烁检查 ✔
 更换主题闪烁加载问题 ✔ (nuxtServerInit 中读取cookie中设置的主题)
 用户名展示细节调整 ✔
+
+展示logo加水印
+
 QQ登录接入
 
 博客系统:
@@ -92,3 +95,7 @@ QQ登录接入
 
 上线后:
     公安联网备案 网站开通之日起30日内到公司实际经营地或个人常住地公安机关履行公安备案手续 https://help.aliyun.com/knowledge_detail/43898.html?&msctype=email&mscareaid=cn&mscsiteid=cn&mscmsgid=2260119102501445097&&spm=a2c4k.12424349.zh-cnc.17&
+
+软件著作权登记
+软件专利
+商标注册 参考 https://www.zhihu.com/question/20087967
