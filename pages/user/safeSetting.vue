@@ -22,7 +22,7 @@
                 <span>绑定邮箱：<v-icon>mdi-at</v-icon></span>
                 <v-text-field
                   readonly
-                  hint="绑定邮箱可用来订阅站内消息，随时随地关注问题进展"
+                  hint="绑定邮箱可用于订阅站内消息，关注问题进展"
                   persistent-hint
                   :value="userInfo.email"
                   class="center-text"
@@ -41,7 +41,7 @@
                 <span>绑定手机：<v-icon>mdi-cellphone</v-icon></span>
                 <v-text-field
                   readonly
-                  hint="绑定手机用于接收验证码及敏感操作提示"
+                  hint="绑定手机可用于接收验证码及敏感操作提示"
                   persistent-hint
                   :value="userInfo.phone"
                   class="center-text"
@@ -256,9 +256,7 @@
           <v-btn color="sub" text small @click="editPassword.dialog = false"
             >关闭</v-btn
           >
-          <v-btn color="primary" small text @click="updatePassword"
-            ><strong>提交</strong></v-btn
-          >
+          <v-btn color="primary" small text @click="updatePassword">提交</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

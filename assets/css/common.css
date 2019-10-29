@@ -226,3 +226,8 @@ p{
   opacity: 0;
   transform: translateY(-15px);
 }
+
+/* 较细的输入框 */
+.min-input > .v-input__control {
+  min-height: 36px !important;
+}

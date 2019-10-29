@@ -175,16 +175,17 @@
       </v-flex>
       <v-app-bar app dense clipped-left>
         <v-container row align-center justify-space-between fluid>
-          <v-flex justify-start row hidden-sm-and-down>
+          <v-flex justify-start align-center row hidden-sm-and-down>
             <v-toolbar-title>
               <logo type="header" class="ml-5"></logo>
             </v-toolbar-title>
             <v-text-field
               v-model="keywords"
               translate="yes"
-              class="ml-10"
+              class="ml-10 min-input"
               label="搜索"
               hide-details
+              style="min-height: 36px"
               prepend-inner-icon="search"
               solo
               @keyup.enter.native="search"
@@ -245,17 +246,18 @@
                 offset-y
               >
                 <template #activator="{ on }">
-                  <v-btn
+                  <v-chip
                     max-width="120px"
                     text
-                    x-small
-                    color="primary"
-                    class="no-hover-active d-inline-block no-flex text-truncate text-left mr-1"
-                    style="font-weight: bold"
+                    small
+                    :to="'/user/' + $store.getters.getUserInfo.userId"
+                    color="#01a68721"
+                    style="border-radius: 0;"
+                    class="d-inline-block no-flex text-truncate text-left mr-1"
                     >{{
                       $store.getters.getUserInfo.nickname ||
                         $store.getters.getUserInfo.username
-                    }}</v-btn
+                    }}</v-chip
                   >
                   <v-avatar
                     color="grey"

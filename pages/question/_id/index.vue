@@ -61,7 +61,7 @@
                     text
                     color="pink"
                     @click.stop="similarMark.dialog = !similarMark.dialog"
-                    ><strong>问题重复？标记相似</strong>
+                    ><span>问题重复？标记相似</span>
                   </v-btn>
                   <v-btn
                     v-else-if="
@@ -72,7 +72,7 @@
                     text
                     color="my_gray"
                     title="声望达到200方可标记"
-                    ><strong>问题重复？标记相似</strong>
+                    ><span>问题重复？标记相似</span>
                   </v-btn>
                   <v-btn
                     v-if="

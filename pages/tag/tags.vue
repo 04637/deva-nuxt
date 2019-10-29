@@ -107,6 +107,7 @@
           <v-spacer></v-spacer>
           <v-btn
             text
+            small
             @click="
               editDescription.dialog = false
               editDescription.resp = null
@@ -118,10 +119,11 @@
           </v-btn>
           <v-btn
             text
+            small
             color="primary"
             :loading="editDescription.loading"
             @click="updateDescription"
-            ><strong>更新</strong>
+            ><span>更新</span>
           </v-btn>
         </v-card-actions>
       </v-card>

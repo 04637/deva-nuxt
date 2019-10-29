@@ -73,6 +73,7 @@ tabs闪烁  (不能外层使用v-show/v-if) ✔
 cannot set headers 错误解决
 生产环境页面闪烁检查 ✔
 更换主题闪烁加载问题 ✔ (nuxtServerInit 中读取cookie中设置的主题)
+用户名展示细节调整 ✔
 QQ登录接入
 
 博客系统:

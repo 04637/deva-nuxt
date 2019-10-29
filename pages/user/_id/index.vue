@@ -3,17 +3,20 @@
     <v-layout column>
       <v-layout>
         <v-card-title>
-          用户档案
-          <v-btn
-            v-if="userProfile.userId === $store.getters.getUserId"
-            class="ml-5"
-            text
-            to="editProfile"
-            color="private"
-          >
-            <strong>点此编辑</strong>
-            <v-icon class="ml-2" small>edit</v-icon>
-          </v-btn>
+          <v-row align="end">
+            用户档案
+            <v-btn
+              v-if="userProfile.userId === $store.getters.getUserId"
+              class="ml-5"
+              text
+              small
+              to="editProfile"
+              color="private"
+            >
+              <span>点此编辑</span>
+              <v-icon class="ml-2" small>edit</v-icon>
+            </v-btn>
+          </v-row>
         </v-card-title>
       </v-layout>
       <v-divider></v-divider>

@@ -107,10 +107,11 @@
                     <v-list-item-title>
                       <v-btn
                         text
-                        color="success"
+                        small
+                        color="primary"
                         @click="createTag.dialog = !createTag.dialog"
                       >
-                        点此创建标签
+                        创建标签
                       </v-btn>
                     </v-list-item-title>
                   </v-list-item-content>
@@ -210,7 +211,7 @@
             color="primary"
             :loading="createTag.loading"
             @click="submitCreateTag"
-            ><strong>创建</strong>
+            >创建
           </v-btn>
         </v-card-actions>
       </v-card>
