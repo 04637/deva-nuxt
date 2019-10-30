@@ -179,17 +179,25 @@
             <v-toolbar-title>
               <logo type="header" class="ml-5"></logo>
             </v-toolbar-title>
-            <v-text-field
-              v-model="keywords"
-              translate="yes"
-              class="ml-10 min-input"
-              label="搜索"
-              hide-details
-              style="min-height: 36px"
-              prepend-inner-icon="search"
-              solo
-              @keyup.enter.native="search"
-            ></v-text-field>
+            <transition name="fade">
+              <v-text-field
+                v-model="keywords"
+                translate="yes"
+                flat
+                class="ml-10 min-input"
+                :class="'elevation-' + searchElv"
+                label="搜索"
+                hide-details
+                elavation
+                style="min-height: 36px"
+                append-icon="search"
+                solo
+                @focusin="searchElv = 1"
+                @focusout="searchElv = 0"
+                @click:append="search"
+                @keyup.enter.native="search"
+              ></v-text-field>
+            </transition>
             <v-spacer></v-spacer>
           </v-flex>
           <v-flex
@@ -437,6 +445,7 @@ export default {
     ErrorDialog
   },
   data: () => ({
+    searchElv: 0,
     mini: false,
     drawer: null,
     menuOpen: false,
@@ -543,14 +552,6 @@ export default {
           _this.systemNotice = resp.data
         }
       })
-      clearInterval(_this.currentNoticeInterval)
-      _this.currentNoticeInterval = setInterval(function() {
-        _this.$axios.$post('/systemNotice/getLast').then((resp) => {
-          if (resp.succeed) {
-            _this.systemNotice = resp.data
-          }
-        })
-      }, 600000)
     },
     logout() {
       // 使外部api上的JWT Cookie失效

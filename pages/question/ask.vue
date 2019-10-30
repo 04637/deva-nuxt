@@ -284,7 +284,7 @@ export default {
         (v && v.length <= 400) || !v || '标签描述不能超过400个字符'
     },
     editorOption: {
-      theme: 'bubble',
+      // theme: 'bubble',
       modules: {
         toolbar: [
           ['bold', 'italic', 'underline', 'strike'],
@@ -522,6 +522,9 @@ export default {
 
 #markdown-edit::-webkit-scrollbar-corner {
   background: #f6f6f6;
+}
+.ql-container {
+  height: 92% !important;
 }
 /*简约滚动条 end*/
 </style>

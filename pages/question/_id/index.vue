@@ -775,7 +775,7 @@ export default {
         (v && /question\/(\d{18})/.test(v)) || '请输入有效的问题链接'
     },
     editorOption: {
-      theme: 'bubble',
+      // theme: 'bubble',
       modules: {
         toolbar: [
           ['bold', 'italic', 'underline', 'strike'],
@@ -1059,6 +1059,9 @@ export default {
 }
 .user_card {
   width: 267px;
+}
+.ql-container {
+  height: 86% !important;
 }
 </style>
 

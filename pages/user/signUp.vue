@@ -33,7 +33,6 @@
             <v-text-field
               v-model="password"
               class="mt-4"
-              :autocomplete="false"
               hint="8-16位，包含大小写及数字"
               counter="16"
               label="密码"
@@ -42,6 +41,21 @@
               :rules="[rules.password]"
               :type="show ? 'text' : 'password'"
               required
+              @click:append="show = !show"
+              @keyup.enter.native="submitSignUp"
+              @input="checkPassword"
+            ></v-text-field>
+            <v-text-field
+              v-model="secondPassword"
+              class="mt-4"
+              hint="再次输入密码"
+              counter="16"
+              label="确认密码"
+              type="password"
+              outlined
+              required
+              :error-messages="passwordCheck"
+              @input="checkPassword"
               @click:append="show = !show"
               @keyup.enter.native="submitSignUp"
             ></v-text-field>
@@ -86,18 +100,18 @@
                 <v-checkbox
                   v-model="termsCheck"
                   color="primary"
-                  label="注册即代表同意"
+                  label="我已认真阅读并"
                   :rules="[rules.agreeTerms]"
-                ></v-checkbox>
-                <v-btn
-                  small
-                  text
-                  color="private"
-                  style="margin-top: -6px"
+                ></v-checkbox
+                ><span class="warning--text" style="margin-top: -6px;"
+                  >同意</span
+                >&nbsp;
+                <a
+                  style="margin-top: -6px; text-decoration: #2196f3"
                   @click="termsDialog = true"
                 >
-                  <strong>法律声明和隐私权政策</strong>
-                </v-btn>
+                  <span>法律声明和隐私权政策</span>
+                </a>
               </v-layout>
             </v-layout>
             <v-layout>
@@ -136,7 +150,9 @@
       :msg="['注册成功', signUpResult.resp && signUpResult.resp.msg]"
       :succeed="signUpResult.resp != null && signUpResult.resp.succeed"
       :dialog="signUpResult.dialog"
-      close-txt="去登录"
+      :close-txt="
+        signUpResult.resp && signUpResult.resp.succeed ? '去登录' : '重新输入'
+      "
       @update:dialog="
         signUpResult.dialog = $event
         signUpResult.resp.succeed ? $router.push('/user/login') : ''
@@ -167,6 +183,8 @@ export default {
     password: '',
     usernameCheck: '',
     phoneCheck: '',
+    passwordCheck: '',
+    secondPassword: '',
     smsCode: null,
     smsCodeResult: {
       dialog: false,
@@ -226,13 +244,20 @@ export default {
         }
       },
       requireCode: (v) => (v && v.length > 0) || '请输入验证码',
-      agreeTerms: (v) => (v && v === true) || '阅读并同意相关条款后方可进行注册'
+      agreeTerms: (v) => (v && v === true) || '请先阅读相关条款'
     }
   }),
   watch: {},
   created() {},
   middleware: 'notAuthenticated',
   methods: {
+    checkPassword() {
+      if (this.password === this.secondPassword) {
+        this.passwordCheck = null
+      } else {
+        this.passwordCheck = '两次输入密码不一致'
+      }
+    },
     checkUsername() {
       this.$axios
         .$post('/userInfo/checkUsername', {
@@ -288,7 +313,8 @@ export default {
       if (!this.$refs.form.validate()) {
         return false
       }
-      if (this.usernameCheck || this.phoneCheck) {
+      this.checkPassword()
+      if (this.usernameCheck || this.phoneCheck || this.passwordCheck) {
         return false
       }
       this.signUpResult.loading = true

@@ -39,7 +39,7 @@
                   >
                   <v-btn
                     text
-                    x-small
+                    small
                     color="warning"
                     style="position:relative;"
                     @click="
@@ -52,18 +52,16 @@
                   <v-btn
                     v-if="item.relateQuestionId"
                     text
-                    x-small
+                    small
                     color="warning"
-                    style="position:relative; top:-2px;"
                     @click="$router.push('/question/' + item.relateQuestionId)"
                     >查看相关问题</v-btn
                   >
                   <v-btn
                     v-if="item.relateUserId"
                     text
-                    x-small
+                    small
                     color="warning"
-                    style="position:relative; top:-2px;"
                     @click="$router.push('/user/' + item.relateUserId)"
                     >查看相关用户</v-btn
                   ></v-row
@@ -73,9 +71,7 @@
                 <v-btn
                   v-if="item.creator"
                   text
-                  x-small
                   color="primary"
-                  style="position:relative; top:-2px;"
                   @click="$router.push('/user/' + item.creatorId)"
                   >{{ item.creator.nickname }}</v-btn
                 >
@@ -84,7 +80,6 @@
                 <v-btn
                   v-if="item.replyUser"
                   text
-                  x-small
                   color="primary"
                   style="position:relative; top:-2px;"
                   @click="$router.push('/user/' + item.creatorId)"
