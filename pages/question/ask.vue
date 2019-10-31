@@ -345,7 +345,6 @@ export default {
         })
     },
     submitQuestion() {
-      console.log(this.contentCode)
       if (this.useMarkdown) {
         if (!this.$refs.form.validate()) {
           return false

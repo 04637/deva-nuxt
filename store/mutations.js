@@ -35,5 +35,8 @@ export default {
   },
   toggleUseMarkdown(state) {
     state.useMarkdown = !state.useMarkdown
+  },
+  setUseMarkdown(state, val) {
+    state.useMarkdown = val
   }
 }
