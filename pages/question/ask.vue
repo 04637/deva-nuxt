@@ -17,10 +17,14 @@
             class="text-capitalize"
             small
             style="float: right"
-            :title="useMarkdown ? '切换富文本编辑器' : '切换markdown编辑器'"
-            @click="useMarkdown = !useMarkdown"
+            :title="
+              $store.getters.getUseMarkdown
+                ? '切换富文本编辑器'
+                : '切换markdown编辑器'
+            "
+            @click="$store.commit('toggleUseMarkdown')"
             ><v-icon>{{
-              useMarkdown ? 'mdi-markdown' : 'mdi-textbox'
+              $store.getters.getUseMarkdown ? 'mdi-markdown' : 'mdi-textbox'
             }}</v-icon></v-btn
           >
         </v-col>
@@ -37,7 +41,11 @@
             required
             :rules="[rules.min10, rules.max100]"
           ></v-text-field>
-          <v-layout v-if="useMarkdown" justify-space-around class="mt-1">
+          <v-layout
+            v-if="$store.getters.getUseMarkdown"
+            justify-space-around
+            class="mt-1"
+          >
             <v-flex xs6>
               <v-textarea
                 id="markdown-edit"
@@ -60,24 +68,12 @@
           </v-layout>
           <!--富文本编辑器-->
           <div v-if="!useMarkdown" style="height: 597px;">
-            <client-only>
-              <quill-editor
-                ref="myTextEditor"
-                v-model="content"
-                :options="editorOption"
-                class="mt-2"
-                @change="onEditorChange($event)"
-              >
-              </quill-editor>
-            </client-only>
-            <v-row justify="space-between" class="mr-1 ml-1 mt-2">
-              <div class="v-messages v-messages__message error--text">
-                {{ quillErrorMessage === true ? '' : quillErrorMessage }}
-              </div>
-              <div class="v-counter">
-                {{ content.length }}&nbsp;/&nbsp;{{ maxLength }}
-              </div>
-            </v-row>
+            <Quill
+              :content="content"
+              :max="10000"
+              :min="20"
+              @update:contentCode="contentCode = $event"
+            ></Quill>
           </div>
           <v-layout>
             <v-combobox
@@ -221,22 +217,16 @@
       "
     >
     </InfoDialog>
-    <InfoDialog
-      :msg="['', '图片过大，上传失败']"
-      :succeed="uploadImageResult.succeed"
-      :dialog="uploadImageResult.dialog"
-      close-txt="关闭"
-      @update:dialog="uploadImageResult.dialog = $event"
-    >
-    </InfoDialog>
   </v-app>
 </template>
 <script>
 import hljs from 'highlight.js'
 import InfoDialog from '../../components/InfoDialog'
+import Quill from '../../components/Quill'
 export default {
   name: 'Ask',
   components: {
+    Quill,
     InfoDialog
   },
   middleware: 'authenticated',
@@ -244,12 +234,11 @@ export default {
     title: null,
     useMarkdown: false,
     maxLength: 10000,
-    source:
-      '###' +
-      '3 第一次使用markdown❓  [右键此处 新标签页打开查看语法说明]( http://www.markdown.cn/)',
+    source: '第一次使用markdown?  [查看语法说明]( http://www.markdown.cn/)',
     selectedTags: [],
     tags: [],
-    content: `试试选中来设置样式, 右上角可切换markdown编辑器哦😄`,
+    content: '',
+    contentCode: null,
     newTag: {
       name: null,
       description: null
@@ -265,11 +254,6 @@ export default {
       dialog: false,
       loading: false
     },
-    uploadingImage: [],
-    uploadImageResult: {
-      dialog: false,
-      succeed: true
-    },
     rules: {
       min10: (v) => (v && v.length >= 10) || '不能少于10个字符',
       min20: (v) => (v && v.length >= 20) || '不能少于20个字符',
@@ -284,7 +268,6 @@ export default {
         (v && v.length <= 400) || !v || '标签描述不能超过400个字符'
     },
     editorOption: {
-      // theme: 'bubble',
       modules: {
         toolbar: [
           ['bold', 'italic', 'underline', 'strike'],
@@ -304,50 +287,9 @@ export default {
       }
     }
   }),
-  computed: {
-    editor() {
-      return this.$refs.myTextEditor.quill
-    },
-    quillErrorMessage() {
-      if (this.rules.min20(this.content) !== true) {
-        return this.rules.min20(this.content)
-      } else {
-        return this.rules.max10000(this.content)
-      }
-    }
-  },
+  computed: {},
   watch: {
-    source: 'scrollBottom',
-    content() {
-      const regex = /data:image\/.*?;base64,(.*?)"/g
-      let q = null
-      while ((q = regex.exec(this.content)) != null) {
-        this.uploadingImage.push({
-          data: q[0]
-        })
-        this.$axios
-          .$post('/oss/uploadByBase64', {
-            base64: q[1]
-          })
-          .then((resp) => {
-            if (resp.succeed) {
-              this.content = this.content.replace(
-                this.uploadingImage[0].data,
-                resp.data + '"'
-              )
-            } else {
-              this.uploadImageResult.succeed = false
-              this.uploadImageResult.dialog = true
-            }
-            this.uploadingImage.splice(0, 1)
-          })
-          .catch((e) => {
-            this.uploadImageResult.succeed = false
-            this.uploadImageResult.dialog = true
-            this.uploadingImage.splice(0, 1)
-          })
-      }
-    }
+    source: 'scrollBottom'
   },
   created() {
     this.loadTags()
@@ -361,9 +303,6 @@ export default {
           this.remove(_lastSelectTag)
         }
       }
-    },
-    contentCode() {
-      return this.editor.scrollingContainer.innerHTML
     },
     loadEditQuestion() {
       const questionId = this.$route.query.questionId
@@ -406,6 +345,7 @@ export default {
         })
     },
     submitQuestion() {
+      console.log(this.contentCode)
       if (this.useMarkdown) {
         if (!this.$refs.form.validate()) {
           return false
@@ -416,31 +356,31 @@ export default {
       ) {
         return false
       }
-      if (this.$route.query.questionId) {
-        this.editQuestion(this.$route.query.questionId)
-        return
-      }
-      this.askResult.loading = true
-      const _this = this
-      this.$axios
-        .$post('/questionInfo/askQuestion', {
-          spaceId: this.$route.query.spaceId,
-          title: _this.title,
-          content: _this.useMarkdown ? _this.source : _this.contentCode(),
-          tagIds: _this.selectedTags
-            .map((e) => {
-              return e.tagId
-            })
-            .join(',')
-        })
-        .then((resp) => {
-          _this.askResult.resp = resp
-          _this.askResult.dialog = true
-          _this.askResult.loading = false
-        })
-        .catch((e) => {
-          _this.askResult.loading = false
-        })
+      // if (this.$route.query.questionId) {
+      //   this.editQuestion(this.$route.query.questionId)
+      //   return
+      // }
+      // this.askResult.loading = true
+      // const _this = this
+      // this.$axios
+      //   .$post('/questionInfo/askQuestion', {
+      //     spaceId: this.$route.query.spaceId,
+      //     title: _this.title,
+      //     content: _this.useMarkdown ? _this.source : _this.contentCode(),
+      //     tagIds: _this.selectedTags
+      //       .map((e) => {
+      //         return e.tagId
+      //       })
+      //       .join(',')
+      //   })
+      //   .then((resp) => {
+      //     _this.askResult.resp = resp
+      //     _this.askResult.dialog = true
+      //     _this.askResult.loading = false
+      //   })
+      //   .catch((e) => {
+      //     _this.askResult.loading = false
+      //   })
     },
     submitCreateTag() {
       if (!this.$refs.createTagForm.validate()) {
@@ -473,9 +413,6 @@ export default {
     remove(item) {
       this.selectedTags.splice(this.selectedTags.indexOf(item), 1)
       this.selectedTags = [...this.selectedTags]
-    },
-    onEditorChange({ editor, html, text }) {
-      this.content = html
     },
     //  加载标签
     loadTags() {

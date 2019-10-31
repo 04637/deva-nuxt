@@ -1,6 +1,7 @@
 export default () => ({
   userInfo: null,
   darkTheme: null,
+  useMarkdown: false,
   // 控制显示底部条
   showFooter: false,
   unReadMessageCount: 0,

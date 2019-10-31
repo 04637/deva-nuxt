@@ -32,5 +32,8 @@ export default {
   },
   setShowFooter(state, val) {
     state.showFooter = val
+  },
+  toggleUseMarkdown(state) {
+    state.useMarkdown = !state.useMarkdown
   }
 }

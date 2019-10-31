@@ -37,5 +37,8 @@ export default {
   },
   getShowFooter(state) {
     return state.showFooter
+  },
+  getUseMarkdown(state) {
+    return state.useMarkdown
   }
 }
