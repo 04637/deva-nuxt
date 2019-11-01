@@ -81,13 +81,14 @@ export default {
       return this.$refs.myTextEditor.quill
     },
     quillErrorMessage() {
+      let msg = null
       if (this.myContent.length < this.min) {
-        return '不能少于' + this.min + '个字符'
+        msg = '不能少于' + this.min + '个字符'
       } else if (this.myContent.length > this.max) {
-        return '不能超过' + this.max + '个字符'
-      } else {
-        return null
+        msg = '不能超过' + this.max + '个字符'
       }
+      this.$emit('update:errMsg', msg)
+      return msg
     }
   },
   watch: {
@@ -124,14 +125,24 @@ export default {
     }
   },
   mounted() {
-    this.myContent = this.content
+    setTimeout(() => {
+      this.myContent = this.content
+    }, 100)
   },
-  methods: {}
+  methods: {
+    updateContent(_content) {
+      this.myContent = _content
+    }
+  }
 }
 </script>
+<style>
+.ql-container {
+  height: calc(100% - 40px);
+}
+</style>
 <!--quill editor-->
 <style lang="scss" scoped>
-.quill-editor,
 .quill-code {
   height: 40rem;
 }
@@ -141,9 +152,14 @@ export default {
   font-family: Consolas, serif;
   font-weight: bold;
 }
-
 .quill-editor {
   height: 563px;
+}
+.answer-quill .quill-editor {
+  height: 348px;
+}
+.blog-quill .quill-editor {
+  height: 915px;
 }
 .theme--dark .quill-editor {
   color: white;

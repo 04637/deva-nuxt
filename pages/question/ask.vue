@@ -67,12 +67,14 @@
             </v-flex>
           </v-layout>
           <!--富文本编辑器-->
-          <div v-if="!useMarkdown" style="height: 597px;">
+          <div v-if="!$store.getters.getUseMarkdown" style="height: 597px;">
             <Quill
+              ref="questionQuill"
               :content="content"
               :max="10000"
               :min="20"
               @update:contentCode="contentCode = $event"
+              @update:errMsg="quillErrMsg = $event"
             ></Quill>
           </div>
           <v-layout>
@@ -96,13 +98,14 @@
             >
               <template v-slot:selection="{ attrs, item, select, selected }">
                 <v-chip
+                  color="primary"
                   v-bind="attrs"
                   :input-value="selected"
                   close
                   @click="select"
                   @click:close="remove(item)"
                 >
-                  <strong>{{ item.tagName || item }}</strong>
+                  <span>{{ item.tagName || item }}</span>
                 </v-chip>
               </template>
               <template v-slot:no-data>
@@ -232,7 +235,7 @@ export default {
   middleware: 'authenticated',
   data: () => ({
     title: null,
-    useMarkdown: false,
+    quillErrMsg: null,
     maxLength: 10000,
     source: '第一次使用markdown?  [查看语法说明]( http://www.markdown.cn/)',
     selectedTags: [],
@@ -295,6 +298,7 @@ export default {
     this.loadTags()
     this.loadEditQuestion()
   },
+  mounted() {},
   methods: {
     selectedChange() {
       if (this.selectedTags.length > 1) {
@@ -318,6 +322,9 @@ export default {
             this.title = resp.data.title
             this.source = resp.data.content
             this.content = resp.data.content
+            if (process.client) {
+              this.$refs.questionQuill.updateContent(this.content)
+            }
             this.selectedTags = resp.data.tagInfos
           }
         })
@@ -328,7 +335,9 @@ export default {
         .$post('/questionInfo/editQuestion', {
           questionId: _questionId,
           title: this.title,
-          content: this.useMarkdown ? this.source : this.contentCode(),
+          content: this.$store.getters.getUseMarkdown
+            ? this.source
+            : this.contentCode,
           tagIds: this.selectedTags
             .map((e) => {
               return e.tagId
@@ -345,41 +354,40 @@ export default {
         })
     },
     submitQuestion() {
-      if (this.useMarkdown) {
+      if (this.$store.getters.getUseMarkdown) {
         if (!this.$refs.form.validate()) {
           return false
         }
-      } else if (
-        !this.$refs.form.validate() ||
-        this.quillErrorMessage !== true
-      ) {
+      } else if (!this.$refs.form.validate() || this.quillErrMsg) {
         return false
       }
-      // if (this.$route.query.questionId) {
-      //   this.editQuestion(this.$route.query.questionId)
-      //   return
-      // }
-      // this.askResult.loading = true
-      // const _this = this
-      // this.$axios
-      //   .$post('/questionInfo/askQuestion', {
-      //     spaceId: this.$route.query.spaceId,
-      //     title: _this.title,
-      //     content: _this.useMarkdown ? _this.source : _this.contentCode(),
-      //     tagIds: _this.selectedTags
-      //       .map((e) => {
-      //         return e.tagId
-      //       })
-      //       .join(',')
-      //   })
-      //   .then((resp) => {
-      //     _this.askResult.resp = resp
-      //     _this.askResult.dialog = true
-      //     _this.askResult.loading = false
-      //   })
-      //   .catch((e) => {
-      //     _this.askResult.loading = false
-      //   })
+      if (this.$route.query.questionId) {
+        this.editQuestion(this.$route.query.questionId)
+        return
+      }
+      this.askResult.loading = true
+      const _this = this
+      this.$axios
+        .$post('/questionInfo/askQuestion', {
+          spaceId: this.$route.query.spaceId,
+          title: _this.title,
+          content: _this.$store.getters.getUseMarkdown
+            ? _this.source
+            : _this.contentCode,
+          tagIds: _this.selectedTags
+            .map((e) => {
+              return e.tagId
+            })
+            .join(',')
+        })
+        .then((resp) => {
+          _this.askResult.resp = resp
+          _this.askResult.dialog = true
+          _this.askResult.loading = false
+        })
+        .catch((e) => {
+          _this.askResult.loading = false
+        })
     },
     submitCreateTag() {
       if (!this.$refs.createTagForm.validate()) {
@@ -406,7 +414,9 @@ export default {
     scrollBottom() {
       this.$nextTick(() => {
         const div = document.getElementById('markdown-preview')
-        div.scrollTop = div.scrollHeight
+        if (div) {
+          div.scrollTop = div.scrollHeight
+        }
       })
     },
     remove(item) {
@@ -459,47 +469,5 @@ export default {
 #markdown-edit::-webkit-scrollbar-corner {
   background: #f6f6f6;
 }
-.ql-container {
-  height: 92% !important;
-}
 /*简约滚动条 end*/
-</style>
-<!--quill editor-->
-<style lang="scss" scoped>
-.quill-editor,
-.quill-code {
-  height: 40rem;
-}
-.ql-editor > pre {
-}
-.ql-editor pre.ql-syntax {
-  font-family: Consolas, serif;
-  font-weight: bold;
-}
-
-.quill-editor {
-  height: 563px;
-}
-.theme--dark .quill-editor {
-  color: white;
-  background-color: #424242;
-}
-.theme--light .quill-editor {
-  background-color: white;
-}
-
-.quill-code {
-  border: none;
-  height: auto;
-
-  > code {
-    width: 100%;
-    margin: 0;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0;
-    height: 10rem;
-    overflow-y: auto;
-  }
-}
 </style>

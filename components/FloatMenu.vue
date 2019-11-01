@@ -18,8 +18,8 @@
             fab
             style="color: white"
           >
-            <v-icon v-if="fab" title="回到顶部" @click="toTop"
-              >vertical_align_top</v-icon
+            <a v-if="fab" style="color: white" @click="toTop"
+              ><v-icon title="回到顶部">vertical_align_top</v-icon></a
             >
             <v-icon v-else>scatter_plot</v-icon>
           </v-btn>

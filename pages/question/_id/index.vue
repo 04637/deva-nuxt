@@ -61,6 +61,7 @@
                     id="markDialogBtn"
                     text
                     color="pink"
+                    style="height: 24px; padding: 0 10px;"
                     @click.stop="similarMark.dialog = !similarMark.dialog"
                     ><span>问题重复？标记相似</span>
                   </v-btn>
@@ -72,6 +73,7 @@
                     "
                     text
                     color="my_gray"
+                    style="height: 24px; padding: 0 10px;"
                     title="声望达到200方可标记"
                     ><span>问题重复？标记相似</span>
                   </v-btn>
@@ -81,12 +83,13 @@
                     "
                     text
                     color="pink"
+                    style="height: 24px; padding: 0 10px;"
                     :to="
                       '/question/ask?questionId=' + questionDetail.questionId
                     "
                   >
                     <v-icon size="15">edit</v-icon>
-                    <strong>编辑问题</strong>
+                    <span>编辑问题</span>
                   </v-btn>
                 </v-layout>
                 <div
@@ -390,6 +393,7 @@
                       "
                       color="private"
                       text
+                      style="height: 24px; padding: 0 10px; margin-right: 5px"
                       @click="
                         acceptConfirm.dialog = true
                         acceptConfirm.answer = answer
@@ -400,8 +404,9 @@
                     </v-btn>
                     <v-btn
                       v-if="$store.getters.getUserId === answer.author.userId"
-                      color="success"
+                      color="private"
                       text
+                      style="height: 24px; padding: 0 10px; margin-right: 5px"
                       @click="editAnswer(answer)"
                     >
                       <v-icon small>edit</v-icon>
@@ -409,8 +414,8 @@
                     </v-btn>
                     <v-chip
                       v-if="answer.isAccepted"
-                      style="max-width:170px; text-decoration: none;border-radius: 0"
-                      color="new_orange"
+                      style="max-width:170px; text-decoration: none;border-radius: 0; color: white"
+                      color="success"
                       small
                     >
                       已采纳
@@ -602,25 +607,15 @@
           </v-layout>
           <v-layout>
             <v-flex>
-              <client-only>
-                <quill-editor
-                  ref="myTextEditor"
-                  v-model="answer.content"
-                  style="border:none"
-                  :options="editorOption"
-                  @change="onEditorChange($event)"
-                  @focus="checkLogin"
-                >
-                </quill-editor>
-              </client-only>
-              <v-row justify="space-around" class="mt-1 mr-1 ml-1">
-                <div class="v-messages v-messages__message error--text">
-                  {{ quillErrorMessage === true ? '' : quillErrorMessage }}
-                </div>
-                <div class="v-counter">
-                  {{ answer.content.length }}&nbsp;/&nbsp;{{ answer.maxLength }}
-                </div>
-              </v-row>
+              <Quill
+                ref="answerQuill"
+                :content="answer.content"
+                :max="10000"
+                :min="10"
+                class="answer-quill"
+                @update:contentCode="contentCode = $event"
+                @update:errMsg="quillErrMsg = $event"
+              ></Quill>
               <v-layout justify-end class="my-5">
                 <v-btn
                   :loading="answer.loading"
@@ -643,7 +638,7 @@
     <v-dialog v-model="similarMark.dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">相似标记</span>
+          <span style="font-size: 1rem">相似标记</span>
         </v-card-title>
         <v-card-text>
           <v-text-field
@@ -659,9 +654,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="similarMark.dialog = false">关闭 </v-btn>
+          <v-btn small text @click="similarMark.dialog = false">关闭 </v-btn>
           <v-btn
             color="primary"
+            small
             :loading="similarMark.loading"
             text
             @click="markQuestion"
@@ -713,10 +709,12 @@ import InfoDialog from '../../../components/InfoDialog'
 import HotTag from '../../../components/HotTag'
 import TagChip from '../../../components/TagChip'
 import ConfirmDialog from '../../../components/ConfirmDialog'
+import Quill from '../../../components/Quill'
 
 export default {
   name: 'QuestionDetail',
   components: {
+    Quill,
     ConfirmDialog,
     TagChip,
     HotTag,
@@ -726,6 +724,8 @@ export default {
     return /^\d{18}$/.test(params.id)
   },
   data: () => ({
+    contentCode: '',
+    quillErrMsg: null,
     questionDetail: null,
     // 控制更多评论的显示隐藏
     showAllComments: {},
@@ -754,8 +754,7 @@ export default {
     },
     answer: {
       answerId: null,
-      content: `在此输入你的回答，试试选中来设置样式哦😄`,
-      maxLength: 10000,
+      content: '',
       resp: null,
       dialog: false,
       loading: false
@@ -798,18 +797,7 @@ export default {
     },
     keywords: null
   }),
-  computed: {
-    quillErrorMessage() {
-      if (this.rules.min20(this.answer.content) !== true) {
-        return this.rules.min20(this.answer.content)
-      } else {
-        return this.rules.max10000(this.answer.content)
-      }
-    },
-    editor() {
-      return this.$refs.myTextEditor.quill
-    }
-  },
+  computed: {},
   watch: {},
   // ssr渲染
   async asyncData({ $axios, params }) {
@@ -846,14 +834,12 @@ export default {
     editAnswer(_answer) {
       this.answer.content = _answer.content
       this.answer.answerId = _answer.answerId
+      this.$refs.answerQuill.updateContent(_answer.content)
       this.$vuetify.goTo(9999, {
         duration: 245,
         offset: 0,
         easing: 'easeInCubic'
       })
-    },
-    contentCode() {
-      return this.editor.scrollingContainer.innerHTML
     },
     markQuestion() {
       const questionId = this.similarMark.toQuestionLink.match(
@@ -990,11 +976,8 @@ export default {
           this.$set(this.showCommentInput, _answer.answerId, false)
         })
     },
-    onEditorChange({ editor, html, text }) {
-      this.answer.content = html
-    },
     submitAnswer() {
-      if (this.quillErrorMessage !== true) {
+      if (this.quillErrMsg) {
         return false
       }
       this.answer.loading = true
@@ -1007,7 +990,7 @@ export default {
         .$post(_url, {
           answerId: _this.answer.answerId,
           ownQuestionId: _this.questionDetail.questionId,
-          content: _this.contentCode()
+          content: _this.contentCode
         })
         .then((resp) => {
           _this.answer.resp = resp
@@ -1020,11 +1003,17 @@ export default {
               // 是编辑问题
               _this.questionDetail.answers.forEach((item) => {
                 if (item.answerId === _this.answer.answerId) {
-                  item.content = _this.answer.content
+                  item.content = _this.contentCode
+                  this.$vuetify.goTo(0, {
+                    duration: 245,
+                    offset: 0,
+                    easing: 'easeInCubic'
+                  })
                 }
               })
             }
-            _this.answer.content = `<h3>试试选中来设置样式哦</h3>`
+            _this.answer.content = ''
+            _this.$refs.answerQuill.updateContent('')
             _this.answer.answerId = null
           }
           _this.answer.dialog = true
@@ -1062,44 +1051,5 @@ export default {
 }
 .ql-container {
   height: 86% !important;
-}
-</style>
-
-<!--quill editor-->
-<style lang="scss" scoped>
-.quill-editor,
-.quill-code {
-  height: 40rem;
-}
-.ql-editor > pre {
-}
-.ql-editor pre.ql-syntax {
-  font-family: Consolas, serif;
-  font-weight: bold;
-}
-
-.quill-editor {
-  height: 300px;
-}
-.theme--dark .quill-editor {
-  color: white;
-  background-color: #424242;
-}
-.theme--light .quill-editor {
-  background-color: white;
-}
-.quill-code {
-  border: none;
-  height: auto;
-
-  > code {
-    width: 100%;
-    margin: 0;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0;
-    height: 10rem;
-    overflow-y: auto;
-  }
 }
 </style>

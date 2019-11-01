@@ -9,10 +9,14 @@
             class="text-capitalize"
             small
             style="float: right"
-            :title="useMarkdown ? '切换富文本编辑器' : '切换markdown编辑器'"
-            @click="useMarkdown = !useMarkdown"
+            :title="
+              $store.getters.getUseMarkdown
+                ? '切换富文本编辑器'
+                : '切换markdown编辑器'
+            "
+            @click="$store.commit('toggleUseMarkdown')"
             ><v-icon>{{
-              useMarkdown ? 'mdi-markdown' : 'mdi-textbox'
+              $store.getters.getUseMarkdown ? 'mdi-markdown' : 'mdi-textbox'
             }}</v-icon></v-btn
           >
         </v-col>
@@ -29,7 +33,11 @@
             required
             :rules="[rules.min10, rules.max100]"
           ></v-text-field>
-          <v-layout v-if="useMarkdown" justify-space-around class="mt-1">
+          <v-layout
+            v-if="$store.getters.getUseMarkdown"
+            justify-space-around
+            class="mt-1"
+          >
             <v-flex xs6>
               <v-textarea
                 id="markdown-edit"
@@ -51,25 +59,16 @@
             </v-flex>
           </v-layout>
           <!--富文本编辑器-->
-          <div v-if="!useMarkdown" style="height: 953px;">
-            <client-only>
-              <quill-editor
-                ref="myTextEditor"
-                v-model="content"
-                :options="editorOption"
-                class="mt-2"
-                @change="onEditorChange($event)"
-              >
-              </quill-editor>
-            </client-only>
-            <v-row justify="space-between" class="mr-1 ml-1 mt-2">
-              <div class="v-messages v-messages__message error--text">
-                {{ quillErrorMessage === true ? '' : quillErrorMessage }}
-              </div>
-              <div class="v-counter">
-                {{ content.length }}&nbsp;/&nbsp;{{ maxLength }}
-              </div>
-            </v-row>
+          <div v-if="!$store.getters.getUseMarkdown" style="height: 953px;">
+            <Quill
+              ref="blogQuill"
+              class="blog-quill"
+              :content="content"
+              :max="16000"
+              :min="20"
+              @update:contentCode="contentCode = $event"
+              @update:errMsg="quillErrMsg = $event"
+            ></Quill>
           </div>
           <v-layout>
             <v-combobox
@@ -95,10 +94,11 @@
                   v-bind="attrs"
                   :input-value="selected"
                   close
+                  color="primary"
                   @click="select"
                   @click:close="remove(item)"
                 >
-                  <strong>{{ item.tagName || item }}</strong>
+                  <span>{{ item.tagName || item }}</span>
                 </v-chip>
               </template>
               <template v-slot:no-data>
@@ -240,23 +240,25 @@
 <script>
 import hljs from 'highlight.js'
 import InfoDialog from '../../components/InfoDialog'
+import Quill from '../../components/Quill'
 export default {
   name: 'Ask',
   components: {
+    Quill,
     InfoDialog
   },
   middleware: 'authenticated',
   data: () => ({
+    quillErrMsg: null,
     keywords: null,
     title: null,
-    useMarkdown: false,
     maxLength: 16000,
     source:
       '###' +
       '3 第一次使用markdown❓  [右键此处 新标签页打开查看语法说明]( http://www.markdown.cn/)',
     selectedTags: [],
     tags: [],
-    content: `试试选中来设置样式, 右上角可切换markdown编辑器哦😄`,
+    content: '',
     isPublic: true,
     newTag: {
       name: null,
@@ -315,13 +317,6 @@ export default {
   computed: {
     editor() {
       return this.$refs.myTextEditor.quill
-    },
-    quillErrorMessage() {
-      if (this.rules.min20(this.content) !== true) {
-        return this.rules.min20(this.content)
-      } else {
-        return this.rules.max16000(this.content)
-      }
     }
   },
   watch: {
@@ -397,7 +392,9 @@ export default {
         .$post('/questionInfo/editQuestion', {
           questionId: _questionId,
           title: this.title,
-          content: this.useMarkdown ? this.source : this.contentCode(),
+          content: this.$store.getters.getUseMarkdown
+            ? this.source
+            : this.contentCode(),
           tagIds: this.selectedTags
             .map((e) => {
               return e.tagId
@@ -414,14 +411,11 @@ export default {
         })
     },
     submitQuestion() {
-      if (this.useMarkdown) {
+      if (this.$store.getters.getUseMarkdown) {
         if (!this.$refs.form.validate()) {
           return false
         }
-      } else if (
-        !this.$refs.form.validate() ||
-        this.quillErrorMessage !== true
-      ) {
+      } else if (!this.$refs.form.validate() || this.quillErrMsg) {
         return false
       }
       if (this.$route.query.questionId) {
@@ -434,7 +428,9 @@ export default {
         .$post('/blogInfo/postBlog', {
           spaceId: this.$route.query.spaceId,
           title: _this.title,
-          content: _this.useMarkdown ? _this.source : _this.contentCode(),
+          content: _this.$store.getters.getUseMarkdown
+            ? _this.source
+            : _this.contentCode(),
           tagIds: _this.selectedTags
             .map((e) => {
               return e.tagId
@@ -510,9 +506,6 @@ export default {
   overflow: auto;
   padding: 7px;
 }
-.quill-editor {
-  height: 923px;
-}
 #markdown-edit::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -533,43 +526,5 @@ export default {
 #markdown-edit::-webkit-scrollbar-corner {
   background: #f6f6f6;
 }
-.ql-container {
-  height: 95% !important;
-}
 /*简约滚动条 end*/
-</style>
-<!--quill editor-->
-<style lang="scss" scoped>
-.quill-code {
-  height: 40rem;
-}
-.ql-editor > pre {
-}
-.ql-editor pre.ql-syntax {
-  font-family: Consolas, serif;
-  font-weight: bold;
-}
-
-.theme--dark .quill-editor {
-  color: white;
-  background-color: #424242;
-}
-.theme--light .quill-editor {
-  background-color: white;
-}
-
-.quill-code {
-  border: none;
-  height: auto;
-
-  > code {
-    width: 100%;
-    margin: 0;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0;
-    height: 10rem;
-    overflow-y: auto;
-  }
-}
 </style>

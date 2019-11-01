@@ -52,7 +52,7 @@
           >
             <span v-for="(tag, index) in userInfo.likeTags" :key="tag.tagId"
               ><router-link
-                style="text-decoration: none; color: #2196f3; font-weight: bold; font-size:0.9rem"
+                style="text-decoration: none; color: #2196f3; font-size:0.9rem"
                 :to="'/search/' + tag.tagName + '?match=tags'"
                 >{{ tag.tagName }}</router-link
               ><span
