@@ -815,18 +815,20 @@ export default {
   },
   head() {
     // 不能写成 head:()=>({}) https://stackoverflow.com/questions/46064245/nuxt-js-ssr-title-undefined
-    return {
-      title: this.questionDetail.title,
-      meta: [
-        { hid: 'keywords', name: 'keywords', content: this.keywords },
-        {
-          hid: 'description',
-          name: 'description',
-          content: this.$options.filters.filterHtml(
-            this.$md.render(this.questionDetail.content)
-          )
-        }
-      ]
+    if (process.client) {
+      return {
+        title: this.questionDetail.title,
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: this.keywords },
+          {
+            hid: 'description',
+            name: 'description',
+            content: this.$options.filters.filterHtml(
+              this.$md.render(this.questionDetail.content)
+            )
+          }
+        ]
+      }
     }
   },
   mounted() {},

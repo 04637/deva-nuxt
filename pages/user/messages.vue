@@ -44,7 +44,7 @@
               <v-btn
                 v-if="item.ownQuestionId"
                 text
-                x-small
+                small
                 color="warning"
                 @click="
                   readMessage(item)
@@ -59,7 +59,7 @@
               <v-btn
                 v-else
                 text
-                x-small
+                small
                 color="warning"
                 @click="
                   readMessage(item)

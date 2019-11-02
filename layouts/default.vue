@@ -189,7 +189,7 @@
                 label="搜索"
                 hide-details
                 elavation
-                style="min-height: 36px"
+                style="min-height: 36px;"
                 append-icon="search"
                 solo
                 @focusin="searchElv = 1"
@@ -718,7 +718,6 @@ export default {
 }
 </script>
 
-<style></style>
 <style scoped>
 .ml-max {
   margin-left: 120px !important;
