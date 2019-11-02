@@ -68,7 +68,7 @@
       <v-flex v-if="$store.getters.getUserType === 'ADMIN' && !actionEvent" xs1>
         <v-btn
           :color="userInfo.status === 0 ? 'primary' : 'private'"
-          x-small
+          small
           text
           style="position: relative; top:-10px;left:-6px"
           @click="

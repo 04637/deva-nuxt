@@ -8,12 +8,6 @@
         class="mt-2"
       >
       </quill-editor>
-      <div
-        style="height:100px; width: 100px"
-        contenteditable="true"
-        data-gramm="false"
-        data-placeholder="eeeee"
-      ></div>
       <v-row justify="space-between" class="mr-1 ml-1 mt-2">
         <div class="v-messages v-messages__message error--text">
           {{ quillErrorMessage }}
@@ -155,10 +149,13 @@ export default {
 .ql-container {
   height: calc(100% - 40px);
 }
-:empty:before {
-  content: attr(data-placeholder);
-  color: red !important;
+.theme--dark .ql-editor.ql-blank::before {
+  color: white;
 }
+/*:empty:before {*/
+/*  content: attr(data-placeholder);*/
+/*  color: red !important;*/
+/*}*/
 </style>
 <!--quill editor-->
 <style lang="scss" scoped>

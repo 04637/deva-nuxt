@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-2">
     <v-toolbar dense flat class="mb-1">
-      <strong class="private--text">{{ spaceInfo.spaceName }}</strong>
+      <span class="private--text">{{ spaceInfo.spaceName }}</span>
     </v-toolbar>
     <v-divider></v-divider>
     <v-list subheader>
@@ -60,15 +60,20 @@
               v-clipboard:copy="spaceInfo.spaceId"
               style="position: relative; top: -6px"
               icon
-              x-small
+              small
               title="复制空间ID"
-              ><v-icon x-small>mdi-content-copy</v-icon></v-btn
+              ><v-icon small>mdi-content-copy</v-icon></v-btn
             ></v-layout
           >
         </v-list-item-content>
       </v-list-item>
-      <v-divider></v-divider>
-      <v-textarea hide-details solo readonly :value="spaceInfo.description">
+      <v-textarea
+        class="mt-1"
+        hide-details
+        outlined
+        readonly
+        :value="spaceInfo.description"
+      >
       </v-textarea>
       <v-layout
         style="font-size: 0.8rem"

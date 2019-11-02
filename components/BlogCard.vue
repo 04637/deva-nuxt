@@ -68,7 +68,7 @@
               >
               <small v-if="$store.getters.isAdmin">
                 <v-btn
-                  x-small
+                  small
                   text
                   color="private"
                   style="margin-top: -4px;font-weight: bold;position:relative;left:16px"

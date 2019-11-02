@@ -96,21 +96,19 @@
               >
             </v-layout>
             <v-layout justify-space-between class="mt-4" align-center>
-              <v-layout align-center>
+              <v-layout align-start>
                 <v-checkbox
                   v-model="termsCheck"
                   color="primary"
-                  label="我已认真阅读并"
+                  label="我已认真阅读并同意"
                   :rules="[rules.agreeTerms]"
                 ></v-checkbox
-                ><span class="warning--text" style="margin-top: -6px;"
-                  >同意</span
                 >&nbsp;
                 <a
-                  style="margin-top: -6px; text-decoration: #2196f3"
+                  style="margin-top: 20px; text-decoration: #2196f3"
                   @click="termsDialog = true"
                 >
-                  <span>法律声明和隐私权政策</span>
+                  <span class="warning--text">《法律声明和隐私权政策》</span>
                 </a>
               </v-layout>
             </v-layout>

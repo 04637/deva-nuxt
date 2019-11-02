@@ -8,9 +8,10 @@
             v-model="keywords"
             hide-details
             label="搜索"
-            prepend-inner-icon="search"
+            append-icon="search"
             outlined
             rounded
+            @click:append="search"
             @keyup.enter.native="search"
           ></v-text-field>
         </v-layout>
@@ -76,9 +77,11 @@ export default {
   },
   methods: {
     search() {
-      this.$router.push({
-        path: '/search/' + this.keywords
-      })
+      if (this.keywords) {
+        this.$router.push({
+          path: '/search/' + this.keywords
+        })
+      }
     },
     loadHeatList() {
       this.$axios.$post('/hotSearch/getSearchHeat').then((resp) => {

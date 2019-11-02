@@ -179,25 +179,23 @@
             <v-toolbar-title>
               <logo type="header" class="ml-5"></logo>
             </v-toolbar-title>
-            <transition name="fade">
-              <v-text-field
-                v-model="keywords"
-                translate="yes"
-                flat
-                class="ml-10 min-input"
-                :class="'elevation-' + searchElv"
-                label="搜索"
-                hide-details
-                elavation
-                style="min-height: 36px;"
-                append-icon="search"
-                solo
-                @focusin="searchElv = 1"
-                @focusout="searchElv = 0"
-                @click:append="search"
-                @keyup.enter.native="search"
-              ></v-text-field>
-            </transition>
+            <v-text-field
+              v-model="keywords"
+              translate="yes"
+              flat
+              class="ml-10 min-input search-input"
+              :class="'elevation-' + searchElv"
+              label="搜索"
+              hide-details
+              elavation
+              style="min-height: 36px;"
+              append-icon="search"
+              solo
+              @focusin="searchElv = 1"
+              @focusout="searchElv = 0"
+              @click:append="search"
+              @keyup.enter.native="search"
+            ></v-text-field>
             <v-spacer></v-spacer>
           </v-flex>
           <v-flex
@@ -218,7 +216,7 @@
               <v-btn
                 v-if="systemNotice.content.length > 40"
                 text
-                x-small
+                small
                 color="warning"
                 style="position:relative;"
                 @click="viewNotice.dialog = true"
@@ -230,9 +228,8 @@
           <v-layout justify-end align-center>
             <v-btn
               v-if="$store.state.userInfo"
-              style="position: fixed; right: 157px"
+              style="position: relative;margin-right: 10px"
               icon
-              class="mr-9"
               to="/user/messages"
               small
             >
@@ -259,7 +256,6 @@
                     text
                     small
                     :to="'/user/' + $store.getters.getUserInfo.userId"
-                    color="#01a68721"
                     style="border-radius: 0;"
                     class="d-inline-block no-flex text-truncate text-left mr-1"
                     >{{
@@ -717,7 +713,16 @@ export default {
   }
 }
 </script>
-
+<style>
+.search-input.elevation-0 .v-input__control .v-input__slot {
+  width: 40%;
+  transition: width 0.5s;
+}
+.search-input.elevation-1 .v-input__control .v-input__slot {
+  width: 100%;
+  transition: width 0.3s;
+}
+</style>
 <style scoped>
 .ml-max {
   margin-left: 120px !important;
@@ -733,8 +738,8 @@ export default {
 }
 .unread-icon {
   width: 13px;
-  position: absolute;
-  top: 9px;
-  right: 191px;
+  position: relative;
+  top: -8px;
+  right: 22px;
 }
 </style>

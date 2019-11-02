@@ -2,7 +2,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="20vw">
     <v-card>
-      <v-card-title class="warning--text subtitle-1">
+      <v-card-title class="subtitle-1">
         {{ msg }}
       </v-card-title>
       <v-card-actions>
@@ -10,8 +10,8 @@
         <!-- 组件事件绑定https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model -->
         <v-btn small text @click="$emit('update:dialog', false)">取消 </v-btn>
         <v-btn
-          color="primary"
           small
+          color="warning"
           text
           @click="
             $emit('update:dialog', false)

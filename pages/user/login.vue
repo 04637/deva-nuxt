@@ -28,7 +28,7 @@
             ></v-text-field>
             <v-layout justify-space-between align-center class="mt-4">
               <v-btn
-                x-small
+                small
                 text
                 depressed
                 color="primary"
@@ -60,7 +60,6 @@
               <v-text-field
                 v-model="smsCode"
                 style="width: 100px"
-                class="mt-4"
                 label="验证码"
                 required
                 @keyup.enter.native="submitLogin"
@@ -87,15 +86,15 @@
             </v-layout>
             <v-layout justify-space-between align-center class="mt-4">
               <v-btn
-                x-small
                 text
+                small
                 depressed
                 color="primary"
                 @click="usernameLogin = true"
                 >用户名密码登录</v-btn
               >
               <v-btn
-                outlined
+                color="primary"
                 accent
                 depressed
                 min-width="150px"

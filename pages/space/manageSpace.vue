@@ -139,9 +139,9 @@
                     v-clipboard:copy="spaceInfo.spaceId"
                     style="position: relative; top: -6px"
                     icon
-                    x-small
+                    small
                     title="复制空间ID"
-                    ><v-icon x-small>mdi-content-copy</v-icon></v-btn
+                    ><v-icon small>mdi-content-copy</v-icon></v-btn
                   ></v-layout
                 >
               </v-list-item-content>
@@ -160,7 +160,7 @@
                     <v-tooltip top>
                       <template v-slot:activator="{ on }">
                         <v-icon
-                          x-small
+                          small
                           class="ml-2"
                           v-on="on"
                           @click="refreshCode"
