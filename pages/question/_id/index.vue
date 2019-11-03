@@ -82,7 +82,7 @@
                       $store.getters.getUserId === questionDetail.author.userId
                     "
                     text
-                    color="pink"
+                    color="private"
                     style="height: 24px; padding: 0 10px;"
                     :to="
                       '/question/ask?questionId=' + questionDetail.questionId
@@ -631,7 +631,7 @@
           </v-layout>
         </v-flex>
         <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
-          <HotTag></HotTag>
+          <client-only> <HotTag></HotTag></client-only>
         </v-flex>
       </v-layout>
     </v-app>
@@ -704,7 +704,6 @@
   </v-app>
 </template>
 <script>
-import hljs from 'highlight.js'
 import InfoDialog from '../../../components/InfoDialog'
 import HotTag from '../../../components/HotTag'
 import TagChip from '../../../components/TagChip'
@@ -773,28 +772,6 @@ export default {
       matchQuestionLink: (v) =>
         (v && /question\/(\d{18})/.test(v)) || '请输入有效的问题链接'
     },
-    editorOption: {
-      // theme: 'bubble',
-      modules: {
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'],
-          ['blockquote', 'code-block'],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          [{ indent: '-1' }, { indent: '+1' }],
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          [{ color: [] }, { background: [] }],
-          [{ font: [] }],
-          [{ align: [] }],
-          ['link', 'image'],
-          ['clean']
-        ],
-        syntax: {
-          highlight: (text) => {
-            return hljs.highlightAuto(text).value
-          }
-        }
-      }
-    },
     keywords: null
   }),
   computed: {},
@@ -815,20 +792,18 @@ export default {
   },
   head() {
     // 不能写成 head:()=>({}) https://stackoverflow.com/questions/46064245/nuxt-js-ssr-title-undefined
-    if (process.client) {
-      return {
-        title: this.questionDetail.title,
-        meta: [
-          { hid: 'keywords', name: 'keywords', content: this.keywords },
-          {
-            hid: 'description',
-            name: 'description',
-            content: this.$options.filters.filterHtml(
-              this.$md.render(this.questionDetail.content)
-            )
-          }
-        ]
-      }
+    return {
+      title: this.questionDetail.title,
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: this.keywords },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.$options.filters.filterHtml(
+            this.$md.render(this.questionDetail.content)
+          )
+        }
+      ]
     }
   },
   mounted() {},

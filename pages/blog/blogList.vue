@@ -1,33 +1,46 @@
 <template>
   <v-app>
     <v-layout column shrink>
-      <v-layout>
-        <v-flex md7 xs4 shrink hidden-sm-and-down>
+      <v-layout class="mt-4">
+        <v-flex
+          md6
+          xs3
+          shrink
+          hidden-sm-and-down
+          style="position: relative; top: 8px"
+        >
           <v-card-title class="pt-0 pb-0">
             <v-layout column>
-              <v-row align="center" class="mb-2" justify="end">
-                <v-btn small color="primary" to="/blog/postBlog"
-                  ><v-icon small>mdi-file-document-edit-outline</v-icon
-                  >发布博文</v-btn
-                >
-              </v-row>
-              <v-row
-                ><v-text-field
+              <v-row align="end" class="mb-2" justify="start">
+                <v-text-field
                   v-model="keywords"
+                  style="max-width: 50%"
                   translate="yes"
                   class="pt-0 mt-0 mr-2"
                   placeholder="搜索博文"
                   hide-details
-                  prepend-inner-icon="search"
+                  append-icon="search"
                   flat
-                  @keyup.enter.native="searchQuestions"
+                  @click:append="searchBlogs"
+                  @keyup.enter.native="searchBlogs"
                 ></v-text-field
-              ></v-row>
+                ><v-btn class="ml-5" small color="primary" to="/blog/postBlog"
+                  ><v-icon small>mdi-file-document-edit-outline</v-icon
+                  >发布博文</v-btn
+                ></v-row
+              >
             </v-layout>
           </v-card-title>
         </v-flex>
-        <v-flex md5 lg3 align-self-end>
-          <v-tabs grow centered center-active height="38" @change="loadBlogs">
+        <v-flex md6 lg4 align-self-end>
+          <v-tabs
+            v-model="currentTab"
+            grow
+            centered
+            center-active
+            height="38"
+            @change="loadBlogs"
+          >
             <v-tab
               @click="
                 listType = 'RECENT'
@@ -50,13 +63,6 @@
               "
               >月榜</v-tab
             >
-            <v-tab
-              @click="
-                listType = 'MY_POST'
-                currentTitle = '我的发布'
-              "
-              >我的</v-tab
-            >
           </v-tabs>
         </v-flex>
       </v-layout>
@@ -78,6 +84,7 @@ import BlogCardList from '../../components/BlogCardList'
 export default {
   components: { BlogCardList, HotTag },
   data: () => ({
+    currentTab: 0,
     listType: 'RECENT',
     blogList: null,
     keywords: null,
@@ -93,7 +100,9 @@ export default {
       noMore: false
     }
   }),
-  created() {},
+  created() {
+    this.loadBlogs()
+  },
   mounted() {
     this.loadLikeTags()
     this.scroll()
@@ -153,6 +162,7 @@ export default {
         this.currentTitle = '推荐'
       }
     },
+    searchBlogs() {},
     scroll() {
       window.onscroll = () => {
         if (document.documentElement.scrollTop > 200) {

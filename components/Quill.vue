@@ -17,7 +17,7 @@
         </div>
       </v-row>
       <InfoDialog
-        :msg="['', '图片过大，上传失败']"
+        :msg="['', '图片过大，请选择4M以下的图片']"
         :succeed="uploadImageResult.succeed"
         :dialog="uploadImageResult.dialog"
         close-txt="关闭"
@@ -60,7 +60,6 @@ export default {
           [{ indent: '-1' }, { indent: '+1' }],
           [{ header: [1, 2, 3, 4, 5, 6, false] }],
           [{ color: [] }, { background: [] }],
-          [{ font: [] }],
           [{ align: [] }],
           ['link', 'image'],
           ['clean']
@@ -150,7 +149,7 @@ export default {
   height: calc(100% - 40px);
 }
 .theme--dark .ql-editor.ql-blank::before {
-  color: white;
+  color: #d3d3d3;
 }
 /*:empty:before {*/
 /*  content: attr(data-placeholder);*/

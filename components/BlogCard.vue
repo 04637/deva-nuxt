@@ -110,8 +110,8 @@
         </v-layout>
         <ConfirmDialog
           :dialog="confirmDelete.dialog"
-          msg="确定删除该问题吗？该操作不可恢复"
-          :todo="deleteQuestion"
+          msg="确定删除该博文吗？该操作不可恢复"
+          :todo="deleteBlog"
           @update:dialog="confirmDelete.dialog = $event"
         >
         </ConfirmDialog>
@@ -141,9 +141,9 @@ export default {
     deleted: false
   }),
   methods: {
-    deleteQuestion() {
+    deleteBlog() {
       this.$axios
-        .$post('/admin/deleteQuestion', {
+        .$post('/admin/deleteBlog', {
           blogId: this.blog.blogId
         })
         .then((resp) => {

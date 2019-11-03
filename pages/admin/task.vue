@@ -158,6 +158,9 @@
           <v-layout align-center>
             <v-btn color="private" text to="/"><strong>问题管理</strong></v-btn
             >|
+            <v-btn color="private" text to="/blog/blogList"
+              ><strong>博文管理</strong></v-btn
+            >|
             <v-btn color="private" text to="/user/users"
               ><strong>用户管理</strong></v-btn
             >|

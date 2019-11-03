@@ -41,7 +41,7 @@
                       <v-btn
                         text
                         block
-                        class="white--text subheading font-weight-bold"
+                        class="white--text subheading"
                         @click="$refs.selectAvatar.click()"
                         >修改头像
                       </v-btn>

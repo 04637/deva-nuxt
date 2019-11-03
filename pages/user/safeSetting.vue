@@ -77,7 +77,7 @@
                     text
                     style="background: rgba(233, 30, 99, 0.1)"
                     @click="editPassword.dialog = true"
-                    ><strong>修改密码</strong></v-btn
+                    ><span>修改密码</span></v-btn
                   ></v-layout
                 >
               </v-layout>

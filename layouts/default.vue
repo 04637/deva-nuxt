@@ -336,8 +336,14 @@
           :class="isSmall ? 'ml-small' : mini ? 'ml-mini' : 'ml-max'"
         >
           <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
-          <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
-          <nuxt v-else class="pa-2" />
+          <div v-if="needSsr">
+            <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
+            <nuxt v-else class="pa-2" />
+          </div>
+          <client-only v-else>
+            <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
+            <nuxt v-else class="pa-2" />
+          </client-only>
           <FloatMenu></FloatMenu>
         </v-content>
       </v-flex>
@@ -445,7 +451,8 @@ export default {
     mini: false,
     drawer: null,
     menuOpen: false,
-    keepAliveRouters: ['question-ask', 'user-signUp', 'user-login'],
+    keepAliveRouters: [],
+    ssrRouters: ['question-id', 'blog-id'],
     keywords: null,
     spaceList: [
       {
@@ -481,6 +488,9 @@ export default {
   computed: {
     needKeepAlive() {
       return this.keepAliveRouters.includes(this.$route.name)
+    },
+    needSsr() {
+      return this.ssrRouters.includes(this.$route.name)
     },
     // 监听vuex https://stackoverflow.com/questions/43270159/vuejs-2-how-to-watch-store-values-from-vuex
     needReloadSpaceList() {

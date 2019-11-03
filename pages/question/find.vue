@@ -35,11 +35,7 @@
                     <v-layout justify-end>
                       <span>{{ item.heat }}</span
                       >&nbsp;&nbsp;
-                      <svg
-                        class="icon heat-icon-2"
-                        aria-hidden="true"
-                        style="vertical-align: -3px"
-                      >
+                      <svg class="icon heat-icon-2" aria-hidden="true">
                         <use
                           v-if="item.heat > 50"
                           xlink:href="#icon-huo3"

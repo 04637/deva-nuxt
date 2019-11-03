@@ -2,11 +2,12 @@
   <v-app>
     <v-layout column shrink>
       <v-layout>
-        <v-flex md7 xs4 shrink hidden-sm-and-down>
+        <v-flex md6 xs4 shrink hidden-sm-and-down>
           <v-card-title>{{ currentTitle }}</v-card-title>
         </v-flex>
-        <v-flex md5 lg3 align-self-end>
+        <v-flex md6 lg4 align-self-end>
           <v-tabs
+            v-model="currentTab"
             centered
             center-active
             height="38"
@@ -66,6 +67,7 @@ import HotTag from '../components/HotTag'
 export default {
   components: { HotTag, QuestionCardList },
   data: () => ({
+    currentTab: 0,
     listType: 'RECENT',
     questionList: null,
     hotQuestionList: null,
@@ -80,7 +82,9 @@ export default {
       noMore: false
     }
   }),
-  created() {},
+  created() {
+    this.loadQuestions()
+  },
   mounted() {
     this.loadLikeTags()
     this.scroll()

@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-app>
-      <v-layout justify-end shrink>
-        <v-col cols="5">
+      <v-layout justify-end shrink style="height: 24px;">
+        <v-col cols="5" class="pa-0">
           <v-btn
             text
             nuxt
@@ -160,7 +160,7 @@
               depressed
               min-width="150px"
               :loading="postResult.loading"
-              @click="submitQuestion"
+              @click="submitBlog"
               >发布</v-btn
             >
           </v-layout>
@@ -249,13 +249,12 @@ export default {
   },
   middleware: 'authenticated',
   data: () => ({
+    contentCode: null,
     quillErrMsg: null,
     keywords: null,
     title: null,
     maxLength: 16000,
-    source:
-      '###' +
-      '3 第一次使用markdown❓  [右键此处 新标签页打开查看语法说明]( http://www.markdown.cn/)',
+    source: '第一次使用markdown?  [查看语法说明]( http://www.markdown.cn/)',
     selectedTags: [],
     tags: [],
     content: '',
@@ -354,7 +353,7 @@ export default {
   },
   created() {
     this.loadTags()
-    this.loadEditQuestion()
+    this.loadEditBlog()
   },
   methods: {
     selectedChange() {
@@ -365,36 +364,38 @@ export default {
         }
       }
     },
-    contentCode() {
-      return this.editor.scrollingContainer.innerHTML
-    },
-    loadEditQuestion() {
-      const questionId = this.$route.query.questionId
-      if (!questionId) {
+    loadEditBlog() {
+      const blogId = this.$route.query.blogId
+      if (!blogId) {
         return
       }
       this.$axios
-        .$post('/questionInfo/getQuestion', {
-          questionId
+        .$post('/blogInfo/getBlog', {
+          blogId
         })
         .then((resp) => {
           if (resp.succeed) {
             this.title = resp.data.title
             this.source = resp.data.content
             this.content = resp.data.content
-            this.selectedTags = resp.data.tagInfos
+            if (process.client) {
+              this.$refs.blogQuill.updateContent(this.content)
+            }
+            this.selectedTags = resp.data.tags
+            this.isPublic = resp.data.isPublic
           }
         })
     },
-    editQuestion(_questionId) {
+    editBlog(_blogId) {
       this.postResult.loading = true
       this.$axios
-        .$post('/questionInfo/editQuestion', {
-          questionId: _questionId,
+        .$post('/blogInfo/editBlog', {
+          blogId: _blogId,
+          isPublic: this.isPublic,
           title: this.title,
           content: this.$store.getters.getUseMarkdown
             ? this.source
-            : this.contentCode(),
+            : this.contentCode,
           tagIds: this.selectedTags
             .map((e) => {
               return e.tagId
@@ -410,7 +411,7 @@ export default {
           this.postResult.loading = false
         })
     },
-    submitQuestion() {
+    submitBlog() {
       if (this.$store.getters.getUseMarkdown) {
         if (!this.$refs.form.validate()) {
           return false
@@ -418,8 +419,8 @@ export default {
       } else if (!this.$refs.form.validate() || this.quillErrMsg) {
         return false
       }
-      if (this.$route.query.questionId) {
-        this.editQuestion(this.$route.query.questionId)
+      if (this.$route.query.blogId) {
+        this.editBlog(this.$route.query.blogId)
         return
       }
       this.postResult.loading = true
@@ -427,10 +428,11 @@ export default {
       this.$axios
         .$post('/blogInfo/postBlog', {
           spaceId: this.$route.query.spaceId,
+          isPublic: this.isPublic,
           title: _this.title,
           content: _this.$store.getters.getUseMarkdown
             ? _this.source
-            : _this.contentCode(),
+            : _this.contentCode,
           tagIds: _this.selectedTags
             .map((e) => {
               return e.tagId
@@ -471,7 +473,9 @@ export default {
     scrollBottom() {
       this.$nextTick(() => {
         const div = document.getElementById('markdown-preview')
-        div.scrollTop = div.scrollHeight
+        if (div) {
+          div.scrollTop = div.scrollHeight
+        }
       })
     },
     remove(item) {

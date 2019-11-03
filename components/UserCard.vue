@@ -50,18 +50,19 @@
             style="min-height: 24px;"
             wrap
           >
-            <span v-for="(tag, index) in userInfo.likeTags" :key="tag.tagId"
-              ><router-link
-                style="text-decoration: none; color: #2196f3; font-size:0.9rem"
-                :to="'/search/' + tag.tagName + '?match=tags'"
-                >{{ tag.tagName }}</router-link
-              ><span
+            <router-link
+              v-for="(tag, index) in userInfo.likeTags"
+              :key="tag.tagId"
+              style="text-decoration: none; color: #2196f3; font-size:0.9rem"
+              :to="'/search/' + tag.tagName + '?match=tags'"
+              >{{ tag.tagName
+              }}<span
                 v-if="index < userInfo.likeTags.length - 1"
+                style="cursor: auto"
                 class="my_gray--text"
-              >
-                ,
-              </span>
-            </span>
+                >,
+              </span></router-link
+            >
           </v-layout>
         </v-layout>
       </v-flex>
@@ -76,7 +77,7 @@
               ? (confirmUnBan.dialog = true)
               : (confirmBan.dialog = true)
           "
-          ><strong>{{ userInfo.status === 0 ? '解封' : '封禁' }}</strong></v-btn
+          ><span>{{ userInfo.status === 0 ? '解封' : '封禁' }}</span></v-btn
         >
       </v-flex>
     </v-layout>
@@ -212,7 +213,6 @@ export default {
 /* 控制展示两行 */
 .label-description {
   font-size: 15px;
-  text-indent: 15px;
   overflow: hidden;
   -webkit-line-clamp: 2;
   text-overflow: ellipsis;

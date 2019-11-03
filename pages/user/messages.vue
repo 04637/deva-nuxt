@@ -57,6 +57,17 @@
                 >查看</v-btn
               >
               <v-btn
+                v-else-if="item.ownBlogId"
+                text
+                small
+                color="warning"
+                @click="
+                  readMessage(item)
+                  $router.push('/blog/' + item.ownBlogId)
+                "
+                >查看</v-btn
+              >
+              <v-btn
                 v-else
                 text
                 small
@@ -90,18 +101,12 @@
                   ></v-simple-checkbox>
                 </td>
                 <td class="pl-0">
-                  <v-btn text outlined small depressed @click="ignoreSelected">
-                    <v-icon small>notifications_off</v-icon>
+                  <v-btn small depressed @click="ignoreSelected">
+                    <v-icon small>mdi-notification-clear-all</v-icon>
                     <span class="body-1">忽略已选消息</span>
                   </v-btn>
-                  <v-btn
-                    text
-                    outlined
-                    small
-                    depressed
-                    @click="deleteConfirm.dialog = true"
-                  >
-                    <v-icon small>delete</v-icon>
+                  <v-btn small depressed @click="deleteConfirm.dialog = true">
+                    <v-icon small>mdi-delete-sweep-outline</v-icon>
                     <span class="body-1">删除已选消息</span>
                   </v-btn>
                 </td>

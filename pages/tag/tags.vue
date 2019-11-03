@@ -25,40 +25,22 @@
         <v-card min-width="250px" class="px-3 pb-2" style="padding-top:10px">
           <v-layout align-center justify-space-between>
             <v-layout align-center>
-              <v-menu
-                open-on-hover
-                offset-y
-                top
-                min-width="103px"
-                max-width="103px"
-              >
-                <template v-slot:activator="{ on }">
-                  <TagChip :tag-info="tagInfo" :von="on"></TagChip></template
-                ><v-btn
-                  small
-                  text
-                  :title="
-                    $store.getters.getRep >= 200
-                      ? ''
-                      : '声望值达到200将可以编辑标签描述'
-                  "
-                  :color="$store.getters.getRep >= 200 ? 'private' : 'grey'"
-                  @click="
-                    editDescription.description = tagInfo.description
-                    editDescription.tagName = tagInfo.tagName
-                    editDescription.tagId = tagInfo.tagId
-                    editDescription.dialog = $store.getters.getRep >= 200
-                  "
-                  ><v-icon
-                    :color="$store.getters.getRep >= 200 ? 'private' : 'grey'"
-                    small
-                    >edit</v-icon
-                  >编辑描述</v-btn
-                ></v-menu
-              >
+              <TagChip :tag-info="tagInfo"></TagChip>
               <span class="ml-2 my_gray--text" title="总使用次数"
                 >× {{ tagInfo.totalCount }}</span
               ></v-layout
+            >
+            <v-btn
+              icon
+              small
+              title="声望值达到200将可以编辑标签描述"
+              @click="
+                editDescription.description = tagInfo.description
+                editDescription.tagName = tagInfo.tagName
+                editDescription.tagId = tagInfo.tagId
+                editDescription.dialog = $store.getters.getRep >= 200
+              "
+              ><v-icon small>edit</v-icon></v-btn
             >
             <v-btn class="ml-1" icon small @click="likeTag(tagInfo)"
               ><v-icon :color="tagInfo.liked ? 'pink' : ''" small
@@ -303,6 +285,6 @@ export default {
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  min-height: 36px;
+  min-height: 42px;
 }
 </style>
