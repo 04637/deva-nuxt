@@ -15,7 +15,7 @@
           <v-btn
             id="floatRoot"
             v-model="fab"
-            color="#eb6f5a"
+            color="private"
             fab
             style="color: white"
           >

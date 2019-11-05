@@ -133,16 +133,14 @@
                 color="private"
                 small
                 :to="'/space/' + $route.query.spaceId"
-                ><strong class="ml-1">{{
-                  $route.query.spaceName
-                }}</strong></v-btn
+                ><span class="ml-1">{{ $route.query.spaceName }}</span></v-btn
               ></v-card-text
             >
             <v-checkbox
               v-model="isPublic"
               :label="
-                ($route.query.spaceId
-                  ? $route.query.spaceName + ' 成员'
+                ($route.query.spaceId || spaceId
+                  ? $route.query.spaceName || '所属空间'
                   : '公共') + '可见'
               "
               color="blue"
@@ -150,7 +148,7 @@
               persistent-hint
               :hint="
                 '勾选将对' +
-                  ($route.query.spaceId ? '空间成员' : '所有人') +
+                  ($route.query.spaceId || spaceId ? '空间成员' : '所有人') +
                   '可见，不勾选则只对自己可见'
               "
             ></v-checkbox>
@@ -253,6 +251,7 @@ export default {
     quillErrMsg: null,
     keywords: null,
     title: null,
+    spaceId: null,
     maxLength: 16000,
     source: '第一次使用markdown?  [查看语法说明]( http://www.markdown.cn/)',
     selectedTags: [],
@@ -383,6 +382,7 @@ export default {
             }
             this.selectedTags = resp.data.tags
             this.isPublic = resp.data.isPublic
+            this.spaceId = resp.data.spaceId
           }
         })
     },

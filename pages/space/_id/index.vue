@@ -2,14 +2,19 @@
   <v-app>
     <v-layout column shrink>
       <v-layout v-if="spaceInfo">
-        <v-flex md7 xs4 shrink hidden-sm-and-down>
+        <v-flex md6 xs3 shrink hidden-sm-and-down>
           <v-card-title class="pt-0 pb-0">
             <v-layout column>
-              <v-row align="center" justify="center">
+              <v-row align="center" justify="start">
+                <v-chip
+                  small
+                  style="margin-right: 100px; border-radius: 0; position: relative; left: -12px"
+                  @click="toggleListType"
+                  >浏览{{ isBlogList ? '问题' : '博文'
+                  }}<v-icon small>mdi-meteor</v-icon></v-chip
+                >
                 <v-btn text outlined color="private" small
-                  ><strong class="ml-1">{{
-                    spaceInfo.spaceName
-                  }}</strong></v-btn
+                  ><span class="ml-1">{{ spaceInfo.spaceName }}</span></v-btn
                 >
                 <v-tooltip top>
                   <template v-slot:activator="{ on }">
@@ -25,7 +30,9 @@
                       small
                       icon
                       v-on="on"
-                      ><v-icon small>mdi-comment-question</v-icon></v-btn
+                      ><v-icon small
+                        >mdi-comment-question-outline</v-icon
+                      ></v-btn
                     >
                   </template>
                   <span>发布问题</span>
@@ -34,9 +41,27 @@
                   <template v-slot:activator="{ on }">
                     <v-btn
                       icon
+                      :to="
+                        '/blog/postBlog?spaceId=' +
+                          spaceInfo.spaceId +
+                          '&spaceName=' +
+                          spaceInfo.spaceName
+                      "
+                      v-on="on"
+                      ><v-icon small
+                        >mdi-file-document-edit-outline</v-icon
+                      ></v-btn
+                    >
+                  </template>
+                  <span>撰写文章</span>
+                </v-tooltip>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      icon
                       :to="'/space/userView?spaceId=' + spaceInfo.spaceId"
                       v-on="on"
-                      ><v-icon>mdi-account-multiple</v-icon></v-btn
+                      ><v-icon>mdi-account-supervisor-outline</v-icon></v-btn
                     >
                   </template>
                   <span>查看所有成员信息</span>
@@ -52,7 +77,7 @@
                       icon
                       :to="'/space/manageSpace?spaceId=' + spaceInfo.spaceId"
                       v-on="on"
-                      ><v-icon small>mdi-settings</v-icon></v-btn
+                      ><v-icon small>mdi-settings-outline</v-icon></v-btn
                     >
                   </template>
                   <span>管理空间</span>
@@ -76,7 +101,7 @@
                   v-model="keywords"
                   translate="yes"
                   class="pt-0 mt-0 mr-2"
-                  placeholder="空间内搜索"
+                  placeholder="搜索问题"
                   hide-details
                   prepend-inner-icon="search"
                   flat
@@ -86,7 +111,7 @@
             </v-layout>
           </v-card-title>
         </v-flex>
-        <v-flex md5 lg3 align-self-end>
+        <v-flex md6 lg4 align-self-end>
           <v-tabs
             v-if="search.flag"
             centered
@@ -97,6 +122,17 @@
             <v-tab @click="listType = 'RELEVANCE'">相关</v-tab>
             <v-tab @click="listType = 'NEWEST'">最新</v-tab>
             <v-tab @click="listType = 'ACTIVE'">活跃</v-tab>
+          </v-tabs>
+          <v-tabs
+            v-else-if="isBlogList"
+            centered
+            center-active
+            height="38"
+            @change="loadBlogs"
+          >
+            <v-tab @click="listType = 'RECENT'">最新</v-tab>
+            <v-tab @click="listType = 'WEEK_HOT'">周榜</v-tab>
+            <v-tab @click="listType = 'MONTH_HOT'">月榜</v-tab>
           </v-tabs>
           <v-tabs
             v-else
@@ -117,9 +153,13 @@
     <v-layout justify-center justify-space-around class="mt-4">
       <v-flex xs11 lg9 justify-start shrink>
         <QuestionCardList
-          v-if="questionList"
+          v-if="!isBlogList && questionList"
           :question-list="questionList"
         ></QuestionCardList>
+        <BlogCardList
+          v-else-if="isBlogList && blogList"
+          :blog-list="blogList"
+        ></BlogCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
         <v-textarea
@@ -159,8 +199,10 @@ import QuestionCardList from '../../../components/QuestionCardList'
 import ConfirmDialog from '../../../components/ConfirmDialog'
 import InfoDialog from '../../../components/InfoDialog'
 import HotTag from '../../../components/HotTag'
+import BlogCardList from '../../../components/BlogCardList'
 export default {
   components: {
+    BlogCardList,
     HotTag,
     InfoDialog,
     ConfirmDialog,
@@ -168,7 +210,10 @@ export default {
   },
   data: () => ({
     listType: 'RECENT',
+    // 当前浏览类型是否为博文, false为问题
+    isBlogList: false,
     questionList: null,
+    blogList: null,
     hotQuestionList: null,
     keywords: null,
     confirmExit: {
@@ -222,6 +267,25 @@ export default {
             this.questionList = resp.data.records
           } else {
             this.questionList = []
+          }
+        })
+    },
+    loadBlogs() {
+      this.page.current = 1
+      this.loadMore.isLoading = false
+      this.loadMore.noMore = false
+      this.$axios
+        .$post('/blogInfo/listSpaceBlogs', {
+          current: this.page.current,
+          size: this.page.size,
+          listType: this.listType,
+          spaceId: this.$route.params.id
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.blogList = resp.data.records
+          } else {
+            this.blogList = []
           }
         })
     },
@@ -281,6 +345,10 @@ export default {
         .catch((e) => {
           this.$router.push('/')
         })
+    },
+    toggleListType() {
+      this.isBlogList = !this.isBlogList
+      this.isBlogList ? this.loadBlogs() : this.loadQuestions()
     },
     exitSpace() {
       this.$axios

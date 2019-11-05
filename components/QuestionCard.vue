@@ -15,20 +15,20 @@
             class="d-md-flex"
             hidden-sm-and-down
           >
-            <div>
-              <v-icon>mdi-comment-text-outline</v-icon>
+            <div title="回答">
+              <v-icon small>mdi-comment-text-outline</v-icon>
               <span class="num-span">{{ question.answerNum }}</span>
             </div>
-            <div>
-              <v-icon>mdi-thumb-up-outline</v-icon>
+            <div title="支持">
+              <v-icon small>mdi-thumb-up-outline</v-icon>
               <span class="num-span">{{ question.voteNum }}</span>
             </div>
-            <div>
-              <v-icon>mdi-cursor-default-click-outline</v-icon>
+            <div title="浏览">
+              <v-icon small>mdi-cursor-default-click-outline</v-icon>
               <span class="num-span">{{ question.viewNum }}</span>
             </div>
           </v-layout>
-          <v-flex xs9>
+          <v-flex xs9 style="margin-top: 4px">
             <v-btn
               height="30px"
               class="no-hover-active title d-inline-block text-truncate text-left no-flex px-1"
@@ -175,7 +175,8 @@ export default {
 }
 
 .num-span {
-  margin-left: 14px;
+  margin-left: 7px;
+  font-size: 14px;
 }
 
 .icon {

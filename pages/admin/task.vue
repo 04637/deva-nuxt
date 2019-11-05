@@ -159,15 +159,15 @@
             <v-btn color="private" text to="/"><strong>问题管理</strong></v-btn
             >|
             <v-btn color="private" text to="/blog/blogList"
-              ><strong>博文管理</strong></v-btn
+              ><span>博文管理</span></v-btn
             >|
             <v-btn color="private" text to="/user/users"
-              ><strong>用户管理</strong></v-btn
+              ><span>用户管理</span></v-btn
             >|
             <v-btn color="private" text to="/tag/tags"
-              ><strong>标签管理</strong></v-btn
+              ><span>标签管理</span></v-btn
             >|<v-btn color="private" text to="/admin/space"
-              ><strong>空间管理</strong></v-btn
+              ><span>空间管理</span></v-btn
             >
           </v-layout>
         </v-card>
@@ -176,16 +176,16 @@
         <v-card width="100%">
           <v-card-text
             ><span
-              >在线人数：<strong class="primary--text">{{
+              >在线人数：<span class="primary--text">{{
                 monitor.onlineCount
-              }}</strong>
+              }}</span>
               / {{ monitor.userCount }}</span
             >
 
             <span class="ml-5"
-              >已解决问题：<strong class="primary--text">{{
+              >已解决问题：<span class="primary--text">{{
                 monitor.solvedQuestionCount
-              }}</strong>
+              }}</span>
               / {{ monitor.questionCount }}</span
             >
           </v-card-text>
@@ -230,7 +230,7 @@
             color="primary"
             :loading="taskDialog.loading"
             @click="submitReply"
-            ><strong>提交</strong>
+            ><span>提交</span>
           </v-btn>
         </v-card-actions>
       </v-card>

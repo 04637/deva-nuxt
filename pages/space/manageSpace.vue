@@ -56,7 +56,7 @@
                     icon
                     :to="'/space/userAdd?spaceId=' + spaceInfo.spaceId"
                     v-on="on"
-                    ><v-icon>mdi-account-plus</v-icon></v-btn
+                    ><v-icon>mdi-account-plus-outline</v-icon></v-btn
                   >
                 </template>
                 <span>添加成员</span>
@@ -67,7 +67,7 @@
                     icon
                     :to="'/space/userRemove?spaceId=' + spaceInfo.spaceId"
                     v-on="on"
-                    ><v-icon>mdi-account-minus</v-icon></v-btn
+                    ><v-icon>mdi-account-minus-outline</v-icon></v-btn
                   >
                 </template>
                 <span>移除成员</span>
@@ -75,7 +75,7 @@
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
                   <v-btn icon v-on="on" @click="batchAdd.dialog = true"
-                    ><v-icon>mdi-account-multiple-plus</v-icon></v-btn
+                    ><v-icon>mdi-account-multiple-plus-outline</v-icon></v-btn
                   >
                 </template>
                 <span>批量添加成员</span>
@@ -86,7 +86,7 @@
           <v-list subheader>
             <v-list-item>
               <v-list-item-avatar>
-                <v-icon>mdi-account-group</v-icon>
+                <v-icon>mdi-account-group-outline</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-layout>
@@ -102,7 +102,7 @@
             <v-divider></v-divider>
             <v-list-item>
               <v-list-item-avatar>
-                <v-icon>mdi-comment-question</v-icon>
+                <v-icon>mdi-comment-question-outline</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-layout>
@@ -116,7 +116,7 @@
             <v-divider></v-divider>
             <v-list-item>
               <v-list-item-avatar>
-                <v-icon>mdi-comment-check</v-icon>
+                <v-icon>mdi-comment-check-outline</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-layout>
@@ -198,7 +198,7 @@
                     small
                     color="private"
                     text
-                    ><strong>复制邀请链</strong></v-btn
+                    ><span>复制邀请链</span></v-btn
                   >
                 </v-row>
               </v-list-item-action>
@@ -208,6 +208,7 @@
               <v-btn
                 width="100vw"
                 color="red"
+                style="color: white"
                 @click="confirmDelete.dialog = true"
                 >释放该空间</v-btn
               >

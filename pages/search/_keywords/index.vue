@@ -19,7 +19,6 @@
               >
               <v-chip
                 v-if="$route.query.match === 'tags'"
-                color="primary"
                 text
                 style="max-width:170px; cursor: pointer; text-decoration: none;border-radius: 0"
                 :title="$route.params.keywords"

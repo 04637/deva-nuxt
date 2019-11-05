@@ -17,8 +17,7 @@
         outlined
         color="private"
         small
-        ><v-icon small>visibility_off</v-icon
-        ><strong class="ml-1">{{ spaceInfo.spaceName }}</strong></v-btn
+        ><span class="ml-1">{{ spaceInfo.spaceName }}</span></v-btn
       >
     </v-layout>
     <v-divider></v-divider>

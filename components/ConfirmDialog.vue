@@ -17,7 +17,7 @@
             $emit('update:dialog', false)
             confirm()
           "
-          ><strong>确定</strong>
+          ><span>确定</span>
         </v-btn>
       </v-card-actions>
     </v-card>

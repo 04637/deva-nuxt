@@ -243,7 +243,7 @@ export default {
   head() {
     // 不能写成 head:()=>({}) https://stackoverflow.com/blogs/46064245/nuxt-js-ssr-title-undefined
     return {
-      title: this.blogDetail.title,
+      title: this.blogDetail.title + ' -DEVA开发者社区',
       meta: [
         { hid: 'keywords', name: 'keywords', content: this.keywords },
         {

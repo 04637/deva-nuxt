@@ -194,7 +194,7 @@
             >关闭</v-btn
           >
           <v-btn color="primary" small text @click="updatePhone"
-            ><strong>提交</strong></v-btn
+            ><span>提交</span></v-btn
           >
         </v-card-actions>
       </v-card>

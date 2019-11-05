@@ -137,10 +137,11 @@ export default {
         },
         light: {
           // primary: colors.cyan,
+          success: '#01a687',
           primary: '#01a687',
           background_color: '#fafafa',
           new_orange: '#ff6600',
-          private: colors.pink,
+          private: '#eb6f5a',
           my_gray: '#808080',
           solo_color: colors.white,
           inverted_color: colors.black

@@ -32,7 +32,9 @@
               >
               <v-list-item to="/question/ask">
                 <v-list-item-action>
-                  <v-icon>mdi-comment-question-outline</v-icon>
+                  <v-icon style="font-size: 21px"
+                    >mdi-comment-question-outline</v-icon
+                  >
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>提&nbsp;&nbsp;&nbsp;问</v-list-item-title>
@@ -256,6 +258,7 @@
                     max-width="120px"
                     text
                     small
+                    color="background_color"
                     :to="'/user/' + $store.getters.getUserInfo.userId"
                     style="border-radius: 0;"
                     class="d-inline-block no-flex text-truncate text-left mr-1"
@@ -404,9 +407,7 @@
               "
               >关闭</v-btn
             >
-            <v-btn color="primary" small text @click="joinToSpace"
-              ><strong>加入</strong></v-btn
-            >
+            <v-btn color="primary" small text @click="joinToSpace">加入</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
