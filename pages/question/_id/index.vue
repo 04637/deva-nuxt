@@ -41,11 +41,14 @@
                     >
                   </v-btn>
                   <v-btn icon fab @click="collectQuestion">
-                    <v-icon :color="questionDetail.isCollected ? 'pink' : ''">{{
-                      questionDetail.isCollected
-                        ? 'favorite'
-                        : 'favorite_border'
-                    }}</v-icon>
+                    <v-icon
+                      :color="questionDetail.isCollected ? 'private' : ''"
+                      >{{
+                        questionDetail.isCollected
+                          ? 'favorite'
+                          : 'favorite_border'
+                      }}</v-icon
+                    >
                   </v-btn>
                 </v-layout>
               </v-flex>
@@ -60,7 +63,7 @@
                     "
                     id="markDialogBtn"
                     text
-                    color="pink"
+                    color="private"
                     style="height: 24px; padding: 0 10px;"
                     @click.stop="similarMark.dialog = !similarMark.dialog"
                     ><span>问题重复？标记相似</span>
@@ -646,7 +649,6 @@
             label="输入相似问题的链接"
             :rules="[rules.matchQuestionLink]"
             :error-messages="similarMark.errorMsg"
-            autofocus
           ></v-text-field>
           <small
             >合理的标记可以帮助小伙伴们寻找答案，提升自己的声望。同时滥用标记，关联无关问题也将受到惩罚哦!</small

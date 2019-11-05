@@ -16,15 +16,15 @@
             hidden-sm-and-down
           >
             <div>
-              <v-icon>mdi-heart</v-icon>
+              <v-icon>mdi-heart-outline</v-icon>
               <strong class="num-span">{{ blog.likeNum }}</strong>
             </div>
             <div>
-              <v-icon>thumb_up_alt</v-icon>
+              <v-icon>mdi-thumb-up-outline</v-icon>
               <strong class="num-span">{{ blog.voteNum }}</strong>
             </div>
             <div>
-              <v-icon>remove_red_eye</v-icon>
+              <v-icon>mdi-cursor-default-click-outline</v-icon>
               <strong class="num-span">{{ blog.viewNum }}</strong>
             </div>
           </v-layout>

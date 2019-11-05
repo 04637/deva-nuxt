@@ -28,12 +28,12 @@
                 >浏览 {{ blogDetail.viewNum }} 次</span
               >
               <v-btn icon small class="ml-4" @click="likeBlog"
-                ><v-icon small :color="blogDetail.isLiked ? 'pink' : ''"
+                ><v-icon small :color="blogDetail.isLiked ? 'private' : ''"
                   >favorite</v-icon
                 ></v-btn
               ><span>{{ blogDetail.likeNum }}</span>
               <v-btn icon small class="ml-4" @click="voteBlog"
-                ><v-icon small :color="blogDetail.isUseful ? 'pink' : ''"
+                ><v-icon small :color="blogDetail.isUseful ? 'private' : ''"
                   >mdi-thumb-up</v-icon
                 ></v-btn
               ><span>{{ blogDetail.voteNum }}</span>

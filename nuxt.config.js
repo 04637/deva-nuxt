@@ -130,7 +130,7 @@ export default {
           sub: colors.grey.lighten1,
           background_color: '#303030',
           new_orange: '#d14435',
-          private: colors.pink,
+          private: '#eb6f5a',
           my_gray: '#d3d3d3',
           solo_color: '#424242',
           inverted_color: colors.white

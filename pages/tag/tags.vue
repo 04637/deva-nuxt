@@ -43,7 +43,7 @@
               ><v-icon small>edit</v-icon></v-btn
             >
             <v-btn class="ml-1" icon small @click="likeTag(tagInfo)"
-              ><v-icon :color="tagInfo.liked ? 'pink' : ''" small
+              ><v-icon :color="tagInfo.liked ? 'private' : ''" small
                 >mdi-heart</v-icon
               ></v-btn
             >

@@ -11,10 +11,11 @@
         transition="slide-x-reverse-transition"
       >
         <template v-slot:activator>
+          <!-- 黄色 #e9c31e-->
           <v-btn
             id="floatRoot"
             v-model="fab"
-            color="private"
+            color="#eb6f5a"
             fab
             style="color: white"
           >
@@ -72,14 +73,13 @@
                 v-model="suggest.content"
                 label="输入您的意见"
                 :rules="[rules.min10, rules.max1000]"
-                autofocus
                 rows="20"
                 :counter="1000"
               ></v-textarea>
             </v-form>
             <div>
               <small class="success--text">
-                DEVA不是完美的，我们渴望您的建议
+                我们渴望您的建议
               </small>
             </div>
           </v-card-text>
@@ -87,6 +87,7 @@
             <v-spacer></v-spacer>
             <v-btn
               text
+              small
               @click="
                 suggest.dialog = false
                 suggest.resp = null
@@ -96,10 +97,11 @@
             </v-btn>
             <v-btn
               text
+              small
               color="primary"
               :loading="suggest.loading"
               @click="submitSuggest"
-              ><strong>提交</strong>
+              ><span>提交</span>
             </v-btn>
           </v-card-actions>
         </v-card>

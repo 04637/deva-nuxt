@@ -37,7 +37,7 @@
                   small
                   text
                   icon
-                  :color="isFollowed ? 'pink' : ''"
+                  :color="isFollowed ? 'private' : ''"
                   v-on="on"
                   @click="unWatchUser"
                 >
@@ -54,7 +54,7 @@
                   text
                   small
                   icon
-                  :color="isFollowed ? 'pink' : ''"
+                  :color="isFollowed ? 'private' : ''"
                   v-on="on"
                   @click="followUser"
                 >

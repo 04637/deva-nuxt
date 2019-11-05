@@ -20,7 +20,7 @@
             <v-list-item-group>
               <v-list-item to="/">
                 <v-list-item-action>
-                  <v-icon>trip_origin</v-icon>
+                  <v-icon>mdi-circle-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>主&nbsp;&nbsp;&nbsp;页</v-list-item-title>
@@ -32,7 +32,7 @@
               >
               <v-list-item to="/question/ask">
                 <v-list-item-action>
-                  <v-icon>question_answer</v-icon>
+                  <v-icon>mdi-comment-question-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>提&nbsp;&nbsp;&nbsp;问</v-list-item-title>
@@ -48,7 +48,7 @@
               </v-list-item>
               <v-list-item to="/user/users">
                 <v-list-item-action>
-                  <v-icon>people</v-icon>
+                  <v-icon>mdi-account-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>用&nbsp;&nbsp;&nbsp;户</v-list-item-title>
@@ -56,7 +56,7 @@
               </v-list-item>
               <v-list-item to="/tag/tags">
                 <v-list-item-action>
-                  <v-icon>bookmarks</v-icon>
+                  <v-icon>mdi-bookmark-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>标&nbsp;&nbsp;&nbsp;签</v-list-item-title>
@@ -64,7 +64,7 @@
               </v-list-item>
               <v-list-item to="/blog/blogList">
                 <v-list-item-action>
-                  <v-icon>mdi-post</v-icon>
+                  <v-icon>mdi-file-document-box-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>博&nbsp;&nbsp;&nbsp;文</v-list-item-title>
@@ -83,7 +83,7 @@
                         small
                         @click="joinSpace.dialog = true"
                         v-on="on"
-                        ><v-icon>add</v-icon></v-btn
+                        ><v-icon>mdi-location-enter</v-icon></v-btn
                       >
                     </v-layout>
                   </template>
@@ -93,7 +93,7 @@
                   <template v-slot:activator="{ on }">
                     <v-layout justify-center :class="mini ? 'mt-2' : ''">
                       <v-btn to="/space/createSpace" icon small v-on="on"
-                        ><v-icon>mdi-new-box</v-icon></v-btn
+                        ><v-icon>mdi-plus</v-icon></v-btn
                       >
                     </v-layout>
                   </template>
@@ -118,7 +118,8 @@
                 color="default"
               >
                 <template v-slot:prepend="{ item }">
-                  <v-icon v-if="item.children">dashboard</v-icon>&nbsp;&nbsp;
+                  <v-icon v-if="item.children">mdi-cards-outline</v-icon
+                  >&nbsp;&nbsp;
                 </template>
                 <template v-slot:label="{ item }">
                   <v-btn
@@ -184,7 +185,7 @@
               translate="yes"
               flat
               class="ml-10 min-input search-input"
-              :class="'elevation-' + searchElv"
+              :class="'aelevation-' + searchElv"
               label="搜索"
               hide-details
               elavation
@@ -513,6 +514,11 @@ export default {
     }
   },
   watch: {
+    // 解决点进详情滚动条位置不变
+    $route() {
+      document.body.scrollTop = 0
+      document.documentElement.scrollTop = 0
+    },
     // 监听vuex https://stackoverflow.com/questions/43270159/vuejs-2-how-to-watch-store-values-from-vuex
     needReloadSpaceList() {
       this.loadSpaceList()
@@ -724,13 +730,21 @@ export default {
 }
 </script>
 <style>
-.search-input.elevation-0 .v-input__control .v-input__slot {
-  width: 40%;
+.search-input.aelevation-0 .v-input__control .v-input__slot {
+  width: 50%;
   transition: width 0.5s;
 }
-.search-input.elevation-1 .v-input__control .v-input__slot {
+.search-input.aelevation-1 .v-input__control .v-input__slot {
   width: 100%;
   transition: width 0.3s;
+}
+.search-input .v-input__slot {
+  border: 1px solid #80808042;
+}
+.v-list-item__action {
+  position: relative;
+  /*top: 1px;*/
+  margin-right: 20px;
 }
 </style>
 <style scoped>
