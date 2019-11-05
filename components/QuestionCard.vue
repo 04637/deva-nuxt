@@ -17,15 +17,15 @@
           >
             <div>
               <v-icon>mdi-comment-text-outline</v-icon>
-              <strong class="num-span">{{ question.answerNum }}</strong>
+              <span class="num-span">{{ question.answerNum }}</span>
             </div>
             <div>
               <v-icon>mdi-thumb-up-outline</v-icon>
-              <strong class="num-span">{{ question.voteNum }}</strong>
+              <span class="num-span">{{ question.voteNum }}</span>
             </div>
             <div>
               <v-icon>mdi-cursor-default-click-outline</v-icon>
-              <strong class="num-span">{{ question.viewNum }}</strong>
+              <span class="num-span">{{ question.viewNum }}</span>
             </div>
           </v-layout>
           <v-flex xs9>

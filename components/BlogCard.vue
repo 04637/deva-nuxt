@@ -17,15 +17,15 @@
           >
             <div>
               <v-icon>mdi-heart-outline</v-icon>
-              <strong class="num-span">{{ blog.likeNum }}</strong>
+              <span class="num-span">{{ blog.likeNum }}</span>
             </div>
             <div>
               <v-icon>mdi-thumb-up-outline</v-icon>
-              <strong class="num-span">{{ blog.voteNum }}</strong>
+              <span class="num-span">{{ blog.voteNum }}</span>
             </div>
             <div>
               <v-icon>mdi-cursor-default-click-outline</v-icon>
-              <strong class="num-span">{{ blog.viewNum }}</strong>
+              <span class="num-span">{{ blog.viewNum }}</span>
             </div>
           </v-layout>
           <v-flex xs9>
