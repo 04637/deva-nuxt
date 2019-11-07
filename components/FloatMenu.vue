@@ -75,6 +75,7 @@
                 :rules="[rules.min10, rules.max1000]"
                 rows="20"
                 :counter="1000"
+                no-resize
               ></v-textarea>
             </v-form>
             <div>

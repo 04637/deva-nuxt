@@ -8,7 +8,7 @@
           clipped
           permanent
           :mini-variant="mini"
-          width="160px"
+          width="170px"
           style="height: 100%; max-height: 100%"
         >
           <v-list nav>
@@ -19,8 +19,14 @@
             </v-layout>
             <v-list-item-group>
               <v-list-item to="/">
-                <v-list-item-action>
-                  <v-icon small>mdi-circle-outline</v-icon>
+                <v-list-item-action :class="mini ? 'mini-action' : ''">
+                  <v-tooltip v-if="mini" right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon small v-on="on">mdi-circle-outline</v-icon>
+                    </template>
+                    <span>主页</span>
+                  </v-tooltip>
+                  <v-icon v-else small>mdi-circle-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>主&nbsp;&nbsp;&nbsp;页</v-list-item-title>
@@ -35,40 +41,74 @@
                   $router.push({ path: '/question/ask', query: { name: '3' } })
                 "
               >
-                <v-list-item-action>
-                  <v-icon small>mdi-comment-question-outline</v-icon>
+                <v-list-item-action :class="mini ? 'mini-action' : ''">
+                  <v-tooltip v-if="mini" right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon small v-on="on"
+                        >mdi-comment-question-outline</v-icon
+                      >
+                    </template>
+                    <span>提问</span>
+                  </v-tooltip>
+                  <v-icon v-else small>mdi-comment-question-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>提&nbsp;&nbsp;&nbsp;问</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item to="/question/find">
-                <v-list-item-action>
-                  <v-icon small>search</v-icon>
+                <v-list-item-action :class="mini ? 'mini-action' : ''">
+                  <v-tooltip v-if="mini" right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon small v-on="on">search</v-icon>
+                    </template>
+                    <span>发现</span>
+                  </v-tooltip>
+                  <v-icon v-else small>search</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>发&nbsp;&nbsp;&nbsp;现</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item to="/user/users">
-                <v-list-item-action>
-                  <v-icon small>mdi-account-outline</v-icon>
+                <v-list-item-action :class="mini ? 'mini-action' : ''">
+                  <v-tooltip v-if="mini" right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon small v-on="on">mdi-account-outline</v-icon>
+                    </template>
+                    <span>用户</span>
+                  </v-tooltip>
+                  <v-icon v-else small>mdi-account-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>用&nbsp;&nbsp;&nbsp;户</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item to="/tag/tags">
-                <v-list-item-action>
-                  <v-icon small>mdi-bookmark-outline</v-icon>
+                <v-list-item-action :class="mini ? 'mini-action' : ''">
+                  <v-tooltip v-if="mini" right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon small v-on="on">mdi-bookmark-outline</v-icon>
+                    </template>
+                    <span>标签</span>
+                  </v-tooltip>
+                  <v-icon v-else small>mdi-bookmark-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>标&nbsp;&nbsp;&nbsp;签</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item to="/blog/blogList">
-                <v-list-item-action>
-                  <v-icon small>mdi-file-document-box-outline</v-icon>
+                <v-list-item-action :class="mini ? 'mini-action' : ''">
+                  <v-tooltip v-if="mini" right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon small v-on="on"
+                        >mdi-file-document-box-outline</v-icon
+                      >
+                    </template>
+                    <span>博文</span>
+                  </v-tooltip>
+                  <v-icon v-else small>mdi-file-document-box-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>博&nbsp;&nbsp;&nbsp;文</v-list-item-title>
@@ -122,7 +162,16 @@
                 color="default"
               >
                 <template v-slot:prepend="{ item }">
-                  <v-icon v-if="item.children">mdi-cards-outline</v-icon
+                  <v-tooltip v-if="mini" right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-if="item.children" v-on="on"
+                        >mdi-cards-outline</v-icon
+                      >
+                    </template>
+                    <span>我的空间</span>
+                  </v-tooltip>
+                  <v-icon v-if="item.children && !mini"
+                    >mdi-cards-outline</v-icon
                   >&nbsp;&nbsp;
                 </template>
                 <template v-slot:label="{ item }">
@@ -150,7 +199,13 @@
               <div v-if="$store.getters.getUserType === 'ADMIN'">
                 <v-list-item class="mt-3" to="/admin/task">
                   <v-list-item-action>
-                    <v-icon small color="private">fingerprint</v-icon>
+                    <v-tooltip v-if="mini" right>
+                      <template v-slot:activator="{ on }">
+                        <v-icon small v-on="on">fingerprint</v-icon>
+                      </template>
+                      <span>管理</span>
+                    </v-tooltip>
+                    <v-icon v-else small color="private">fingerprint</v-icon>
                   </v-list-item-action>
                   <v-list-item-content>
                     <v-list-item-title
@@ -165,10 +220,21 @@
                 @click="$store.commit('toggleDarkTheme')"
               >
                 <v-list-item-action style="align-self: center">
-                  <v-icon v-show="$vuetify.theme.dark" small
+                  <v-tooltip v-if="mini" right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-show="$vuetify.theme.dark" small v-on="on"
+                        >mdi-brightness-4</v-icon
+                      >
+                      <v-icon v-show="!$vuetify.theme.dark" small v-on="on"
+                        >mdi-brightness-5</v-icon
+                      >
+                    </template>
+                    <span>切换主题</span>
+                  </v-tooltip>
+                  <v-icon v-show="$vuetify.theme.dark && !mini" small
                     >mdi-brightness-4</v-icon
                   >
-                  <v-icon v-show="!$vuetify.theme.dark" small
+                  <v-icon v-show="!$vuetify.theme.dark && !mini" small
                     >mdi-brightness-5</v-icon
                   >
                 </v-list-item-action>
@@ -457,7 +523,12 @@ export default {
     mini: false,
     drawer: null,
     menuOpen: false,
-    keepAliveRouters: [],
+    keepAliveRouters: [
+      'question-ask',
+      'blog-postBlog',
+      'user-signUp',
+      'user-login'
+    ],
     ssrRouters: ['question-id', 'blog-id'],
     keywords: null,
     spaceList: [
@@ -764,6 +835,10 @@ export default {
 .ml-small {
   margin-left: 0 !important;
   padding-left: 0 !important;
+}
+.mini-action {
+  justify-content: center;
+  margin-right: 0 !important;
 }
 .unread-icon {
   width: 13px;

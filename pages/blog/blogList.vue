@@ -34,6 +34,19 @@
         </v-flex>
         <v-flex md6 lg4 align-self-end>
           <v-tabs
+            v-if="search.flag"
+            grow
+            centered
+            center-active
+            height="38"
+            @change="searchBlogs"
+          >
+            <v-tab @click="listType = 'RELEVANCE'">相关</v-tab>
+            <v-tab @click="listType = 'NEWEST'">最新</v-tab>
+            <v-tab @click="listType = 'ACTIVE'">活跃</v-tab>
+          </v-tabs>
+          <v-tabs
+            v-else
             v-model="currentTab"
             grow
             centered
@@ -86,10 +99,12 @@ export default {
   data: () => ({
     currentTab: 0,
     listType: 'RECENT',
+    search: {
+      flag: false
+    },
     blogList: null,
     keywords: null,
-    hotQuestionList: null,
-    currentTitle: '最新问题',
+    hotBlogList: null,
     likeKeywords: null,
     page: {
       current: 1,
@@ -162,7 +177,39 @@ export default {
         this.currentTitle = '推荐'
       }
     },
-    searchBlogs() {},
+    searchBlogs() {
+      if (!this.keywords) {
+        this.search.flag = false
+        this.listType = 'RECENT'
+        this.loadBlogs()
+        return
+      }
+      if (!this.search.flag) {
+        this.listType = 'RELEVANCE'
+        this.search.flag = true
+        return
+      }
+      // 第一次搜索
+      this.search.flag = true
+      const _url = '/esBlogInfo/search'
+      this.page.current = 1
+      this.loadMore.isLoading = false
+      this.loadMore.noMore = false
+      this.$axios
+        .$post(_url, {
+          keywords: this.keywords,
+          current: this.page.current,
+          size: this.page.size,
+          sortType: this.listType
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.blogList = resp.data.content
+          } else {
+            this.blogList = []
+          }
+        })
+    },
     scroll() {
       window.onscroll = () => {
         if (document.documentElement.scrollTop > 200) {
@@ -171,7 +218,7 @@ export default {
           this.$store.commit('setShowFooter', false)
         }
 
-        if (!/^\/$/.test(this.$route.path)) {
+        if (!/\/blogList$/.test(this.$route.path)) {
           return false
         }
         // 距离底部200px时加载一次
@@ -186,11 +233,15 @@ export default {
           !this.loadMore.noMore
         ) {
           this.loadMore.isLoading = true
-          let _url = '/questionInfo/listQuestions'
+          let _url = '/blogInfo/listBlogs'
           let _sortType = null
           if (this.listType === 'RECOMMEND') {
-            _url = '/esQuestionInfo/search'
+            _url = '/esBlogInfo/search'
             _sortType = 'NEWEST'
+            this.keywords = this.likeKeywords
+          } else if (this.search.flag) {
+            _url = '/esBlogInfo/search'
+            _sortType = this.listType
           }
           this.$axios
             .$post(_url, {
@@ -198,7 +249,7 @@ export default {
               size: this.page.size,
               listType: this.listType,
               sortType: _sortType,
-              keywords: this.likeKeywords
+              keywords: this.keywords
             })
             .then((resp) => {
               this.loadMore.isLoading = false

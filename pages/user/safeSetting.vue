@@ -13,7 +13,7 @@
         <v-card class="pa-4">
           <v-layout justify-center>
             <small class="my_gray--text"
-              >承诺：我们不会给您发送任何广告邮件或短信</small
+              >我们不会给您发送任何广告邮件或短信</small
             >
           </v-layout>
           <v-layout justify-space-between>

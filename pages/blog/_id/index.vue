@@ -49,7 +49,7 @@
               <v-flex xs8>
                 <v-layout>
                   <TagChip
-                    v-for="tag in blogDetail.tags"
+                    v-for="tag in blogDetail.tagInfos"
                     :key="tag.tagId"
                     class="mr-3"
                     :tag-info="tag"
@@ -233,7 +233,7 @@ export default {
     })
     const blogDetail = resp.data
     const keywords1 = blogDetail.title.split(' ')
-    const keywords2 = blogDetail.tags.map((t) => {
+    const keywords2 = blogDetail.tagInfos.map((t) => {
       return t.tagName
     })
     const _keywords = keywords1.concat(keywords2)

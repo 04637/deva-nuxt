@@ -47,7 +47,7 @@
             <v-card-actions>
               <v-layout>
                 <TagChip
-                  v-for="tag in blog.tags"
+                  v-for="tag in blog.tagInfos"
                   :key="tag.tagId"
                   :tag-info="tag"
                   class="mr-3"

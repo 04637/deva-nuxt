@@ -38,7 +38,9 @@
               :to="'/question/' + question.questionId"
               >{{ question.title }}</v-btn
             >
-            <v-icon v-if="question.status === 1" color="primary">check</v-icon>
+            <v-icon v-if="question.status === 1" color="primary" title="已采纳"
+              >check</v-icon
+            >
             <v-card-text
               v-dompurify-html:noHtml="$md.render(question.content)"
               style="padding: 8px"

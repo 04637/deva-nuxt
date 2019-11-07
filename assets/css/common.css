@@ -241,3 +241,9 @@ p img {
   margin-right: 16px !important;
 }
 
+.v-text-field .error--text {
+  color: #ff6600 !important;
+}
+.v-application .v-text-field__details .error--text {
+  color: #ff6600 !important;
+}

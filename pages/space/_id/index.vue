@@ -8,7 +8,7 @@
               <v-row align="center" justify="start">
                 <v-chip
                   small
-                  style="margin-right: 100px; border-radius: 0; position: relative; left: -12px"
+                  style="margin-right: 100px; border-radius: 0; position: relative; left: -3px"
                   @click="toggleListType"
                   >浏览{{ isBlogList ? '问题' : '博文'
                   }}<v-icon small>mdi-meteor</v-icon></v-chip
@@ -99,9 +99,10 @@
               <v-row
                 ><v-text-field
                   v-model="keywords"
+                  style="max-width: 60%"
                   translate="yes"
                   class="pt-0 mt-0 mr-2"
-                  placeholder="搜索问题"
+                  :placeholder="'搜索' + (isBlogList ? '博文' : '问题')"
                   hide-details
                   prepend-inner-icon="search"
                   flat
@@ -117,6 +118,7 @@
             centered
             center-active
             height="38"
+            grow
             @change="searchQuestions"
           >
             <v-tab @click="listType = 'RELEVANCE'">相关</v-tab>
@@ -128,6 +130,7 @@
             centered
             center-active
             height="38"
+            grow
             @change="loadBlogs"
           >
             <v-tab @click="listType = 'RECENT'">最新</v-tab>
@@ -139,6 +142,7 @@
             centered
             center-active
             height="38"
+            grow
             @change="loadQuestions"
           >
             <v-tab @click="listType = 'RECENT'">最新</v-tab>

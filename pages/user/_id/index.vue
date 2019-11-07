@@ -127,7 +127,13 @@
             回答
           </v-tab>
           <v-tab>
-            收藏
+            博文
+          </v-tab>
+          <v-tab>
+            问题收藏
+          </v-tab>
+          <v-tab>
+            博文收藏
           </v-tab>
           <v-tab>
             关注
@@ -210,6 +216,37 @@
               </v-data-table>
             </v-card>
           </v-tab-item>
+          <!-- blog tab -->
+          <v-tab-item>
+            <v-card>
+              <v-card-title class="pt-0">
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="blogTab.search"
+                  append-icon="search"
+                  label="搜索"
+                  single-line
+                  hide-details
+                  class="pt-0"
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                locale="zh-Hans"
+                :headers="blogTab.headers"
+                :items="blogTab.items"
+                :search="blogTab.search"
+              >
+                <template #item.title="{item}">
+                  <router-link :to="'/blog/' + item.blogId">{{
+                    item.title
+                  }}</router-link>
+                </template>
+                <template #item.isPublic="{item}">
+                  {{ item.isPublic ? '是' : '否' }}
+                </template>
+              </v-data-table>
+            </v-card>
+          </v-tab-item>
           <!-- collect tab -->
           <v-tab-item>
             <v-card>
@@ -231,6 +268,33 @@
               >
                 <template #item.title="{item}">
                   <router-link :to="'/question/' + item.questionId">{{
+                    item.title
+                  }}</router-link>
+                </template>
+              </v-data-table>
+            </v-card>
+          </v-tab-item>
+          <!-- 博文收藏-->
+          <v-tab-item>
+            <v-card>
+              <v-card-title class="pt-0">
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="likeBlogTab.search"
+                  append-icon="search"
+                  label="搜索"
+                  single-line
+                  hide-details
+                  class="pt-0"
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                :headers="likeBlogTab.headers"
+                :items="likeBlogTab.items"
+                :search="likeBlogTab.search"
+              >
+                <template #item.title="{item}">
+                  <router-link :to="'/blog/' + item.blogId">{{
                     item.title
                   }}</router-link>
                 </template>
@@ -321,6 +385,37 @@ export default {
         { text: '浏览', value: 'viewNum' }
       ],
       items: []
+    },
+    likeBlogTab: {
+      search: '',
+      headers: [
+        {
+          text: '标题',
+          sortable: false,
+          align: 'left',
+          value: 'title'
+        },
+        { text: '喜欢', value: 'likeNum' },
+        { text: '支持', value: 'voteNum' },
+        { text: '浏览', value: 'viewNum' }
+      ],
+      items: []
+    },
+    blogTab: {
+      search: '',
+      headers: [
+        {
+          text: '标题',
+          sortable: false,
+          align: 'left',
+          value: 'title'
+        },
+        { text: '公开', value: 'isPublic' },
+        { text: '喜欢', value: 'likeNum' },
+        { text: '支持', value: 'voteNum' },
+        { text: '浏览', value: 'viewNum' }
+      ],
+      items: []
     }
   }),
   computed: {
@@ -352,6 +447,8 @@ export default {
             this.askTab.items = this.userProfile.questions
             this.answerTab.items = this.userProfile.answers
             this.collectTab.items = this.userProfile.questionCollection
+            this.likeBlogTab.items = this.userProfile.blogCollection
+            this.blogTab.items = this.userProfile.blogs
           }
         })
     },
