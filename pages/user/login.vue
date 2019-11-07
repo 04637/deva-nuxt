@@ -109,32 +109,36 @@
               :href="loginUrl.wechat"
               style="text-decoration: none"
               title="使用 微信 帐号登录"
-              ><v-btn icon><v-icon>mdi-wechat</v-icon></v-btn></a
+              ><v-btn icon small><v-icon small>mdi-wechat</v-icon></v-btn></a
             >
             <a
               :href="loginUrl.github"
               style="text-decoration: none"
               title="使用 github 帐号登录"
-              ><v-btn icon><v-icon>mdi-github-circle</v-icon></v-btn></a
+              ><v-btn icon small
+                ><v-icon small>mdi-github-circle</v-icon></v-btn
+              ></a
             >
             <a
               :href="loginUrl.stackOverflow"
               style="text-decoration: none"
               title="使用 stackoverflow 帐号登录"
-              ><v-btn icon><v-icon>mdi-stack-overflow</v-icon></v-btn></a
+              ><v-btn icon small
+                ><v-icon small>mdi-stack-overflow</v-icon></v-btn
+              ></a
             >
 
             <a
               :href="loginUrl.qqchat"
               style="text-decoration: none"
               title="使用 QQ 帐号登录"
-              ><v-btn icon><v-icon>mdi-qqchat</v-icon></v-btn></a
+              ><v-btn icon small><v-icon small>mdi-qqchat</v-icon></v-btn></a
             >
             <a
               :href="loginUrl.gitlab"
               style="text-decoration: none"
               title="使用 gitlab 帐号登录"
-              ><v-btn icon><v-icon>mdi-gitlab</v-icon></v-btn></a
+              ><v-btn icon small><v-icon small>mdi-gitlab</v-icon></v-btn></a
             >
             <!--<a-->
             <!--  :href="loginUrl.google"-->

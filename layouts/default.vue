@@ -8,7 +8,7 @@
           clipped
           permanent
           :mini-variant="mini"
-          width="200px"
+          width="160px"
           style="height: 100%; max-height: 100%"
         >
           <v-list nav>
@@ -20,7 +20,7 @@
             <v-list-item-group>
               <v-list-item to="/">
                 <v-list-item-action>
-                  <v-icon>mdi-circle-outline</v-icon>
+                  <v-icon small>mdi-circle-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>主&nbsp;&nbsp;&nbsp;页</v-list-item-title>
@@ -30,11 +30,13 @@
               <v-subheader v-show="!mini" class="letter-space"
                 >DEVA</v-subheader
               >
-              <v-list-item to="/question/ask">
+              <v-list-item
+                @click="
+                  $router.push({ path: '/question/ask', query: { name: '3' } })
+                "
+              >
                 <v-list-item-action>
-                  <v-icon style="font-size: 21px"
-                    >mdi-comment-question-outline</v-icon
-                  >
+                  <v-icon small>mdi-comment-question-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>提&nbsp;&nbsp;&nbsp;问</v-list-item-title>
@@ -42,7 +44,7 @@
               </v-list-item>
               <v-list-item to="/question/find">
                 <v-list-item-action>
-                  <v-icon>search</v-icon>
+                  <v-icon small>search</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>发&nbsp;&nbsp;&nbsp;现</v-list-item-title>
@@ -50,7 +52,7 @@
               </v-list-item>
               <v-list-item to="/user/users">
                 <v-list-item-action>
-                  <v-icon>mdi-account-outline</v-icon>
+                  <v-icon small>mdi-account-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>用&nbsp;&nbsp;&nbsp;户</v-list-item-title>
@@ -58,7 +60,7 @@
               </v-list-item>
               <v-list-item to="/tag/tags">
                 <v-list-item-action>
-                  <v-icon>mdi-bookmark-outline</v-icon>
+                  <v-icon small>mdi-bookmark-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>标&nbsp;&nbsp;&nbsp;签</v-list-item-title>
@@ -66,7 +68,7 @@
               </v-list-item>
               <v-list-item to="/blog/blogList">
                 <v-list-item-action>
-                  <v-icon>mdi-file-document-box-outline</v-icon>
+                  <v-icon small>mdi-file-document-box-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>博&nbsp;&nbsp;&nbsp;文</v-list-item-title>
@@ -80,26 +82,26 @@
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
                     <v-layout justify-center :class="mini ? 'mt-2' : ''">
+                      <v-btn to="/space/createSpace" icon small v-on="on"
+                        ><v-icon small>mdi-plus</v-icon></v-btn
+                      >
+                    </v-layout>
+                  </template>
+                  <span>创建空间</span>
+                </v-tooltip>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                    <v-layout justify-center :class="mini ? 'mt-2' : ''">
                       <v-btn
                         icon
                         small
                         @click="joinSpace.dialog = true"
                         v-on="on"
-                        ><v-icon>mdi-location-enter</v-icon></v-btn
+                        ><v-icon small>mdi-location-enter</v-icon></v-btn
                       >
                     </v-layout>
                   </template>
                   <span>加入空间</span>
-                </v-tooltip>
-                <v-tooltip right>
-                  <template v-slot:activator="{ on }">
-                    <v-layout justify-center :class="mini ? 'mt-2' : ''">
-                      <v-btn to="/space/createSpace" icon small v-on="on"
-                        ><v-icon>mdi-plus</v-icon></v-btn
-                      >
-                    </v-layout>
-                  </template>
-                  <span>创建空间</span>
                 </v-tooltip>
               </v-layout>
               <v-treeview
@@ -148,7 +150,7 @@
               <div v-if="$store.getters.getUserType === 'ADMIN'">
                 <v-list-item class="mt-3" to="/admin/task">
                   <v-list-item-action>
-                    <v-icon color="private">fingerprint</v-icon>
+                    <v-icon small color="private">fingerprint</v-icon>
                   </v-list-item-action>
                   <v-list-item-content>
                     <v-list-item-title
@@ -162,9 +164,11 @@
                 class="mt-3"
                 @click="$store.commit('toggleDarkTheme')"
               >
-                <v-list-item-action>
-                  <v-icon v-show="$vuetify.theme.dark">mdi-brightness-4</v-icon>
-                  <v-icon v-show="!$vuetify.theme.dark"
+                <v-list-item-action style="align-self: center">
+                  <v-icon v-show="$vuetify.theme.dark" small
+                    >mdi-brightness-4</v-icon
+                  >
+                  <v-icon v-show="!$vuetify.theme.dark" small
                     >mdi-brightness-5</v-icon
                   >
                 </v-list-item-action>
