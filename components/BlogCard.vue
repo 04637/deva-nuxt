@@ -40,8 +40,8 @@
             >
             <v-card-text
               v-dompurify-html:noHtml="$md.render(blog.content)"
-              style="padding: 8px"
-              class="title d-block my_gray--text text-truncate subtitle-1"
+              style="padding: 8px; min-height: 42px"
+              class="title label-description my_gray--text subtitle-1"
             >
             </v-card-text>
             <v-card-actions>
@@ -169,5 +169,15 @@ export default {
   width: 20px;
   height: 20px;
   margin-right: 2px;
+}
+.label-description {
+  font-size: 14px;
+  /*text-indent: 12px;*/
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  max-height: 62px;
 }
 </style>

@@ -27,9 +27,6 @@ export default {
   toggleDarkTheme(state) {
     state.darkTheme = !state.darkTheme
   },
-  setMonitorInterval(state, val) {
-    state.monitorInterval = val
-  },
   setShowFooter(state, val) {
     state.showFooter = val
   },
@@ -38,5 +35,11 @@ export default {
   },
   setUseMarkdown(state, val) {
     state.useMarkdown = val
+  },
+  toggleMiniNav(state) {
+    state.miniNav = !state.miniNav
+  },
+  setMiniNav(state, val) {
+    state.miniNav = val
   }
 }

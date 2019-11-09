@@ -4,6 +4,7 @@ export default () => ({
   useMarkdown: false,
   // 控制显示底部条
   showFooter: false,
+  miniNav: false,
   unReadMessageCount: 0,
   // 全局异常
   systemError: {
@@ -12,7 +13,5 @@ export default () => ({
     msg: ''
   },
   // 监听该值来控制重新加载控件列表
-  reloadSpaceFlag: 0,
-  // 管理员定时监控, 全局唯一用来销毁定时器
-  monitorInterval: null
+  reloadSpaceFlag: 0
 })

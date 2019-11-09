@@ -32,13 +32,13 @@ export default {
   isDarkTheme(state) {
     return state.darkTheme
   },
-  getMonitorInterval(state) {
-    return state.monitorInterval
-  },
   getShowFooter(state) {
     return state.showFooter
   },
   getUseMarkdown(state) {
     return state.useMarkdown
+  },
+  getMiniNav(state) {
+    return state.miniNav
   }
 }

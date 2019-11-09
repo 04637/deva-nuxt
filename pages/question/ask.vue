@@ -101,6 +101,7 @@
                   color="primary"
                   v-bind="attrs"
                   :input-value="selected"
+                  style="height: 28px"
                   close
                   @click="select"
                   @click:close="remove(item)"
@@ -134,15 +135,10 @@
           >
             <v-card-text v-if="$route.query.spaceId" class="my_gray--text">
               该问题将被发布至→
-              <v-btn
-                text
-                outlined
-                color="private"
+              <v-chip
                 small
-                :to="'/space/' + $route.query.spaceId"
-                ><strong class="ml-1">{{
-                  $route.query.spaceName
-                }}</strong></v-btn
+                style="margin-right: 100px; border-radius: 0; position: relative; left: -3px"
+                >{{ $route.query.spaceName }}</v-chip
               ></v-card-text
             >
             <v-btn
@@ -437,6 +433,22 @@ export default {
           }
         }
       })
+    }
+  },
+  beforeRouteLeave(from, to, next) {
+    if (['question-id', 'user-login', 'user-signUp'].includes(from.name)) {
+      next()
+      return
+    }
+    if (!this.contentCode || this.contentCode.length < 20) {
+      next()
+      return
+    }
+    const r = confirm('确定要离开该页面吗, 您输入的内容将不会被保存')
+    if (r) {
+      next()
+    } else {
+      next(false)
     }
   }
 }

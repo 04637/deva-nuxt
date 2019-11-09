@@ -17,12 +17,12 @@
                   style="max-width: 50%"
                   translate="yes"
                   class="pt-0 mt-0 mr-2"
-                  placeholder="搜索博文"
                   hide-details
                   append-icon="search"
                   flat
-                  @click:append="searchBlogs"
-                  @keyup.enter.native="searchBlogs"
+                  clearable
+                  @click:append="searchBtn"
+                  @keyup.enter.native="searchBtn"
                 ></v-text-field
                 ><v-btn class="ml-5" small color="primary" to="/blog/postBlog"
                   ><v-icon small>mdi-file-document-edit-outline</v-icon
@@ -34,19 +34,6 @@
         </v-flex>
         <v-flex md6 lg4 align-self-end>
           <v-tabs
-            v-if="search.flag"
-            grow
-            centered
-            center-active
-            height="38"
-            @change="searchBlogs"
-          >
-            <v-tab @click="listType = 'RELEVANCE'">相关</v-tab>
-            <v-tab @click="listType = 'NEWEST'">最新</v-tab>
-            <v-tab @click="listType = 'ACTIVE'">活跃</v-tab>
-          </v-tabs>
-          <v-tabs
-            v-else
             v-model="currentTab"
             grow
             centered
@@ -56,55 +43,48 @@
           >
             <v-tab
               @click="
-                listType = 'RECENT'
+                sortType = 'RECENT'
                 currentTitle = '最新博文'
               "
-              >最新</v-tab
+              >{{ keywords ? '相关' : '最新' }}</v-tab
             >
             <v-tab @click="clickRecommend">推荐 </v-tab>
             <v-tab
               @click="
-                listType = 'WEEK_HOT'
-                currentTitle = '一周热门'
+                sortType = 'ACTIVE'
+                currentTitle = '热度'
               "
-              >周榜</v-tab
-            >
-            <v-tab
-              @click="
-                listType = 'MONTH_HOT'
-                currentTitle = '月度榜单'
-              "
-              >月榜</v-tab
+              >热度</v-tab
             >
           </v-tabs>
         </v-flex>
       </v-layout>
       <v-divider></v-divider>
+      <span class="my_gray--text" style="font-size: 0.7rem"
+        >找到相关结果约 {{ totalElements }} 个</span
+      >
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
       <v-flex xs11 lg9 justify-start shrink>
-        <BlogCardList v-if="blogList" :blog-list="blogList"></BlogCardList>
+        <BQCardList v-if="blogList" :bq-list="blogList"></BQCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
-        <HotTag></HotTag>
+        <HotTag :load-hot="false"></HotTag><RelatePost></RelatePost>
       </v-flex>
     </v-layout>
   </v-app>
 </template>
 <script>
 import HotTag from '../../components/HotTag'
-import BlogCardList from '../../components/BlogCardList'
+import BQCardList from '../../components/BQCardList'
+import RelatePost from '../../components/RelatePost'
 export default {
-  components: { BlogCardList, HotTag },
+  components: { RelatePost, BQCardList, HotTag },
   data: () => ({
     currentTab: 0,
-    listType: 'RECENT',
-    search: {
-      flag: false
-    },
+    sortType: 'RECENT',
     blogList: null,
     keywords: null,
-    hotBlogList: null,
     likeKeywords: null,
     page: {
       current: 1,
@@ -113,7 +93,8 @@ export default {
     loadMore: {
       isLoading: false,
       noMore: false
-    }
+    },
+    totalElements: 0
   }),
   created() {
     this.loadBlogs()
@@ -127,27 +108,22 @@ export default {
       this.page.current = 1
       this.loadMore.isLoading = false
       this.loadMore.noMore = false
-      let _url = '/blogInfo/listBlogs'
-      let _sortType = null
-      if (this.listType === 'RECOMMEND') {
-        _url = '/esBlogInfo/search'
-        _sortType = 'NEWEST'
+      if (this.sortType === 'RECENT' && this.keywords) {
+        this.sortType = 'RELEVANCE'
       }
       this.$axios
-        .$post(_url, {
+        .$post('es/search', {
           current: this.page.current,
           size: this.page.size,
-          listType: this.listType,
-          sortType: _sortType,
-          keywords: this.likeKeywords
+          sortType: this.sortType,
+          keywords:
+            this.sortType === 'RECOMMEND' ? this.likeKeywords : this.keywords,
+          indices: 'BLOG'
         })
         .then((resp) => {
           if (resp.succeed) {
-            if (this.listType === 'RECOMMEND') {
-              this.blogList = resp.data.content
-            } else {
-              this.blogList = resp.data.records
-            }
+            this.blogList = resp.data.content
+            this.totalElements = resp.data.totalElements
           } else {
             this.blogList = []
           }
@@ -169,46 +145,18 @@ export default {
         })
       }
     },
+    searchBtn() {
+      this.currentTab = 0
+      this.sortType = 'RECENT'
+      this.loadBlogs()
+    },
     clickRecommend() {
       if (!this.$store.getters.getUserInfo) {
         this.$router.push('/user/login')
       } else {
-        this.listType = 'RECOMMEND'
+        this.sortType = 'RECOMMEND'
         this.currentTitle = '推荐'
       }
-    },
-    searchBlogs() {
-      if (!this.keywords) {
-        this.search.flag = false
-        this.listType = 'RECENT'
-        this.loadBlogs()
-        return
-      }
-      if (!this.search.flag) {
-        this.listType = 'RELEVANCE'
-        this.search.flag = true
-        return
-      }
-      // 第一次搜索
-      this.search.flag = true
-      const _url = '/esBlogInfo/search'
-      this.page.current = 1
-      this.loadMore.isLoading = false
-      this.loadMore.noMore = false
-      this.$axios
-        .$post(_url, {
-          keywords: this.keywords,
-          current: this.page.current,
-          size: this.page.size,
-          sortType: this.listType
-        })
-        .then((resp) => {
-          if (resp.succeed) {
-            this.blogList = resp.data.content
-          } else {
-            this.blogList = []
-          }
-        })
     },
     scroll() {
       window.onscroll = () => {
@@ -232,33 +180,25 @@ export default {
           !this.loadMore.isLoading &&
           !this.loadMore.noMore
         ) {
-          this.loadMore.isLoading = true
-          let _url = '/blogInfo/listBlogs'
-          let _sortType = null
-          if (this.listType === 'RECOMMEND') {
-            _url = '/esBlogInfo/search'
-            _sortType = 'NEWEST'
-            this.keywords = this.likeKeywords
-          } else if (this.search.flag) {
-            _url = '/esBlogInfo/search'
-            _sortType = this.listType
+          if (this.sortType === 'RECENT' && this.keywords) {
+            this.sortType = 'RELEVANCE'
           }
+          this.loadMore.isLoading = true
           this.$axios
-            .$post(_url, {
+            .$post('/es/search', {
               current: ++this.page.current,
               size: this.page.size,
-              listType: this.listType,
-              sortType: _sortType,
-              keywords: this.keywords
+              sortType: this.sortType,
+              keywords:
+                this.sortType === 'RECOMMEND'
+                  ? this.likeKeywords
+                  : this.keywords,
+              indices: 'BLOG'
             })
             .then((resp) => {
               this.loadMore.isLoading = false
               if (resp.succeed) {
-                if (this.listType === 'RECOMMEND') {
-                  this.blogList = this.blogList.concat(resp.data.content)
-                } else {
-                  this.blogList = this.blogList.concat(resp.data.records)
-                }
+                this.blogList = this.blogList.concat(resp.data.content)
               } else {
                 this.loadMore.noMore = true
               }

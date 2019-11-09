@@ -53,7 +53,8 @@
             <router-link
               v-for="(tag, index) in userInfo.likeTags"
               :key="tag.tagId"
-              style="text-decoration: none; color: #2196f3; font-size:0.9rem"
+              class="hover-line"
+              style="color: #2196f3; font-size:0.9rem"
               :to="'/search/' + tag.tagName + '?match=tags'"
               >{{ tag.tagName
               }}<span
@@ -71,6 +72,7 @@
           :color="userInfo.status === 0 ? 'primary' : 'private'"
           small
           text
+          class="no-hover-active no-ripple"
           style="position: relative; top:-10px;left:-6px"
           @click="
             userInfo.status === 0

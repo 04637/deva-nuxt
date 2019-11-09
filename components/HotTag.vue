@@ -54,6 +54,18 @@
 import TagChip from './TagChip'
 export default {
   components: { TagChip },
+  props: {
+    loadHot: {
+      required: false,
+      type: Boolean,
+      default: true
+    },
+    hotSize: {
+      required: false,
+      type: Number,
+      default: 15
+    }
+  },
   data: () => ({
     hotTagList: null,
     likeTagList: null,
@@ -65,13 +77,16 @@ export default {
   },
   methods: {
     loadHotTags() {
+      if (!this.loadHot) {
+        return
+      }
       this.$axios
         .$post('/tagInfo/listTags', {
           current: 1,
-          size: 15
+          size: this.hotSize
         })
         .then((resp) => {
-          this.hotTagList = resp.data.records
+          this.hotTagList = resp.data.content
         })
     },
     loadLikeTags() {

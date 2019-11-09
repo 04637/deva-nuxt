@@ -181,7 +181,13 @@
         </v-card>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
-        <client-only> <HotTag></HotTag></client-only>
+        <client-only>
+          <HotTag :load-hot="false"></HotTag
+          ><RelatePost
+            :exclude-id="blogDetail.blogId"
+            :tags="blogDetail.tagInfos"
+          ></RelatePost
+        ></client-only>
       </v-flex>
     </v-layout>
   </v-app>
@@ -189,10 +195,12 @@
 <script>
 import HotTag from '../../../components/HotTag'
 import TagChip from '../../../components/TagChip'
+import RelatePost from '../../../components/RelatePost'
 
 export default {
   name: 'BlogDetail',
   components: {
+    RelatePost,
     TagChip,
     HotTag
   },

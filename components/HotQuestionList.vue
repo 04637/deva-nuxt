@@ -20,10 +20,10 @@ export default {
       .$post('/questionInfo/listQuestions', {
         current: 1,
         size: 15,
-        listType: 'HOT'
+        sortType: 'HOT'
       })
       .then((resp) => {
-        this.hotQuestionList = resp.data.records
+        this.hotQuestionList = resp.data.content
       })
   },
   methods: {}

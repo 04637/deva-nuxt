@@ -247,3 +247,10 @@ p img {
 .v-application .v-text-field__details .error--text {
   color: #ff6600 !important;
 }
+
+.hover-line {
+  text-decoration: none;
+}
+.hover-line:hover {
+  text-decoration: underline;
+}

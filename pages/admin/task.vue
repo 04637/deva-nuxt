@@ -357,7 +357,8 @@ export default {
       max1000: (v) => (v && v.length <= 1000) || '不能超过1000个字符',
       min10: (v) => (v && v.length > 10) || '最少为10个字符哦',
       max300: (v) => !v || (v && v.length <= 300) || '不能超过300个字符'
-    }
+    },
+    intervalId: null
   }),
   created() {},
   mounted() {
@@ -379,14 +380,14 @@ export default {
       this.taskDialog.dialog = true
     },
     loadInterval() {
-      clearInterval(this.$store.getters.getMonitorInterval)
+      clearInterval(this.intervalId)
       const _this = this
       _this.$axios.$post('/admin/monitor').then((resp) => {
         if (resp.succeed) {
           _this.monitor = resp.data
         }
       })
-      const intervalId = setInterval(function() {
+      this.intervalId = setInterval(function() {
         if (
           _this.$store.getters.isAdmin &&
           _this.$route.path === '/admin/task'
@@ -396,11 +397,8 @@ export default {
               _this.monitor = resp.data
             }
           })
-        } else {
-          clearInterval(_this.$store.getters.getMonitorInterval)
         }
       }, 30000)
-      _this.$store.commit('setMonitorInterval', intervalId)
     },
     submitReply() {
       if (!this.$refs.dealTaskForm.validate()) {
@@ -439,6 +437,10 @@ export default {
           this.newSystemNotice.result.dialog = true
         })
     }
+  },
+  beforeRouteLeave(from, to, next) {
+    clearInterval(this.intervalId)
+    next()
   }
 }
 </script>

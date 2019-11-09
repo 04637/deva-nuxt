@@ -51,7 +51,7 @@ export default {
           })
           .then((resp) => {
             if (resp.succeed) {
-              this.spaceInfoList = resp.data.records
+              this.spaceInfoList = resp.data.content
             }
           })
       }

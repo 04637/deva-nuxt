@@ -120,7 +120,11 @@ export default {
             this.uploadingImage.splice(0, 1)
           })
       }
-      this.$emit('update:contentCode', this.editor.scrollingContainer.innerHTML)
+      let _contentCode = this.editor.scrollingContainer.innerHTML
+      if (_contentCode === '<p><br></p>') {
+        _contentCode = this.myContent
+      }
+      this.$emit('update:contentCode', _contentCode)
     }
   },
   mounted() {

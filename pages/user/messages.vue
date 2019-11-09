@@ -45,7 +45,7 @@
                 v-if="item.ownQuestionId"
                 text
                 small
-                color="warning"
+                color="private"
                 @click="
                   readMessage(item)
                   $router.push(
@@ -60,7 +60,7 @@
                 v-else-if="item.ownBlogId"
                 text
                 small
-                color="warning"
+                color="private"
                 @click="
                   readMessage(item)
                   $router.push('/blog/' + item.ownBlogId)
@@ -71,7 +71,7 @@
                 v-else
                 text
                 small
-                color="warning"
+                color="private"
                 @click="
                   readMessage(item)
                   viewTask(item.relateTaskId)
@@ -81,7 +81,7 @@
               <svg
                 v-if="!item.isRead"
                 class="icon"
-                style="width: 13px;height: 13px; position: relative; top: -6px; left: -9px"
+                style="width: 13px;height: 13px; position: relative; top: -6px; left: -13px"
               >
                 <use xlink:href="#icon-unread"></use>
               </svg>

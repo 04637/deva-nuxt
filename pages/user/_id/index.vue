@@ -113,7 +113,7 @@
           <v-divider></v-divider>
           <v-layout wrap class="mt-2">
             <div v-for="tag in likeTagList" :key="tag.tagId" class="mr-2 mb-2">
-              <TagChip :tag-info="tag"></TagChip>
+              <TagChip :tag-info="tag" color="blue"></TagChip>
             </div>
           </v-layout>
         </v-card>

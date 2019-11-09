@@ -634,7 +634,13 @@
           </v-layout>
         </v-flex>
         <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
-          <client-only> <HotTag></HotTag></client-only>
+          <client-only>
+            <HotTag :load-hot="false"></HotTag
+            ><RelatePost
+              :exclude-id="questionDetail.questionId"
+              :tags="questionDetail.tagInfos"
+            ></RelatePost
+          ></client-only>
         </v-flex>
       </v-layout>
     </v-app>
@@ -711,10 +717,12 @@ import HotTag from '../../../components/HotTag'
 import TagChip from '../../../components/TagChip'
 import ConfirmDialog from '../../../components/ConfirmDialog'
 import Quill from '../../../components/Quill'
+import RelatePost from '../../../components/RelatePost'
 
 export default {
   name: 'QuestionDetail',
   components: {
+    RelatePost,
     Quill,
     ConfirmDialog,
     TagChip,

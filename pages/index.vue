@@ -12,66 +12,61 @@
             center-active
             height="38"
             grow
-            @change="loadQuestions"
+            @change="loadBQ"
           >
             <v-tab
               @click="
-                listType = 'RECENT'
-                currentTitle = '最新问题'
+                sortType = 'RECENT'
+                currentTitle = '最新'
               "
               >最新</v-tab
             >
             <v-tab @click="clickRecommend">推荐 </v-tab>
             <v-tab
               @click="
-                listType = 'UN_RESOLVED'
+                sortType = 'UN_RESOLVED'
                 currentTitle = '待解决'
               "
               >待解决</v-tab
             >
             <v-tab
               @click="
-                listType = 'WEEK_HOT'
-                currentTitle = '一周热门'
+                sortType = 'ACTIVE'
+                currentTitle = '热度'
               "
-              >周榜</v-tab
-            >
-            <v-tab
-              @click="
-                listType = 'MONTH_HOT'
-                currentTitle = '月度榜单'
-              "
-              >月榜</v-tab
+              >热度</v-tab
             >
           </v-tabs>
         </v-flex>
       </v-layout>
       <v-divider></v-divider>
+      <span class="my_gray--text" style="font-size: 0.7rem"
+        >找到相关结果约 {{ totalElements }} 个</span
+      >
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
       <v-flex xs11 lg9 justify-start shrink>
-        <QuestionCardList
-          v-if="questionList"
-          :question-list="questionList"
-        ></QuestionCardList>
+        <BQCardList v-if="bqList" :bq-list="bqList"></BQCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
-        <HotTag></HotTag>
+        <HotTag :hot-size="7"></HotTag>
+        <v-divider class="my-3"></v-divider>
+        <RelatePost :keywords="likeKeywords"></RelatePost>
       </v-flex>
     </v-layout>
   </v-app>
 </template>
 <script>
-import QuestionCardList from '../components/QuestionCardList'
 import HotTag from '../components/HotTag'
+import BQCardList from '../components/BQCardList'
+import RelatePost from '../components/RelatePost'
 export default {
-  components: { HotTag, QuestionCardList },
+  components: { RelatePost, BQCardList, HotTag },
   data: () => ({
     currentTab: 0,
-    listType: 'RECENT',
-    questionList: null,
-    hotQuestionList: null,
-    currentTitle: '最新问题',
+    sortType: 'RECENT',
+    bqList: null,
+    currentTitle: '最新',
     likeKeywords: null,
     page: {
       current: 1,
@@ -80,43 +75,34 @@ export default {
     loadMore: {
       isLoading: false,
       noMore: false
-    }
+    },
+    totalElements: 0
   }),
   created() {
-    this.loadQuestions()
+    this.loadBQ()
   },
   mounted() {
     this.loadLikeTags()
     this.scroll()
   },
   methods: {
-    loadQuestions() {
+    loadBQ() {
       this.page.current = 1
       this.loadMore.isLoading = false
       this.loadMore.noMore = false
-      let _url = '/questionInfo/listQuestions'
-      let _sortType = null
-      if (this.listType === 'RECOMMEND') {
-        _url = '/esQuestionInfo/search'
-        _sortType = 'NEWEST'
-      }
       this.$axios
-        .$post(_url, {
+        .$post('/es/search', {
           current: this.page.current,
           size: this.page.size,
-          listType: this.listType,
-          sortType: _sortType,
-          keywords: this.likeKeywords
+          sortType: this.sortType,
+          keywords: this.sortType === 'RECOMMEND' ? this.likeKeywords : null
         })
         .then((resp) => {
           if (resp.succeed) {
-            if (this.listType === 'RECOMMEND') {
-              this.questionList = resp.data.content
-            } else {
-              this.questionList = resp.data.records
-            }
+            this.bqList = resp.data.content
+            this.totalElements = resp.data.totalElements
           } else {
-            this.questionList = []
+            this.bqList = []
           }
         })
     },
@@ -140,7 +126,7 @@ export default {
       if (!this.$store.getters.getUserInfo) {
         this.$router.push('/user/login')
       } else {
-        this.listType = 'RECOMMEND'
+        this.sortType = 'RECOMMEND'
         this.currentTitle = '推荐'
       }
     },
@@ -151,7 +137,6 @@ export default {
         } else {
           this.$store.commit('setShowFooter', false)
         }
-
         if (!/^\/$/.test(this.$route.path)) {
           return false
         }
@@ -167,32 +152,17 @@ export default {
           !this.loadMore.noMore
         ) {
           this.loadMore.isLoading = true
-          let _url = '/questionInfo/listQuestions'
-          let _sortType = null
-          if (this.listType === 'RECOMMEND') {
-            _url = '/esQuestionInfo/search'
-            _sortType = 'NEWEST'
-          }
           this.$axios
-            .$post(_url, {
+            .$post('/es/search', {
               current: ++this.page.current,
               size: this.page.size,
-              listType: this.listType,
-              sortType: _sortType,
-              keywords: this.likeKeywords
+              sortType: this.sortType,
+              keywords: this.sortType === 'RECOMMEND' ? this.likeKeywords : null
             })
             .then((resp) => {
               this.loadMore.isLoading = false
               if (resp.succeed) {
-                if (this.listType === 'RECOMMEND') {
-                  this.questionList = this.questionList.concat(
-                    resp.data.content
-                  )
-                } else {
-                  this.questionList = this.questionList.concat(
-                    resp.data.records
-                  )
-                }
+                this.bqList = this.bqList.concat(resp.data.content)
               } else {
                 this.loadMore.noMore = true
               }

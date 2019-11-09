@@ -4,19 +4,7 @@
       <v-layout>
         <v-flex md7 xs4 shrink hidden-sm-and-down>
           <v-card-title
-            ><v-row align="center"
-              ><v-btn
-                v-if="$route.query.spaceId"
-                :to="'/space/' + $route.query.spaceId"
-                text
-                outlined
-                color="private"
-                small
-                class="mr-5"
-                ><strong class="ml-1">{{
-                  $route.query.spaceName
-                }}</strong></v-btn
-              >
+            ><v-row align="center">
               <v-chip
                 v-if="$route.query.match === 'tags'"
                 text
@@ -33,27 +21,21 @@
           >
         </v-flex>
         <v-flex md4 lg3 align-self-end>
-          <v-tabs
-            grow
-            centered
-            center-active
-            height="38"
-            @change="searchQuestions"
-          >
-            <v-tab @click="listType = 'RELEVANCE'">相关</v-tab>
-            <v-tab @click="listType = 'NEWEST'">最新</v-tab>
-            <v-tab @click="listType = 'ACTIVE'">活跃</v-tab>
+          <v-tabs grow centered center-active height="38" @change="searchBQ">
+            <v-tab @click="sortType = 'RELEVANCE'">相关</v-tab>
+            <v-tab @click="sortType = 'RECENT'">最新</v-tab>
+            <v-tab @click="sortType = 'ACTIVE'">活跃</v-tab>
           </v-tabs>
         </v-flex>
       </v-layout>
       <v-divider></v-divider>
+      <span class="my_gray--text" style="font-size: 0.7rem"
+        >找到相关结果约 {{ totalElements }} 个</span
+      >
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
       <v-flex xs11 lg9 justify-start shrink>
-        <QuestionCardList
-          v-if="questionList"
-          :question-list="questionList"
-        ></QuestionCardList>
+        <BQCardList v-if="bqList" :bq-list="bqList"></BQCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
         <HotTag></HotTag>
@@ -62,16 +44,16 @@
   </v-app>
 </template>
 <script>
-import QuestionCardList from '../../../components/QuestionCardList'
 import HotTag from '../../../components/HotTag'
+import BQCardList from '../../../components/BQCardList'
 export default {
   components: {
-    HotTag,
-    QuestionCardList
+    BQCardList,
+    HotTag
   },
   data: () => ({
-    listType: null,
-    questionList: null,
+    sortType: null,
+    bqList: null,
     hotQuestionList: null,
     page: {
       current: 1,
@@ -80,31 +62,32 @@ export default {
     loadMore: {
       isLoading: false,
       noMore: false
-    }
+    },
+    totalElements: 0
   }),
   created() {},
   mounted() {
     this.scroll()
   },
   methods: {
-    searchQuestions() {
-      const _url = '/esQuestionInfo/search'
+    searchBQ() {
       this.page.current = 1
       this.loadMore.isLoading = false
       this.loadMore.noMore = false
       this.$axios
-        .$post(_url, {
+        .$post('/es/search', {
           keywords: this.$route.params.keywords,
           current: this.page.current,
           size: this.page.size,
-          sortType: this.listType,
+          sortType: this.sortType,
           matchColumns: this.$route.query.match
         })
         .then((resp) => {
           if (resp.succeed) {
-            this.questionList = resp.data.content
+            this.bqList = resp.data.content
+            this.totalElements = resp.data.totalElements
           } else {
-            this.questionList = []
+            this.bqList = []
           }
         })
     },
@@ -125,18 +108,18 @@ export default {
           !this.loadMore.noMore
         ) {
           this.loadMore.isLoading = true
-          const _url = '/esQuestionInfo/search'
+          const _url = '/es/search'
           this.$axios
             .$post(_url, {
               current: ++this.page.current,
               size: this.page.size,
-              sortType: this.listType,
+              sortType: this.sortType,
               keywords: this.$route.params.keywords
             })
             .then((resp) => {
               this.loadMore.isLoading = false
               if (resp.succeed) {
-                this.questionList = this.questionList.concat(resp.data.content)
+                this.bqList = this.bqList.concat(resp.data.content)
               } else {
                 this.loadMore.noMore = true
               }

@@ -19,13 +19,13 @@
           <v-layout justify-space-between>
             <v-form ref="form" class="pa-4" style="width: 100%">
               <v-layout align-center>
-                <span>绑定邮箱：<v-icon>mdi-at</v-icon></span>
+                <span>绑定邮箱：<v-icon>mdi-email</v-icon></span>
                 <v-text-field
                   readonly
                   hint="绑定邮箱可用于订阅站内消息，关注问题进展"
                   persistent-hint
                   :value="userInfo.email"
-                  class="center-text"
+                  class="center-text toBottom4"
                   append-icon="mdi-pencil"
                   @click:append="editEmail.dialog = true"
                 ></v-text-field>
@@ -44,7 +44,7 @@
                   hint="绑定手机可用于接收验证码及敏感操作提示"
                   persistent-hint
                   :value="userInfo.phone"
-                  class="center-text"
+                  class="center-text toBottom4"
                   append-icon="mdi-pencil"
                   @click:append="editPhone.dialog = true"
                 ></v-text-field>
@@ -61,8 +61,9 @@
                 <span>上次登录：<v-icon>mdi-gesture-double-tap</v-icon></span>
                 <v-text-field
                   readonly
+                  hide-details
                   :value="userInfo.lastLoginIp"
-                  class="center-text"
+                  class="center-text mt-0 pt-0"
                 ></v-text-field>
               </v-layout>
               <v-layout justify-space-between align-center class="mt-2">
@@ -623,6 +624,11 @@ export default {
 </script>
 <style>
 .center-text input {
-  text-indent: 20px;
+  text-indent: 10px;
+}
+.toBottom4 input {
+  padding: 0;
+  position: relative;
+  top: 4px;
 }
 </style>

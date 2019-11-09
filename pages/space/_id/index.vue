@@ -9,12 +9,7 @@
                 <v-chip
                   small
                   style="margin-right: 100px; border-radius: 0; position: relative; left: -3px"
-                  @click="toggleListType"
-                  >浏览{{ isBlogList ? '问题' : '博文'
-                  }}<v-icon small>mdi-meteor</v-icon></v-chip
-                >
-                <v-btn text outlined color="private" small
-                  ><span class="ml-1">{{ spaceInfo.spaceName }}</span></v-btn
+                  >{{ spaceInfo.spaceName }}</v-chip
                 >
                 <v-tooltip top>
                   <template v-slot:activator="{ on }">
@@ -102,11 +97,12 @@
                   style="max-width: 60%"
                   translate="yes"
                   class="pt-0 mt-0 mr-2"
-                  :placeholder="'搜索' + (isBlogList ? '博文' : '问题')"
                   hide-details
-                  prepend-inner-icon="search"
+                  append-icon="search"
                   flat
-                  @keyup.enter.native="searchQuestions"
+                  clearable
+                  @click:append="searchBtn"
+                  @keyup.enter.native="searchBtn"
                 ></v-text-field
               ></v-row>
             </v-layout>
@@ -114,56 +110,29 @@
         </v-flex>
         <v-flex md6 lg4 align-self-end>
           <v-tabs
-            v-if="search.flag"
+            v-model="currentTab"
             centered
             center-active
             height="38"
             grow
-            @change="searchQuestions"
+            @change="loadBQ"
           >
-            <v-tab @click="listType = 'RELEVANCE'">相关</v-tab>
-            <v-tab @click="listType = 'NEWEST'">最新</v-tab>
-            <v-tab @click="listType = 'ACTIVE'">活跃</v-tab>
-          </v-tabs>
-          <v-tabs
-            v-else-if="isBlogList"
-            centered
-            center-active
-            height="38"
-            grow
-            @change="loadBlogs"
-          >
-            <v-tab @click="listType = 'RECENT'">最新</v-tab>
-            <v-tab @click="listType = 'WEEK_HOT'">周榜</v-tab>
-            <v-tab @click="listType = 'MONTH_HOT'">月榜</v-tab>
-          </v-tabs>
-          <v-tabs
-            v-else
-            centered
-            center-active
-            height="38"
-            grow
-            @change="loadQuestions"
-          >
-            <v-tab @click="listType = 'RECENT'">最新</v-tab>
-            <v-tab @click="listType = 'UN_RESOLVED'">待解决</v-tab>
-            <v-tab @click="listType = 'WEEK_HOT'">周榜</v-tab>
-            <v-tab @click="listType = 'MONTH_HOT'">月榜</v-tab>
+            <v-tab @click="sortType = 'RECENT'">{{
+              keywords ? '相关' : '最新'
+            }}</v-tab>
+            <v-tab @click="sortType = 'RECOMMEND'">推荐</v-tab>
+            <v-tab @click="sortType = 'ACTIVE'">热度</v-tab>
           </v-tabs>
         </v-flex>
       </v-layout>
       <v-divider></v-divider>
+      <span class="my_gray--text" style="font-size: 0.7rem"
+        >找到相关结果约 {{ totalElements }} 个</span
+      >
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
       <v-flex xs11 lg9 justify-start shrink>
-        <QuestionCardList
-          v-if="!isBlogList && questionList"
-          :question-list="questionList"
-        ></QuestionCardList>
-        <BlogCardList
-          v-else-if="isBlogList && blogList"
-          :blog-list="blogList"
-        ></BlogCardList>
+        <BQCardList v-if="bqList" :bq-list="bqList"> </BQCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
         <v-textarea
@@ -174,7 +143,8 @@
           style="font-size: 0.9rem"
         >
         </v-textarea>
-        <HotTag></HotTag>
+        <HotTag :load-hot="false"></HotTag>
+        <RelatePost></RelatePost>
       </v-flex>
     </v-layout>
     <ConfirmDialog
@@ -199,27 +169,26 @@
   </v-app>
 </template>
 <script>
-import QuestionCardList from '../../../components/QuestionCardList'
 import ConfirmDialog from '../../../components/ConfirmDialog'
 import InfoDialog from '../../../components/InfoDialog'
 import HotTag from '../../../components/HotTag'
-import BlogCardList from '../../../components/BlogCardList'
+import BQCardList from '../../../components/BQCardList'
+import RelatePost from '../../../components/RelatePost'
 export default {
   components: {
-    BlogCardList,
+    RelatePost,
+    BQCardList,
     HotTag,
     InfoDialog,
-    ConfirmDialog,
-    QuestionCardList
+    ConfirmDialog
   },
   data: () => ({
-    listType: 'RECENT',
-    // 当前浏览类型是否为博文, false为问题
-    isBlogList: false,
-    questionList: null,
+    sortType: 'RECENT',
+    currentTab: 0,
+    bqList: null,
     blogList: null,
-    hotQuestionList: null,
     keywords: null,
+    likeKeywords: null,
     confirmExit: {
       dialog: false,
       result: {
@@ -236,104 +205,40 @@ export default {
       isLoading: false,
       noMore: false
     },
-    search: {
-      flag: false,
-      page: {
-        current: 1,
-        size: 15
-      },
-      loadMore: {
-        isLoading: false,
-        noMore: false
-      }
-    }
+    totalElements: 0
   }),
   created() {
+    this.loadLikeTags()
     this.loadSpaceInfo()
+    this.loadBQ()
   },
   mounted() {
     this.scroll()
   },
   methods: {
-    loadQuestions() {
+    loadBQ() {
       this.page.current = 1
       this.loadMore.isLoading = false
       this.loadMore.noMore = false
+      if (this.sortType === 'RECENT' && this.keywords) {
+        this.sortType = 'RELEVANCE'
+      }
       this.$axios
-        .$post('/questionInfo/listSpaceQuestions', {
+        .$post('/es/searchFromSpace', {
           current: this.page.current,
           size: this.page.size,
-          listType: this.listType,
+          sortType: this.sortType,
+          keywords:
+            this.sortType === 'RECOMMEND' ? this.likeKeywords : this.keywords,
           spaceId: this.$route.params.id
         })
         .then((resp) => {
           if (resp.succeed) {
-            this.questionList = resp.data.records
+            this.bqList = resp.data.content
+            this.totalElements = resp.data.totalElements
           } else {
-            this.questionList = []
+            this.bqList = []
           }
-        })
-    },
-    loadBlogs() {
-      this.page.current = 1
-      this.loadMore.isLoading = false
-      this.loadMore.noMore = false
-      this.$axios
-        .$post('/blogInfo/listSpaceBlogs', {
-          current: this.page.current,
-          size: this.page.size,
-          listType: this.listType,
-          spaceId: this.$route.params.id
-        })
-        .then((resp) => {
-          if (resp.succeed) {
-            this.blogList = resp.data.records
-          } else {
-            this.blogList = []
-          }
-        })
-    },
-    searchQuestions() {
-      if (!this.keywords) {
-        this.search.flag = false
-        this.listType = 'RECENT'
-        this.loadQuestions()
-        return
-      }
-      if (!this.search.flag) {
-        this.search.flag = true
-        this.listType = 'RELEVANCE'
-      }
-      const _url = '/esQuestionInfo/searchFromSpace'
-
-      this.search.page.current = 1
-      this.search.loadMore.isLoading = false
-      this.search.loadMore.noMore = false
-      this.$axios
-        .$post(_url, {
-          keywords: this.keywords,
-          current: this.search.page.current,
-          size: this.search.page.size,
-          sortType: this.listType,
-          spaceId: this.spaceInfo.spaceId
-        })
-        .then((resp) => {
-          if (resp.succeed) {
-            this.questionList = resp.data.content
-          } else {
-            this.questionList = []
-          }
-        })
-    },
-    loadHotQuestions() {
-      this.$axios
-        .$post('/questionInfo/listQuestions', {
-          current: 1,
-          size: 15,
-          listType: 'HOT'
-        })
-        .then((resp) => {
-          this.hotQuestionList = resp.data.records
         })
     },
     loadSpaceInfo() {
@@ -350,10 +255,6 @@ export default {
           this.$router.push('/')
         })
     },
-    toggleListType() {
-      this.isBlogList = !this.isBlogList
-      this.isBlogList ? this.loadBlogs() : this.loadQuestions()
-    },
     exitSpace() {
       this.$axios
         .$post('/spaceUser/exitSpace', {
@@ -367,6 +268,27 @@ export default {
             this.$store.commit('needReloadSpaceList')
           }
         })
+    },
+    loadLikeTags() {
+      if (this.$store.getters.getUserId) {
+        this.$axios.$post('/tagLike/listLikeTags').then((resp) => {
+          let likeTags = resp.data
+          const randTag = []
+          if (likeTags.length > 5) {
+            for (let i = 0; i < 5; ++i) {
+              const rand = Math.floor(Math.random() * likeTags.length)
+              randTag.push(likeTags[rand])
+            }
+            likeTags = randTag
+          }
+          this.likeKeywords = likeTags.map((item) => item.tagName).join(' ')
+        })
+      }
+    },
+    searchBtn() {
+      this.currentTab = 0
+      this.sortType = 'RECENT'
+      this.loadBQ()
     },
     scroll() {
       window.onscroll = () => {
@@ -382,50 +304,29 @@ export default {
         if (
           bottomOfWindow &&
           !this.loadMore.isLoading &&
-          !this.loadMore.noMore &&
-          !this.search.flag
+          !this.loadMore.noMore
         ) {
+          if (this.sortType === 'RECENT' && this.keywords) {
+            this.sortType = 'RELEVANCE'
+          }
           this.loadMore.isLoading = true
           this.$axios
-            .$post('/questionInfo/listSpaceQuestions', {
+            .$post('/es/searchFromSpace', {
               current: ++this.page.current,
               size: this.page.size,
-              listType: this.listType,
+              sortType: this.sortType,
+              keywords:
+                this.sortType === 'RECOMMEND'
+                  ? this.likeKeywords
+                  : this.keywords,
               spaceId: this.$route.params.id
             })
             .then((resp) => {
               this.loadMore.isLoading = false
               if (resp.succeed) {
-                this.questionList = this.questionList.concat(resp.data.records)
+                this.bqList = this.bqList.concat(resp.data.content)
               } else {
                 this.loadMore.noMore = true
-              }
-            })
-            .catch((e) => {
-              this.loadMore.isLoading = false
-            })
-        } else if (
-          bottomOfWindow &&
-          !this.search.loadMore.isLoading &&
-          !this.search.loadMore.noMore &&
-          this.search.flag
-        ) {
-          this.search.loadMore.isLoading = true
-          const _url = '/esQuestionInfo/searchFromSpace'
-          this.$axios
-            .$post(_url, {
-              current: ++this.search.page.current,
-              size: this.search.page.size,
-              sortType: this.listType,
-              keywords: this.keywords,
-              spaceId: this.spaceInfo.spaceId
-            })
-            .then((resp) => {
-              this.search.loadMore.isLoading = false
-              if (resp.succeed) {
-                this.questionList = this.questionList.concat(resp.data.content)
-              } else {
-                this.search.loadMore.noMore = true
               }
             })
             .catch((e) => {

@@ -94,6 +94,7 @@
                   v-bind="attrs"
                   :input-value="selected"
                   close
+                  style="height: 28px"
                   color="primary"
                   @click="select"
                   @click:close="remove(item)"
@@ -127,13 +128,10 @@
           >
             <v-card-text v-if="$route.query.spaceId" class="my_gray--text">
               该博文将被发布至→
-              <v-btn
-                text
-                outlined
-                color="private"
+              <v-chip
                 small
-                :to="'/space/' + $route.query.spaceId"
-                ><span class="ml-1">{{ $route.query.spaceName }}</span></v-btn
+                style="margin-right: 100px; border-radius: 0; position: relative; left: -3px"
+                >{{ $route.query.spaceName }}</v-chip
               ></v-card-text
             >
             <v-checkbox
@@ -380,7 +378,7 @@ export default {
             if (process.client) {
               this.$refs.blogQuill.updateContent(this.content)
             }
-            this.selectedTags = resp.data.tags
+            this.selectedTags = resp.data.tagInfos
             this.isPublic = resp.data.isPublic
             this.spaceId = resp.data.spaceId
           }
@@ -499,6 +497,22 @@ export default {
           }
         }
       })
+    }
+  },
+  beforeRouteLeave(from, to, next) {
+    if (['blog-id', 'user-login', 'user-signUp'].includes(from.name)) {
+      next()
+      return
+    }
+    if (!this.contentCode || this.contentCode.length < 20) {
+      next()
+      return
+    }
+    const r = confirm('确定要离开该页面吗, 您输入的内容将不会被保存')
+    if (r) {
+      next()
+    } else {
+      next(false)
     }
   }
 }

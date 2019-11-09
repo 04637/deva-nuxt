@@ -227,7 +227,7 @@ export default {
         })
         .then((resp) => {
           if (resp.succeed) {
-            this.tagList = resp.data.records
+            this.tagList = resp.data.content
             this.loadLikeTags()
           } else {
             this.tagList = []
@@ -260,7 +260,7 @@ export default {
             .then((resp) => {
               this.loadMore.isLoading = false
               if (resp.succeed) {
-                this.tagList = this.tagList.concat(resp.data.records)
+                this.tagList = this.tagList.concat(resp.data.content)
               } else {
                 this.loadMore.noMore = true
               }

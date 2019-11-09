@@ -93,7 +93,7 @@ export default {
             .then((resp) => {
               this.loadMore.isLoading = false
               if (resp.succeed) {
-                this.userList = this.userList.concat(resp.data.records)
+                this.userList = this.userList.concat(resp.data.content)
               } else {
                 this.loadMore.noMore = true
               }
@@ -114,7 +114,7 @@ export default {
         })
         .then((resp) => {
           if (resp.succeed) {
-            this.userList = resp.data.records
+            this.userList = resp.data.content
           }
         })
     },
