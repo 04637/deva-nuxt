@@ -1,13 +1,22 @@
 <template>
   <v-card class="pa-2">
     <v-toolbar dense flat class="mb-1">
-      <span class="private--text">{{ spaceInfo.spaceName }}</span>
+      <v-layout justify-space-between align-center>
+        <router-link
+          class="private--text hover-line"
+          :to="'/space/' + spaceInfo.spaceId"
+          >{{ spaceInfo.spaceName }}</router-link
+        >
+        <v-chip small :to="'/user/' + spaceInfo.ownerUserId"
+          >创建人：{{ spaceInfo.ownerUser.nickname }}</v-chip
+        >
+      </v-layout>
     </v-toolbar>
     <v-divider></v-divider>
     <v-list subheader>
       <v-list-item>
         <v-list-item-avatar>
-          <v-icon>mdi-account-group</v-icon>
+          <v-icon>mdi-account-group-outline</v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-layout>
@@ -23,7 +32,7 @@
       <v-divider></v-divider>
       <v-list-item>
         <v-list-item-avatar>
-          <v-icon>mdi-comment-question</v-icon>
+          <v-icon>mdi-comment-question-outline</v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-layout>
@@ -37,7 +46,7 @@
       <v-divider></v-divider>
       <v-list-item>
         <v-list-item-avatar>
-          <v-icon>mdi-comment-check</v-icon>
+          <v-icon>mdi-comment-check-outline</v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-layout>
@@ -51,11 +60,25 @@
       <v-divider></v-divider>
       <v-list-item>
         <v-list-item-avatar>
-          <strong>ID</strong>
+          <v-icon>mdi-file-document-box-outline</v-icon>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-layout>
+            发布博文：<router-link :to="'/space/' + spaceInfo.spaceId">{{
+              spaceInfo.blogNum
+            }}</router-link>
+            &nbsp;&nbsp;个
+          </v-layout>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
+      <v-list-item>
+        <v-list-item-avatar>
+          <span>ID</span>
         </v-list-item-avatar>
         <v-list-item-content title="空间ID"
           ><v-layout align-center>
-            <strong>{{ spaceInfo.spaceId }}</strong
+            <span>{{ spaceInfo.spaceId }}</span
             ><v-btn
               v-clipboard:copy="spaceInfo.spaceId"
               style="position: relative; top: -6px"
@@ -67,11 +90,14 @@
           >
         </v-list-item-content>
       </v-list-item>
+      <v-divider></v-divider>
       <v-textarea
         class="mt-1"
         hide-details
-        outlined
+        solo
         readonly
+        no-resize
+        flat
         :value="spaceInfo.description"
       >
       </v-textarea>

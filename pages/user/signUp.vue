@@ -132,7 +132,7 @@
       <v-card class="pa-8 mt-6" width="520px">
         <v-layout justify-center>
           <v-btn text depressed to="login"
-            >已有账号？<span style="color: orange">去登录</span></v-btn
+            >已有账号？<span class="private--text">去登录</span></v-btn
           >
         </v-layout>
       </v-card>

@@ -1,23 +1,23 @@
 <template>
   <v-app v-show="userList">
-    <v-layout class="mb-3" style="width: 70vw" shrink justify-space-around>
+    <v-layout style="width: 60vw" shrink justify-space-around>
       <v-text-field
         v-model="searchKey"
         style="width: 30vw"
         hide-details
-        label="用户名/昵称"
-        prepend-inner-icon="search"
+        placeholder="用户名/昵称"
+        append-icon="search"
         rounded
+        @click:append="loadUserList"
         @keyup.enter.native="loadUserList"
       ></v-text-field>
-      <v-btn
+      <v-spacer></v-spacer>
+      <v-chip
         v-if="spaceInfo"
-        :to="'/space/' + spaceInfo.spaceId"
+        :to="'/space/manageSpace?spaceId=' + spaceInfo.spaceId"
         text
-        outlined
-        color="private"
         small
-        ><span class="ml-1">{{ spaceInfo.spaceName }}</span></v-btn
+        ><span class="ml-1">{{ spaceInfo.spaceName }}</span></v-chip
       >
     </v-layout>
     <v-divider></v-divider>
@@ -29,7 +29,7 @@
         md4
         lg3
         style="max-height: 75px; max-width: 358px"
-        class="ma-4"
+        class="ma-4 mb-9"
       >
         <UserCard :user-info="userInfo"></UserCard>
       </v-flex>
@@ -93,7 +93,7 @@ export default {
             .then((resp) => {
               this.loadMore.isLoading = false
               if (resp.succeed) {
-                this.userList = this.userList.concat(resp.data.content)
+                this.userList = this.userList.concat(resp.data.records)
               } else {
                 this.loadMore.noMore = true
               }
@@ -114,7 +114,9 @@ export default {
         })
         .then((resp) => {
           if (resp.succeed) {
-            this.userList = resp.data.content
+            this.userList = resp.data.records
+          } else {
+            this.userList = []
           }
         })
     },

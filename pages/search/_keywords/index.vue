@@ -3,20 +3,26 @@
     <v-layout column shrink>
       <v-layout>
         <v-flex md7 xs4 shrink hidden-sm-and-down>
-          <v-card-title
-            ><v-row align="center">
+          <v-card-title class="pa-0"
+            ><v-layout align-center>
               <v-chip
                 v-if="$route.query.match === 'tags'"
                 text
                 style="max-width:170px; cursor: pointer; text-decoration: none;border-radius: 0"
                 :title="$route.params.keywords"
-                class="ml-3 d-inline-block text-truncate text-left no-flex"
               >
                 <span>{{ $route.params.keywords }}</span></v-chip
               >
-              <span v-else class="ml-3">{{
+              <span
+                v-if="$route.query.match === 'tags' && tagInfo"
+                style="font-size: 14px; max-width: 80%; line-height: 17px"
+                class=" ml-3 my_gray--text label-description"
+                :title="tagInfo.description"
+                >{{ tagInfo.description }}</span
+              >
+              <span v-if="$route.query.match !== 'tags'" class="ml-3">{{
                 $route.params.keywords
-              }}</span></v-row
+              }}</span></v-layout
             ></v-card-title
           >
         </v-flex>
@@ -63,9 +69,12 @@ export default {
       isLoading: false,
       noMore: false
     },
-    totalElements: 0
+    totalElements: 0,
+    tagInfo: null
   }),
-  created() {},
+  created() {
+    this.loadTagInfo()
+  },
   mounted() {
     this.scroll()
   },
@@ -90,6 +99,19 @@ export default {
             this.bqList = []
           }
         })
+    },
+    loadTagInfo() {
+      if (this.$route.query.match === 'tags') {
+        this.$axios
+          .$post('/tagInfo/getTagInfo', {
+            tagName: this.$route.params.keywords
+          })
+          .then((resp) => {
+            if (resp.succeed) {
+              this.tagInfo = resp.data
+            }
+          })
+      }
     },
     scroll() {
       window.onscroll = () => {
@@ -133,3 +155,16 @@ export default {
   }
 }
 </script>
+<style>
+/* 控制展示两行 */
+.label-description {
+  font-size: 14px;
+  /*text-indent: 12px;*/
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  min-height: 34px;
+}
+</style>

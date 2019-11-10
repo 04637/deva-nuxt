@@ -9,7 +9,7 @@
       <v-divider></v-divider>
     </v-layout>
     <v-layout class="mt-5" justify-center shrink>
-      <v-card width="60vw">
+      <v-card width="60vw" class="no-shadow-box">
         <v-card-title>
           <v-spacer></v-spacer>
           <v-text-field
@@ -38,11 +38,12 @@
             <v-row align="center">
               <router-link
                 :to="'/user/' + item.fromUserId"
-                style="text-decoration: none; position: relative; top: -1px"
+                style=" position: relative; top: -1px "
                 >{{ item.fromUserNickname }}</router-link
               >&nbsp;{{ $options.filters.filterHtml(item.content) }}
               <v-btn
                 v-if="item.ownQuestionId"
+                class="hover-line"
                 text
                 small
                 color="private"
@@ -58,6 +59,7 @@
               >
               <v-btn
                 v-else-if="item.ownBlogId"
+                class="hover-line"
                 text
                 small
                 color="private"
@@ -69,6 +71,7 @@
               >
               <v-btn
                 v-else
+                class="hover-line"
                 text
                 small
                 color="private"
@@ -322,5 +325,13 @@ export default {
 <style scoped>
 thead:nth-child(3) {
   display: none !important;
+}
+.theme--light .no-shadow-box {
+  box-shadow: none;
+  border: 1px solid #e7e7e7;
+}
+.theme--dark .no-shadow-box {
+  box-shadow: none;
+  border: 1px solid #4b4b4b;
 }
 </style>

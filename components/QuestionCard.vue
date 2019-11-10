@@ -84,33 +84,24 @@
               </small>
             </v-row>
             <v-row justify="end" dense style="width:100%">
-              <v-col cols="6" align-self="end">
-                <v-row justify="end">
-                  <v-btn
-                    min-width="0"
-                    text
-                    color="my_gray"
-                    class="text-truncate d-inline-block text-left no-flex px-1"
+              <v-row justify="end" align="end" style="font-size: 14px">
+                <v-layout justify-end align-center>
+                  <v-chip
+                    small
+                    color="light_yellow"
                     :to="'/user/' + question.author.userId"
-                    height="21px"
                   >
                     <span>{{
                       question.author.nickname || question.author.username
-                    }}</span>
-                  </v-btn>
-                </v-row>
-              </v-col>
-              <v-spacer></v-spacer>
-              <!--suppress HtmlDeprecatedAttribute -->
-              <v-col cols="5" align-self="end">
-                <v-row justify="end" align="end" style="font-size: 14px">
-                  <v-layout justify-center align-center>
-                    <v-icon small color="red" title="用户声望"
+                    }}</span
+                    >&nbsp;<span style="font-weight: bold">·</span>&nbsp;{{
+                      question.author.reputation
+                    }}<v-icon color="red" small title="用户声望"
                       >mdi-music-clef-bass</v-icon
-                    >&nbsp;{{ question.author.reputation }}
-                  </v-layout>
-                </v-row>
-              </v-col>
+                    >
+                  </v-chip>
+                </v-layout>
+              </v-row>
             </v-row>
           </v-row>
         </v-layout>

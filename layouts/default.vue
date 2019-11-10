@@ -65,17 +65,17 @@
                   <v-list-item-title>提&nbsp;&nbsp;&nbsp;问</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item to="/question/find">
+              <v-list-item to="/search/find">
                 <v-list-item-action
                   :class="$store.getters.getMiniNav ? 'mini-action' : ''"
                 >
                   <v-tooltip v-if="$store.getters.getMiniNav" right>
                     <template v-slot:activator="{ on }">
-                      <v-icon small v-on="on">search</v-icon>
+                      <v-icon small v-on="on">mdi-magnify</v-icon>
                     </template>
                     <span>发现</span>
                   </v-tooltip>
-                  <v-icon v-else small>search</v-icon>
+                  <v-icon v-else small>mdi-magnify</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>发&nbsp;&nbsp;&nbsp;现</v-list-item-title>
@@ -182,6 +182,7 @@
                 indeterminate-icon="group"
                 on-icon="group"
                 class="mb-2"
+                style="padding-left: 2px"
                 :class="$store.getters.getMiniNav ? 'mini' : ''"
                 :active="[$route.params.id]"
                 color="default"
@@ -189,15 +190,19 @@
                 <template v-slot:prepend="{ item }">
                   <v-tooltip v-if="$store.getters.getMiniNav" right>
                     <template v-slot:activator="{ on }">
-                      <v-icon v-if="item.children" v-on="on"
+                      <v-icon
+                        v-if="item.children"
+                        style="font-size: 16px !important;"
+                        v-on="on"
                         >mdi-cards-outline</v-icon
                       >
                     </template>
                     <span>我的空间</span>
                   </v-tooltip>
-                  <v-icon v-if="item.children && !$store.getters.getMiniNav"
-                    >mdi-cards-outline</v-icon
-                  >&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;
+                  <!--<v-icon v-if="item.children && !$store.getters.getMiniNav"-->
+                  <!--  >mdi-cards-outline</v-icon-->
+                  <!--&gt;&nbsp;&nbsp;-->
                 </template>
                 <template v-slot:label="{ item }">
                   <v-btn
@@ -205,8 +210,8 @@
                     text
                     width="100%"
                     depressed
-                    height="35px"
-                    style="line-height: 35px"
+                    height="26px"
+                    style="line-height: 26px"
                     class="pa-0 ma-0 no-hover-active text-truncate d-inline-block text-left no-flex"
                     :ripple="false"
                     :class="$store.getters.getMiniNav ? 'pl-0' : ''"
@@ -273,7 +278,7 @@
                   >
                 </v-list-item-action>
                 <v-list-item-content>
-                  <v-list-item-title style="margin-left: 8px"
+                  <v-list-item-title style="margin-left: 6px"
                     >切换主题</v-list-item-title
                   >
                 </v-list-item-content>
@@ -759,7 +764,7 @@ export default {
           })
           this.desktopNotify('DEVA', {
             body: _msgTitle,
-            icon: config.domain + '/logo2.png',
+            icon: config.domain + '/icon.png',
             data: {
               ownQuestionId: _msg.ownQuestionId,
               anchor: _msg.anchor ? _msg.anchor : ''
@@ -857,16 +862,34 @@ export default {
   width: 100%;
   transition: width 0.4s;
 }
-.search-input .v-input__slot {
-  border: 1px solid #80808042;
+.theme--light .search-input .v-input__slot {
+  background: #f6f6f6 !important;
+}
+.theme--dark .search-input .v-input__slot {
+  background: #4b4b4b !important;
 }
 .v-list-item__action {
   position: relative;
   top: 1px;
   margin-right: 20px;
 }
+.v-treeview-node--leaf > .v-treeview-node__root {
+  padding-left: 7px;
+  height: 26px;
+  min-height: 26px;
+}
+
+.theme--light header .v-toolbar__content {
+  border-bottom: 1px solid #e7e7e7;
+}
+.theme--dark header .v-toolbar__content {
+  border-bottom: 1px solid #4b4b4b;
+}
 </style>
 <style scoped>
+header {
+  box-shadow: none;
+}
 .ml-max {
   margin-left: 120px !important;
   padding-left: 80px !important;
@@ -888,5 +911,27 @@ export default {
   position: relative;
   top: -8px;
   right: 22px;
+}
+.v-item--active .mdi-comment-question-outline::before {
+  content: '\F816';
+}
+.v-item--active .mdi-circle-outline::before {
+  content: '\FAA4';
+}
+.v-item--active .mdi-magnify::before {
+  /*content: '\F70E';*/
+  font-weight: bolder;
+}
+.v-item--active .mdi-file-document-box-outline::before {
+  content: '\F21A';
+}
+.v-item--active .mdi-account-outline::before {
+  content: '\F004';
+}
+.v-item--active .mdi-bookmark-outline::before {
+  content: '\F0C0';
+}
+.mdi-cards-outline {
+  font-size: 16px !important;
 }
 </style>

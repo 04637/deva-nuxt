@@ -130,11 +130,25 @@
             <v-divider></v-divider>
             <v-list-item>
               <v-list-item-avatar>
-                <strong>ID</strong>
+                <v-icon>mdi-file-document-box-outline</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-layout>
+                  发布博文：<router-link :to="'/space/' + spaceInfo.spaceId">{{
+                    spaceInfo.blogNum
+                  }}</router-link>
+                  &nbsp;&nbsp;个
+                </v-layout>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item>
+              <v-list-item-avatar>
+                <span>ID</span>
               </v-list-item-avatar>
               <v-list-item-content title="空间ID"
                 ><v-layout class="primary--text" align-center>
-                  <strong>{{ spaceInfo.spaceId }}</strong
+                  <span>{{ spaceInfo.spaceId }}</span
                   ><v-btn
                     v-clipboard:copy="spaceInfo.spaceId"
                     style="position: relative; top: -6px"
@@ -189,7 +203,10 @@
                   </v-tooltip>
                   <v-btn
                     v-clipboard:copy="
-                      spaceInfo.spaceName +
+                      '[' +
+                        spaceInfo.ownerUser.nickname +
+                        '] 邀请您加入 DEVA - (aid.dev)：' +
+                        spaceInfo.spaceName +
                         ' -- 空间ID: ' +
                         spaceInfo.spaceId +
                         '，邀请码：' +

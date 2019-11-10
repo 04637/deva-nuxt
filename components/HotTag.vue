@@ -1,7 +1,12 @@
 <template>
   <div>
-    <v-layout v-if="likeTagList && likeTagList.length > 0" align-center
-      ><v-icon small color="red">mdi-heart</v-icon>&nbsp;<span>我的标签</span
+    <v-layout
+      v-if="likeTagList && likeTagList.length > 0"
+      align-center
+      class="mb-1"
+      ><v-icon small color="new_orange">mdi-heart</v-icon>&nbsp;<span
+        class="my_gray--text"
+        >我的标签</span
       ><v-btn
         class="ml-1"
         small
@@ -13,10 +18,11 @@
       ></v-layout
     >
     <transition-group name="list">
-      <div v-for="tag in likeTagList" :key="'like' + tag.tagId" class="mt-4">
+      <div v-for="tag in likeTagList" :key="'like' + tag.tagId" class="mb-3">
         <v-layout align-center>
           <TagChip color="blue" :tag-info="tag"></TagChip>&nbsp;<span
             class="my_gray--text"
+            title="使用次数"
             >× {{ tag.totalCount }}</span
           ><transition name="fade"
             ><v-btn
@@ -36,14 +42,20 @@
       v-if="likeTagList && likeTagList.length > 0"
       class="my-3"
     ></v-divider>
-    <v-layout v-if="hotTagList && hotTagList.length > 0" align-center
-      ><v-icon small color="red">mdi-fire</v-icon>&nbsp;<span
+    <v-layout
+      v-if="hotTagList && hotTagList.length > 0"
+      align-center
+      class="mb-1"
+      ><v-icon small color="new_orange">mdi-fire</v-icon>&nbsp;<span
+        class="my_gray--text"
         >热门标签</span
       ></v-layout
     >
     <transition-group name="list">
-      <div v-for="tag in hotTagList" :key="tag.tagId" class="mt-4">
-        <TagChip :tag-info="tag"></TagChip>&nbsp;<span class="my_gray--text"
+      <div v-for="tag in hotTagList" :key="tag.tagId" class="mb-3">
+        <TagChip :tag-info="tag"></TagChip>&nbsp;<span
+          class="my_gray--text"
+          title="使用次数"
           >× {{ tag.totalCount }}</span
         >
       </div>

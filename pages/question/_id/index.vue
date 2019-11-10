@@ -2,12 +2,13 @@
   <v-app>
     <v-app>
       <v-layout column shrink>
-        <v-card-title
+        <v-card-title class="pb-0"
           ><v-row align="center"
             >{{ questionDetail.title }}&nbsp;&nbsp;
             <v-chip
               v-if="questionDetail.status === 1"
               color="primary"
+              outlined
               small
               label
             >
@@ -163,78 +164,12 @@
                     ></TagChip>
                   </v-layout>
                   <v-layout justify-end style="min-width: 230px">
-                    <v-card
-                      class="px-8 pt-3 pb-1 user_card"
-                      :to="'/user/' + questionDetail.author.userId"
-                    >
-                      <v-layout justify-space-between>
-                        <v-flex xs5>
-                          <v-layout justify-center>
-                            <v-avatar color="grey">
-                              <v-img
-                                :src="questionDetail.author.avatar"
-                              ></v-img>
-                            </v-avatar>
-                          </v-layout>
-                          <v-layout justify-center class="mt-2">
-                            <span
-                              class="subtitle-2 text-no-wrap text-truncate d-block"
-                              >{{
-                                questionDetail.author.nickname ||
-                                  questionDetail.username
-                              }}</span
-                            >
-                          </v-layout>
-                        </v-flex>
-                        <v-flex xs7>
-                          <v-layout
-                            column
-                            align-end
-                            justify-space-between
-                            style="height:100%"
-                          >
-                            <v-layout>
-                              <small
-                                :title="
-                                  $options.filters.moment(
-                                    questionDetail.createTime
-                                  )
-                                "
-                              >
-                                提问于&nbsp;
-                                {{ questionDetail.createTime | timeago }}</small
-                              >
-                            </v-layout>
-                            <v-layout
-                              v-if="
-                                questionDetail.createTime !==
-                                  questionDetail.modifiedTime
-                              "
-                            >
-                              <small
-                                :title="
-                                  $options.filters.moment(
-                                    questionDetail.modifiedTime
-                                  )
-                                "
-                              >
-                                更新于&nbsp;
-                                {{
-                                  questionDetail.modifiedTime | timeago
-                                }}</small
-                              ></v-layout
-                            >
-                            <v-layout justify-end align-end>
-                              <v-layout align-center>
-                                <v-icon small color="red" title="用户声望"
-                                  >mdi-music-clef-bass</v-icon
-                                >&nbsp;{{ questionDetail.author.reputation }}
-                              </v-layout>
-                            </v-layout>
-                          </v-layout>
-                        </v-flex>
-                      </v-layout>
-                    </v-card>
+                    <EditUserCard
+                      :user="questionDetail.author"
+                      :create-time="questionDetail.createTime"
+                      :modified-time="questionDetail.modifiedTime"
+                      prefix="提问"
+                    ></EditUserCard>
                   </v-layout>
                 </v-card-actions>
                 <!-- 评论区 -->
@@ -381,9 +316,9 @@
                         >arrow_drop_down</v-icon
                       >
                     </v-btn>
-                    <v-btn v-if="answer.isAccepted" color="success" icon fab>
-                      <v-icon>check</v-icon>
-                    </v-btn>
+                    <!--<v-btn v-if="answer.isAccepted" color="success" icon fab>-->
+                    <!--  <v-icon>check</v-icon>-->
+                    <!--</v-btn>-->
                   </v-layout>
                 </v-flex>
                 <v-flex xs11 class="ml-4">
@@ -418,7 +353,7 @@
                     <v-chip
                       v-if="answer.isAccepted"
                       style="max-width:170px; text-decoration: none;border-radius: 0; color: white"
-                      color="success"
+                      color="private"
                       small
                     >
                       已采纳
@@ -427,68 +362,12 @@
                   <div v-dompurify-html="$md.render(answer.content)"></div>
                   <v-card-actions>
                     <v-layout justify-end>
-                      <v-card
-                        class="px-8 pt-3 pb-1 user_card"
-                        :to="'/user/' + answer.author.userId"
-                      >
-                        <v-layout justify-space-between>
-                          <v-flex xs5>
-                            <v-layout justify-center>
-                              <v-avatar color="grey">
-                                <v-img :src="answer.author.avatar"></v-img>
-                              </v-avatar>
-                            </v-layout>
-                            <v-layout justify-center class="mt-2">
-                              <span
-                                class="subtitle-2 text-no-wrap text-truncate d-block"
-                                >{{
-                                  answer.author.nickname ||
-                                    answer.author.username
-                                }}</span
-                              >
-                            </v-layout>
-                          </v-flex>
-                          <v-flex xs7>
-                            <v-layout
-                              column
-                              align-end
-                              justify-space-between
-                              style="height:100%"
-                            >
-                              <v-layout>
-                                <small
-                                  :title="
-                                    $options.filters.moment(answer.createTime)
-                                  "
-                                >
-                                  回答于&nbsp;{{
-                                    answer.createTime | timeago
-                                  }}</small
-                                >
-                              </v-layout>
-                              <v-layout
-                                v-if="answer.createTime !== answer.modifiedTime"
-                              >
-                                <small
-                                  :title="
-                                    $options.filters.moment(answer.modifiedTime)
-                                  "
-                                >
-                                  更新于&nbsp;
-                                  {{ answer.modifiedTime | timeago }}</small
-                                ></v-layout
-                              >
-                              <v-layout justify-end align-end>
-                                <v-layout align-center>
-                                  <v-icon small color="red" title="用户声望"
-                                    >mdi-music-clef-bass</v-icon
-                                  >&nbsp;{{ answer.author.reputation }}
-                                </v-layout>
-                              </v-layout>
-                            </v-layout>
-                          </v-flex>
-                        </v-layout>
-                      </v-card>
+                      <EditUserCard
+                        :user="answer.author"
+                        :create-time="answer.createTime"
+                        :modified-time="answer.modifiedTime"
+                        prefix="回答"
+                      ></EditUserCard>
                     </v-layout>
                   </v-card-actions>
                   <!-- 评论区 -->
@@ -718,10 +597,12 @@ import TagChip from '../../../components/TagChip'
 import ConfirmDialog from '../../../components/ConfirmDialog'
 import Quill from '../../../components/Quill'
 import RelatePost from '../../../components/RelatePost'
+import EditUserCard from '../../../components/EditUserCard'
 
 export default {
   name: 'QuestionDetail',
   components: {
+    EditUserCard,
     RelatePost,
     Quill,
     ConfirmDialog,

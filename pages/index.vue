@@ -3,7 +3,7 @@
     <v-layout column shrink>
       <v-layout>
         <v-flex md6 xs4 shrink hidden-sm-and-down>
-          <v-card-title>{{ currentTitle }}</v-card-title>
+          <!--<v-card-title>{{ currentTitle }}</v-card-title>-->
         </v-flex>
         <v-flex md6 lg4 align-self-end>
           <v-tabs

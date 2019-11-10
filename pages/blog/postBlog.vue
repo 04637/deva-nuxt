@@ -26,7 +26,7 @@
           <v-text-field
             ref="title"
             v-model="title"
-            class="mt-0 pt-0"
+            class="mt-0 pt-0 "
             prepend-icon="title"
             :counter="100"
             label="博文标题"
@@ -43,6 +43,9 @@
                 id="markdown-edit"
                 v-model="source"
                 no-resize
+                class="flat-text"
+                placeholder="在此输入内容"
+                flat
                 counter="16000"
                 full-height
                 rows="50"
@@ -76,6 +79,7 @@
               v-model="selectedTags"
               :items="tags"
               chips
+              flat
               clearable
               :counter="5"
               label="输入相关标签"
@@ -251,7 +255,7 @@ export default {
     title: null,
     spaceId: null,
     maxLength: 16000,
-    source: '第一次使用markdown?  [查看语法说明]( http://www.markdown.cn/)',
+    source: '',
     selectedTags: [],
     tags: [],
     content: '',

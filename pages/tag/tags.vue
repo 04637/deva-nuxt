@@ -1,12 +1,13 @@
 <template>
   <v-app v-show="tagList">
-    <v-layout style="width: 30vw" class="mb-3" shrink>
+    <v-layout style="width: 30vw" shrink>
       <v-text-field
         v-model="searchKey"
         hide-details
-        label="搜索标签"
-        prepend-inner-icon="search"
+        placeholder="搜索标签"
+        append-icon="search"
         rounded
+        @click:append="loadTagList"
         @keyup.enter.native="loadTagList"
       ></v-text-field>
     </v-layout>
@@ -22,7 +23,11 @@
         style="max-width: 358px"
         shrink
       >
-        <v-card min-width="250px" class="px-3 pb-2" style="padding-top:10px">
+        <v-card
+          min-width="250px"
+          class="px-3 pb-2 no-shadow-box"
+          style="padding-top:10px;"
+        >
           <v-layout align-center justify-space-between>
             <v-layout align-center>
               <TagChip :tag-info="tagInfo"></TagChip>
@@ -286,5 +291,13 @@ export default {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   min-height: 42px;
+}
+.theme--light .no-shadow-box {
+  box-shadow: none;
+  border: 1px solid #e7e7e7;
+}
+.theme--dark .no-shadow-box {
+  box-shadow: none;
+  border: 1px solid #4b4b4b;
 }
 </style>

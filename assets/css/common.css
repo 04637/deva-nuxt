@@ -254,3 +254,21 @@ p img {
 .hover-line:hover {
   text-decoration: underline;
 }
+.theme--light .no-shadow-box {
+  box-shadow: none;
+  border: 1px solid #e7e7e7;
+}
+.theme--dark .no-shadow-box {
+  box-shadow: none;
+  border: 1px solid #4b4b4b;
+}
+
+.flat-text {
+  box-shadow: none;
+}
+.theme--light .flat-text .v-input__slot {
+  border: 1px solid #e7e7e7;
+}
+.theme--dark .flat-text .v-input__slot {
+  border: 1px solid #4b4b4b;
+}

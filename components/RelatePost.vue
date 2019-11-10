@@ -1,32 +1,38 @@
 <template>
   <div>
     <v-layout v-if="items && items.length > 0" align-center
-      ><v-icon small color="orange">mdi-meteor</v-icon>&nbsp;<span
+      ><v-icon small color="new_orange">mdi-meteor</v-icon>&nbsp;<span
+        class="my_gray--text"
         >{{ keywords || tagKeywords ? '相关' : '热门' }}推荐</span
       ></v-layout
     >
-    <transition-group name="list">
-      <div
-        v-for="post in items"
-        :key="post.blogId || post.questionId"
-        class="mt-4"
-      >
-        <v-layout
-          v-if="excludeId !== post.blogId && excludeId !== post.questionId"
-          align-center
-          ><router-link
-            class="hover-line"
-            style="font-size: 0.9rem;"
-            :to="
-              post.blogId
-                ? '/blog/' + post.blogId
-                : '/question/' + post.questionId
-            "
-            >{{ post.title }}</router-link
-          ></v-layout
+    <div class="with-bg py-1 px-2 mt-2">
+      <transition-group name="list">
+        <div
+          v-for="post in items"
+          :key="post.blogId || post.questionId"
+          class="mb-4"
         >
-      </div>
-    </transition-group>
+          <v-layout
+            v-if="excludeId !== post.blogId && excludeId !== post.questionId"
+            align-center
+            ><router-link
+              class="hover-line"
+              :class="$vuetify.theme.dark ? 'white--text' : 'black--text'"
+              style="font-size: 0.9rem;"
+              :to="
+                post.blogId
+                  ? '/blog/' + post.blogId
+                  : '/question/' + post.questionId
+              "
+              ><span style="font-weight:bold;" class="my_gray--text"
+                >·&nbsp;</span
+              >{{ post.title }}</router-link
+            ></v-layout
+          >
+        </div>
+      </transition-group>
+    </div>
   </div>
 </template>
 <script>
@@ -79,3 +85,11 @@ export default {
   }
 }
 </script>
+<style>
+.theme--light .with-bg {
+  background-color: rgba(231, 231, 231, 0.35);
+}
+.theme--dark .with-bg {
+  background-color: rgba(75, 75, 75, 0.35);
+}
+</style>

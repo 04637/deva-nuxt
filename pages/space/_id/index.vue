@@ -140,6 +140,8 @@
           v-model="spaceInfo.description"
           solo
           readonly
+          flat
+          no-resize
           style="font-size: 0.9rem"
         >
         </v-textarea>

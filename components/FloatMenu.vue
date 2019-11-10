@@ -28,7 +28,11 @@
         <v-tooltip top internal-activator>
           <template v-slot:activator="{ on }">
             <v-btn fab dark small color="blue" v-on="on">
-              <v-icon>mdi-email</v-icon>
+              <a
+                style="color: white; text-decoration: none"
+                href="mailto:admin@aid.dev"
+                ><v-icon>mdi-email</v-icon></a
+              >
             </v-btn>
           </template>
           <span>联系我们：admin@aid.dev</span>
@@ -78,11 +82,6 @@
                 no-resize
               ></v-textarea>
             </v-form>
-            <div>
-              <small class="success--text">
-                我们渴望您的建议
-              </small>
-            </div>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>

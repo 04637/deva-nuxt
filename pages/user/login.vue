@@ -154,7 +154,7 @@
       <v-card class="pa-8 mt-6" width="520px">
         <v-layout justify-center>
           <v-btn text depressed to="signUp"
-            >还没有账号？<span style="color: orange">去注册</span></v-btn
+            >还没有账号？<span class="private--text">去注册</span></v-btn
           >
         </v-layout>
       </v-card>

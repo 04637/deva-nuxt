@@ -156,17 +156,15 @@
       <v-layout class="mt-5" justify-center shrink>
         <v-card width="100%">
           <v-layout align-center>
-            <v-btn color="private" text to="/"><strong>问题管理</strong></v-btn
-            >|
-            <v-btn color="private" text to="/blog/blogList"
+            <v-btn color="blue" text to="/">问题管理</v-btn>|
+            <v-btn color="blue" text to="/blog/blogList"
               ><span>博文管理</span></v-btn
             >|
-            <v-btn color="private" text to="/user/users"
+            <v-btn color="blue" text to="/user/users"
               ><span>用户管理</span></v-btn
             >|
-            <v-btn color="private" text to="/tag/tags"
-              ><span>标签管理</span></v-btn
-            >|<v-btn color="private" text to="/admin/space"
+            <v-btn color="blue" text to="/tag/tags"><span>标签管理</span></v-btn
+            >|<v-btn color="blue" text to="/admin/space"
               ><span>空间管理</span></v-btn
             >
           </v-layout>

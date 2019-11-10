@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-layout column shrink>
-      <v-card-title
+      <v-card-title class="pb-0"
         ><v-row align="center"
           >{{ blogDetail.title }}&nbsp;<v-btn
             v-if="blogDetail.authorId === $store.getters.getUserId"
@@ -46,86 +46,20 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-layout justify-space-between align-center>
-              <v-flex xs8>
-                <v-layout>
-                  <TagChip
-                    v-for="tag in blogDetail.tagInfos"
-                    :key="tag.tagId"
-                    class="mr-3"
-                    :tag-info="tag"
-                  ></TagChip>
-                </v-layout>
-              </v-flex>
-              <v-flex xs4>
-                <v-layout
-                  justify-end
-                  style="min-width: 200px; width: 100%; max-width: 300px;"
-                >
-                  <v-card
-                    style="width: 100%"
-                    class="px-8 pt-3 pb-1 user_card"
-                    :to="'/user/' + blogDetail.author.userId"
-                  >
-                    <v-layout justify-space-between>
-                      <v-flex xs5>
-                        <v-layout justify-center>
-                          <v-avatar color="grey">
-                            <v-img :src="blogDetail.author.avatar"></v-img>
-                          </v-avatar>
-                        </v-layout>
-                        <v-layout justify-center class="mt-2">
-                          <span
-                            class="subtitle-2 text-no-wrap text-truncate d-block"
-                            >{{
-                              blogDetail.author.nickname || blogDetail.username
-                            }}</span
-                          >
-                        </v-layout>
-                      </v-flex>
-                      <v-flex xs7>
-                        <v-layout
-                          column
-                          align-end
-                          justify-space-between
-                          style="height:100%"
-                        >
-                          <v-layout>
-                            <small
-                              :title="
-                                $options.filters.moment(blogDetail.createTime)
-                              "
-                            >
-                              提问于&nbsp;
-                              {{ blogDetail.createTime | timeago }}</small
-                            >
-                          </v-layout>
-                          <v-layout
-                            v-if="
-                              blogDetail.createTime !== blogDetail.modifiedTime
-                            "
-                          >
-                            <small
-                              :title="
-                                $options.filters.moment(blogDetail.modifiedTime)
-                              "
-                            >
-                              更新于&nbsp;
-                              {{ blogDetail.modifiedTime | timeago }}</small
-                            ></v-layout
-                          >
-                          <v-layout justify-end align-end>
-                            <v-layout align-center>
-                              <v-icon small color="red" title="用户声望"
-                                >mdi-music-clef-bass</v-icon
-                              >&nbsp;{{ blogDetail.author.reputation }}
-                            </v-layout>
-                          </v-layout>
-                        </v-layout>
-                      </v-flex>
-                    </v-layout>
-                  </v-card>
-                </v-layout>
-              </v-flex>
+              <v-layout>
+                <TagChip
+                  v-for="tag in blogDetail.tagInfos"
+                  :key="tag.tagId"
+                  class="mr-3"
+                  :tag-info="tag"
+                ></TagChip>
+              </v-layout>
+              <EditUserCard
+                :user="blogDetail.author"
+                :create-time="blogDetail.createTime"
+                :modified-time="blogDetail.modifiedTime"
+                prefix="发布"
+              ></EditUserCard>
             </v-layout>
           </v-card-actions>
           <v-divider></v-divider>
@@ -196,10 +130,12 @@
 import HotTag from '../../../components/HotTag'
 import TagChip from '../../../components/TagChip'
 import RelatePost from '../../../components/RelatePost'
+import EditUserCard from '../../../components/EditUserCard'
 
 export default {
   name: 'BlogDetail',
   components: {
+    EditUserCard,
     RelatePost,
     TagChip,
     HotTag

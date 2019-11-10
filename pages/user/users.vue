@@ -1,12 +1,13 @@
 <template>
   <v-app v-show="userList">
-    <v-layout style="width: 30vw" class="mb-3" shrink>
+    <v-layout style="width: 30vw" shrink>
       <v-text-field
         v-model="searchKey"
         hide-details
-        label="用户名/昵称"
-        prepend-inner-icon="search"
+        placeholder="用户名/昵称"
+        append-icon="search"
         rounded
+        @click:append="loadUserList"
         @keyup.enter.native="loadUserList"
       ></v-text-field>
     </v-layout>
@@ -19,7 +20,7 @@
         md4
         lg3
         style="max-height: 75px; max-width: 358px"
-        class="ma-4 mb-6 mr-2"
+        class="ma-4 mb-9 mr-2"
       >
         <UserCard :user-info="userInfo"></UserCard>
       </v-flex>

@@ -309,7 +309,8 @@
                 :key="watch.userId"
                 class="ma-2"
               >
-                <UserCard min-width="220px" :user-info="watch"> </UserCard>
+                <MiniUserCard min-width="220px" :user-info="watch">
+                </MiniUserCard>
               </div>
             </v-layout>
           </v-tab-item>
@@ -321,7 +322,8 @@
                 :key="follower.userId"
                 class="ma-2"
               >
-                <UserCard min-width="220px" :user-info="follower"> </UserCard>
+                <MiniUserCard min-width="220px" :user-info="follower">
+                </MiniUserCard>
               </div>
             </v-layout>
           </v-tab-item>
@@ -331,10 +333,10 @@
   </v-layout>
 </template>
 <script>
-import UserCard from '../../../components/UserCard'
+import MiniUserCard from '../../../components/MiniUserCard'
 import TagChip from '../../../components/TagChip'
 export default {
-  components: { TagChip, UserCard },
+  components: { TagChip, MiniUserCard },
   data: () => ({
     tab: null,
     userProfile: null,

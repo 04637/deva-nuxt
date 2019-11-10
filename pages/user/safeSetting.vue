@@ -63,7 +63,7 @@
                   readonly
                   hide-details
                   :value="userInfo.lastLoginIp"
-                  class="center-text mt-0 pt-0"
+                  class="center-text mt-0 pt-0 no-padding-input"
                 ></v-text-field>
               </v-layout>
               <v-layout justify-space-between align-center class="mt-2">
@@ -73,10 +73,8 @@
                 <v-layout justify-end>
                   <v-btn
                     :disabled="!userInfo.phone"
-                    class="bg"
                     color="private"
                     text
-                    style="background: rgba(233, 30, 99, 0.1)"
                     @click="editPassword.dialog = true"
                     ><span>修改密码</span></v-btn
                   ></v-layout
@@ -630,5 +628,15 @@ export default {
   padding: 0;
   position: relative;
   top: 4px;
+}
+.no-padding-input input {
+  padding-bottom: 0 !important;
+}
+</style>
+<style scoped>
+.mdi {
+  font-size: 16px;
+  position: relative;
+  top: -2px;
 }
 </style>

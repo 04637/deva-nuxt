@@ -1,12 +1,13 @@
 <template>
-  <v-app v-if="spaceInfoList">
+  <v-app>
     <v-layout style="width: 30vw" class="mb-3" shrink>
       <v-text-field
         v-model="searchKey"
         hide-details
-        label="空间ID/名称 创建人用户名/昵称"
-        prepend-inner-icon="search"
+        placeholder="空间ID/名称 创建人用户名/昵称"
+        append-icon="search"
         rounded
+        @click:append="loadSpaceList"
         @keyup.enter.native="loadSpaceList"
       ></v-text-field>
     </v-layout>
@@ -51,7 +52,9 @@ export default {
           })
           .then((resp) => {
             if (resp.succeed) {
-              this.spaceInfoList = resp.data.content
+              this.spaceInfoList = resp.data.records
+            } else {
+              this.spaceInfoList = []
             }
           })
       }

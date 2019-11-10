@@ -144,7 +144,12 @@ export default {
           private: '#eb6f5a',
           my_gray: '#808080',
           solo_color: colors.white,
-          inverted_color: colors.black
+          inverted_color: colors.black,
+          light_red: '#FCCEBE',
+          light_yellow: '#fcf9f0',
+          light_blue1: '#99C3D9',
+          dark_blue1: '#3D708F',
+          light_green: '#89d7bc'
         }
       }
     }

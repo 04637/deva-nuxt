@@ -3,11 +3,11 @@
     <v-app>
       <v-layout justify-space-between shrink>
         <v-col cols="6" justify="start">
-          <v-btn small text class="my_gray--text"
-            >小提示：如需粘贴大段代码，可在&nbsp;
-            <a href="https://codeshare.io/" target="_blank"
-              ><strong>codeshare</strong></a
-            >&nbsp; 中创建后分享至此哦</v-btn
+          <span style="font-size: 14px" class="my_gray--text"
+            >小提示：右侧可切换markdown编辑器, 如需帮助可
+            <a href="http://www.markdown.cn/" target="_blank" class="hover-line"
+              ><span>点此查看markdown语法说明</span></a
+            ></span
           >
         </v-col>
         <v-col cols="5">
@@ -52,9 +52,12 @@
                 v-model="source"
                 no-resize
                 counter="10000"
+                placeholder="在此输入内容"
                 full-height
                 rows="30"
+                class="flat-text"
                 solo
+                flat
                 :rules="[rules.max10000, rules.min20]"
               ></v-textarea>
             </v-flex>
@@ -67,7 +70,7 @@
             </v-flex>
           </v-layout>
           <!--富文本编辑器-->
-          <div v-if="!$store.getters.getUseMarkdown" style="height: 597px;">
+          <div v-if="!$store.getters.getUseMarkdown" style="height: 593px;">
             <Quill
               ref="questionQuill"
               :content="content"
@@ -94,6 +97,7 @@
               item-value="tagId"
               :rules="[rules.tags, rules.tagsRequired]"
               auto-select-first
+              flat
               @change="selectedChange"
             >
               <template v-slot:selection="{ attrs, item, select, selected }">
@@ -233,7 +237,7 @@ export default {
     title: null,
     quillErrMsg: null,
     maxLength: 10000,
-    source: '第一次使用markdown?  [查看语法说明]( http://www.markdown.cn/)',
+    source: '',
     selectedTags: [],
     tags: [],
     content: '',
