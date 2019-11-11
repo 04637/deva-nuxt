@@ -10,9 +10,15 @@
               color="primary"
               outlined
               small
-              label
             >
-              已解决
+              已解决 </v-chip
+            ><v-chip
+              v-if="questionDetail.status === 0"
+              color="private"
+              outlined
+              small
+            >
+              待解决
             </v-chip></v-row
           ></v-card-title
         >

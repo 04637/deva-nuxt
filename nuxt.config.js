@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+// const api = '47.92.173.53:8080'
 const api = 'localhost:8080'
 const redirectUri = 'http://localhost:3000/user/login?auth='
 export default {

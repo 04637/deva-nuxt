@@ -17,9 +17,9 @@
             v-if="excludeId !== post.blogId && excludeId !== post.questionId"
             align-center
             ><router-link
-              class="hover-line"
+              class="hover-color"
               :class="$vuetify.theme.dark ? 'white--text' : 'black--text'"
-              style="font-size: 0.9rem;"
+              style="font-size: 0.9rem; text-decoration: none"
               :to="
                 post.blogId
                   ? '/blog/' + post.blogId
@@ -91,5 +91,8 @@ export default {
 }
 .theme--dark .with-bg {
   background-color: rgba(75, 75, 75, 0.35);
+}
+.hover-color:hover {
+  color: #01a687 !important;
 }
 </style>

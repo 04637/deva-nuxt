@@ -2,7 +2,7 @@
   <v-layout justify-end style="width: 220px;max-width: 220px">
     <v-card
       style="width: 100%"
-      class="pt-3 pr-2 pb-1 user_card"
+      class="pt-3 pr-2 pb-1 user_card no-shadow-box"
       :to="'/user/' + user.userId"
     >
       <v-layout justify-space-between>
@@ -69,3 +69,13 @@ export default {
   }
 }
 </script>
+<style>
+.theme--light .no-shadow-box {
+  box-shadow: none;
+  border: 1px solid #e7e7e7;
+}
+.theme--dark .no-shadow-box {
+  box-shadow: none;
+  border: 1px solid #4b4b4b;
+}
+</style>

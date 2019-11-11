@@ -5,7 +5,7 @@
         flat
         exact
         width="100vw"
-        class="px-5 pr-6 py-1 pt-2 no-ripple"
+        class="px-5 pr-6 py-1 pt-2 no-ripple no-shadow-box"
         :to="$store.getters.isAdmin ? '' : '/question/' + question.questionId"
       >
         <v-layout>
@@ -38,8 +38,11 @@
               :to="'/question/' + question.questionId"
               >{{ question.title }}</v-btn
             >
-            <v-icon v-if="question.status === 1" color="primary" title="已采纳"
-              >check</v-icon
+            <v-chip v-if="question.status === 1" small outlined color="primary"
+              >已解决</v-chip
+            >
+            <v-chip v-if="question.status === 0" small outlined color="private"
+              >待解决</v-chip
             >
             <v-card-text
               v-dompurify-html:noHtml="$md.render(question.content)"
@@ -85,7 +88,11 @@
             </v-row>
             <v-row justify="end" dense style="width:100%">
               <v-row justify="end" align="end" style="font-size: 14px">
-                <v-layout justify-end align-center>
+                <v-layout
+                  justify-end
+                  align-center
+                  style="position: relative; top: -5px"
+                >
                   <v-chip
                     small
                     color="light_yellow"
@@ -176,5 +183,13 @@ export default {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   max-height: 62px;
+}
+.theme--light .no-shadow-box {
+  box-shadow: none;
+  border: 1px solid #e7e7e7;
+}
+.theme--dark .no-shadow-box {
+  box-shadow: none;
+  border: 1px solid #4b4b4b;
 }
 </style>

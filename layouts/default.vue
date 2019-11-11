@@ -703,7 +703,7 @@ export default {
           path: '/search/' + this.keywords
         })
       }
-      this.$refs.searchRef.blur()
+      // this.$refs.searchRef.blur()
     },
     loadSpaceList() {
       if (this.$store.state.userInfo) {
@@ -891,12 +891,18 @@ header {
   box-shadow: none;
 }
 .ml-max {
-  margin-left: 120px !important;
+  /*margin-left: 120px !important;*/
   padding-left: 80px !important;
+}
+.ml-max >>> .v-content__wrap {
+  padding-left: 100px !important;
 }
 .ml-mini {
   margin-left: 0 !important;
   padding-left: 80px !important;
+}
+.ml-mini >>> .v-content__wrap {
+  padding-left: 0 !important;
 }
 .ml-small {
   margin-left: 0 !important;
