@@ -10,6 +10,7 @@
               color="primary"
               outlined
               small
+              style="height: 20px"
             >
               已解决 </v-chip
             ><v-chip
@@ -17,6 +18,7 @@
               color="private"
               outlined
               small
+              style="height: 20px"
             >
               待解决
             </v-chip></v-row

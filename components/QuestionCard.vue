@@ -38,10 +38,20 @@
               :to="'/question/' + question.questionId"
               >{{ question.title }}</v-btn
             >
-            <v-chip v-if="question.status === 1" small outlined color="primary"
+            <v-chip
+              v-if="question.status === 1"
+              small
+              outlined
+              color="primary"
+              style="height: 20px"
               >已解决</v-chip
             >
-            <v-chip v-if="question.status === 0" small outlined color="private"
+            <v-chip
+              v-if="question.status === 0"
+              small
+              outlined
+              color="private"
+              style="height: 20px"
               >待解决</v-chip
             >
             <v-card-text
