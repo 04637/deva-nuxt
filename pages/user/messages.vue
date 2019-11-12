@@ -9,7 +9,7 @@
       <v-divider></v-divider>
     </v-layout>
     <v-layout class="mt-5" justify-center shrink>
-      <v-card width="60vw" class="no-shadow-box">
+      <v-card width="60vw" flat class="no-shadow-box">
         <v-card-title>
           <v-spacer></v-spacer>
           <v-text-field
@@ -27,7 +27,6 @@
           locale="zh-CN"
           :headers="headers"
           :items="messages"
-          class="elevation-1"
           item-key="messageId"
           :search="search"
           show-select

@@ -93,7 +93,7 @@
               <!--</v-layout>-->
             </v-flex>
             <v-flex lg4 md12>
-              <v-card flat>
+              <v-card flat style="border: none">
                 <v-card-text class="pt-0"
                   >提问：{{ userProfile.questions.length }}</v-card-text
                 >
@@ -145,7 +145,7 @@
         <v-tabs-items v-model="tab">
           <!-- ask tab -->
           <v-tab-item>
-            <v-card>
+            <v-card flat>
               <v-card-title class="pt-0">
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -164,9 +164,11 @@
                 :search="askTab.search"
               >
                 <template #item.title="{item}">
-                  <router-link :to="'/question/' + item.questionId">{{
-                    item.title
-                  }}</router-link>
+                  <router-link
+                    class="hover-color"
+                    :to="'/question/' + item.questionId"
+                    >{{ item.title }}</router-link
+                  >
                 </template>
                 <template #item.status="{item}">
                   <v-icon
@@ -182,7 +184,7 @@
           </v-tab-item>
           <!-- answer tab -->
           <v-tab-item>
-            <v-card>
+            <v-card flat>
               <v-card-title class="pt-0">
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -201,6 +203,7 @@
               >
                 <template #item.questionTitle="{item}">
                   <router-link
+                    class="hover-color"
                     :to="
                       '/question/' + item.ownQuestionId + '#' + item.answerId
                     "
@@ -218,7 +221,7 @@
           </v-tab-item>
           <!-- blog tab -->
           <v-tab-item>
-            <v-card>
+            <v-card flat>
               <v-card-title class="pt-0">
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -237,9 +240,11 @@
                 :search="blogTab.search"
               >
                 <template #item.title="{item}">
-                  <router-link :to="'/blog/' + item.blogId">{{
-                    item.title
-                  }}</router-link>
+                  <router-link
+                    class="hover-color"
+                    :to="'/blog/' + item.blogId"
+                    >{{ item.title }}</router-link
+                  >
                 </template>
                 <template #item.isPublic="{item}">
                   {{ item.isPublic ? '是' : '否' }}
@@ -249,7 +254,7 @@
           </v-tab-item>
           <!-- collect tab -->
           <v-tab-item>
-            <v-card>
+            <v-card flat>
               <v-card-title class="pt-0">
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -267,16 +272,18 @@
                 :search="collectTab.search"
               >
                 <template #item.title="{item}">
-                  <router-link :to="'/question/' + item.questionId">{{
-                    item.title
-                  }}</router-link>
+                  <router-link
+                    class="hover-color"
+                    :to="'/question/' + item.questionId"
+                    >{{ item.title }}</router-link
+                  >
                 </template>
               </v-data-table>
             </v-card>
           </v-tab-item>
           <!-- 博文收藏-->
           <v-tab-item>
-            <v-card>
+            <v-card flat>
               <v-card-title class="pt-0">
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -294,9 +301,11 @@
                 :search="likeBlogTab.search"
               >
                 <template #item.title="{item}">
-                  <router-link :to="'/blog/' + item.blogId">{{
-                    item.title
-                  }}</router-link>
+                  <router-link
+                    class="hover-color"
+                    :to="'/blog/' + item.blogId"
+                    >{{ item.title }}</router-link
+                  >
                 </template>
               </v-data-table>
             </v-card>
@@ -490,4 +499,22 @@ export default {
   }
 }
 </script>
-<style scoped></style>
+<style scoped>
+.theme--light .hover-color {
+  color: black;
+  text-decoration: none;
+}
+.theme--dark .hover-color {
+  color: white;
+  text-decoration: none;
+}
+.hover-color:hover {
+  color: #01a687 !important;
+}
+.theme--light .v-card--flat {
+  border: 1px solid #e7e7e7;
+}
+.theme--dark .v-card--flat {
+  border: 1px solid #4b4b4b;
+}
+</style>
