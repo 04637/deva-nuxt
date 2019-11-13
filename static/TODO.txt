@@ -139,18 +139,17 @@ es 排序应使用modifyTime排序 ✔
 
 细节美化:
     已解决、已采纳等配色调整或radius, 区分标签 ✔
-    推荐文章hover变色
+    推荐文章hover变色 ✔
 
 开户后:
     微信开发者资质认证 登录接入
     购买商标
     三方登录接口网站logo上传 域名及跳转链接更改
 
+后续:
+    软件著作权登记
+
 上线后:
     QQ登录接入 (因为测试连接不能通过审核)
     公安联网备案 网站开通之日起30日内到公司实际经营地或个人常住地公安机关履行公安备案手续 https://help.aliyun.com/knowledge_detail/43898.html?&msctype=email&mscareaid=cn&mscsiteid=cn&mscmsgid=2260119102501445097&&spm=a2c4k.12424349.zh-cnc.17&
 
-后续:
-    软件著作权登记
-    软件专利
-    商标注册 参考 https://www.zhihu.com/question/20087967

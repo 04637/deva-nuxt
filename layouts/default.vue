@@ -43,23 +43,17 @@
                 class="letter-space"
                 >DEVA</v-subheader
               >
-              <v-list-item
-                @click="
-                  $router.push({ path: '/question/ask', query: { name: '3' } })
-                "
-              >
+              <v-list-item @click="$router.push({ path: '/question/ask' })">
                 <v-list-item-action
                   :class="$store.getters.getMiniNav ? 'mini-action' : ''"
                 >
                   <v-tooltip v-if="$store.getters.getMiniNav" right>
                     <template v-slot:activator="{ on }">
-                      <v-icon small v-on="on"
-                        >mdi-comment-question-outline</v-icon
-                      >
+                      <v-icon small v-on="on">mdi-feather</v-icon>
                     </template>
                     <span>提问</span>
                   </v-tooltip>
-                  <v-icon v-else small>mdi-comment-question-outline</v-icon>
+                  <v-icon v-else small>mdi-feather</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>提&nbsp;&nbsp;&nbsp;问</v-list-item-title>
@@ -79,24 +73,6 @@
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>发&nbsp;&nbsp;&nbsp;现</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item to="/blog/blogList">
-                <v-list-item-action
-                  :class="$store.getters.getMiniNav ? 'mini-action' : ''"
-                >
-                  <v-tooltip v-if="$store.getters.getMiniNav" right>
-                    <template v-slot:activator="{ on }">
-                      <v-icon small v-on="on"
-                        >mdi-file-document-box-outline</v-icon
-                      >
-                    </template>
-                    <span>博文</span>
-                  </v-tooltip>
-                  <v-icon v-else small>mdi-file-document-box-outline</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>博&nbsp;&nbsp;&nbsp;文</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item to="/user/users">
@@ -311,28 +287,31 @@
               @click:append="search"
               @keyup.enter.native="search"
             ></v-text-field>
-            <v-spacer></v-spacer>
           </v-flex>
+          <v-spacer></v-spacer>
           <v-flex
             v-if="systemNotice && systemNotice.content"
             hidden-md-and-down
-            class="py-2"
-            style="font-size:0.9rem"
-            md6
+            class="py-2 pl-3"
+            style="font-size:0.9rem; max-width:500px"
+            md5
           >
-            <v-row align="center" justify="start" class="pr-5">
+            <v-row align="center" justify="start" class="pr-5 pl-5">
               <span
-                class="d-inline-block text-truncate my_gray--text"
-                style="max-width: 500px"
+                class="d-inline-block text-truncate"
+                style="max-width: 390px"
                 :title="systemNotice.content"
               >
-                公告：{{ systemNotice.content }}
+                <span class="my_gray--text">公告：</span
+                ><span class="inverted_color--text">{{
+                  systemNotice.content
+                }}</span>
               </span>
               <v-btn
                 v-if="systemNotice.content.length > 40"
                 text
                 small
-                color="warning"
+                color="private"
                 style="position:relative;"
                 @click="viewNotice.dialog = true"
               >
@@ -340,7 +319,7 @@
               </v-btn>
             </v-row>
           </v-flex>
-          <v-layout justify-end align-center>
+          <v-layout justify-end align-center style="max-width: 300px">
             <v-btn
               v-if="$store.state.userInfo"
               style="position: relative;margin-right: 10px"
@@ -918,25 +897,25 @@ header {
   top: -8px;
   right: 22px;
 }
-.v-item--active .mdi-comment-question-outline::before {
-  content: '\F816';
-}
-.v-item--active .mdi-circle-outline::before {
-  content: '\FAA4';
-}
-.v-item--active .mdi-magnify::before {
-  /*content: '\F70E';*/
-  font-weight: bolder;
-}
-.v-item--active .mdi-file-document-box-outline::before {
-  content: '\F21A';
-}
-.v-item--active .mdi-account-outline::before {
-  content: '\F004';
-}
-.v-item--active .mdi-bookmark-outline::before {
-  content: '\F0C0';
-}
+/*.v-item--active .mdi-comment-question-outline::before {*/
+/*  content: '\F816';*/
+/*}*/
+/*.v-item--active .mdi-circle-outline::before {*/
+/*  content: '\FAA4';*/
+/*}*/
+/*.v-item--active .mdi-magnify::before {*/
+/*  !*content: '\F70E';*!*/
+/*  font-weight: bolder;*/
+/*}*/
+/*.v-item--active .mdi-file-document-box-outline::before {*/
+/*  content: '\F21A';*/
+/*}*/
+/*.v-item--active .mdi-account-outline::before {*/
+/*  content: '\F004';*/
+/*}*/
+/*.v-item--active .mdi-bookmark-outline::before {*/
+/*  content: '\F0C0';*/
+/*}*/
 .mdi-cards-outline {
   font-size: 16px !important;
 }

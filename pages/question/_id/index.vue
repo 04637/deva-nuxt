@@ -117,7 +117,7 @@
                     dense
                     border="left"
                     colored-border
-                    color="warning"
+                    color="private"
                     width="100%"
                     class="inverted_color--text"
                     elevation="1"
@@ -543,7 +543,7 @@
             :rules="[rules.matchQuestionLink]"
             :error-messages="similarMark.errorMsg"
           ></v-text-field>
-          <small
+          <small class="private--text"
             >合理的标记可以帮助小伙伴们寻找答案，提升自己的声望。同时滥用标记，关联无关问题也将受到惩罚哦!</small
           >
         </v-card-text>

@@ -131,10 +131,11 @@
             align-center
           >
             <v-card-text v-if="$route.query.spaceId" class="my_gray--text">
-              该博文将被发布至→
+              该文章将被发布至&nbsp;
               <v-chip
                 small
-                style="margin-right: 100px; border-radius: 0; position: relative; left: -3px"
+                color="private"
+                style="color: white;margin-right: 100px; border-radius: 0; position: relative; left: -3px"
                 >{{ $route.query.spaceName }}</v-chip
               ></v-card-text
             >

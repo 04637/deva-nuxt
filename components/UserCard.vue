@@ -31,14 +31,15 @@
             v-if="actionIcon"
             :title="actionTitle"
             color="private"
-            style="position: absolute; right: -2px; top: -3px"
+            style="position: absolute; right: -1px; top: -2px"
             icon
+            small
             @click.stop="
               actionConfirm
                 ? (confirm.dialog = true)
                 : actionEvent(userInfo.userId)
             "
-            ><v-icon color="private">{{ actionIcon }}</v-icon></v-btn
+            ><v-icon small color="private">{{ actionIcon }}</v-icon></v-btn
           >
           <v-layout class="label-description " style="min-height: 44px">
             <span :title="userInfo.bio" class="my_gray--text">

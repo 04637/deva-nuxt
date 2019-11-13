@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app>
-      <v-layout justify-space-between shrink>
+      <v-layout justify-space-between align-center shrink>
         <v-col cols="6" justify="start">
           <span style="font-size: 14px" class="my_gray--text"
             >小提示：右侧可切换markdown编辑器, 如需帮助可
@@ -10,13 +10,21 @@
             ></span
           >
         </v-col>
-        <v-col cols="5">
+        <v-col cols="5" justify="end">
+          <v-btn
+            v-if="!$route.query.spaceId"
+            class="ml-2"
+            small
+            to="/blog/postBlog"
+            color="blue"
+            text
+            ><v-icon small>mdi-feather</v-icon><span>撰写文章</span></v-btn
+          >
           <v-btn
             text
             nuxt
             class="text-capitalize"
             small
-            style="float: right"
             :title="
               $store.getters.getUseMarkdown
                 ? '切换富文本编辑器'
@@ -138,10 +146,11 @@
             align-center
           >
             <v-card-text v-if="$route.query.spaceId" class="my_gray--text">
-              该问题将被发布至→
+              该问题将被发布至&nbsp;
               <v-chip
                 small
-                style="margin-right: 100px; border-radius: 0; position: relative; left: -3px"
+                color="private"
+                style="color: white;margin-right: 100px; border-radius: 0; position: relative; left: -3px"
                 >{{ $route.query.spaceName }}</v-chip
               ></v-card-text
             >

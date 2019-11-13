@@ -635,7 +635,7 @@ export default {
 </style>
 <style scoped>
 .mdi {
-  font-size: 16px;
+  font-size: 16px !important;
   position: relative;
   top: -2px;
 }

@@ -6,90 +6,33 @@
           <v-card-title class="pt-0 pb-0">
             <v-layout column>
               <v-row align="center" justify="start">
-                <v-chip
+                <SpaceMenu :space-info="spaceInfo"></SpaceMenu>
+                <v-icon small>mdi-feather</v-icon>
+                <v-btn
+                  class="ml-2"
+                  :to="
+                    '/question/ask?spaceId=' +
+                      spaceInfo.spaceId +
+                      '&spaceName=' +
+                      spaceInfo.spaceName
+                  "
                   small
-                  style="margin-right: 100px; border-radius: 0; position: relative; left: -3px"
-                  >{{ spaceInfo.spaceName }}</v-chip
+                  text
+                  color="primary"
+                  >发布问题</v-btn
+                ><v-divider vertical></v-divider>
+                <v-btn
+                  small
+                  :to="
+                    '/blog/postBlog?spaceId=' +
+                      spaceInfo.spaceId +
+                      '&spaceName=' +
+                      spaceInfo.spaceName
+                  "
+                  text
+                  color="blue"
+                  >撰写文章</v-btn
                 >
-                <v-tooltip top>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      :to="
-                        '/question/ask?spaceId=' +
-                          spaceInfo.spaceId +
-                          '&spaceName=' +
-                          spaceInfo.spaceName
-                      "
-                      class="ml-5"
-                      text
-                      small
-                      icon
-                      v-on="on"
-                      ><v-icon small
-                        >mdi-comment-question-outline</v-icon
-                      ></v-btn
-                    >
-                  </template>
-                  <span>发布问题</span>
-                </v-tooltip>
-                <v-tooltip top>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      icon
-                      :to="
-                        '/blog/postBlog?spaceId=' +
-                          spaceInfo.spaceId +
-                          '&spaceName=' +
-                          spaceInfo.spaceName
-                      "
-                      v-on="on"
-                      ><v-icon small
-                        >mdi-file-document-edit-outline</v-icon
-                      ></v-btn
-                    >
-                  </template>
-                  <span>撰写文章</span>
-                </v-tooltip>
-                <v-tooltip top>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      icon
-                      :to="'/space/userView?spaceId=' + spaceInfo.spaceId"
-                      v-on="on"
-                      ><v-icon>mdi-account-supervisor-outline</v-icon></v-btn
-                    >
-                  </template>
-                  <span>查看所有成员信息</span>
-                </v-tooltip>
-                <v-tooltip
-                  v-if="spaceInfo.ownerUserId === $store.getters.getUserId"
-                  top
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      text
-                      small
-                      icon
-                      :to="'/space/manageSpace?spaceId=' + spaceInfo.spaceId"
-                      v-on="on"
-                      ><v-icon small>mdi-settings-outline</v-icon></v-btn
-                    >
-                  </template>
-                  <span>管理空间</span>
-                </v-tooltip>
-                <v-tooltip v-else top>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      text
-                      small
-                      icon
-                      @click="confirmExit.dialog = true"
-                      v-on="on"
-                      ><v-icon small>mdi-location-exit</v-icon></v-btn
-                    >
-                  </template>
-                  <span>退出空间</span>
-                </v-tooltip>
               </v-row>
               <v-row
                 ><v-text-field
@@ -140,7 +83,6 @@
           v-model="spaceInfo.description"
           solo
           readonly
-          flat
           no-resize
           style="font-size: 0.9rem"
         >
@@ -149,13 +91,6 @@
         <RelatePost></RelatePost>
       </v-flex>
     </v-layout>
-    <ConfirmDialog
-      :dialog="confirmExit.dialog"
-      msg="确定退出该空间吗?"
-      :todo="exitSpace"
-      @update:dialog="confirmExit.dialog = $event"
-    >
-    </ConfirmDialog>
     <InfoDialog
       :msg="['退出成功', '退出失败']"
       :succeed="
@@ -171,18 +106,18 @@
   </v-app>
 </template>
 <script>
-import ConfirmDialog from '../../../components/ConfirmDialog'
 import InfoDialog from '../../../components/InfoDialog'
 import HotTag from '../../../components/HotTag'
 import BQCardList from '../../../components/BQCardList'
 import RelatePost from '../../../components/RelatePost'
+import SpaceMenu from '../../../components/SpaceMenu'
 export default {
   components: {
+    SpaceMenu,
     RelatePost,
     BQCardList,
     HotTag,
-    InfoDialog,
-    ConfirmDialog
+    InfoDialog
   },
   data: () => ({
     sortType: 'RECENT',
@@ -255,20 +190,6 @@ export default {
         })
         .catch((e) => {
           this.$router.push('/')
-        })
-    },
-    exitSpace() {
-      this.$axios
-        .$post('/spaceUser/exitSpace', {
-          spaceId: this.$route.params.id
-        })
-        .then((resp) => {
-          this.confirmExit.dialog = false
-          this.confirmExit.result.resp = resp
-          this.confirmExit.result.dialog = true
-          if (resp.succeed) {
-            this.$store.commit('needReloadSpaceList')
-          }
         })
     },
     loadLikeTags() {

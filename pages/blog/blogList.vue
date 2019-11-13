@@ -24,16 +24,7 @@
                   @click:append="searchBtn"
                   @keyup.enter.native="searchBtn"
                 ></v-text-field
-                ><v-btn
-                  class="ml-12"
-                  small
-                  outlined
-                  color="primary"
-                  to="/blog/postBlog"
-                  ><v-icon small>mdi-file-document-edit-outline</v-icon
-                  >发布博文</v-btn
-                ></v-row
-              >
+              ></v-row>
             </v-layout>
           </v-card-title>
         </v-flex>

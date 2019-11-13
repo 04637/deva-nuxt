@@ -12,7 +12,6 @@
         >
       </v-layout>
     </v-toolbar>
-    <v-divider></v-divider>
     <v-list subheader>
       <v-list-item>
         <v-list-item-avatar>

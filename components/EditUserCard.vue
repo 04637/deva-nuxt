@@ -2,7 +2,7 @@
   <v-layout justify-end style="width: 220px;max-width: 220px">
     <v-card
       style="width: 100%"
-      class="pt-3 pr-2 pb-1 user_card no-shadow-box"
+      class="pt-3 pr-2 pb-2 user_card no-shadow-box"
       :to="'/user/' + user.userId"
     >
       <v-layout justify-space-between>

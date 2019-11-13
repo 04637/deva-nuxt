@@ -11,7 +11,7 @@
         <v-btn small text @click="$emit('update:dialog', false)">取消 </v-btn>
         <v-btn
           small
-          color="warning"
+          color="private"
           text
           @click="
             $emit('update:dialog', false)

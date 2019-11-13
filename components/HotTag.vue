@@ -32,7 +32,7 @@
               title="取消关注"
               style="height: 24px"
               @click="toggleLikeTag(tag)"
-              ><v-icon small color="warning">mdi-close</v-icon></v-btn
+              ><v-icon small color="private">mdi-close</v-icon></v-btn
             ></transition
           >
         </v-layout>
