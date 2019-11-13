@@ -12,13 +12,7 @@
         @keyup.enter.native="loadUserList"
       ></v-text-field>
       <v-spacer></v-spacer>
-      <v-chip
-        v-if="spaceInfo"
-        :to="'/space/manageSpace?spaceId=' + spaceInfo.spaceId"
-        text
-        small
-        ><span class="ml-1">{{ spaceInfo.spaceName }}</span></v-chip
-      >
+      <SpaceMenu v-if="spaceInfo" :space-info="spaceInfo"></SpaceMenu>
     </v-layout>
     <v-divider></v-divider>
     <v-layout wrap shrink>
@@ -54,8 +48,9 @@
 <script>
 import UserCard from '../../components/UserCard'
 import InfoDialog from '../../components/InfoDialog'
+import SpaceMenu from '../../components/SpaceMenu'
 export default {
-  components: { UserCard, InfoDialog },
+  components: { SpaceMenu, UserCard, InfoDialog },
   data: () => ({
     userList: null,
     searchKey: null,

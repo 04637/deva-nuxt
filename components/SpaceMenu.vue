@@ -2,13 +2,12 @@
   <v-row>
     <v-menu offset-y open-on-hover :close-on-content-click="true">
       <template v-slot:activator="{ on }">
-        <v-btn
+        <v-chip
           color="private"
           small
-          text
           style="border-radius: 0; color: white"
           v-on="on"
-          >{{ spaceInfo.spaceName }}</v-btn
+          >{{ spaceInfo.spaceName }}</v-chip
         >
       </template>
       <v-list dense flat class="pt-0">
