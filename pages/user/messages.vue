@@ -37,12 +37,11 @@
             <v-row align="center">
               <router-link
                 :to="'/user/' + item.fromUserId"
-                style=" position: relative; top: -1px "
+                style="text-decoration: none"
                 >{{ item.fromUserNickname }}</router-link
               >&nbsp;{{ $options.filters.filterHtml(item.content) }}
               <v-btn
                 v-if="item.ownQuestionId"
-                class="hover-line"
                 text
                 small
                 color="private"
@@ -58,7 +57,6 @@
               >
               <v-btn
                 v-else-if="item.ownBlogId"
-                class="hover-line"
                 text
                 small
                 color="private"
@@ -70,7 +68,6 @@
               >
               <v-btn
                 v-else
-                class="hover-line"
                 text
                 small
                 color="private"

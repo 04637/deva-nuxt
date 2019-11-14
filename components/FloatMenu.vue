@@ -68,10 +68,7 @@
       </v-speed-dial>
       <v-dialog v-model="suggest.dialog" persistent max-width="40vw">
         <v-card>
-          <v-card-title>
-            <span class="headline">建议反馈</span>
-          </v-card-title>
-          <v-card-text>
+          <v-card-text class="pt-3">
             <v-form ref="suggestForm">
               <v-textarea
                 v-model="suggest.content"

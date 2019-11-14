@@ -169,10 +169,7 @@
     </v-app>
     <v-dialog v-model="createTag.dialog" persistent max-width="600px">
       <v-card>
-        <v-card-title>
-          <span class="headline">创建标签</span>
-        </v-card-title>
-        <v-card-text>
+        <v-card-text class="pt-3">
           <v-form ref="createTagForm">
             <v-text-field
               v-model="newTag.name"

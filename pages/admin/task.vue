@@ -204,6 +204,7 @@
           <v-form ref="dealTaskForm">
             <v-textarea
               v-model="taskDialog.task.replyContent"
+              no-resize
               label="输入您的回复"
               :rules="[rules.min10, rules.max1000]"
               autofocus
@@ -242,6 +243,7 @@
           <v-textarea
             v-if="taskDialog.task"
             hide-details
+            no-resize
             readonly
             :value="taskDialog.task.replyContent"
             autofocus

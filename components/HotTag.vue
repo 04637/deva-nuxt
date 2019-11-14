@@ -18,7 +18,11 @@
       ></v-layout
     >
     <transition-group name="list">
-      <div v-for="tag in likeTagList" :key="'like' + tag.tagId" class="mb-3">
+      <div
+        v-for="tag in likeTagList"
+        :key="'like' + tag.tagId"
+        class="mb-3 mt-1"
+      >
         <v-layout align-center>
           <TagChip color="blue" :tag-info="tag"></TagChip>&nbsp;<span
             class="my_gray--text"
@@ -52,7 +56,7 @@
       ></v-layout
     >
     <transition-group name="list">
-      <div v-for="tag in hotTagList" :key="tag.tagId" class="mb-3">
+      <div v-for="tag in hotTagList" :key="tag.tagId" class="mb-3 mt-1">
         <TagChip :tag-info="tag"></TagChip>&nbsp;<span
           class="my_gray--text"
           title="使用次数"
