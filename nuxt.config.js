@@ -1,10 +1,10 @@
 import colors from 'vuetify/es5/util/colors'
 // const api = '47.92.173.53:8080'
-const api = 'localhost:8080'
-const redirectUri = 'http://localhost:3000/user/login?auth='
+const api = '47.103.130.39:8080'
+const redirectUri = 'http://deva.wiki/user/login?auth='
 export default {
   mode: 'universal',
-  domain: 'http://localhost:3000',
+  domain: 'http://deva.wiki',
   githubLoginUrl:
     'https://github.com/login/oauth/authorize?client_id=174cf0a9106fd1c53d24&scope=user:id',
   gitlabLoginUrl:
@@ -15,7 +15,9 @@ export default {
     '&scope=read_user',
   stackOverflowLoginUrl:
     'https://stackoverflow.com/oauth?client_id=16509&scope=read_inbox' +
-    '&redirect_uri=http://localhost:3000/user/login?auth=stackOverflow',
+    '&redirect_uri=' +
+    redirectUri +
+    'stackOverflow',
   googleLoginUrl:
     'https://accounts.google.com/o/oauth2/v2/auth' +
     '?redirect_uri=' +
@@ -181,11 +183,11 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, { isDev, isClient }) {
-      // 参考 https://github.com/nuxt/nuxt.js/issues/2781 🐮🍺  👍👍👍 js调试
-      if (isDev) {
-        config.devtool = 'eval-source-map'
-      }
-    }
+    // extend(config, { isDev, isClient }) {
+    //   // 参考 https://github.com/nuxt/nuxt.js/issues/2781 🐮🍺  👍👍👍 js调试
+    //   if (isDev) {
+    //     config.devtool = 'eval-source-map'
+    //   }
+    // }
   }
 }

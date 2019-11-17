@@ -462,7 +462,6 @@
                 >aid.dev</router-link
               >&nbsp;版权所有&nbsp;沪ICP备19037749号-1</span
             >
-            <!--<span class="pl-4">联系我们：<span>admin@aid.dev</span></span>-->
           </v-flex>
         </v-row>
       </v-footer>
