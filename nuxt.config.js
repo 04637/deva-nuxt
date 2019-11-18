@@ -1,10 +1,10 @@
 import colors from 'vuetify/es5/util/colors'
 // const api = '47.92.173.53:8080'
-const api = '47.103.130.39:8080'
-const redirectUri = 'http://deva.wiki/user/login?auth='
+const api = 'api.deva.wiki'
+const redirectUri = 'https://deva.wiki/user/login?auth='
 export default {
   mode: 'universal',
-  domain: 'http://deva.wiki',
+  domain: 'https://deva.wiki',
   githubLoginUrl:
     'https://github.com/login/oauth/authorize?client_id=174cf0a9106fd1c53d24&scope=user:id',
   gitlabLoginUrl:
@@ -104,7 +104,7 @@ export default {
    */
   axios: {
     // baseURL: 'http://localhost:8080',
-    baseURL: 'http://' + api,
+    baseURL: 'https://' + api,
     debug: false
   },
   websocket: {
