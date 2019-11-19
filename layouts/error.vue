@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
     <v-layout justify-center align-start style="margin-top:20vh">
-      <v-card width="50vw" height="30vh" min-height="200px" class="pa-5">
+      <v-card max-width="600px" height="30vh" min-height="200px" class="pa-5">
         <v-layout justify-center style="height: 100%">
           <v-layout justify-space-between column>
             <v-layout justify-center>

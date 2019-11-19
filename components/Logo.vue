@@ -24,7 +24,7 @@ export default {
 <style scoped>
 .logo {
   background: url('/sylogo2.png') no-repeat 0 0;
-  width: 140px;
+  width: 115px;
   height: 48px;
   background-size: auto 50px;
   background-position: 0px;

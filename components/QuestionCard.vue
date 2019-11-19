@@ -5,7 +5,7 @@
         flat
         exact
         width="100vw"
-        class="px-5 pr-6 py-1 pt-2 no-ripple no-shadow-box"
+        class="px-md-5 pr-md-6 py-md-1 pt-md-2 no-ripple no-shadow-box pa-sm-0"
         :to="$store.getters.isAdmin ? '' : '/question/' + question.questionId"
       >
         <v-layout>
@@ -28,7 +28,7 @@
               <span class="num-span">{{ question.viewNum }}</span>
             </div>
           </v-layout>
-          <v-flex xs9 style="margin-top: 4px">
+          <v-flex xs12 md9 style="margin-top: 4px">
             <v-btn
               height="30px"
               class="no-hover-active title d-inline-block text-truncate text-left no-flex px-1"
@@ -40,6 +40,7 @@
             >
             <v-chip
               v-if="question.status === 1"
+              class="hidden-sm-and-down"
               small
               outlined
               color="primary"
@@ -48,6 +49,7 @@
             >
             <v-chip
               v-if="question.status === 0"
+              class="hidden-sm-and-down"
               small
               outlined
               color="private"
@@ -71,7 +73,12 @@
               </v-layout>
             </v-card-actions>
           </v-flex>
-          <v-row class="pr-2 ml-2" cols="2" justify="end" style="width:15%">
+          <v-row
+            class="pr-2 ml-2 hidden-sm-and-down"
+            cols="2"
+            justify="end"
+            style="width:15%"
+          >
             <v-row justify="end" dense class="my_gray--text">
               <small
                 v-if="question.createTime === question.modifiedTime"

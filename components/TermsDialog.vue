@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="45vw">
+  <v-dialog v-model="dialog" persistent max-width="600px">
     <v-card>
       <v-card-title>法律声明及隐私权政策</v-card-title>
       <v-card-text

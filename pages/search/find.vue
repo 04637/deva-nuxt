@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-layout justify-center shrink class="mt-12">
-      <v-flex xs9 md6 align-self-center grow>
+      <v-flex xs12 md6 align-self-center grow>
         <logo class="mt-12"></logo>
         <v-layout class="mt-10">
           <v-text-field

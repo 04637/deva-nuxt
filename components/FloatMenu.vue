@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <div>
+    <div class="hidden-sm-and-down">
       <v-speed-dial
         v-model="fab"
         bottom
@@ -66,7 +66,7 @@
           <span>建议反馈</span>
         </v-tooltip>
       </v-speed-dial>
-      <v-dialog v-model="suggest.dialog" persistent max-width="40vw">
+      <v-dialog v-model="suggest.dialog" persistent max-width="600px">
         <v-card>
           <v-card-text class="pt-3">
             <v-form ref="suggestForm">

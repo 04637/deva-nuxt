@@ -1,6 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 // const api = '47.92.173.53:8080'
 const api = 'api.deva.wiki'
+const websocket = 'ws.deva.wiki'
 const redirectUri = 'https://deva.wiki/user/login?auth='
 export default {
   mode: 'universal',
@@ -109,7 +110,7 @@ export default {
   },
   websocket: {
     // server: 'ws://localhost:8080/'
-    server: 'ws://' + api + '/'
+    server: 'wss://' + websocket + '/'
   },
   /*
    ** vuetify module configuration

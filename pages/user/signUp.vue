@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-layout column shrink>
+    <v-layout column shrink hidden-sm-and-down>
       <v-card-title>注册</v-card-title>
       <v-divider></v-divider>
     </v-layout>

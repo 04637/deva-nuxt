@@ -16,8 +16,8 @@
       <v-divider></v-divider>
     </v-layout>
     <v-layout justify-center justify-space-around>
-      <v-flex xs11 lg9 justify-start class="mt-4">
-        <v-card flat exact width="100vw" class="pa-3">
+      <v-flex xs12 md11 lg9 justify-start class="mt-4">
+        <v-card flat exact width="100vw" class="pa-md-3">
           <v-col>
             <v-layout
               justify-end
@@ -46,11 +46,11 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-layout justify-space-between align-center>
-              <v-layout>
+              <v-layout wrap>
                 <TagChip
                   v-for="tag in blogDetail.tagInfos"
                   :key="tag.tagId"
-                  class="mr-3"
+                  class="mr-3 mb-1"
                   :tag-info="tag"
                 ></TagChip>
               </v-layout>

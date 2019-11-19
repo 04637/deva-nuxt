@@ -7,6 +7,7 @@
             >{{ questionDetail.title }}&nbsp;&nbsp;
             <v-chip
               v-if="questionDetail.status === 1"
+              class="hidden-sm-and-down"
               color="primary"
               outlined
               small
@@ -15,6 +16,7 @@
               已解决 </v-chip
             ><v-chip
               v-if="questionDetail.status === 0"
+              class="hidden-sm-and-down"
               color="private"
               outlined
               small
@@ -27,10 +29,10 @@
         <v-divider></v-divider>
       </v-layout>
       <v-layout justify-center justify-space-around>
-        <v-flex xs11 lg9 justify-start class="mt-4">
+        <v-flex sm12 md11 lg9 justify-start class="mt-4">
           <v-card flat exact width="100vw" class="pr-2">
             <v-layout justify-space-between>
-              <v-flex xs1 class="mt-12" align-center>
+              <v-flex md1 hidden-sm-and-down class="mt-12" align-center>
                 <v-layout column align-center>
                   <v-btn icon fab @click="voteQuestion(true)">
                     <v-icon
@@ -61,7 +63,7 @@
                   </v-btn>
                 </v-layout>
               </v-flex>
-              <v-flex xs11 class="ml-4">
+              <v-flex xs12 md11 class="ml-md-4">
                 <v-layout justify-end style="min-height: 36px">
                   <v-btn
                     v-if="
@@ -307,7 +309,7 @@
           >
             <v-card flat exact width="100vw" class="pt-1 pr-2">
               <v-layout justify-space-between>
-                <v-flex xs1 class="mt-12" align-center>
+                <v-flex md1 hidden-sm-and-down class="mt-12" align-center>
                   <v-layout column align-center>
                     <v-btn icon fab @click="voteAnswer(answer, true)">
                       <v-icon
@@ -329,7 +331,7 @@
                     <!--</v-btn>-->
                   </v-layout>
                 </v-flex>
-                <v-flex xs11 class="ml-4">
+                <v-flex xs12 md11 class="ml-md-4">
                   <v-layout justify-end style="min-height: 36px" class="mb-2">
                     <v-btn
                       v-if="

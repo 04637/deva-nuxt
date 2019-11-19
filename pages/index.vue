@@ -21,7 +21,9 @@
               "
               >最新</v-tab
             >
-            <v-tab @click="clickRecommend">推荐 </v-tab>
+            <v-tab class="hidden-sm-and-down" @click="clickRecommend"
+              >推荐
+            </v-tab>
             <v-tab
               @click="
                 sortType = 'UN_RESOLVED'
@@ -45,7 +47,7 @@
       >
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
-      <v-flex xs11 lg9 justify-start shrink>
+      <v-flex xs12 sm11 lg9 justify-start shrink>
         <BQCardList v-if="bqList" :bq-list="bqList"></BQCardList>
       </v-flex>
       <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">

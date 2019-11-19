@@ -9,116 +9,128 @@
       <v-divider></v-divider>
     </v-layout>
     <v-layout class="mt-5" justify-center shrink>
-      <v-card width="60vw" flat class="no-shadow-box">
-        <v-card-title>
-          <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            append-icon="search"
-            label="搜索"
-            single-line
-            hide-details
-            class="pa-0 mt-0"
-          ></v-text-field>
-        </v-card-title>
-        <v-data-table
-          v-if="$store.state.userInfo"
-          ref="table"
-          locale="zh-CN"
-          :headers="headers"
-          :items="messages"
-          item-key="messageId"
-          :search="search"
-          show-select
-          hide-default-header
-          :loading="loading"
-        >
-          <template v-slot:item.content="{ item }">
-            <v-row align="center">
-              <router-link
-                :to="'/user/' + item.fromUserId"
-                style="text-decoration: none"
-                >{{ item.fromUserNickname }}</router-link
-              >&nbsp;{{ $options.filters.filterHtml(item.content) }}
-              <v-btn
-                v-if="item.ownQuestionId"
-                text
-                small
-                color="private"
-                @click="
-                  readMessage(item)
-                  $router.push(
-                    '/question/' +
-                      item.ownQuestionId +
-                      (item.anchor ? item.anchor : '')
-                  )
-                "
-                >查看</v-btn
-              >
-              <v-btn
-                v-else-if="item.ownBlogId"
-                text
-                small
-                color="private"
-                @click="
-                  readMessage(item)
-                  $router.push('/blog/' + item.ownBlogId)
-                "
-                >查看</v-btn
-              >
-              <v-btn
-                v-else
-                text
-                small
-                color="private"
-                @click="
-                  readMessage(item)
-                  viewTask(item.relateTaskId)
-                "
-                >查看</v-btn
-              >
-              <svg
-                v-if="!item.isRead"
-                class="icon"
-                style="width: 13px;height: 13px; position: relative; top: -6px; left: -13px"
-              >
-                <use xlink:href="#icon-unread"></use>
-              </svg>
-            </v-row>
-          </template>
-          <template v-slot:item.createTime="{ item }">
-            <span>{{ item.createTime | moment }}</span>
-          </template>
-          <template v-slot:header>
-            <thead class="data-table-header">
-              <tr>
-                <td>
-                  <v-simple-checkbox
-                    :value="allSelected"
-                    :indeterminate="allIndeterminate && !allSelected"
-                    @input="toggleSelectAll"
-                  ></v-simple-checkbox>
-                </td>
-                <td class="pl-0">
-                  <v-btn small depressed @click="ignoreSelected">
-                    <v-icon small>mdi-notification-clear-all</v-icon>
-                    <span class="body-1">忽略已选消息</span>
-                  </v-btn>
-                  <v-btn small depressed @click="deleteConfirm.dialog = true">
-                    <v-icon small>mdi-delete-sweep-outline</v-icon>
-                    <span class="body-1">删除已选消息</span>
-                  </v-btn>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="3" style="height: 1px; padding: 0">
-                  <v-divider></v-divider>
-                </td>
-              </tr>
-            </thead>
-          </template>
-        </v-data-table>
-      </v-card>
+      <v-flex xs-12 md9>
+        <v-card flat class="no-shadow-box">
+          <v-card-title>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              append-icon="search"
+              label="搜索"
+              single-line
+              hide-details
+              class="pa-0 mt-0"
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            v-if="$store.state.userInfo"
+            ref="table"
+            locale="zh-CN"
+            :headers="headers"
+            :items="messages"
+            item-key="messageId"
+            :search="search"
+            :show-select="!isSmall()"
+            hide-default-header
+            :loading="loading"
+          >
+            <template v-slot:item.content="{ item }">
+              <v-row align="center">
+                <span
+                  class="d-inline-block text-truncate"
+                  :class="isSmall() ? '_sm_width' : ''"
+                >
+                  <router-link
+                    :to="'/user/' + item.fromUserId"
+                    style="text-decoration: none"
+                    >{{ item.fromUserNickname }}</router-link
+                  >&nbsp;{{ $options.filters.filterHtml(item.content) }}</span
+                >
+                <v-btn
+                  v-if="item.ownQuestionId"
+                  class="hidden-sm-and-down"
+                  text
+                  small
+                  color="private"
+                  @click="
+                    readMessage(item)
+                    $router.push(
+                      '/question/' +
+                        item.ownQuestionId +
+                        (item.anchor ? item.anchor : '')
+                    )
+                  "
+                  >查看</v-btn
+                >
+                <v-btn
+                  v-else-if="item.ownBlogId"
+                  class="hidden-sm-and-down"
+                  text
+                  small
+                  color="private"
+                  @click="
+                    readMessage(item)
+                    $router.push('/blog/' + item.ownBlogId)
+                  "
+                  >查看</v-btn
+                >
+                <v-btn
+                  v-else
+                  class="hidden-sm-and-down"
+                  text
+                  small
+                  color="private"
+                  @click="
+                    readMessage(item)
+                    viewTask(item.relateTaskId)
+                  "
+                  >查看</v-btn
+                >
+                <svg
+                  v-if="!item.isRead"
+                  class="icon hidden-sm-and-down"
+                  style="width: 13px;height: 13px; position: relative; top: -6px; left: -13px"
+                >
+                  <use xlink:href="#icon-unread"></use>
+                </svg>
+              </v-row>
+            </template>
+            <template v-slot:item.createTime="{ item }">
+              <span :title="$options.filters.moment(item.createTime)">{{
+                item.createTime | timeago
+              }}</span>
+            </template>
+            <template v-slot:header>
+              <thead class="data-table-header hidden-sm-and-down">
+                <tr>
+                  <td>
+                    <v-simple-checkbox
+                      :value="allSelected"
+                      :indeterminate="allIndeterminate && !allSelected"
+                      @input="toggleSelectAll"
+                    ></v-simple-checkbox>
+                  </td>
+                  <td class="pl-0">
+                    <v-btn small depressed @click="ignoreSelected">
+                      <v-icon small>mdi-notification-clear-all</v-icon>
+                      <span class="body-1">忽略已选消息</span>
+                    </v-btn>
+                    <v-btn small depressed @click="deleteConfirm.dialog = true">
+                      <v-icon small>mdi-delete-sweep-outline</v-icon>
+                      <span class="body-1">删除已选消息</span>
+                    </v-btn>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3" style="height: 1px; padding: 0">
+                    <v-divider></v-divider>
+                  </td>
+                </tr>
+              </thead>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-flex>
     </v-layout>
     <ConfirmDialog
       :msg="deleteConfirm.msg"
@@ -314,6 +326,12 @@ export default {
         }
       })
       this.$store.commit('setUnreadMessageCount', _hasNew)
+    },
+    isSmall() {
+      return (
+        this.$vuetify.breakpoint.name === 'sm' ||
+        this.$vuetify.breakpoint.name === 'xs'
+      )
     }
   }
 }
@@ -329,5 +347,14 @@ thead:nth-child(3) {
 .theme--dark .no-shadow-box {
   box-shadow: none;
   border: 1px solid #4b4b4b;
+}
+</style>
+<style>
+.v-data-table__mobile-row {
+  max-width: 100vw !important;
+}
+._sm_width {
+  width: 90vw;
+  text-align: left;
 }
 </style>

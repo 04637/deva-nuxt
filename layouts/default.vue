@@ -264,7 +264,23 @@
         </v-navigation-drawer>
       </v-flex>
       <v-app-bar app dense clipped-left>
-        <v-container row align-center justify-space-between fluid>
+        <v-container
+          row
+          class="px-0"
+          style="margin-left: 0"
+          align-center
+          justify-space-between
+          fluid
+        >
+          <v-btn
+            icon
+            to="/search/find"
+            small
+            class="d-sm d-md-none d-lg-none"
+            style="padding: 18px"
+          >
+            <v-icon>search</v-icon>
+          </v-btn>
           <v-flex justify-start align-center row hidden-sm-and-down>
             <v-toolbar-title>
               <logo type="header" class="ml-5"></logo>

@@ -1,7 +1,7 @@
 // https://www.npmjs.com/package/vue-native-websocket
 import VueNativeSock from 'vue-native-websocket'
 import Vue from 'vue'
-Vue.use(VueNativeSock, 'ws://localhost:8088', {
+Vue.use(VueNativeSock, 'wss://ws.deva.wiki', {
   format: 'json',
   reconnection: true,
   reconnectionAttempts: 5,
