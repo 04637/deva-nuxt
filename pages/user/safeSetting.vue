@@ -32,7 +32,7 @@
                 <v-checkbox
                   v-model="userSetting.emailNotice"
                   color="private"
-                  class="ml-5 mb-0"
+                  class="ml-5 mb-0 hidden-sm-and-down"
                   label="开启邮件消息推送"
                   @change="toggleEmailNotice"
                 ></v-checkbox>
@@ -51,7 +51,7 @@
                 <v-checkbox
                   v-model="userSetting.phoneNotice"
                   color="private"
-                  class="ml-5 mb-0"
+                  class="ml-5 mb-0 hidden-sm-and-down"
                   label="接收敏感操作提示"
                   @change="togglePhoneNotice"
                 ></v-checkbox>

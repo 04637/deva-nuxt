@@ -10,7 +10,7 @@
     </v-layout>
     <v-layout class="mt-5" shrink>
       <v-layout align-center justify-space-around>
-        <v-flex align-center xs3 hidden-md-and-down>
+        <v-flex align-center md3 hidden-md-and-down>
           <v-card class="pa-6">
             <v-layout justify-center>
               <v-avatar color="grey" size="200" tile right>
@@ -67,7 +67,7 @@
             </v-layout>
           </v-card>
         </v-flex>
-        <v-flex xs9 lg6>
+        <v-flex xs12 md9 lg6>
           <v-card class="pa-6">
             <v-form ref="form" class="mt-0" style="width: 100%">
               <v-text-field
@@ -99,7 +99,7 @@
               ></v-textarea>
               <v-layout class="justify-end mt-3">
                 <v-btn
-                  outlined
+                  color="primary"
                   min-width="150px"
                   :loading="saveResult.loading"
                   @click="saveProfile"

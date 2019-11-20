@@ -1,8 +1,9 @@
 import colors from 'vuetify/es5/util/colors'
-// const api = '47.92.173.53:8080'
-const api = 'api.deva.wiki'
-const websocket = 'ws.deva.wiki'
-const redirectUri = 'https://deva.wiki/user/login?auth='
+const api = 'https://api.deva.wiki'
+// const api = 'http://localhost:8080'
+const websocket = 'wss://ws.deva.wiki'
+const redirectUri = 'https://www.deva.wiki/user/login?auth='
+// const redirectUri = 'http://localhost:8080/user/login?auth='
 export default {
   mode: 'universal',
   domain: 'https://deva.wiki',
@@ -26,6 +27,10 @@ export default {
     'google' +
     '&response_type=code&client_id=102188439022-dk2vafrfd5a50h8rhhpctnf8lj00u8at.apps.googleusercontent.com' +
     '&scope=https://www.googleapis.com/auth/plus.me+https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile',
+  qqLoginUrl:
+    'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101828952&redirect_uri=' +
+    redirectUri +
+    'qq&state=1&scope=get_user_info,get_info',
   server: {
     port: 3000
   },
@@ -105,12 +110,12 @@ export default {
    */
   axios: {
     // baseURL: 'http://localhost:8080',
-    baseURL: 'https://' + api,
+    baseURL: api,
     debug: false
   },
   websocket: {
     // server: 'ws://localhost:8080/'
-    server: 'wss://' + websocket + '/'
+    server: websocket + '/'
   },
   /*
    ** vuetify module configuration

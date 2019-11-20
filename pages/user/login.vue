@@ -129,7 +129,7 @@
             >
 
             <a
-              :href="loginUrl.qqchat"
+              :href="loginUrl.qq"
               style="text-decoration: none"
               title="使用 QQ 帐号登录"
               ><v-btn icon small><v-icon small>mdi-qqchat</v-icon></v-btn></a
@@ -205,20 +205,21 @@ export default {
       github: config.githubLoginUrl,
       gitlab: config.gitlabLoginUrl,
       stackOverflow: config.stackOverflowLoginUrl,
-      google: config.googleLoginUrl
+      google: config.googleLoginUrl,
+      qq: config.qqLoginUrl
     }
   }),
   mounted() {
-    this.githubLogin()
+    this.threeWayLogin()
   },
   created() {},
   middleware: 'notAuthenticated',
   methods: {
-    githubLogin() {
+    threeWayLogin() {
       if (this.$route.query.code) {
         this.loading = true
         this.$axios
-          .$post('/userInfo/' + this.$route.query.auth + 'Login', {
+          .$post('/userInfo/' + (this.$route.query.auth || 'qq') + 'Login', {
             code: this.$route.query.code
           })
           .then((resp) => {

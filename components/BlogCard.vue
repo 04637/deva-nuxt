@@ -31,7 +31,7 @@
           <v-flex xs12 md9 style="margin-top: 4px">
             <v-btn
               height="30px"
-              class="no-hover-active title d-inline-block text-truncate text-left no-flex px-1"
+              class="no-hover-active no-ripple title d-inline-block text-truncate text-left no-flex px-1"
               text
               max-width="85%"
               :title="blog.title"
