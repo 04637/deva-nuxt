@@ -47,7 +47,12 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
+        content: '中国开发者的专业问答社区 DEVA - aid.dev'
+      },
+      {
+        hid: 'keywords',
+        name: 'keywords',
+        content: 'DEVA,开发者,问答社区,开发者社区,aid.dev'
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
