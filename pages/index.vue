@@ -21,10 +21,9 @@
               "
               >最新</v-tab
             >
-            <v-tab class="hidden-sm-and-down" @click="clickRecommend"
-              >推荐
-            </v-tab>
+            <v-tab @click="clickRecommend">推荐 </v-tab>
             <v-tab
+              class="hidden-sm-and-down"
               @click="
                 sortType = 'UN_RESOLVED'
                 currentTitle = '待解决'
@@ -134,7 +133,7 @@ export default {
     },
     scroll() {
       window.onscroll = () => {
-        if (document.documentElement.scrollTop > 200) {
+        if (document.documentElement.scrollTop > 600) {
           this.$store.commit('setShowFooter', true)
         } else {
           this.$store.commit('setShowFooter', false)

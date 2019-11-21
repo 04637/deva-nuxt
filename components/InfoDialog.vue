@@ -1,6 +1,6 @@
 <!-- 自定义组件参考 https://codesandbox.io/s/o29j95wx9 -->
 <template>
-  <v-dialog v-model="dialog" persistent max-width="20vw">
+  <v-dialog v-model="dialog" persistent max-width="400px">
     <v-card>
       <v-card-title
         :class="(succeed ? 'success' : 'error') + '--text'"
