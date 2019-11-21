@@ -3,7 +3,7 @@
   <v-dialog
     :value="dialog && $store.getters.getErrorMsg"
     persistent
-    max-width="20vw"
+    max-width="400px"
   >
     <v-card>
       <v-card-title class="error--text subtitle-1">
