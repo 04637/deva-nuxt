@@ -1,10 +1,15 @@
 <template>
   <div>
-    <nuxt-link
-      :to="'/user/' + user.userId"
-      class="d-xs-block d-sm-block d-md-none d-lg-none blue--text"
-      >{{ user.nickname }}</nuxt-link
+    <v-layout
+      class="my_gray--text d-sm-block d-md-none d-lg-none"
+      style="font-size: 0.9rem"
+      ><nuxt-link
+        :to="'/user/' + user.userId"
+        class="d-xs-block hover-line  blue--text"
+        >{{ user.nickname }}</nuxt-link
+      >&nbsp;·&nbsp;{{ createTime | timeago }}</v-layout
     >
+
     <v-layout
       class="hidden-sm-and-down"
       justify-end
