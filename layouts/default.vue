@@ -675,6 +675,9 @@ export default {
   },
   methods: {
     getSystemNotice() {
+      if (!process.client) {
+        return
+      }
       const _this = this
       _this.$axios.$post('/systemNotice/getLast').then((resp) => {
         if (resp.succeed) {
