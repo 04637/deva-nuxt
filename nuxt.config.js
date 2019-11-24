@@ -31,6 +31,10 @@ export default {
     'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101828952&redirect_uri=' +
     redirectUri +
     'qq&state=1&scope=get_user_info,get_info',
+  wechatLoginUrl:
+    'https://open.weixin.qq.com/connect/qrconnect?appid=wx66bd2c5fa3eef3b3&redirect_uri=' +
+    redirectUri +
+    'wechat&response_type=code&scope=SCOPE&state=STATE#wechat_redirect',
   server: {
     port: 3000
   },
