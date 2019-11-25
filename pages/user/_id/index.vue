@@ -154,7 +154,7 @@
                   label="搜索"
                   single-line
                   hide-details
-                  class="pt-0"
+                  class="pt-0 hidden-sm-and-down"
                 ></v-text-field>
               </v-card-title>
               <v-data-table
@@ -193,7 +193,7 @@
                   label="搜索"
                   single-line
                   hide-details
-                  class="pt-0"
+                  class="pt-0 hidden-sm-and-down"
                 ></v-text-field>
               </v-card-title>
               <v-data-table
@@ -230,7 +230,7 @@
                   label="搜索"
                   single-line
                   hide-details
-                  class="pt-0"
+                  class="pt-0 hidden-sm-and-down"
                 ></v-text-field>
               </v-card-title>
               <v-data-table
@@ -263,7 +263,7 @@
                   label="搜索"
                   single-line
                   hide-details
-                  class="pt-0"
+                  class="pt-0 hidden-sm-and-down"
                 ></v-text-field>
               </v-card-title>
               <v-data-table
@@ -292,7 +292,7 @@
                   label="搜索"
                   single-line
                   hide-details
-                  class="pt-0"
+                  class="pt-0 hidden-sm-and-down"
                 ></v-text-field>
               </v-card-title>
               <v-data-table
@@ -316,7 +316,7 @@
               <div
                 v-for="watch in userProfile.watchUsers"
                 :key="watch.userId"
-                class="ma-2"
+                class="ma-2 hidden-sm-and-down"
               >
                 <MiniUserCard min-width="220px" :user-info="watch">
                 </MiniUserCard>
@@ -329,7 +329,7 @@
               <div
                 v-for="follower in userProfile.followers"
                 :key="follower.userId"
-                class="ma-2"
+                class="ma-2 hidden-sm-and-down"
               >
                 <MiniUserCard min-width="220px" :user-info="follower">
                 </MiniUserCard>
@@ -362,7 +362,7 @@ export default {
         },
         { text: '回答', value: 'answerNum' },
         { text: '赞成', value: 'voteNum' },
-        { text: '状态', value: 'status', sortable: false }
+        { text: '状态', value: 'status' }
       ],
       items: []
     },
@@ -376,7 +376,7 @@ export default {
           sortable: false,
           value: 'questionTitle'
         },
-        { text: '状态', value: 'isAccepted', sortable: false }
+        { text: '状态', value: 'isAccepted' }
       ],
       items: []
     },
