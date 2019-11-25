@@ -206,7 +206,8 @@ export default {
       gitlab: config.gitlabLoginUrl,
       stackOverflow: config.stackOverflowLoginUrl,
       google: config.googleLoginUrl,
-      qq: config.qqLoginUrl
+      qq: config.qqLoginUrl,
+      wechat: config.wechatLoginUrl
     }
   }),
   mounted() {

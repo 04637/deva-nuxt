@@ -34,7 +34,8 @@ export default {
   wechatLoginUrl:
     'https://open.weixin.qq.com/connect/qrconnect?appid=wx66bd2c5fa3eef3b3&redirect_uri=' +
     redirectUri +
-    'wechat&response_type=code&scope=SCOPE&state=STATE#wechat_redirect',
+    'wechat&response_type=code&scope=snsapi_login#wechat_redirect',
+  redirectUri,
   server: {
     port: 3000
   },
@@ -61,7 +62,10 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     // 参考 https://zh.nuxtjs.org/faq 引入外部资源
-    script: [{ src: '//at.alicdn.com/t/font_778737_c81ibq34pph.js' }]
+    script: [
+      { src: '//at.alicdn.com/t/font_778737_c81ibq34pph.js' },
+      { src: 'http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js' }
+    ]
   },
   /*
    ** Customize the progress-bar color

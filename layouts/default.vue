@@ -422,7 +422,7 @@
                     <v-list-item class="pa-0 mb-0">
                       <v-list-item-content class="pa-0">
                         <v-btn depressed text height="40px" @click="logout"
-                          >注销</v-btn
+                          >退出</v-btn
                         >
                       </v-list-item-content>
                     </v-list-item>
