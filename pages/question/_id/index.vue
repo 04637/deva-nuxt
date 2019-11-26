@@ -165,15 +165,15 @@
                   <!--</v-btn>-->
                 </v-layout>
                 <v-card-actions>
-                  <v-layout>
+                  <v-layout wrap>
                     <TagChip
                       v-for="tag in questionDetail.tagInfos"
                       :key="tag.tagId"
-                      class="mr-3"
+                      class="mr-3 mb-1"
                       :tag-info="tag"
                     ></TagChip>
                   </v-layout>
-                  <v-layout justify-end style="min-width: 230px">
+                  <v-layout justify-end>
                     <EditUserCard
                       :user="questionDetail.author"
                       :create-time="questionDetail.createTime"
