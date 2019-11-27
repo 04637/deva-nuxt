@@ -9,7 +9,7 @@
       <v-divider></v-divider>
     </v-layout>
     <v-layout class="mt-5" justify-center>
-      <v-flex sm6>
+      <v-flex sm6 md8>
         <v-card class="pa-4">
           <v-layout justify-center>
             <small class="my_gray--text"
@@ -481,7 +481,9 @@ export default {
           phone: this.editPhone.phone
         })
         .then((resp) => {
-          this.editPhone.phoneCheck = resp.data ? '' : '手机号码已被使用'
+          this.editPhone.phoneCheck = resp.data
+            ? ''
+            : '该手机号码已绑定DEVA帐号，您可以使用短信验证码登录该账号'
           // 如果未被使用, 则发送验证码
           if (resp.data) {
             if (this.smsCodeResult.timeInterval > 0) {

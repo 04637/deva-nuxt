@@ -274,7 +274,9 @@ export default {
           phone: this.phone
         })
         .then((resp) => {
-          this.phoneCheck = resp.data ? '' : '手机号码已被使用'
+          this.phoneCheck = resp.data
+            ? ''
+            : '该手机号码已绑定DEVA帐号，您可以使用短信验证码登录该账号'
           if (resp.data) {
             if (this.smsCodeResult.timeInterval > 0) {
               this.smsCodeResult.showSendWarning = true

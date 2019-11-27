@@ -2,6 +2,7 @@
   <client-only>
     <div>
       <quill-editor
+        id="quill"
         ref="myTextEditor"
         v-model="myContent"
         :options="editorOption"
@@ -66,7 +67,8 @@ export default {
         ],
         syntax: {
           highlight: (text) => hljs.highlightAuto(text).value
-        }
+        },
+        imageDrop: true
       }
     },
     uploadingImage: [],

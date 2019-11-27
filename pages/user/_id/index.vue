@@ -119,7 +119,7 @@
         </v-card>
       </v-flex>
       <v-flex lg7 md8 sm12 class="ml-8">
-        <v-tabs v-model="tab" fixed-tabs>
+        <v-tabs v-model="tab" fixed-tabs slider-width="2">
           <v-tab>
             提问
           </v-tab>
