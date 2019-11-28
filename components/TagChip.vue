@@ -3,7 +3,7 @@
     small
     :color="color"
     text
-    style="cursor: pointer; text-decoration: none;border-radius: 0; font-size: 14px"
+    style="cursor: pointer; text-decoration: none;border-radius: 12px; font-size: 14px"
     :title="tagInfo.tagName"
     class="text-left"
     :to="'/search/' + tagInfo.tagName + '?match=tags'"
