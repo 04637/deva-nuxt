@@ -328,8 +328,9 @@ export default {
             this.title = resp.data.title
             this.source = resp.data.content
             this.content = resp.data.content
+            const _this = this
             if (process.client) {
-              this.$refs.questionQuill.updateContent(this.content)
+              _this.$refs.questionQuill.updateContent(_this.content)
             }
             this.selectedTags = resp.data.tagInfos
           }

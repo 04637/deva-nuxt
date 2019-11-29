@@ -57,7 +57,7 @@
               <div
                 id="markdown-preview"
                 v-dompurify-html="$md.render(source)"
-                class="simple-scroll"
+                class="simple-scroll blog-markdown-preview"
               ></div>
             </v-flex>
           </v-layout>
@@ -170,7 +170,7 @@
     </v-app>
     <v-dialog v-model="createTag.dialog" persistent max-width="600px">
       <v-card>
-        <v-card-text class="mt-3">
+        <v-card-text class="pt-3">
           <v-form ref="createTagForm">
             <v-text-field
               v-model="newTag.name"
@@ -377,12 +377,13 @@ export default {
             this.title = resp.data.title
             this.source = resp.data.content
             this.content = resp.data.content
-            if (process.client) {
-              this.$refs.blogQuill.updateContent(this.content)
-            }
             this.selectedTags = resp.data.tagInfos
             this.isPublic = resp.data.isPublic
             this.spaceId = resp.data.spaceId
+            const _this = this
+            if (process.client) {
+              _this.$refs.blogQuill.updateContent(_this.content)
+            }
           }
         })
     },
@@ -521,8 +522,8 @@ export default {
 </script>
 
 <style>
-#markdown-preview {
-  height: 567px;
+.blog-markdown-preview {
+  height: 925px !important;
   overflow: auto;
   padding: 7px;
 }

@@ -272,3 +272,20 @@ p img {
 .theme--dark .flat-text .v-input__slot {
   border: 1px solid #4b4b4b;
 }
+table tr{
+  border-top: 1px solid #c6cbd1;
+}
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+table td,:not(v-data-table__wrapper) table th {
+  padding: 6px 13px;
+  border: 1px solid #dfe2e5;
+}
+
+.v-data-table__wrapper table {
+}
+.v-data-table__wrapper table td,.v-data-table__wrapper table th, .v-data-table table tr {
+  border:none;
+}
