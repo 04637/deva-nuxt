@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="pa-4 right-box">
     <v-layout v-if="items && items.length > 0" align-center
-      ><v-icon small color="new_orange">mdi-meteor</v-icon>&nbsp;<span
-        class="my_gray--text"
+      ><span class="my_gray--text"
         >{{ keywords || tagKeywords ? '相关' : '热门' }}推荐</span
       ></v-layout
     >
-    <div class="with-bg py-1 px-2 mt-2">
+    <v-divider class="mt-2"></v-divider>
+    <div class="py-1 px-2 mt-2">
       <transition-group name="list">
         <div
           v-for="post in items"
@@ -17,9 +17,8 @@
             v-if="excludeId !== post.blogId && excludeId !== post.questionId"
             align-center
             ><router-link
-              class="hover-color"
-              :class="$vuetify.theme.dark ? 'white--text' : 'black--text'"
-              style="font-size: 0.9rem; text-decoration: none"
+              style="font-size: 14px;"
+              class="d-block text-truncate hover-line"
               :to="
                 post.blogId
                   ? '/blog/' + post.blogId
@@ -86,12 +85,6 @@ export default {
 }
 </script>
 <style>
-.theme--light .with-bg {
-  background-color: rgba(231, 231, 231, 0.35);
-}
-.theme--dark .with-bg {
-  background-color: rgba(75, 75, 75, 0.35);
-}
 .hover-color:hover {
   color: #01a687 !important;
 }

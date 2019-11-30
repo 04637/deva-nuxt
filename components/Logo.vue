@@ -6,7 +6,7 @@
     <div class="logo" @click="$router.push('/', () => ({}))"></div>
   </v-layout>
   <div v-else-if="type === 'simple'" @click="$router.push('/', () => ({}))">
-    <img src="/deva2.png" alt="" class="logo-md" />
+    <img src="/logo-transparent.png" alt="" class="logo-md" />
   </div>
   <div v-else class="logo" @click="$router.push('/', () => ({}))"></div>
 </template>
@@ -23,12 +23,17 @@ export default {
 </script>
 <style scoped>
 .logo {
-  background: url('/sylogo2.png') no-repeat 0 0;
+  background: url('/logo.png') no-repeat 0 0;
   width: 115px;
   height: 48px;
   background-size: auto 50px;
   background-position: 0px;
   cursor: pointer;
   margin: 0 auto;
+}
+.logo-md {
+  height: 47px;
+  display: block;
+  cursor: pointer;
 }
 </style>

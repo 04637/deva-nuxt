@@ -2,20 +2,18 @@
   <v-list class="pa-0 ma-0">
     <!--<transition-group name="list-down">-->
     <div v-for="bq in bqList" :key="bq.blogId || bq.questionId">
-      <QuestionCard v-if="bq.questionId" :question="bq"></QuestionCard>
-      <BlogCard v-else-if="bq.blogId" :blog="bq"></BlogCard>
+      <BQCard v-if="bq.questionId" :item="bq" type="question"></BQCard>
+      <BQCard v-else-if="bq.blogId" :item="bq" type="blog"></BQCard>
     </div>
     <!--</transition-group>-->
   </v-list>
 </template>
 <script>
-import QuestionCard from './QuestionCard'
-import BlogCard from './BlogCard'
+import BQCard from './BQCard'
 
 export default {
   components: {
-    BlogCard,
-    QuestionCard
+    BQCard
   },
   props: {
     bqList: {

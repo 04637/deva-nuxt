@@ -3,9 +3,9 @@
     small
     :color="color"
     text
-    style="cursor: pointer; text-decoration: none;border-radius: 12px; font-size: 14px"
+    style="cursor: pointer; text-decoration: none;border-radius: 1px; font-size: 14px"
     :title="tagInfo.tagName"
-    class="text-left"
+    class="text-left my_blue--text"
     :to="'/search/' + tagInfo.tagName + '?match=tags'"
     v-on="von"
   >
@@ -22,7 +22,7 @@ export default {
     color: {
       required: false,
       type: String,
-      default: 'primary'
+      default: 'light_blue'
     },
     von: {
       required: false,
@@ -32,8 +32,4 @@ export default {
   }
 }
 </script>
-<style scoped>
-.theme--light.v-chip {
-  color: white !important;
-}
-</style>
+<style scoped></style>

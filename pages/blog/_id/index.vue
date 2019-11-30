@@ -43,7 +43,6 @@
               style="position: relative; top: -15px"
             ></div>
           </v-col>
-          <v-divider></v-divider>
           <v-card-actions>
             <v-layout justify-space-between align-center>
               <v-layout wrap>
@@ -54,12 +53,6 @@
                   :tag-info="tag"
                 ></TagChip>
               </v-layout>
-              <EditUserCard
-                :user="blogDetail.author"
-                :create-time="blogDetail.createTime"
-                :modified-time="blogDetail.modifiedTime"
-                prefix="发布"
-              ></EditUserCard>
             </v-layout>
           </v-card-actions>
           <v-divider></v-divider>
@@ -114,10 +107,16 @@
           </v-layout>
         </v-card>
       </v-flex>
-      <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
+      <v-flex lg3 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
         <client-only>
-          <HotTag :load-hot="false"></HotTag
-          ><RelatePost
+          <EditUserCard
+            :user="blogDetail.author"
+            :create-time="blogDetail.createTime"
+            :modified-time="blogDetail.modifiedTime"
+            prefix="发布"
+            class="mb-2"
+          ></EditUserCard>
+          <RelatePost
             :exclude-id="blogDetail.blogId"
             :tags="blogDetail.tagInfos"
           ></RelatePost
@@ -127,7 +126,6 @@
   </v-app>
 </template>
 <script>
-import HotTag from '../../../components/HotTag'
 import TagChip from '../../../components/TagChip'
 import RelatePost from '../../../components/RelatePost'
 import EditUserCard from '../../../components/EditUserCard'
@@ -137,8 +135,7 @@ export default {
   components: {
     EditUserCard,
     RelatePost,
-    TagChip,
-    HotTag
+    TagChip
   },
   validate({ params }) {
     return /^\d{18}$/.test(params.id)

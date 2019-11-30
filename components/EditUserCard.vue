@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="right-box">
     <v-layout
       class="my_gray--text d-sm-block d-md-none d-lg-none"
       style="font-size: 0.9rem"
@@ -10,14 +10,11 @@
       >&nbsp;·&nbsp;{{ createTime | timeago }}</v-layout
     >
 
-    <v-layout
-      class="hidden-sm-and-down"
-      justify-end
-      style="width: 220px;max-width: 220px"
-    >
+    <v-layout justify-end>
       <v-card
         style="width: 100%"
-        class="pt-3 pr-2 pb-2 user_card no-shadow-box"
+        flat
+        class="pt-3 pr-2 pb-2 user_card"
         :to="'/user/' + user.userId"
       >
         <v-layout justify-space-between>
@@ -90,13 +87,4 @@ export default {
   }
 }
 </script>
-<style>
-.theme--light .no-shadow-box {
-  box-shadow: none;
-  border: 1px solid #e7e7e7;
-}
-.theme--dark .no-shadow-box {
-  box-shadow: none;
-  border: 1px solid #4b4b4b;
-}
-</style>
+<style></style>

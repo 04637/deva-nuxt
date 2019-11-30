@@ -2,16 +2,15 @@
   <v-app>
     <v-layout column shrink>
       <v-layout>
-        <v-flex md6 xs4 shrink hidden-sm-and-down>
-          <!--<v-card-title>{{ currentTitle }}</v-card-title>-->
-        </v-flex>
-        <v-flex md6 lg4 align-self-end>
+        <v-spacer class="hidden-sm-and-down"></v-spacer>
+        <v-flex align-self-end>
           <v-tabs
             v-model="currentTab"
             centered
             center-active
             height="38"
             grow
+            color="primary"
             @change="loadBQ"
           >
             <v-tab
@@ -49,20 +48,19 @@
       <v-flex xs12 sm11 lg9 justify-start shrink>
         <BQCardList v-if="bqList" :bq-list="bqList"></BQCardList>
       </v-flex>
-      <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
-        <HotTag :hot-size="7"></HotTag>
-        <v-divider class="my-3"></v-divider>
-        <RelatePost :keywords="likeKeywords"></RelatePost>
+      <v-flex lg3 justify-end shrink hidden-md-and-down class="ml-3">
+        <RelatePost></RelatePost>
+        <MyTags class="mt-4"></MyTags>
       </v-flex>
     </v-layout>
   </v-app>
 </template>
 <script>
-import HotTag from '../components/HotTag'
 import BQCardList from '../components/BQCardList'
 import RelatePost from '../components/RelatePost'
+import MyTags from '../components/MyTags'
 export default {
-  components: { RelatePost, BQCardList, HotTag },
+  components: { MyTags, RelatePost, BQCardList },
   data: () => ({
     currentTab: 0,
     sortType: 'RECENT',
@@ -83,7 +81,7 @@ export default {
     this.loadBQ()
   },
   mounted() {
-    this.loadLikeTags()
+    // this.loadLikeTags()
     this.scroll()
   },
   methods: {
@@ -107,22 +105,22 @@ export default {
           }
         })
     },
-    loadLikeTags() {
-      if (this.$store.getters.getUserId) {
-        this.$axios.$post('/tagLike/listLikeTags').then((resp) => {
-          let likeTags = resp.data
-          const randTag = []
-          if (likeTags.length > 5) {
-            for (let i = 0; i < 5; ++i) {
-              const rand = Math.floor(Math.random() * likeTags.length)
-              randTag.push(likeTags[rand])
-            }
-            likeTags = randTag
-          }
-          this.likeKeywords = likeTags.map((item) => item.tagName).join(' ')
-        })
-      }
-    },
+    // loadLikeTags() {
+    //   if (this.$store.getters.getUserId) {
+    //     this.$axios.$post('/tagLike/listLikeTags').then((resp) => {
+    //       let likeTags = resp.data
+    //       const randTag = []
+    //       if (likeTags.length > 5) {
+    //         for (let i = 0; i < 5; ++i) {
+    //           const rand = Math.floor(Math.random() * likeTags.length)
+    //           randTag.push(likeTags[rand])
+    //         }
+    //         likeTags = randTag
+    //       }
+    //       this.likeKeywords = likeTags.map((item) => item.tagName).join(' ')
+    //     })
+    //   }
+    // },
     clickRecommend() {
       if (!this.$store.getters.getUserInfo) {
         this.$router.push('/user/login')
@@ -133,7 +131,7 @@ export default {
     },
     scroll() {
       window.onscroll = () => {
-        if (document.documentElement.scrollTop > 600) {
+        if (document.documentElement.scrollTop > 400) {
           this.$store.commit('setShowFooter', true)
         } else {
           this.$store.commit('setShowFooter', false)

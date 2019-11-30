@@ -279,6 +279,7 @@
         savePasswordResult.resp != null && savePasswordResult.resp.succeed
       "
       :dialog="savePasswordResult.dialog"
+      close-txt="去登录"
       @update:dialog="
         savePasswordResult.dialog = $event
         savePasswordResult.resp.succeed ? $router.push('/user/login') : ''

@@ -107,7 +107,7 @@
 </template>
 <script>
 import InfoDialog from '../../../components/InfoDialog'
-import HotTag from '../../../components/HotTag'
+import HotTag from '../../../components/HotTags'
 import BQCardList from '../../../components/BQCardList'
 import RelatePost from '../../../components/RelatePost'
 import SpaceMenu from '../../../components/SpaceMenu'

@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <v-app>
       <v-layout column shrink>
         <v-card-title class="pb-0"
@@ -153,16 +153,6 @@
                       }}</span
                     >
                   </v-alert>
-                  <!--<v-btn class="mb-4" icon>-->
-                  <!--  <v-tooltip right>-->
-                  <!--    <template v-slot:activator="{ on }">-->
-                  <!--      <v-icon color="orange" dark v-on="on"-->
-                  <!--        >report-->
-                  <!--      </v-icon>-->
-                  <!--    </template>-->
-                  <!--    <span>举报滥用</span>-->
-                  <!--  </v-tooltip>-->
-                  <!--</v-btn>-->
                 </v-layout>
                 <v-card-actions>
                   <v-layout wrap>
@@ -522,7 +512,7 @@
             </v-flex>
           </v-layout>
         </v-flex>
-        <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
+        <v-flex lg3 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
           <client-only>
             <HotTag :load-hot="false"></HotTag
             ><RelatePost
@@ -598,11 +588,11 @@
       :todo="acceptAnswer"
       @update:dialog="acceptConfirm.dialog = $event"
     ></ConfirmDialog>
-  </v-app>
+  </div>
 </template>
 <script>
 import InfoDialog from '../../../components/InfoDialog'
-import HotTag from '../../../components/HotTag'
+import HotTag from '../../../components/HotTags'
 import TagChip from '../../../components/TagChip'
 import ConfirmDialog from '../../../components/ConfirmDialog'
 import Quill from '../../../components/Quill'

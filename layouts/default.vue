@@ -1,281 +1,22 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-flex hidden-sm-and-down shrink>
-        <v-navigation-drawer
-          v-model="drawer"
-          app
-          clipped
-          permanent
-          :mini-variant="$store.getters.getMiniNav"
-          width="170px"
-          style="height: 100%; max-height: 100%"
-        >
-          <v-list nav>
-            <v-layout justify-center>
-              <v-icon color="grey" @click="$store.commit('toggleMiniNav')">
-                {{
-                  'keyboard_arrow_' +
-                    ($store.getters.getMiniNav ? 'right' : 'left')
-                }}
-              </v-icon>
-            </v-layout>
-            <v-list-item-group>
-              <v-list-item to="/">
-                <v-list-item-action
-                  :class="$store.getters.getMiniNav ? 'mini-action' : ''"
-                >
-                  <v-tooltip v-if="$store.getters.getMiniNav" right>
-                    <template v-slot:activator="{ on }">
-                      <v-icon small v-on="on">mdi-circle-outline</v-icon>
-                    </template>
-                    <span>主页</span>
-                  </v-tooltip>
-                  <v-icon v-else small>mdi-circle-outline</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>主&nbsp;&nbsp;&nbsp;页</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-subheader
-                v-show="!$store.getters.getMiniNav"
-                class="letter-space"
-                >DEVA</v-subheader
-              >
-              <v-list-item @click="$router.push({ path: '/question/ask' })">
-                <v-list-item-action
-                  :class="$store.getters.getMiniNav ? 'mini-action' : ''"
-                >
-                  <v-tooltip v-if="$store.getters.getMiniNav" right>
-                    <template v-slot:activator="{ on }">
-                      <v-icon small v-on="on">mdi-feather</v-icon>
-                    </template>
-                    <span>提问</span>
-                  </v-tooltip>
-                  <v-icon v-else small>mdi-feather</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>提&nbsp;&nbsp;&nbsp;问</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item to="/search/find">
-                <v-list-item-action
-                  :class="$store.getters.getMiniNav ? 'mini-action' : ''"
-                >
-                  <v-tooltip v-if="$store.getters.getMiniNav" right>
-                    <template v-slot:activator="{ on }">
-                      <v-icon small v-on="on">mdi-magnify</v-icon>
-                    </template>
-                    <span>发现</span>
-                  </v-tooltip>
-                  <v-icon v-else small>mdi-magnify</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>发&nbsp;&nbsp;&nbsp;现</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item to="/user/users">
-                <v-list-item-action
-                  :class="$store.getters.getMiniNav ? 'mini-action' : ''"
-                >
-                  <v-tooltip v-if="$store.getters.getMiniNav" right>
-                    <template v-slot:activator="{ on }">
-                      <v-icon small v-on="on">mdi-account-outline</v-icon>
-                    </template>
-                    <span>用户</span>
-                  </v-tooltip>
-                  <v-icon v-else small>mdi-account-outline</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>用&nbsp;&nbsp;&nbsp;户</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item to="/tag/tags">
-                <v-list-item-action
-                  :class="$store.getters.getMiniNav ? 'mini-action' : ''"
-                >
-                  <v-tooltip v-if="$store.getters.getMiniNav" right>
-                    <template v-slot:activator="{ on }">
-                      <v-icon small v-on="on">mdi-bookmark-outline</v-icon>
-                    </template>
-                    <span>标签</span>
-                  </v-tooltip>
-                  <v-icon v-else small>mdi-bookmark-outline</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>标&nbsp;&nbsp;&nbsp;签</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-divider></v-divider>
-              <v-layout align-center justify-space-between>
-                <v-subheader
-                  v-show="!$store.getters.getMiniNav"
-                  class="letter-space"
-                  >PRIVATE</v-subheader
-                >
-                <v-tooltip right>
-                  <template v-slot:activator="{ on }">
-                    <v-layout
-                      justify-center
-                      :class="$store.getters.getMiniNav ? 'mt-2' : ''"
-                    >
-                      <v-btn to="/space/createSpace" icon small v-on="on"
-                        ><v-icon small>mdi-plus</v-icon></v-btn
-                      >
-                    </v-layout>
-                  </template>
-                  <span>创建空间</span>
-                </v-tooltip>
-                <v-tooltip right>
-                  <template v-slot:activator="{ on }">
-                    <v-layout
-                      justify-center
-                      :class="$store.getters.getMiniNav ? 'mt-2' : ''"
-                    >
-                      <v-btn
-                        icon
-                        small
-                        @click="joinSpace.dialog = true"
-                        v-on="on"
-                        ><v-icon small>mdi-location-enter</v-icon></v-btn
-                      >
-                    </v-layout>
-                  </template>
-                  <span>加入空间</span>
-                </v-tooltip>
-              </v-layout>
-              <v-treeview
-                v-show="
-                  spaceList[0].children && spaceList[0].children.length > 0
-                "
-                dense
-                item-key="spaceId"
-                item-text="spaceName"
-                :items="spaceList"
-                open-on-click
-                transition
-                indeterminate-icon="group"
-                on-icon="group"
-                class="mb-2"
-                style="padding-left: 2px"
-                :class="$store.getters.getMiniNav ? 'mini' : ''"
-                :active="[$route.params.id]"
-                color="default"
-              >
-                <template v-slot:prepend="{ item }">
-                  <v-tooltip v-if="$store.getters.getMiniNav" right>
-                    <template v-slot:activator="{ on }">
-                      <v-icon
-                        v-if="item.children"
-                        style="font-size: 16px !important;"
-                        v-on="on"
-                        >mdi-cards-outline</v-icon
-                      >
-                    </template>
-                    <span>我的空间</span>
-                  </v-tooltip>
-                  &nbsp;&nbsp;&nbsp;
-                  <!--<v-icon v-if="item.children && !$store.getters.getMiniNav"-->
-                  <!--  >mdi-cards-outline</v-icon-->
-                  <!--&gt;&nbsp;&nbsp;-->
-                </template>
-                <template v-slot:label="{ item }">
-                  <v-btn
-                    v-if="!item.children"
-                    text
-                    width="100%"
-                    depressed
-                    height="26px"
-                    style="line-height: 26px"
-                    class="pa-0 ma-0 no-hover-active text-truncate d-inline-block text-left no-flex"
-                    :ripple="false"
-                    :class="$store.getters.getMiniNav ? 'pl-0' : ''"
-                    :to="'/space/' + item.spaceId"
-                    :title="item.spaceName"
-                  >
-                    {{ $store.getters.getMiniNav ? '...' : item.spaceName }}
-                  </v-btn>
-                  <span v-if="item.children">
-                    {{ item.spaceName }}
-                  </span>
-                </template>
-              </v-treeview>
-              <v-divider></v-divider>
-              <div v-if="$store.getters.getUserType === 'ADMIN'">
-                <v-list-item class="mt-3" to="/admin/task">
-                  <v-list-item-action
-                    :class="$store.getters.getMiniNav ? 'mini-action' : ''"
-                  >
-                    <v-tooltip v-if="$store.getters.getMiniNav" right>
-                      <template v-slot:activator="{ on }">
-                        <v-icon small v-on="on">fingerprint</v-icon>
-                      </template>
-                      <span>管理</span>
-                    </v-tooltip>
-                    <v-icon v-else small color="private">fingerprint</v-icon>
-                  </v-list-item-action>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      >管&nbsp;&nbsp;&nbsp;理</v-list-item-title
-                    >
-                  </v-list-item-content>
-                </v-list-item>
-                <v-divider></v-divider>
-              </div>
-              <v-list-item
-                class="mt-3"
-                @click="$store.commit('toggleDarkTheme')"
-              >
-                <v-list-item-action
-                  style="align-self:center; min-width:12px"
-                  :class="$store.getters.getMiniNav ? 'mini-action' : ''"
-                >
-                  <v-tooltip v-if="$store.getters.getMiniNav" right>
-                    <template v-slot:activator="{ on }">
-                      <v-icon v-show="$vuetify.theme.dark" small v-on="on"
-                        >mdi-brightness-4</v-icon
-                      >
-                      <v-icon v-show="!$vuetify.theme.dark" small v-on="on"
-                        >mdi-brightness-5</v-icon
-                      >
-                    </template>
-                    <span>切换主题</span>
-                  </v-tooltip>
-                  <v-icon
-                    v-show="$vuetify.theme.dark && !$store.getters.getMiniNav"
-                    small
-                    >mdi-brightness-4</v-icon
-                  >
-                  <v-icon
-                    v-show="!$vuetify.theme.dark && !$store.getters.getMiniNav"
-                    small
-                    >mdi-brightness-5</v-icon
-                  >
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title style="margin-left: 6px"
-                    >切换主题</v-list-item-title
-                  >
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-navigation-drawer>
-      </v-flex>
-      <v-app-bar app dense clipped-left>
+      <v-app-bar
+        app
+        style="background-color: #24292e; max-height: 64px;"
+        class="text_primary--text justify-center"
+      >
         <v-container
           row
-          class="px-0"
-          style="margin-left: 0"
           align-center
           justify-space-between
-          fluid
+          style="margin: 0 auto;"
         >
           <v-btn
             icon
             to="/search/find"
             small
+            color="text_primary"
             class="d-sm d-md-none d-lg-none"
             style="padding: 18px"
           >
@@ -283,14 +24,15 @@
           </v-btn>
           <v-flex justify-start align-center row hidden-sm-and-down>
             <v-toolbar-title>
-              <logo type="header" class="ml-5"></logo>
+              <logo type="simple" class="ml-5"></logo>
             </v-toolbar-title>
             <v-text-field
               ref="searchRef"
               v-model="keywords"
               translate="yes"
               flat
-              class="ml-10 min-input search-input"
+              dark
+              class="ml-5 min-input search-input black--text"
               :class="'aelevation-' + searchElv"
               label="搜索"
               hide-details
@@ -305,35 +47,29 @@
             ></v-text-field>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-flex
-            v-if="systemNotice && systemNotice.content"
-            hidden-md-and-down
-            class="py-2 pl-3"
-            style="font-size:0.9rem; max-width:500px"
-            md5
-          >
-            <v-row align="center" justify="start" class="pr-5 pl-5">
-              <span
-                class="d-inline-block text-truncate"
-                style="max-width: 390px"
-                :title="systemNotice.content"
-              >
-                <span class="my_gray--text">公告：</span
-                ><span class="inverted_color--text">{{
-                  systemNotice.content
-                }}</span>
-              </span>
-              <v-btn
-                v-if="systemNotice.content.length > 40"
-                text
-                small
-                color="private"
-                style="position:relative;"
-                @click="viewNotice.dialog = true"
-              >
-                查看详情
-              </v-btn>
-            </v-row>
+          <v-flex class="my_nav">
+            <v-btn text color="text_primary" to="/">主页</v-btn>
+            <v-btn
+              text
+              color="text_primary"
+              to="/user/users"
+              class="hidden-sm-and-down"
+              >用户</v-btn
+            >
+            <v-btn
+              text
+              color="text_primary"
+              to="/tag/tags"
+              class="hidden-sm-and-down"
+              >标签</v-btn
+            >
+            <v-btn
+              text
+              color="text_primary"
+              to="/space/"
+              class="hidden-sm-and-down"
+              >空间</v-btn
+            >
           </v-flex>
           <v-layout justify-end align-center style="max-width: 300px">
             <v-btn
@@ -343,7 +79,7 @@
               to="/user/messages"
               small
             >
-              <v-icon small>notifications_none</v-icon>
+              <v-icon small color="text_primary">notifications_none</v-icon>
             </v-btn>
             <svg
               v-show="$store.getters.getUnReadMessageCount > 0"
@@ -365,10 +101,10 @@
                     max-width="120px"
                     text
                     small
-                    color="background_color"
+                    color="primary"
                     :to="'/user/' + $store.getters.getUserInfo.userId"
                     style="border-radius: 0;"
-                    class="d-inline-block no-flex text-truncate text-left mr-1"
+                    class="d-inline-block no-flex text-truncate text-left mr-1 text_primary__text"
                     >{{
                       $store.getters.getUserInfo.nickname ||
                         $store.getters.getUserInfo.username
@@ -431,39 +167,37 @@
               </v-menu>
             </div>
             <div v-else>
-              <v-btn text color="primary" depressed to="/user/login"
+              <v-btn text color="text_primary" depressed to="/user/login"
                 >登录</v-btn
               >
-              <v-btn depressed color="primary" class="ml-1" to="/user/signUp"
+              <v-btn
+                depressed
+                color="text_primary"
+                outlined
+                class="ml-1"
+                to="/user/signUp"
                 >注册</v-btn
               >
             </div>
           </v-layout>
         </v-container>
       </v-app-bar>
-      <v-flex>
-        <v-content
-          style="max-height: calc(100% - 100px); margin-bottom: 80px"
-          :class="
-            isSmall
-              ? 'ml-small'
-              : $store.getters.getMiniNav
-              ? 'ml-mini'
-              : 'ml-max'
-          "
-        >
-          <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
-          <div v-if="needSsr">
-            <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
-            <nuxt v-else class="pa-2" />
-          </div>
-          <client-only v-else>
-            <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
-            <nuxt v-else class="pa-2" />
-          </client-only>
-          <FloatMenu></FloatMenu>
-        </v-content>
-      </v-flex>
+      <v-layout justify-center>
+        <v-flex md9 lg8 sm11 class="pb-12">
+          <v-content>
+            <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
+            <div v-if="needSsr">
+              <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
+              <nuxt v-else class="pa-2" />
+            </div>
+            <client-only v-else>
+              <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
+              <nuxt v-else class="pa-2" />
+            </client-only>
+            <FloatMenu></FloatMenu>
+          </v-content>
+        </v-flex>
+      </v-layout>
       <v-footer
         v-show="$store.getters.getShowFooter"
         app
@@ -471,11 +205,11 @@
         style="z-index: 999;"
       >
         <v-row justify="center" align="center" no-gutters>
-          <v-flex class="py-2 text-left my_gray--text">
+          <v-flex class="py-2 text-left primary--text">
             <span
               >&copy;2019-{{ new Date().getFullYear() }}&nbsp;<router-link
                 to="/"
-                >aid.dev</router-link
+                >www.deva.wiki</router-link
               >&nbsp;版权所有&nbsp;沪ICP备19037749号-1</span
             >
           </v-flex>
@@ -851,16 +585,19 @@ export default {
 }
 </script>
 <style>
-.search-input.aelevation-0 .v-input__control .v-input__slot {
-  width: 50%;
-  transition: width 0.3s;
-}
 .search-input.aelevation-1 .v-input__control .v-input__slot {
-  width: 100%;
-  transition: width 0.4s;
+  background-color: white !important;
+}
+.search-input.aelevation-1 .v-input__control .v-input__slot .v-label {
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+.search-input.aelevation-1 .v-input__control .v-input__slot .v-icon,
+.search-input.aelevation-1 .v-input__control .v-input__slot input {
+  color: black !important;
+  caret-color: black !important;
 }
 .theme--light .search-input .v-input__slot {
-  background: #f6f6f6 !important;
+  background: #3f4448 !important;
 }
 .theme--dark .search-input .v-input__slot {
   background: #4b4b4b !important;
@@ -877,37 +614,15 @@ export default {
 }
 
 .theme--light header .v-toolbar__content {
-  border-bottom: 1px solid #e7e7e7;
+  border-bottom: 1px solid #24292e;
 }
-.theme--dark header .v-toolbar__content {
-  border-bottom: 1px solid #4b4b4b;
+.my_nav .v-btn__content {
+  font-weight: 600;
 }
 </style>
 <style scoped>
-header {
+header.float {
   box-shadow: none;
-}
-.ml-max {
-  /*margin-left: 120px !important;*/
-  padding-left: 80px !important;
-}
-.ml-max >>> .v-content__wrap {
-  padding-left: 100px !important;
-}
-.ml-mini {
-  margin-left: 0 !important;
-  padding-left: 80px !important;
-}
-.ml-mini >>> .v-content__wrap {
-  padding-left: 0 !important;
-}
-.ml-small {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-.mini-action {
-  justify-content: center;
-  margin-right: 0 !important;
 }
 .unread-icon {
   width: 13px;
@@ -915,25 +630,6 @@ header {
   top: -8px;
   right: 22px;
 }
-/*.v-item--active .mdi-comment-question-outline::before {*/
-/*  content: '\F816';*/
-/*}*/
-/*.v-item--active .mdi-circle-outline::before {*/
-/*  content: '\FAA4';*/
-/*}*/
-/*.v-item--active .mdi-magnify::before {*/
-/*  !*content: '\F70E';*!*/
-/*  font-weight: bolder;*/
-/*}*/
-/*.v-item--active .mdi-file-document-box-outline::before {*/
-/*  content: '\F21A';*/
-/*}*/
-/*.v-item--active .mdi-account-outline::before {*/
-/*  content: '\F004';*/
-/*}*/
-/*.v-item--active .mdi-bookmark-outline::before {*/
-/*  content: '\F0C0';*/
-/*}*/
 .mdi-cards-outline {
   font-size: 16px !important;
 }

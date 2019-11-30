@@ -13,7 +13,6 @@
         <v-layout justify-center class="pt-1">
           <v-avatar
             style="cursor:pointer"
-            color="grey"
             :title="'用户名: ' + userInfo.username"
             @click="
               actionIcon || $store.getters.getUserType === 'ADMIN'
@@ -96,6 +95,7 @@
       >
         <v-chip
           small
+          color="transparent"
           :title="userInfo.nickname || userInfo.username"
           style="border-radius: 0"
           >{{ userInfo.nickname || userInfo.username }}</v-chip

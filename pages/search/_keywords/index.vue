@@ -50,7 +50,7 @@
   </v-app>
 </template>
 <script>
-import HotTag from '../../../components/HotTag'
+import HotTag from '../../../components/HotTags'
 import BQCardList from '../../../components/BQCardList'
 export default {
   components: {

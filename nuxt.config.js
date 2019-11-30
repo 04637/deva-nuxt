@@ -67,8 +67,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  // loading: { color: 'rgba(1,166,135,0.38)' },
-  loading: { color: '#01a687' },
+  loading: { color: '#3f4448' },
   // loading: false,
   /*
    ** Global CSS
@@ -155,10 +154,12 @@ export default {
           inverted_color: colors.white
         },
         light: {
-          // primary: colors.cyan,
-          success: '#01a687',
-          primary: '#01a687',
-          background_color: '#fafafa',
+          light_black: '#3f4448',
+          success: '#2fcb53',
+          text_primary: '#fff',
+          primary: '#24292e',
+          link_color: '#0077cc',
+          background_color: '#24292e',
           new_orange: '#ff6600',
           private: '#eb6f5a',
           my_gray: '#808080',
@@ -167,9 +168,9 @@ export default {
           inverted_color: colors.black,
           light_red: '#FCCEBE',
           light_yellow: '#fcf9f0',
-          light_blue1: '#99C3D9',
-          dark_blue1: '#3D708F',
-          light_green: '#89d7bc'
+          light_blue: '#def',
+          light_green: '#89d7bc',
+          my_blue: '#0366d6'
         }
       }
     }
