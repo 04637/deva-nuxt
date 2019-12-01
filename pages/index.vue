@@ -2,15 +2,16 @@
   <v-app>
     <v-layout column shrink>
       <v-layout>
-        <v-spacer class="hidden-sm-and-down"></v-spacer>
-        <v-flex align-self-end>
+        <v-flex>
           <v-tabs
             v-model="currentTab"
-            centered
+            class="small-slider"
+            slider-color="slider_color"
+            slider-size="3"
             center-active
             height="38"
-            grow
             color="primary"
+            background-color="transparent"
             @change="loadBQ"
           >
             <v-tab
@@ -38,6 +39,7 @@
             >
           </v-tabs>
         </v-flex>
+        <!--<v-spacer class="hidden-sm-and-down"></v-spacer>-->
       </v-layout>
       <v-divider></v-divider>
       <span class="my_gray--text" style="font-size: 0.7rem"
@@ -51,6 +53,7 @@
       <v-flex lg3 justify-end shrink hidden-md-and-down class="ml-3">
         <RelatePost></RelatePost>
         <MyTags class="mt-4"></MyTags>
+        <active-users class="mt-4"></active-users>
       </v-flex>
     </v-layout>
   </v-app>
@@ -59,8 +62,9 @@
 import BQCardList from '../components/BQCardList'
 import RelatePost from '../components/RelatePost'
 import MyTags from '../components/MyTags'
+import ActiveUsers from '../components/ActiveUsers'
 export default {
-  components: { MyTags, RelatePost, BQCardList },
+  components: { ActiveUsers, MyTags, RelatePost, BQCardList },
   data: () => ({
     currentTab: 0,
     sortType: 'RECENT',
@@ -81,7 +85,7 @@ export default {
     this.loadBQ()
   },
   mounted() {
-    // this.loadLikeTags()
+    this.loadLikeTags()
     this.scroll()
   },
   methods: {
@@ -105,22 +109,22 @@ export default {
           }
         })
     },
-    // loadLikeTags() {
-    //   if (this.$store.getters.getUserId) {
-    //     this.$axios.$post('/tagLike/listLikeTags').then((resp) => {
-    //       let likeTags = resp.data
-    //       const randTag = []
-    //       if (likeTags.length > 5) {
-    //         for (let i = 0; i < 5; ++i) {
-    //           const rand = Math.floor(Math.random() * likeTags.length)
-    //           randTag.push(likeTags[rand])
-    //         }
-    //         likeTags = randTag
-    //       }
-    //       this.likeKeywords = likeTags.map((item) => item.tagName).join(' ')
-    //     })
-    //   }
-    // },
+    loadLikeTags() {
+      if (this.$store.getters.getUserId) {
+        this.$axios.$post('/tagLike/listLikeTags').then((resp) => {
+          let likeTags = resp.data
+          const randTag = []
+          if (likeTags.length > 5) {
+            for (let i = 0; i < 5; ++i) {
+              const rand = Math.floor(Math.random() * likeTags.length)
+              randTag.push(likeTags[rand])
+            }
+            likeTags = randTag
+          }
+          this.likeKeywords = likeTags.map((item) => item.tagName).join(' ')
+        })
+      }
+    },
     clickRecommend() {
       if (!this.$store.getters.getUserInfo) {
         this.$router.push('/user/login')
@@ -175,3 +179,8 @@ export default {
   }
 }
 </script>
+<style>
+.small-slider .v-tabs-slider-wrapper .v-tabs-slider {
+  margin: 0 auto !important;
+}
+</style>

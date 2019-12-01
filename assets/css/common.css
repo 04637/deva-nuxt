@@ -284,9 +284,9 @@ table td,:not(v-data-table__wrapper) table th {
   border:none;
 }
 
-.v-label {
-  color: rgba(255,255,255, 0.54) !important;
-}
+/*.v-label {*/
+/*  color: rgba(255,255,255, 0.54) !important;*/
+/*}*/
 .theme--light.v-application {
   background-color: #fcfdfd
 }
@@ -295,6 +295,10 @@ table td,:not(v-data-table__wrapper) table th {
 }
 .right-box {
   background-color: white;
-  box-shadow: 5px 4px 12px 2px #e7e7e7;
+  box-shadow: 3px 2px 11px 1px rgba(231, 231, 231, 0.71);
   border: 1px solid #e7e7e7;
+}
+
+.v-card:not(.v-card--flat) {
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0), 0px 2px 2px 0px rgba(0, 0, 0, 0), 0px 1px 5px 0px rgba(0, 0, 0, 0.12) !important;
 }

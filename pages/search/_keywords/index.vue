@@ -2,7 +2,7 @@
   <v-app>
     <v-layout column shrink>
       <v-layout>
-        <v-flex md7 xs4 shrink hidden-sm-and-down>
+        <v-flex md7 lg6 shrink hidden-sm-and-down>
           <v-card-title class="pa-0"
             ><v-layout align-center>
               <v-chip
@@ -26,8 +26,15 @@
             ></v-card-title
           >
         </v-flex>
-        <v-flex md4 lg3 align-self-end>
-          <v-tabs grow centered center-active height="38" @change="searchBQ">
+        <v-flex md5 lg6 align-self-end>
+          <v-tabs
+            centered
+            center-active
+            height="38"
+            slider-color="slider_color"
+            background-color="transparent"
+            @change="searchBQ"
+          >
             <v-tab @click="sortType = 'RELEVANCE'">相关</v-tab>
             <v-tab @click="sortType = 'RECENT'">最新</v-tab>
             <v-tab @click="sortType = 'ACTIVE'">活跃</v-tab>
@@ -43,19 +50,22 @@
       <v-flex xs12 sm11 lg9 justify-start shrink>
         <BQCardList v-if="bqList" :bq-list="bqList"></BQCardList>
       </v-flex>
-      <v-flex lg2 justify-end shrink hidden-md-and-down class="ml-3">
-        <HotTag></HotTag>
+      <v-flex lg3 justify-end shrink hidden-md-and-down class="ml-3">
+        <relate-post></relate-post>
+        <active-users class="mt-4"></active-users>
       </v-flex>
     </v-layout>
   </v-app>
 </template>
 <script>
-import HotTag from '../../../components/HotTags'
 import BQCardList from '../../../components/BQCardList'
+import RelatePost from '../../../components/RelatePost'
+import ActiveUsers from '../../../components/ActiveUsers'
 export default {
   components: {
-    BQCardList,
-    HotTag
+    ActiveUsers,
+    RelatePost,
+    BQCardList
   },
   data: () => ({
     sortType: null,

@@ -2,7 +2,7 @@
   <!-- logo 设计 https://www.logogenie.net/-->
   <!-- logo做头像 米色背景色 #e9e5de -->
   <!-- 雪碧图 http://www.spritecow.com/-->
-  <v-layout v-if="type === 'form'" justify-center style="height: 48px">
+  <v-layout v-if="type === 'form'" justify-center style="height: 48px;">
     <div class="logo" @click="$router.push('/', () => ({}))"></div>
   </v-layout>
   <div v-else-if="type === 'simple'" @click="$router.push('/', () => ({}))">
@@ -23,7 +23,7 @@ export default {
 </script>
 <style scoped>
 .logo {
-  background: url('/logo.png') no-repeat 0 0;
+  background: url('/black_logo.png') no-repeat 0 0;
   width: 115px;
   height: 48px;
   background-size: auto 50px;

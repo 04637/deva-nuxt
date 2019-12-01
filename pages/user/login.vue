@@ -1,9 +1,5 @@
 <template>
   <v-app>
-    <v-layout column shrink hidden-sm-and-down>
-      <v-card-title>登录</v-card-title>
-      <v-divider></v-divider>
-    </v-layout>
     <v-layout justify-center shrink>
       <v-card class="pa-8 mt-6" width="520px">
         <logo type="form"></logo>
@@ -36,7 +32,8 @@
                 >短信验证码登录</v-btn
               >
               <v-btn
-                color="primary"
+                color="my_green"
+                class="white--text"
                 accent
                 depressed
                 min-width="150px"
@@ -94,7 +91,8 @@
                 >用户名密码登录</v-btn
               >
               <v-btn
-                color="primary"
+                color="my_green"
+                class="white--text"
                 accent
                 depressed
                 min-width="150px"

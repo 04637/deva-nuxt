@@ -1,9 +1,5 @@
 <template>
   <v-app>
-    <v-layout column shrink hidden-sm-and-down>
-      <v-card-title>注册</v-card-title>
-      <v-divider></v-divider>
-    </v-layout>
     <v-layout justify-center shrink>
       <v-card class="pa-8 mt-6" width="520px">
         <logo type="form"></logo>
@@ -117,8 +113,8 @@
                 accent
                 depressed
                 width="100vw"
-                color="primary"
-                class="mt-4"
+                color="my_green"
+                class="mt-4 white--text"
                 :loading="signUpResult.loading"
                 @click="submitSignUp"
                 >注册</v-btn

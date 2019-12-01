@@ -1,9 +1,6 @@
 <template>
   <div class="pa-4 right-box">
-    <v-layout
-      v-if="likeTagList && likeTagList.length > 0"
-      align-center
-      class="mb-1"
+    <v-layout align-center class="mb-1"
       ><v-icon small color="new_orange">mdi-heart</v-icon>&nbsp;<span
         class="my_gray--text"
         >我的标签</span
@@ -18,7 +15,7 @@
       ></v-layout
     >
     <v-divider class="mt-2"></v-divider>
-    <div class="py-1 px-2 mt-2">
+    <div v-if="likeTagList && likeTagList.length > 0" class="py-1 px-2 mt-2">
       <transition-group name="list">
         <div
           v-for="tag in likeTagList"
@@ -45,6 +42,14 @@
         </div>
       </transition-group>
     </div>
+    <div v-else class="mt-2 my_gray--text">
+      <span>还没有关注标签呢, 快去添加吧~</span>
+    </div>
+    <v-layout justify-center class="mt-2">
+      <v-btn outlined color="my_gray" width="100%" to="/tag/tags"
+        >查看所有标签 >
+      </v-btn>
+    </v-layout>
   </div>
 </template>
 <script>

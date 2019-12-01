@@ -1,36 +1,48 @@
 <template>
   <v-card
-    :min-width="minWidth"
-    class="pa-2 no-shadow-box"
-    :to="
-      actionIcon || $store.getters.getUserType === 'ADMIN'
-        ? null
-        : '/user/' + userInfo.userId
-    "
+    flat
+    class="pa-2"
+    :width="minWidth"
+    style="border-radius: 0;border-right: 0.5px solid #e7e7e7;border-bottom: 0.5px solid #e7e7e7"
   >
-    <v-layout justify-start>
-      <v-flex xs4>
-        <v-layout justify-center class="pt-1">
-          <v-avatar
-            style="cursor:pointer"
-            :title="'用户名: ' + userInfo.username"
+    <v-layout justify-start align-start>
+      <v-flex shrink md2 hidden-sm-and-down>
+        <v-avatar
+          style="cursor:pointer"
+          tile
+          :title="'用户名: ' + userInfo.username"
+          @click="
+            actionIcon || $store.getters.getUserType === 'ADMIN'
+              ? $router.push('/user/' + userInfo.userId)
+              : ''
+          "
+        >
+          <v-img :src="userInfo.avatar"></v-img>
+        </v-avatar>
+        <v-layout
+          v-if="$store.getters.getUserType === 'ADMIN' && !actionEvent"
+          class="mt-2"
+        >
+          <v-btn
+            :color="userInfo.status === 0 ? 'primary' : 'private'"
+            small
+            text
             @click="
-              actionIcon || $store.getters.getUserType === 'ADMIN'
-                ? $router.push('/user/' + userInfo.userId)
-                : ''
+              userInfo.status === 0
+                ? (confirmUnBan.dialog = true)
+                : (confirmBan.dialog = true)
             "
+            ><span>{{ userInfo.status === 0 ? '解封' : '封禁' }}</span></v-btn
           >
-            <v-img :src="userInfo.avatar"></v-img>
-          </v-avatar>
         </v-layout>
       </v-flex>
-      <v-flex xs7>
-        <v-layout justify-space-between fill-height column>
+      <v-spacer class="hidden-sm-and-down"></v-spacer>
+      <v-flex md9 sm12>
+        <v-layout justify-space-between column>
           <v-btn
             v-if="actionIcon"
             :title="actionTitle"
             color="private"
-            style="position: absolute; right: -1px; top: -2px"
             icon
             small
             @click.stop="
@@ -40,7 +52,18 @@
             "
             ><v-icon small color="private">{{ actionIcon }}</v-icon></v-btn
           >
-          <v-layout class="label-description " style="min-height: 44px">
+          <v-layout>
+            <span
+              ><nuxt-link class="hover-line" :to="'/user/' + userInfo.userId">{{
+                userInfo.nickname
+              }}</nuxt-link
+              >&nbsp;<span style="font-weight: bold; color:red">·</span
+              >&nbsp;<span style="font-size: 12px">{{
+                userInfo.reputation
+              }}</span></span
+            >
+          </v-layout>
+          <v-layout class="label-description" style="min-height: 44px">
             <span :title="userInfo.bio" class="my_gray--text">
               {{ userInfo.bio }}
             </span>
@@ -65,49 +88,6 @@
               </span></router-link
             >
           </v-layout>
-        </v-layout>
-      </v-flex>
-      <v-flex v-if="$store.getters.getUserType === 'ADMIN' && !actionEvent" xs1>
-        <v-btn
-          :color="userInfo.status === 0 ? 'primary' : 'private'"
-          small
-          text
-          class="no-hover-active no-ripple"
-          style="position: relative; top:-10px;left:-6px"
-          @click="
-            userInfo.status === 0
-              ? (confirmUnBan.dialog = true)
-              : (confirmBan.dialog = true)
-          "
-          ><span>{{ userInfo.status === 0 ? '解封' : '封禁' }}</span></v-btn
-        >
-      </v-flex>
-    </v-layout>
-    <v-layout
-      justify-space-between
-      style="height: 28px; position:relative; top: 5px"
-    >
-      <v-flex
-        justify-center
-        xs4
-        class="text-truncate  no-flex"
-        style="text-align: center"
-      >
-        <v-chip
-          small
-          color="transparent"
-          :title="userInfo.nickname || userInfo.username"
-          style="border-radius: 0"
-          >{{ userInfo.nickname || userInfo.username }}</v-chip
-        >
-      </v-flex>
-      <v-flex xs7 class="text-right">
-        <v-layout align-center justify-end>
-          <v-chip small color="light_yellow">
-            <v-icon color="red" small title="用户声望">
-              mdi-music-clef-bass </v-icon
-            >&nbsp;{{ userInfo.reputation }}
-          </v-chip>
         </v-layout>
       </v-flex>
     </v-layout>
@@ -176,7 +156,7 @@ export default {
     minWidth: {
       type: String,
       required: false,
-      default: '358px'
+      default: '250px'
     }
   },
   data: () => ({

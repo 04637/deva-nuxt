@@ -1,6 +1,6 @@
 <template>
   <v-app v-show="userList">
-    <v-layout style="width: 30vw" shrink>
+    <v-layout style="min-width: 200px;max-width:400px" shrink>
       <v-text-field
         v-model="searchKey"
         hide-details
@@ -12,18 +12,12 @@
       ></v-text-field>
     </v-layout>
     <v-divider></v-divider>
-    <v-layout wrap shrink>
-      <v-flex
+    <v-layout wrap shrink class="mt-3">
+      <UserCard
         v-for="userInfo in userList"
         :key="userInfo.userId"
-        xs4
-        md4
-        lg3
-        style="max-height: 75px; max-width: 358px"
-        class="ma-4 mb-9 mr-2"
-      >
-        <UserCard :user-info="userInfo"></UserCard>
-      </v-flex>
+        :user-info="userInfo"
+      ></UserCard>
     </v-layout>
   </v-app>
 </template>
@@ -62,7 +56,7 @@ export default {
         })
         .then((resp) => {
           if (resp.succeed) {
-            this.userList = resp.data.content
+            this.userList = resp.data
           } else {
             this.userList = []
           }
@@ -94,7 +88,7 @@ export default {
             .then((resp) => {
               this.loadMore.isLoading = false
               if (resp.succeed) {
-                this.userList = this.userList.concat(resp.data.content)
+                this.userList = this.userList.concat(resp.data)
               } else {
                 this.loadMore.noMore = true
               }

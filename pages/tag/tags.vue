@@ -12,21 +12,21 @@
       ></v-text-field>
     </v-layout>
     <v-divider></v-divider>
-    <v-layout wrap shrink>
+    <v-layout wrap shrink class="mt-3">
       <v-flex
         v-for="tagInfo in tagList"
         :key="tagInfo.tagId"
         xs4
         md4
         lg3
-        class="ml-4 mb-0 mt-3"
         style="max-width: 358px"
         shrink
       >
         <v-card
           min-width="250px"
-          class="px-3 pb-2 no-shadow-box"
-          style="padding-top:10px;"
+          class="px-3 pb-2"
+          flat
+          style="padding-top:10px; border-radius: 0;border-right: 0.5px solid #e7e7e7;border-bottom: 0.5px solid #e7e7e7"
         >
           <v-layout align-center justify-space-between>
             <v-layout align-center>

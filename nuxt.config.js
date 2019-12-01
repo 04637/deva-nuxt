@@ -170,7 +170,9 @@ export default {
           light_yellow: '#fcf9f0',
           light_blue: '#def',
           light_green: '#89d7bc',
-          my_blue: '#0366d6'
+          my_blue: '#0366d6',
+          my_green: '#5fba7d',
+          slider_color: '#6bb3e7'
         }
       }
     }

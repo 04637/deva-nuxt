@@ -1,23 +1,23 @@
 <template>
-  <div>
+  <div class="right-box pa-4">
     <v-layout
       v-if="hotTagList && hotTagList.length > 0"
       align-center
       class="mb-1"
-      ><v-icon small color="new_orange">mdi-fire</v-icon>&nbsp;<span
-        class="my_gray--text"
-        >热门标签</span
-      ></v-layout
+      ><span class="my_gray--text">热门标签</span></v-layout
     >
-    <transition-group name="list">
-      <div v-for="tag in hotTagList" :key="tag.tagId" class="mb-3 mt-1">
-        <TagChip color="light_blue" :tag-info="tag"></TagChip>&nbsp;<span
-          class="my_gray--text"
-          title="使用次数"
-          >× {{ tag.totalCount }}</span
-        >
-      </div>
-    </transition-group>
+    <v-divider class="mt-2"></v-divider>
+    <div class="py-1 px-2 mt-2">
+      <transition-group name="list">
+        <div v-for="tag in hotTagList" :key="tag.tagId" class="mb-3 mt-1">
+          <TagChip color="light_blue" :tag-info="tag"></TagChip>&nbsp;<span
+            class="my_gray--text"
+            title="使用次数"
+            >× {{ tag.totalCount }}</span
+          >
+        </div>
+      </transition-group>
+    </div>
   </div>
 </template>
 <script>

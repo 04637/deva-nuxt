@@ -2,13 +2,29 @@
   <v-app>
     <v-app>
       <v-layout justify-end shrink style="height: 24px;">
-        <v-col cols="5" class="pa-0">
+        <v-flex>
+          <span style="font-size: 14px" class="my_gray--text"
+            >小提示：右侧可切换markdown编辑器, 如需帮助可
+            <a href="http://www.markdown.cn/" target="_blank" class="hover-line"
+              ><span>点此查看markdown语法说明</span></a
+            ></span
+          >
+        </v-flex>
+        <v-flex shrink>
+          <v-btn
+            v-if="!$route.query.spaceId"
+            class="ml-2"
+            small
+            to="/question/ask"
+            color="blue"
+            text
+            ><v-icon small>mdi-feather</v-icon><span>发布问题</span></v-btn
+          >
           <v-btn
             text
             nuxt
             class="text-capitalize"
             small
-            style="float: right"
             :title="
               $store.getters.getUseMarkdown
                 ? '切换富文本编辑器'
@@ -19,7 +35,7 @@
               $store.getters.getUseMarkdown ? 'mdi-markdown' : 'mdi-textbox'
             }}</v-icon></v-btn
           >
-        </v-col>
+        </v-flex>
       </v-layout>
       <v-layout justify-center>
         <v-form ref="form" style="width: 80vw">
@@ -66,7 +82,7 @@
             <Quill
               ref="blogQuill"
               class="blog-quill"
-              :content="content"
+              :content="contentCode"
               :max="16000"
               :min="20"
               @update:contentCode="contentCode = $event"
@@ -156,7 +172,8 @@
               "
             ></v-checkbox>
             <v-btn
-              color="primary"
+              color="my_green"
+              class="white--text"
               accent
               depressed
               min-width="150px"
@@ -247,7 +264,7 @@ export default {
   },
   middleware: 'authenticated',
   data: () => ({
-    contentCode: null,
+    contentCode: '',
     quillErrMsg: null,
     keywords: null,
     title: null,

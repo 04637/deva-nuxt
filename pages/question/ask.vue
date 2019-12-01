@@ -1,16 +1,16 @@
 <template>
-  <v-app>
+  <div>
     <v-app>
       <v-layout justify-space-between align-center shrink>
-        <v-col cols="6" justify="start">
+        <v-flex>
           <span style="font-size: 14px" class="my_gray--text"
             >小提示：右侧可切换markdown编辑器, 如需帮助可
             <a href="http://www.markdown.cn/" target="_blank" class="hover-line"
               ><span>点此查看markdown语法说明</span></a
             ></span
           >
-        </v-col>
-        <v-col cols="5" justify="end">
+        </v-flex>
+        <v-flex shrink>
           <v-btn
             v-if="!$route.query.spaceId"
             class="ml-2"
@@ -35,7 +35,7 @@
               $store.getters.getUseMarkdown ? 'mdi-markdown' : 'mdi-textbox'
             }}</v-icon></v-btn
           >
-        </v-col>
+        </v-flex>
       </v-layout>
       <v-layout justify-center>
         <v-form ref="form" style="width: 80vw">
@@ -81,7 +81,7 @@
           <div v-if="!$store.getters.getUseMarkdown" style="height: 593px;">
             <Quill
               ref="questionQuill"
-              :content="content"
+              :content="contentCode"
               :max="10000"
               :min="20"
               @update:contentCode="contentCode = $event"
@@ -155,13 +155,14 @@
               ></v-card-text
             >
             <v-btn
-              color="primary"
+              color="my_green"
+              class="white--text"
               accent
               depressed
               min-width="150px"
               :loading="askResult.loading"
               @click="submitQuestion"
-              >提交</v-btn
+              >发布</v-btn
             >
           </v-layout>
         </v-form>
@@ -226,7 +227,7 @@
       "
     >
     </InfoDialog>
-  </v-app>
+  </div>
 </template>
 <script>
 import hljs from 'highlight.js'
@@ -247,7 +248,7 @@ export default {
     selectedTags: [],
     tags: [],
     content: '',
-    contentCode: null,
+    contentCode: '',
     newTag: {
       name: null,
       description: null

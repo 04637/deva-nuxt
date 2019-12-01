@@ -7,20 +7,18 @@
             >{{ questionDetail.title }}&nbsp;&nbsp;
             <v-chip
               v-if="questionDetail.status === 1"
-              class="hidden-sm-and-down"
-              color="primary"
-              outlined
+              class="hidden-sm-and-down white--text"
+              color="my_green"
               small
-              style="height: 20px"
+              style="height: 20px;border-radius: 3px"
             >
               已解决 </v-chip
             ><v-chip
               v-if="questionDetail.status === 0"
               class="hidden-sm-and-down"
               color="private"
-              outlined
               small
-              style="height: 20px"
+              style="height: 20px;border-radius: 3px"
             >
               待解决
             </v-chip></v-row
@@ -163,15 +161,16 @@
                       :tag-info="tag"
                     ></TagChip>
                   </v-layout>
-                  <v-layout justify-end>
-                    <EditUserCard
-                      :user="questionDetail.author"
-                      :create-time="questionDetail.createTime"
-                      :modified-time="questionDetail.modifiedTime"
-                      prefix="提问"
-                    ></EditUserCard>
-                  </v-layout>
                 </v-card-actions>
+                <v-layout justify-end>
+                  <EditUserCard
+                    :user="questionDetail.author"
+                    :create-time="questionDetail.createTime"
+                    :modified-time="questionDetail.modifiedTime"
+                    class="mb-2"
+                    prefix="提问"
+                  ></EditUserCard>
+                </v-layout>
                 <!-- 评论区 -->
                 <v-divider></v-divider>
                 <v-layout justify-center column class="mt-2">
@@ -283,7 +282,6 @@
               </v-flex>
             </v-layout>
           </v-card>
-          <v-divider></v-divider>
           <!--所有回答-->
           <v-layout class="transparent" justify-space-between align-center
             ><v-card-title class="sub--text"
@@ -514,11 +512,11 @@
         </v-flex>
         <v-flex lg3 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
           <client-only>
-            <HotTag :load-hot="false"></HotTag
-            ><RelatePost
+            <RelatePost
               :exclude-id="questionDetail.questionId"
               :tags="questionDetail.tagInfos"
             ></RelatePost
+            ><my-tags class="mt-4"></my-tags
           ></client-only>
         </v-flex>
       </v-layout>
@@ -592,22 +590,22 @@
 </template>
 <script>
 import InfoDialog from '../../../components/InfoDialog'
-import HotTag from '../../../components/HotTags'
 import TagChip from '../../../components/TagChip'
 import ConfirmDialog from '../../../components/ConfirmDialog'
 import Quill from '../../../components/Quill'
 import RelatePost from '../../../components/RelatePost'
 import EditUserCard from '../../../components/EditUserCard'
+import MyTags from '../../../components/MyTags'
 
 export default {
   name: 'QuestionDetail',
   components: {
+    MyTags,
     EditUserCard,
     RelatePost,
     Quill,
     ConfirmDialog,
     TagChip,
-    HotTag,
     InfoDialog
   },
   validate({ params }) {
@@ -923,14 +921,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.question-tag {
-  margin-right: 13px;
-}
-.user_card {
-  width: 267px;
-}
-.ql-container {
-  height: 86% !important;
-}
-</style>

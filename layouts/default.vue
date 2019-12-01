@@ -10,6 +10,7 @@
           row
           align-center
           justify-space-between
+          fluid
           style="margin: 0 auto;"
         >
           <v-btn
@@ -22,7 +23,7 @@
           >
             <v-icon>search</v-icon>
           </v-btn>
-          <v-flex justify-start align-center row hidden-sm-and-down>
+          <v-flex justify-start align-center row hidden-sm-and-down shrink>
             <v-toolbar-title>
               <logo type="simple" class="ml-5"></logo>
             </v-toolbar-title>
@@ -46,144 +47,137 @@
               @keyup.enter.native="search"
             ></v-text-field>
           </v-flex>
-          <v-spacer></v-spacer>
-          <v-flex class="my_nav">
-            <v-btn text color="text_primary" to="/">主页</v-btn>
+          <v-flex class="my_nav ml-7">
+            <v-btn text color="text_primary" to="/">浏览</v-btn>
             <v-btn
               text
               color="text_primary"
-              to="/user/users"
+              to="/question/ask"
               class="hidden-sm-and-down"
-              >用户</v-btn
+              >发布</v-btn
             >
-            <v-btn
-              text
-              color="text_primary"
-              to="/tag/tags"
-              class="hidden-sm-and-down"
-              >标签</v-btn
-            >
-            <v-btn
-              text
-              color="text_primary"
-              to="/space/"
-              class="hidden-sm-and-down"
+            <v-btn text color="text_primary" class="hidden-sm-and-down"
               >空间</v-btn
             >
           </v-flex>
-          <v-layout justify-end align-center style="max-width: 300px">
-            <v-btn
-              v-if="$store.state.userInfo"
-              style="position: relative;margin-right: 10px"
-              icon
-              to="/user/messages"
-              small
-            >
-              <v-icon small color="text_primary">notifications_none</v-icon>
-            </v-btn>
-            <svg
-              v-show="$store.getters.getUnReadMessageCount > 0"
-              class="icon unread-icon"
-              style="width: 13px; height: 13px;"
-            >
-              <use xlink:href="#icon-unread"></use>
-            </svg>
-            <div v-if="$store.getters.getUserInfo">
-              <v-menu
-                v-model="userMenu"
-                :close-on-content-click="true"
-                open-on-hover
-                nudge-width="100"
-                offset-y
-              >
-                <template #activator="{ on }">
-                  <v-chip
-                    max-width="120px"
-                    text
-                    small
-                    color="primary"
-                    :to="'/user/' + $store.getters.getUserInfo.userId"
-                    style="border-radius: 0;"
-                    class="d-inline-block no-flex text-truncate text-left mr-1 text_primary__text"
-                    >{{
-                      $store.getters.getUserInfo.nickname ||
-                        $store.getters.getUserInfo.username
-                    }}</v-chip
-                  >
-                  <v-avatar
-                    color="grey"
-                    size="35"
-                    style="cursor:pointer"
-                    v-on="on"
-                  >
-                    <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
-                  </v-avatar>
-                </template>
-                <v-card min-width="180px" class="pa-0">
-                  <v-list dense nav class="pa-0" shaped>
-                    <v-list-item class="pa-0 mb-0">
-                      <v-list-item-content class="pa-0">
-                        <v-btn
-                          depressed
-                          text
-                          class="text-left no-flex"
-                          :to="'/user/' + $store.getters.getUserId"
-                          >个人档案</v-btn
-                        >
-                      </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item class="pa-0 mb-0">
-                      <v-list-item-content class="pa-0">
-                        <v-btn
-                          depressed
-                          text
-                          to="/user/editProfile"
-                          class="text-left no-flex"
-                          >基本资料</v-btn
-                        >
-                      </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item class="pa-0 mb-0">
-                      <v-list-item-content class="pa-0">
-                        <v-btn
-                          depressed
-                          text
-                          to="/user/safeSetting"
-                          class="text-left no-flex"
-                          >安全中心</v-btn
-                        >
-                      </v-list-item-content>
-                    </v-list-item>
-                    <v-divider></v-divider>
-                    <v-list-item class="pa-0 mb-0">
-                      <v-list-item-content class="pa-0">
-                        <v-btn depressed text height="40px" @click="logout"
-                          >退出</v-btn
-                        >
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list>
-                </v-card>
-              </v-menu>
-            </div>
-            <div v-else>
-              <v-btn text color="text_primary" depressed to="/user/login"
-                >登录</v-btn
-              >
+          <v-flex>
+            <v-layout justify-end align-center>
               <v-btn
-                depressed
-                color="text_primary"
-                outlined
-                class="ml-1"
-                to="/user/signUp"
-                >注册</v-btn
+                v-if="$store.state.userInfo"
+                style="position: relative;margin-right: 10px"
+                icon
+                to="/user/messages"
+                small
               >
-            </div>
-          </v-layout>
+                <v-icon small color="text_primary">notifications_none</v-icon>
+              </v-btn>
+              <svg
+                v-show="$store.getters.getUnReadMessageCount > 0"
+                class="icon unread-icon"
+                style="width: 13px; height: 13px;"
+              >
+                <use xlink:href="#icon-unread"></use>
+              </svg>
+              <div v-if="$store.getters.getUserInfo">
+                <v-menu
+                  v-model="userMenu"
+                  :close-on-content-click="true"
+                  open-on-hover
+                  nudge-width="100"
+                  offset-y
+                >
+                  <template #activator="{ on }">
+                    <v-chip
+                      max-width="120px"
+                      text
+                      small
+                      color="primary"
+                      :to="'/user/' + $store.getters.getUserInfo.userId"
+                      style="border-radius: 0;"
+                      class="d-inline-block no-flex text-truncate text-left mr-1 text_primary__text"
+                      >{{
+                        $store.getters.getUserInfo.nickname ||
+                          $store.getters.getUserInfo.username
+                      }}</v-chip
+                    >
+                    <v-avatar
+                      color="grey"
+                      size="35"
+                      style="cursor:pointer"
+                      v-on="on"
+                    >
+                      <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
+                    </v-avatar>
+                  </template>
+                  <v-card min-width="180px" class="pa-0">
+                    <v-list dense nav class="pa-0" shaped>
+                      <v-list-item class="pa-0 mb-0">
+                        <v-list-item-content class="pa-0">
+                          <v-btn
+                            depressed
+                            text
+                            class="text-left no-flex"
+                            :to="'/user/' + $store.getters.getUserId"
+                            >个人档案</v-btn
+                          >
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item class="pa-0 mb-0">
+                        <v-list-item-content class="pa-0">
+                          <v-btn
+                            depressed
+                            text
+                            to="/user/editProfile"
+                            class="text-left no-flex"
+                            >基本资料</v-btn
+                          >
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item class="pa-0 mb-0">
+                        <v-list-item-content class="pa-0">
+                          <v-btn
+                            depressed
+                            text
+                            to="/user/safeSetting"
+                            class="text-left no-flex"
+                            >安全中心</v-btn
+                          >
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-divider></v-divider>
+                      <v-list-item class="pa-0 mb-0">
+                        <v-list-item-content class="pa-0">
+                          <v-btn depressed text height="40px" @click="logout"
+                            >退出</v-btn
+                          >
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-card>
+                </v-menu>
+              </div>
+              <div v-else>
+                <v-btn text color="text_primary" depressed to="/user/login"
+                  >登录</v-btn
+                >
+                <v-btn
+                  depressed
+                  color="text_primary"
+                  outlined
+                  class="ml-1"
+                  to="/user/signUp"
+                  >注册</v-btn
+                >
+              </div>
+            </v-layout>
+          </v-flex>
         </v-container>
       </v-app-bar>
-      <v-layout justify-center>
-        <v-flex md9 lg8 sm11 class="pb-12">
+      <v-layout
+        justify-center
+        style="background: url('/svg/star-bg.svg'); background-position: center; background-size: cover"
+      >
+        <v-flex md9 lg8 sm11 class="pb-12 mt-3">
           <v-content>
             <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
             <div v-if="needSsr">
