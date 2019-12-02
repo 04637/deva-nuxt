@@ -78,7 +78,7 @@
           justify="end"
           align="center"
           class="hidden-sm-and-down"
-          style="font-size: 14px;position:absolute;bottom:5px;right: 24px;"
+          style="font-size: 14px;position:absolute;bottom:0;right: 24px;"
         >
           <user-chip :user="item.author" class="text--right"></user-chip>
           <small

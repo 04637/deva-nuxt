@@ -199,6 +199,7 @@ export default {
    ** Build configuration
    */
   build: {
+    publicPath: 'https://oss-cdn.deva.wiki/_nuxt/'
     /*
      ** You can extend webpack config here
      */
