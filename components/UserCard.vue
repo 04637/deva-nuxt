@@ -17,7 +17,7 @@
               : ''
           "
         >
-          <v-img :src="userInfo.avatar"></v-img>
+          <v-img :src="$options.filters.webp(userInfo.avatar)"></v-img>
         </v-avatar>
         <v-layout
           v-if="$store.getters.getUserType === 'ADMIN' && !actionEvent"

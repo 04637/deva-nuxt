@@ -11,7 +11,7 @@
             <v-layout align-center>
               <v-flex shrink>
                 <v-avatar>
-                  <v-img :src="user.avatar"></v-img>
+                  <v-img :src="$options.filters.webp(user.avatar)"></v-img>
                 </v-avatar>
               </v-flex>
               <v-flex style="font-size: 14px" class="ml-2">

@@ -41,5 +41,8 @@ export default {
   },
   setMiniNav(state, val) {
     state.miniNav = val
+  },
+  supportWebp(state) {
+    state.webpSupport = true
   }
 }

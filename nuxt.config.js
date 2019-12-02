@@ -94,7 +94,8 @@ export default {
     { src: '~plugins/notice', ssr: false },
     // https://surmon-china.github.io/vue-quill-editor/
     { src: '~plugins/quill-editor', ssr: false },
-    { src: '~/plugins/persistedStorage', ssr: false }
+    { src: '~/plugins/persistedStorage', ssr: false },
+    { src: '~/plugins/webp.js', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules

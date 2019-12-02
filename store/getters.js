@@ -40,5 +40,8 @@ export default {
   },
   getMiniNav(state) {
     return state.miniNav
+  },
+  isSupportWebp(state) {
+    return state.webpSupport
   }
 }

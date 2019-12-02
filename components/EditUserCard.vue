@@ -14,7 +14,7 @@
       <v-layout>
         <v-flex xs3 shrink>
           <v-avatar color="grey" tile>
-            <v-img :src="user.avatar"></v-img>
+            <v-img :src="$options.filters.webp(user.avatar)"></v-img>
           </v-avatar>
         </v-flex>
         <v-spacer></v-spacer>

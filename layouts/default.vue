@@ -1,278 +1,275 @@
 <template>
-  <div id="app">
-    <v-app id="inspire">
-      <v-app-bar
-        app
-        style="background-color: #24292e; max-height: 64px;"
-        class="text_primary--text justify-center"
+  <v-app id="inspire">
+    <v-app-bar
+      app
+      style="background-color: #24292e; max-height: 64px;"
+      class="text_primary--text justify-center"
+    >
+      <v-container
+        row
+        align-center
+        justify-space-between
+        fluid
+        style="margin: 0 auto;"
       >
-        <v-container
-          row
-          align-center
-          justify-space-between
-          fluid
-          style="margin: 0 auto;"
+        <v-btn
+          icon
+          to="/search/find"
+          small
+          color="text_primary"
+          class="d-sm d-md-none d-lg-none"
+          style="padding: 18px"
         >
-          <v-btn
-            icon
-            to="/search/find"
-            small
-            color="text_primary"
-            class="d-sm d-md-none d-lg-none"
-            style="padding: 18px"
-          >
-            <v-icon>search</v-icon>
-          </v-btn>
-          <v-flex justify-start align-center row hidden-sm-and-down shrink>
-            <v-toolbar-title>
-              <logo type="simple" class="ml-5"></logo>
-            </v-toolbar-title>
-            <v-text-field
-              ref="searchRef"
-              v-model="keywords"
-              translate="yes"
-              flat
-              dark
-              class="ml-5 min-input search-input black--text"
-              :class="'aelevation-' + searchElv"
-              label="搜索"
-              hide-details
-              elavation
-              style="min-height: 36px;"
-              append-icon="search"
-              solo
-              @focusin="searchElv = 1"
-              @focusout="searchElv = 0"
-              @click:append="search"
-              @keyup.enter.native="search"
-            ></v-text-field>
-          </v-flex>
-          <v-flex class="my_nav ml-7">
-            <v-btn text color="text_primary" to="/">浏览</v-btn>
-            <v-btn
-              text
-              color="text_primary"
-              to="/question/ask"
-              class="hidden-sm-and-down"
-              >发布</v-btn
-            >
-            <v-btn text color="text_primary" class="hidden-sm-and-down"
-              >空间</v-btn
-            >
-          </v-flex>
-          <v-flex>
-            <v-layout justify-end align-center>
-              <v-btn
-                v-if="$store.state.userInfo"
-                style="position: relative;margin-right: 10px"
-                icon
-                to="/user/messages"
-                small
-              >
-                <v-icon small color="text_primary">notifications_none</v-icon>
-              </v-btn>
-              <svg
-                v-show="$store.getters.getUnReadMessageCount > 0"
-                class="icon unread-icon"
-                style="width: 13px; height: 13px;"
-              >
-                <use xlink:href="#icon-unread"></use>
-              </svg>
-              <div v-if="$store.getters.getUserInfo">
-                <v-menu
-                  v-model="userMenu"
-                  :close-on-content-click="true"
-                  open-on-hover
-                  nudge-width="100"
-                  offset-y
-                >
-                  <template #activator="{ on }">
-                    <v-chip
-                      max-width="120px"
-                      text
-                      small
-                      color="primary"
-                      :to="'/user/' + $store.getters.getUserInfo.userId"
-                      style="border-radius: 0;"
-                      class="d-inline-block no-flex text-truncate text-left mr-1 text_primary__text"
-                      >{{
-                        $store.getters.getUserInfo.nickname ||
-                          $store.getters.getUserInfo.username
-                      }}</v-chip
-                    >
-                    <v-avatar
-                      color="grey"
-                      size="35"
-                      style="cursor:pointer"
-                      v-on="on"
-                    >
-                      <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
-                    </v-avatar>
-                  </template>
-                  <v-card min-width="180px" class="pa-0">
-                    <v-list dense nav class="pa-0" shaped>
-                      <v-list-item class="pa-0 mb-0">
-                        <v-list-item-content class="pa-0">
-                          <v-btn
-                            depressed
-                            text
-                            class="text-left no-flex"
-                            :to="'/user/' + $store.getters.getUserId"
-                            >个人档案</v-btn
-                          >
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-list-item class="pa-0 mb-0">
-                        <v-list-item-content class="pa-0">
-                          <v-btn
-                            depressed
-                            text
-                            to="/user/editProfile"
-                            class="text-left no-flex"
-                            >基本资料</v-btn
-                          >
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-list-item class="pa-0 mb-0">
-                        <v-list-item-content class="pa-0">
-                          <v-btn
-                            depressed
-                            text
-                            to="/user/safeSetting"
-                            class="text-left no-flex"
-                            >安全中心</v-btn
-                          >
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-divider></v-divider>
-                      <v-list-item class="pa-0 mb-0">
-                        <v-list-item-content class="pa-0">
-                          <v-btn depressed text height="40px" @click="logout"
-                            >退出</v-btn
-                          >
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list>
-                  </v-card>
-                </v-menu>
-              </div>
-              <div v-else>
-                <v-btn text color="text_primary" depressed to="/user/login"
-                  >登录</v-btn
-                >
-                <v-btn
-                  depressed
-                  color="text_primary"
-                  outlined
-                  class="ml-1"
-                  to="/user/signUp"
-                  >注册</v-btn
-                >
-              </div>
-            </v-layout>
-          </v-flex>
-        </v-container>
-      </v-app-bar>
-      <v-layout
-        justify-center
-        style="background: url('/svg/star-bg.svg'); background-position: center; background-size: cover"
-      >
-        <v-flex md9 lg8 sm11 class="pb-12 mt-3">
-          <v-content>
-            <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
-            <div v-if="needSsr">
-              <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
-              <nuxt v-else class="pa-2" />
-            </div>
-            <client-only v-else>
-              <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
-              <nuxt v-else class="pa-2" />
-            </client-only>
-            <FloatMenu></FloatMenu>
-          </v-content>
+          <v-icon>search</v-icon>
+        </v-btn>
+        <v-flex justify-start align-center row hidden-sm-and-down shrink>
+          <v-toolbar-title>
+            <logo type="simple" class="ml-5"></logo>
+          </v-toolbar-title>
+          <v-text-field
+            ref="searchRef"
+            v-model="keywords"
+            translate="yes"
+            flat
+            dark
+            class="ml-5 min-input search-input black--text"
+            :class="'aelevation-' + searchElv"
+            label="搜索"
+            hide-details
+            elavation
+            style="min-height: 36px;"
+            append-icon="search"
+            solo
+            @focusin="searchElv = 1"
+            @focusout="searchElv = 0"
+            @click:append="search"
+            @keyup.enter.native="search"
+          ></v-text-field>
         </v-flex>
-      </v-layout>
-      <v-footer
-        v-show="$store.getters.getShowFooter"
-        app
-        tile
-        style="z-index: 999;"
-      >
-        <v-row justify="center" align="center" no-gutters>
-          <v-flex class="py-2 text-left primary--text">
-            <span
-              >&copy;2019-{{ new Date().getFullYear() }}&nbsp;<router-link
-                to="/"
-                >www.deva.wiki</router-link
-              >&nbsp;版权所有&nbsp;沪ICP备19037749号-1</span
-            >
-          </v-flex>
-        </v-row>
-      </v-footer>
-      <ErrorDialog
-        :dialog="errorInfo.dialog"
-        @update:dialog="errorInfo.dialog = $event"
-      >
-      </ErrorDialog>
-      <v-dialog v-model="joinSpace.dialog" width="500px" persistent>
-        <v-card>
-          <v-card-text class="pb-0">
-            <v-container class="pb-0">
-              <v-form ref="joinSpaceForm">
-                <v-text-field
-                  v-model="joinSpace.spaceId"
-                  placeholder="空间ID"
-                  :rules="[rules.requireSpaceId]"
-                >
-                </v-text-field>
-                <v-text-field
-                  v-model="joinSpace.inviteCode"
-                  placeholder="邀请码"
-                  :rules="[rules.requireInviteCode]"
-                >
-                </v-text-field>
-                <span class="error--text">{{ joinSpace.errMsg }}</span>
-              </v-form>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <div class="flex-grow-1"></div>
+        <v-flex class="my_nav ml-7">
+          <v-btn text color="text_primary" to="/">浏览</v-btn>
+          <v-btn
+            text
+            color="text_primary"
+            to="/question/ask"
+            class="hidden-sm-and-down"
+            >发布</v-btn
+          >
+          <v-btn text color="text_primary" class="hidden-sm-and-down"
+            >空间</v-btn
+          >
+        </v-flex>
+        <v-flex>
+          <v-layout justify-end align-center>
             <v-btn
-              color="sub"
-              text
+              v-if="$store.state.userInfo"
+              style="position: relative;margin-right: 10px"
+              icon
+              to="/user/messages"
               small
-              @click="
-                joinSpace.dialog = false
-                joinSpace.errMsg = null
-              "
-              >关闭</v-btn
             >
-            <v-btn color="primary" small text @click="joinToSpace">加入</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+              <v-icon small color="text_primary">notifications_none</v-icon>
+            </v-btn>
+            <svg
+              v-show="$store.getters.getUnReadMessageCount > 0"
+              class="icon unread-icon"
+              style="width: 13px; height: 13px;"
+            >
+              <use xlink:href="#icon-unread"></use>
+            </svg>
+            <div v-if="$store.getters.getUserInfo">
+              <v-menu
+                v-model="userMenu"
+                :close-on-content-click="true"
+                open-on-hover
+                nudge-width="100"
+                offset-y
+              >
+                <template #activator="{ on }">
+                  <v-chip
+                    max-width="120px"
+                    text
+                    small
+                    color="primary"
+                    :to="'/user/' + $store.getters.getUserInfo.userId"
+                    style="border-radius: 0;"
+                    class="d-inline-block no-flex text-truncate text-left mr-1 text_primary__text"
+                    >{{
+                      $store.getters.getUserInfo.nickname ||
+                        $store.getters.getUserInfo.username
+                    }}</v-chip
+                  >
+                  <v-avatar
+                    color="grey"
+                    size="35"
+                    style="cursor:pointer"
+                    v-on="on"
+                  >
+                    <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
+                  </v-avatar>
+                </template>
+                <v-card min-width="180px" class="pa-0">
+                  <v-list dense nav class="pa-0" shaped>
+                    <v-list-item class="pa-0 mb-0">
+                      <v-list-item-content class="pa-0">
+                        <v-btn
+                          depressed
+                          text
+                          class="text-left no-flex"
+                          :to="'/user/' + $store.getters.getUserId"
+                          >个人档案</v-btn
+                        >
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item class="pa-0 mb-0">
+                      <v-list-item-content class="pa-0">
+                        <v-btn
+                          depressed
+                          text
+                          to="/user/editProfile"
+                          class="text-left no-flex"
+                          >基本资料</v-btn
+                        >
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item class="pa-0 mb-0">
+                      <v-list-item-content class="pa-0">
+                        <v-btn
+                          depressed
+                          text
+                          to="/user/safeSetting"
+                          class="text-left no-flex"
+                          >安全中心</v-btn
+                        >
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider></v-divider>
+                    <v-list-item class="pa-0 mb-0">
+                      <v-list-item-content class="pa-0">
+                        <v-btn depressed text height="40px" @click="logout"
+                          >退出</v-btn
+                        >
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-card>
+              </v-menu>
+            </div>
+            <div v-else>
+              <v-btn text color="text_primary" depressed to="/user/login"
+                >登录</v-btn
+              >
+              <v-btn
+                depressed
+                color="text_primary"
+                outlined
+                class="ml-1"
+                to="/user/signUp"
+                >注册</v-btn
+              >
+            </div>
+          </v-layout>
+        </v-flex>
+      </v-container>
+    </v-app-bar>
+    <v-layout
+      justify-center
+      style="background: url('/svg/star-bg.svg'); background-position: center; background-size: cover"
+    >
+      <v-flex md9 lg8 sm11 class="pb-12 mt-3">
+        <v-content>
+          <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
+          <div v-if="needSsr">
+            <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
+            <nuxt v-else class="pa-2" />
+          </div>
+          <client-only v-else>
+            <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
+            <nuxt v-else class="pa-2" />
+          </client-only>
+          <FloatMenu></FloatMenu>
+        </v-content>
+      </v-flex>
+    </v-layout>
+    <v-footer
+      v-show="$store.getters.getShowFooter"
+      app
+      tile
+      style="z-index: 999;"
+    >
+      <v-row justify="center" align="center" no-gutters>
+        <v-flex class="py-2 text-left primary--text">
+          <span
+            >&copy;2019-{{ new Date().getFullYear() }}&nbsp;<router-link to="/"
+              >www.deva.wiki</router-link
+            >&nbsp;版权所有&nbsp;沪ICP备19037749号-1</span
+          >
+        </v-flex>
+      </v-row>
+    </v-footer>
+    <ErrorDialog
+      :dialog="errorInfo.dialog"
+      @update:dialog="errorInfo.dialog = $event"
+    >
+    </ErrorDialog>
+    <v-dialog v-model="joinSpace.dialog" width="500px" persistent>
+      <v-card>
+        <v-card-text class="pb-0">
+          <v-container class="pb-0">
+            <v-form ref="joinSpaceForm">
+              <v-text-field
+                v-model="joinSpace.spaceId"
+                placeholder="空间ID"
+                :rules="[rules.requireSpaceId]"
+              >
+              </v-text-field>
+              <v-text-field
+                v-model="joinSpace.inviteCode"
+                placeholder="邀请码"
+                :rules="[rules.requireInviteCode]"
+              >
+              </v-text-field>
+              <span class="error--text">{{ joinSpace.errMsg }}</span>
+            </v-form>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn
+            color="sub"
+            text
+            small
+            @click="
+              joinSpace.dialog = false
+              joinSpace.errMsg = null
+            "
+            >关闭</v-btn
+          >
+          <v-btn color="primary" small text @click="joinToSpace">加入</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
-      <v-dialog v-model="viewNotice.dialog" persistent max-width="40vw">
-        <v-card>
-          <v-card-title>
-            <!--<span class="headline">回复内容</span>-->
-          </v-card-title>
-          <v-card-text class="pb-0">
-            <v-textarea
-              hide-details
-              readonly
-              rows="10"
-              :value="systemNotice.content"
-            ></v-textarea>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn text @click="viewNotice.dialog = false">关闭 </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-app>
-  </div>
+    <v-dialog v-model="viewNotice.dialog" persistent max-width="40vw">
+      <v-card>
+        <v-card-title>
+          <!--<span class="headline">回复内容</span>-->
+        </v-card-title>
+        <v-card-text class="pb-0">
+          <v-textarea
+            hide-details
+            readonly
+            rows="10"
+            :value="systemNotice.content"
+          ></v-textarea>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="viewNotice.dialog = false">关闭 </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-app>
 </template>
 
 <script>
@@ -393,6 +390,7 @@ export default {
     window.addEventListener('beforeunload', (e) => {
       this.disconnectWebsocket()
     })
+    this.checkWebpFeature()
     // 请求桌面通知权限
     this.requestNotifyPermission()
     this.connectWebsocket()
@@ -402,6 +400,26 @@ export default {
     this.loadMessageCount()
   },
   methods: {
+    checkWebpFeature() {
+      const kTestImages = {
+        lossy: 'UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA',
+        lossless: 'UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==',
+        alpha:
+          'UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==',
+        animation:
+          'UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA'
+      }
+      const img = new Image()
+      const _this = this
+      img.onload = function() {
+        const result = img.width > 0 && img.height > 0
+        if (result) {
+          _this.$store.commit('supportWebp')
+        }
+      }
+      img.onerror = function() {}
+      img.src = 'data:image/webp;base64,' + kTestImages.lossy
+    },
     getSystemNotice() {
       if (!process.client) {
         return
