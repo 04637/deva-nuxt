@@ -172,8 +172,8 @@ export default {
 </script>
 <style>
 .v-speed-dial {
-  bottom: 57px !important;
-  right: 15px !important;
+  bottom: 80px !important;
+  right: 30px !important;
 }
 .v-btn-floating {
   position: relative;

@@ -10,13 +10,21 @@
           <div v-for="user in userList" :key="user.userId" class="mb-3 mt-1">
             <v-layout align-center>
               <v-flex shrink>
-                <v-avatar>
+                <v-avatar
+                  style="cursor: pointer"
+                  @click="$router.push('/user/' + user.userId)"
+                >
                   <v-img :src="$options.filters.webp(user.avatar)"></v-img>
                 </v-avatar>
               </v-flex>
               <v-flex style="font-size: 14px" class="ml-2">
                 <v-layout align-center
-                  ><div>{{ user.nickname }}</div>
+                  ><div
+                    style="cursor: pointer"
+                    @click="$router.push('/user/' + user.userId)"
+                  >
+                    {{ user.nickname }}
+                  </div>
                   <b class="my_gray--text">&nbsp;·&nbsp;</b>
                   <div
                     class="my_gray--text"

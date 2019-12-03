@@ -135,7 +135,7 @@ export default {
     },
     scroll() {
       window.onscroll = () => {
-        if (document.documentElement.scrollTop > 400) {
+        if (document.documentElement.scrollTop > 700) {
           this.$store.commit('setShowFooter', true)
         } else {
           this.$store.commit('setShowFooter', false)

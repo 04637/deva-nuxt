@@ -1,353 +1,63 @@
 <template>
-  <v-layout v-if="userProfile" column justify-center>
-    <v-layout column>
-      <v-layout>
-        <v-card-title>
-          <v-row align="end">
-            用户档案
-          </v-row>
-        </v-card-title>
-      </v-layout>
-      <v-divider></v-divider>
+  <div>
+    <v-layout class="top-bg"></v-layout>
+    <v-layout
+      v-if="userProfile"
+      justify-space-around
+      align-start
+      style="position:relative; top:103px;"
+      class="white--text"
+    >
+      <div class="label-div">
+        <div class="label-des">提问</div>
+        <div class="label-num">{{ userProfile.questions.length }}</div>
+      </div>
+      <div class="label-divider">
+        <div class="label-des">|</div>
+      </div>
+      <div class="label-div">
+        <div class="label-des">回答</div>
+        <div class="label-num">{{ userProfile.answers.length }}</div>
+      </div>
+      <div class="label-divider">
+        <div class="label-des">|</div>
+      </div>
+      <div class="label-div">
+        <div class="label-des">采纳率</div>
+        <div class="label-num">{{ userProfile.adoptionRate }} %</div>
+      </div>
+      <v-avatar size="130">
+        <v-img
+          :src="userProfile.avatar"
+          style="box-shadow: 0 0 20px #fafafa"
+        ></v-img>
+      </v-avatar>
+      <div class="label-div">
+        <div class="label-des">博文</div>
+        <div class="label-num">{{ userProfile.blogs.length }}</div>
+      </div>
+      <div class="label-divider">
+        <div class="label-des">|</div>
+      </div>
+      <div class="label-div">
+        <div class="label-des">粉丝</div>
+        <div class="label-num">{{ userProfile.followers.length }}</div>
+      </div>
+      <div class="label-divider">
+        <div class="label-des">|</div>
+      </div>
+      <div class="label-div">
+        <div class="label-des">声望</div>
+        <div class="label-num">{{ userProfile.reputation }}</div>
+      </div>
     </v-layout>
-    <v-layout class="mt-5" justify-center>
-      <v-flex hidden-sm-and-down md3 lg4>
-        <v-card class="pa-4">
-          <v-row justify="end" style="position: relative; top: -14px;">
-            <v-tooltip left>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  v-show="userProfile.userId === $store.getters.getUserId"
-                  small
-                  text
-                  to="editProfile"
-                  icon
-                  v-on="on"
-                  @click="unWatchUser"
-                >
-                  <v-icon small>edit</v-icon>
-                </v-btn>
-              </template>
-              <span>编辑</span>
-            </v-tooltip>
-            <v-tooltip left>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  v-show="isFollowed"
-                  small
-                  text
-                  icon
-                  :color="isFollowed ? 'private' : ''"
-                  v-on="on"
-                  @click="unWatchUser"
-                >
-                  <v-icon small>favorite</v-icon>
-                </v-btn>
-              </template>
-              <span>取消关注</span>
-            </v-tooltip>
-            <v-tooltip left>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  v-if="userProfile.userId !== $store.getters.getUserId"
-                  v-show="!isFollowed"
-                  text
-                  small
-                  icon
-                  :color="isFollowed ? 'private' : ''"
-                  v-on="on"
-                  @click="followUser"
-                >
-                  <v-icon small>favorite</v-icon>
-                </v-btn>
-              </template>
-              <span>关注他/她</span>
-            </v-tooltip>
-          </v-row>
-          <v-layout justify-space-between>
-            <v-flex align-center xs7 hidden-md-and-down>
-              <v-layout justify-center>
-                <v-avatar color="grey" size="200" tile right>
-                  <v-img :src="userProfile.avatar"></v-img>
-                </v-avatar>
-              </v-layout>
-              <v-layout class="mt-2" justify-center>
-                <v-card-title style="align-items: baseline"
-                  >{{ userProfile.nickname || userProfile.username }}&nbsp;<span
-                    title="用户名"
-                    class="my_gray--text"
-                    style="font-size: 1rem"
-                    >({{ userProfile.username }})</span
-                  ></v-card-title
-                >
-              </v-layout>
-              <v-layout class="mt-2">
-                <v-divider></v-divider>
-              </v-layout>
-              <v-layout justify-center>
-                <v-card-text>{{ userProfile.bio }}</v-card-text>
-              </v-layout>
-              <!--<v-layout justify-center>-->
-              <!--  <v-icon class="mr-2">email</v-icon>-->
-              <!--  {{ userProfile.email }}-->
-              <!--</v-layout>-->
-            </v-flex>
-            <v-flex lg4 md12>
-              <v-card flat style="border: none">
-                <v-card-text class="pt-0"
-                  >提问：{{ userProfile.questions.length }}</v-card-text
-                >
-                <v-card-text
-                  >回答：{{ userProfile.answers.length }}</v-card-text
-                >
-                <v-card-text
-                  >采纳率：{{ userProfile.adoptionRate }}%</v-card-text
-                >
-                <v-card-text
-                  >粉丝：{{ userProfile.followers.length }}</v-card-text
-                >
-                <v-card-text>声望：{{ userProfile.reputation }}</v-card-text>
-              </v-card>
-            </v-flex>
-          </v-layout>
-          <v-divider></v-divider>
-          <v-layout wrap class="mt-2">
-            <div v-for="tag in likeTagList" :key="tag.tagId" class="mr-2 mb-2">
-              <TagChip :tag-info="tag" color="blue"></TagChip>
-            </div>
-          </v-layout>
-        </v-card>
-      </v-flex>
-      <v-flex lg7 md8 sm12 class="ml-8">
-        <v-tabs v-model="tab" fixed-tabs slider-width="2">
-          <v-tab>
-            提问
-          </v-tab>
-          <v-tab>
-            回答
-          </v-tab>
-          <v-tab>
-            博文
-          </v-tab>
-          <v-tab>
-            问题收藏
-          </v-tab>
-          <v-tab>
-            博文收藏
-          </v-tab>
-          <v-tab>
-            关注
-          </v-tab>
-          <v-tab>
-            粉丝
-          </v-tab>
-        </v-tabs>
-        <v-tabs-items v-model="tab">
-          <!-- ask tab -->
-          <v-tab-item>
-            <v-card flat>
-              <v-card-title class="pt-0">
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="askTab.search"
-                  append-icon="search"
-                  label="搜索"
-                  single-line
-                  hide-details
-                  class="pt-0 hidden-sm-and-down"
-                ></v-text-field>
-              </v-card-title>
-              <v-data-table
-                locale="zh-Hans"
-                :headers="askTab.headers"
-                :items="askTab.items"
-                :search="askTab.search"
-              >
-                <template #item.title="{item}">
-                  <router-link
-                    class="hover-color"
-                    :to="'/question/' + item.questionId"
-                    >{{ item.title }}</router-link
-                  >
-                </template>
-                <template #item.status="{item}">
-                  <v-icon
-                    v-if="item.status === 1"
-                    color="success"
-                    title="已解决"
-                    >done</v-icon
-                  >
-                  <v-icon v-else color="error" title="待解决">minimize</v-icon>
-                </template>
-              </v-data-table>
-            </v-card>
-          </v-tab-item>
-          <!-- answer tab -->
-          <v-tab-item>
-            <v-card flat>
-              <v-card-title class="pt-0">
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="answerTab.search"
-                  append-icon="search"
-                  label="搜索"
-                  single-line
-                  hide-details
-                  class="pt-0 hidden-sm-and-down"
-                ></v-text-field>
-              </v-card-title>
-              <v-data-table
-                :headers="answerTab.headers"
-                :items="answerTab.items"
-                :search="answerTab.search"
-              >
-                <template #item.questionTitle="{item}">
-                  <router-link
-                    class="hover-color"
-                    :to="
-                      '/question/' + item.ownQuestionId + '#' + item.answerId
-                    "
-                    >{{ item.questionTitle }}</router-link
-                  >
-                </template>
-                <template #item.isAccepted="{item}">
-                  <v-icon v-if="item.isAccepted" color="success" title="已采纳"
-                    >check</v-icon
-                  >
-                  <v-icon v-else color="error" title="未采纳">minimize</v-icon>
-                </template>
-              </v-data-table>
-            </v-card>
-          </v-tab-item>
-          <!-- blog tab -->
-          <v-tab-item>
-            <v-card flat>
-              <v-card-title class="pt-0">
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="blogTab.search"
-                  append-icon="search"
-                  label="搜索"
-                  single-line
-                  hide-details
-                  class="pt-0 hidden-sm-and-down"
-                ></v-text-field>
-              </v-card-title>
-              <v-data-table
-                locale="zh-Hans"
-                :headers="blogTab.headers"
-                :items="blogTab.items"
-                :search="blogTab.search"
-              >
-                <template #item.title="{item}">
-                  <router-link
-                    class="hover-color"
-                    :to="'/blog/' + item.blogId"
-                    >{{ item.title }}</router-link
-                  >
-                </template>
-                <template #item.isPublic="{item}">
-                  {{ item.isPublic ? '是' : '否' }}
-                </template>
-              </v-data-table>
-            </v-card>
-          </v-tab-item>
-          <!-- collect tab -->
-          <v-tab-item>
-            <v-card flat>
-              <v-card-title class="pt-0">
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="collectTab.search"
-                  append-icon="search"
-                  label="搜索"
-                  single-line
-                  hide-details
-                  class="pt-0 hidden-sm-and-down"
-                ></v-text-field>
-              </v-card-title>
-              <v-data-table
-                :headers="collectTab.headers"
-                :items="collectTab.items"
-                :search="collectTab.search"
-              >
-                <template #item.title="{item}">
-                  <router-link
-                    class="hover-color"
-                    :to="'/question/' + item.questionId"
-                    >{{ item.title }}</router-link
-                  >
-                </template>
-              </v-data-table>
-            </v-card>
-          </v-tab-item>
-          <!-- 博文收藏-->
-          <v-tab-item>
-            <v-card flat>
-              <v-card-title class="pt-0">
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="likeBlogTab.search"
-                  append-icon="search"
-                  label="搜索"
-                  single-line
-                  hide-details
-                  class="pt-0 hidden-sm-and-down"
-                ></v-text-field>
-              </v-card-title>
-              <v-data-table
-                :headers="likeBlogTab.headers"
-                :items="likeBlogTab.items"
-                :search="likeBlogTab.search"
-              >
-                <template #item.title="{item}">
-                  <router-link
-                    class="hover-color"
-                    :to="'/blog/' + item.blogId"
-                    >{{ item.title }}</router-link
-                  >
-                </template>
-              </v-data-table>
-            </v-card>
-          </v-tab-item>
-          <!-- watch tab -->
-          <v-tab-item>
-            <v-layout wrap class="px-3">
-              <div
-                v-for="watch in userProfile.watchUsers"
-                :key="watch.userId"
-                class="ma-2 hidden-sm-and-down"
-              >
-                <MiniUserCard min-width="220px" :user-info="watch">
-                </MiniUserCard>
-              </div>
-            </v-layout>
-          </v-tab-item>
-          <!-- follower tab -->
-          <v-tab-item>
-            <v-layout wrap class="px-3">
-              <div
-                v-for="follower in userProfile.followers"
-                :key="follower.userId"
-                class="ma-2 hidden-sm-and-down"
-              >
-                <MiniUserCard min-width="220px" :user-info="follower">
-                </MiniUserCard>
-              </div>
-            </v-layout>
-          </v-tab-item>
-        </v-tabs-items>
-      </v-flex>
-    </v-layout>
-  </v-layout>
+  </div>
 </template>
+
 <script>
-import MiniUserCard from '../../../components/MiniUserCard'
-import TagChip from '../../../components/TagChip'
 export default {
-  components: { TagChip, MiniUserCard },
+  transition: 'none',
   data: () => ({
-    tab: null,
     userProfile: null,
     likeTagList: null,
     // 提问tab
@@ -429,22 +139,8 @@ export default {
       items: []
     }
   }),
-  computed: {
-    isFollowed() {
-      const curUserId = this.$store.getters.getUserId
-      if (curUserId) {
-        for (let i = 0; i < this.userProfile.followers.length; ++i) {
-          if (this.userProfile.followers[i].userId === curUserId) {
-            return true
-          }
-        }
-      }
-      return false
-    }
-  },
   created() {
     this.loadUserProfile()
-    this.loadLikeTags()
   },
   methods: {
     loadUserProfile() {
@@ -499,22 +195,30 @@ export default {
   }
 }
 </script>
+
 <style scoped>
-.theme--light .hover-color {
-  color: black;
-  text-decoration: none;
+.top-bg {
+  background-size: cover;
+  width: 100vw;
+  height: 200px;
+  background: #24292e url('/bg/stars-color.png') top;
+  position: fixed;
+  left: 0;
+  top: 56px;
 }
-.theme--dark .hover-color {
-  color: white;
-  text-decoration: none;
+.label-div,
+.label-divider {
+  text-align: center;
 }
-.hover-color:hover {
-  color: #01a687 !important;
+.label-num {
+  margin-top: 15px;
 }
-.theme--light .v-card--flat {
-  border: 1px solid #e7e7e7;
+.label-des {
+  color: lightgrey;
+  font-size: 13px;
 }
-.theme--dark .v-card--flat {
-  border: 1px solid #4b4b4b;
+.label-divider {
+  margin-left: 15px;
+  margin-right: 15px;
 }
 </style>

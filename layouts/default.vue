@@ -172,11 +172,8 @@
         </v-flex>
       </v-container>
     </v-app-bar>
-    <v-layout
-      justify-center
-      style="background: url('/svg/star-bg.svg'); background-position: center; background-size: cover"
-    >
-      <v-flex md9 lg8 sm11 class="pb-12 mt-3">
+    <v-layout id="content_bg" justify-center>
+      <v-flex md9 lg8 sm11 class="pb-12 mb-5 mt-3">
         <v-content>
           <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
           <div v-if="needSsr">
@@ -195,15 +192,34 @@
       v-show="$store.getters.getShowFooter"
       app
       tile
-      style="z-index: 999;"
+      style="z-index: 999;background-color: #FFFFFF"
     >
       <v-row justify="center" align="center" no-gutters>
-        <v-flex class="py-2 text-left primary--text">
+        <v-flex class="py-2 text-center" style="color: #888; font-size: 13px">
           <span
-            >&copy;2019-{{ new Date().getFullYear() }}&nbsp;<router-link to="/"
-              >www.deva.wiki</router-link
-            >&nbsp;版权所有&nbsp;沪ICP备19037749号-1</span
+            >Copyright&copy;2019-{{
+              new Date().getFullYear()
+            }}&nbsp;&nbsp;<router-link to="/">deva.wiki</router-link
+            >&nbsp;&nbsp;<router-link to="/">aid.dev</router-link></span
           >
+          <div>
+            <a
+              target="_blank"
+              class="hover-line"
+              style="color: #888"
+              href="http://beian.miit.gov.cn"
+            >
+              沪ICP备19037749号-1 </a
+            >&nbsp;
+            <a
+              target="_blank"
+              class="hover-line"
+              style="color: #888"
+              href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011402008161"
+            >
+              沪公网安备 31011402008161号 </a
+            >&nbsp;上海乔和科技有限公司版权所有
+          </div>
         </v-flex>
       </v-row>
     </v-footer>
@@ -630,6 +646,10 @@ export default {
 }
 .my_nav .v-btn__content {
   font-weight: 600;
+}
+#content_bg {
+  background: url('/svg/star-bg.svg') center;
+  background-size: cover;
 }
 </style>
 <style scoped>
