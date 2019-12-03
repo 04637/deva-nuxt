@@ -1,12 +1,12 @@
 <template>
   <div class="pa-4 right-box">
-    <v-layout v-if="items && items.length > 0" align-center
+    <v-layout align-center
       ><span class="my_gray--text"
         >{{ keywords || tagKeywords ? '相关' : '热门' }}推荐</span
       ></v-layout
     >
     <v-divider class="mt-2"></v-divider>
-    <div class="py-1 px-2 mt-2">
+    <div v-if="items && items.length > 0" class="py-1 px-2 mt-2">
       <transition-group name="list">
         <div
           v-for="post in items"

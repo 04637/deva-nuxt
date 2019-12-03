@@ -56,11 +56,17 @@
               :to="'/' + type + '/' + (item.questionId || item.blogId)"
               >{{ item.title }}</v-btn
             >
+            <!--<v-card-text-->
+            <!--  v-dompurify-html:noHtml="$md.render(item.content)"-->
+            <!--  style="padding: 8px; min-height: 62px"-->
+            <!--  class="title my_gray&#45;&#45;text subtitle-1 label-description"-->
+            <!--&gt;-->
+            <!--</v-card-text>-->
             <v-card-text
-              v-dompurify-html:noHtml="$md.render(item.content)"
               style="padding: 8px; min-height: 62px"
               class="title my_gray--text subtitle-1 label-description"
             >
+              {{ item.content }}
             </v-card-text>
             <v-card-actions>
               <v-layout>
