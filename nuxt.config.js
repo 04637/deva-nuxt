@@ -62,7 +62,7 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     // 参考 https://zh.nuxtjs.org/faq 引入外部资源
-    script: [{ src: '//at.alicdn.com/t/font_778737_c81ibq34pph.js' }]
+    script: [{ src: '//at.alicdn.com/t/font_778737_566ib6ej389.js' }]
   },
   /*
    ** Customize the progress-bar color

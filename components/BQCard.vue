@@ -51,6 +51,7 @@
               height="30px"
               class="no-hover-active no-ripple title d-inline-block text-truncate text-left no-flex px-1"
               text
+              style="font-size: 17px !important;"
               color="link_color"
               :title="item.title"
               :to="'/' + type + '/' + (item.questionId || item.blogId)"
@@ -63,7 +64,7 @@
             <!--&gt;-->
             <!--</v-card-text>-->
             <v-card-text
-              style="padding: 8px; min-height: 62px"
+              style="padding: 8px; min-height: 62px;font-size: 15px !important;"
               class="title my_gray--text subtitle-1 label-description"
             >
               {{ item.content }}
@@ -201,8 +202,12 @@ export default {
   background-color: #5fba7d !important;
   color: white;
 }
+.num-div.success .num-label {
+  color: whitesmoke;
+}
 .num-div .num-label {
   font-size: 12px;
+  color: gray;
 }
 .num-div.success .v-icon {
   color: white;

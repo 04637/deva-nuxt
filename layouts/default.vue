@@ -173,8 +173,8 @@
       </v-container>
     </v-app-bar>
     <v-layout id="content_bg" justify-center>
-      <v-flex md9 lg8 sm11 class="pb-12 mb-5 mt-3">
-        <v-content>
+      <v-flex md9 lg7 sm11 class="pb-12 mb-5 mt-3" justify-center>
+        <v-content style="max-width: 1110px">
           <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
           <div v-if="needSsr">
             <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
@@ -645,7 +645,6 @@ export default {
   border-bottom: 1px solid #24292e;
 }
 .my_nav .v-btn__content {
-  font-weight: 600;
 }
 #content_bg {
   background: url('/svg/star-bg.svg') center;

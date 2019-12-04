@@ -1,9 +1,9 @@
 <template>
   <v-chip
     small
-    :color="color"
+    color="rgba(221, 238, 255, 0.5411764705882353)"
     text
-    style="cursor: pointer; text-decoration: none;border-radius: 1px; font-size: 14px"
+    style="cursor: pointer; text-decoration: none;border-radius: 3px; font-size: 13px !important;"
     :title="tagInfo.tagName"
     class="text-left my_blue--text"
     :to="'/search/' + tagInfo.tagName + '?match=tags'"
