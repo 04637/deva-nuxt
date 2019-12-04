@@ -647,7 +647,7 @@ export default {
 .my_nav .v-btn__content {
 }
 #content_bg {
-  background: url('/svg/star-bg.svg') center;
+  /*background: url('/svg/star-bg.svg') center;*/
   background-size: cover;
 }
 </style>
