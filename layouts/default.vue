@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-app-bar
       app
-      style="background-color: #24292e; max-height: 64px;"
+      style="background-color: #24292e; max-height: 64px;  z-index: 999;"
       class="text_primary--text justify-center"
     >
       <v-container
@@ -173,7 +173,7 @@
       </v-container>
     </v-app-bar>
     <v-layout id="content_bg" justify-center>
-      <v-flex md9 lg7 sm11 class="pb-12 mb-5 mt-3" justify-center>
+      <v-flex md10 lg7 sm11 class="pb-12 mb-5 mt-3" justify-center>
         <v-content style="max-width: 1110px">
           <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
           <div v-if="needSsr">

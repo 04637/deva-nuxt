@@ -1,5 +1,5 @@
 <template>
-  <v-list class="pa-0 ma-0">
+  <v-list class="pa-0 ma-0" style="background-color: transparent">
     <!--<transition-group name="list-down">-->
     <div v-for="bq in bqList" :key="bq.blogId || bq.questionId">
       <BQCard v-if="bq.questionId" :item="bq" type="question"></BQCard>

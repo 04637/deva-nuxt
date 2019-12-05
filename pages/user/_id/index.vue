@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="bg"></div>
     <v-layout class="top-bg"></v-layout>
     <!-- 头部信息 -->
     <v-layout
@@ -40,7 +41,18 @@
               ></v-img>
               <v-fade-transition>
                 <v-overlay v-if="hover" absolute color="primary">
-                  <v-btn icon color="white" text
+                  <input
+                    v-show="false"
+                    ref="selectAvatar"
+                    accept="image/png, image/jpeg, image/bmp"
+                    type="file"
+                    @change="uploadAvatar($event)"
+                  />
+                  <v-btn
+                    icon
+                    color="white"
+                    text
+                    @click="$refs.selectAvatar.click()"
                     ><v-icon>mdi-image-edit-outline</v-icon></v-btn
                   >
                 </v-overlay>
@@ -50,6 +62,7 @@
         </v-hover>
         <v-layout
           class="primary--text text-center mt-2"
+          style="z-index: 10;position: relative"
           justify-center
           align-center
           ><v-chip>
@@ -81,7 +94,7 @@
     </v-layout>
     <v-layout class="top-m-bg" justify-center> </v-layout>
     <!--中部内容区-->
-    <v-layout style="margin-top: 150px; background-color: #e7e7e7">
+    <v-layout style="margin-top: 150px; z-index: 10; background-color: #e7e7e7">
       <v-flex shrink>
         <v-tabs
           v-model="tabIndex"
@@ -102,57 +115,43 @@
           <v-tab>设置中心</v-tab>
         </v-tabs>
       </v-flex>
-      <v-spacer></v-spacer>
-      <v-flex class="ml-3" style="background-color: white;">
+      <v-flex
+        v-if="userProfile"
+        class="ml-3"
+        style="background-color: white;z-index: 10;"
+      >
         <v-tabs-items v-model="tabIndex">
           <v-tab-item>
-            <v-card flat>
-              <v-card-text>
-                <p>
-                  Fusce a quam. Phasellus nec sem in justo pellentesque
-                  facilisis. Nam eget dui. Proin viverra, ligula sit amet
-                  ultrices semper, ligula arcu tristique sapien, a accumsan nisi
-                  mauris ac eros. In dui magna, posuere eget, vestibulum et,
-                  tempor auctor, justo.
-                </p>
-
-                <p class="mb-0">
-                  Cras sagittis. Phasellus nec sem in justo pellentesque
-                  facilisis. Proin sapien ipsum, porta a, auctor quis, euismod
-                  ut, mi. Donec quam felis, ultricies nec, pellentesque eu,
-                  pretium quis, sem. Nam at tortor in tellus interdum sagittis.
-                </p>
-              </v-card-text>
-            </v-card>
+            <base-info :user-info="userProfile"></base-info>
           </v-tab-item>
           <v-tab-item>
-            <v-card flat>
-              <v-card-text>
-                <p>
-                  Fusce a quam. Phasellus nec sem in justo pellentesque
-                  facilisis. Nam eget dui. Proin viverra, ligula sit amet
-                  ultrices semper, ligula arcu tristique sapien, a accumsan nisi
-                  mauris ac eros. In dui magna, posuere eget, vestibulum et,
-                  tempor auctor, justo.
-                </p>
-
-                <p class="mb-0">
-                  Cras sagittis. Phasellus nec sem in justo pellentesque
-                  facilisis. Proin sapien ipsum, porta a, auctor quis, euismod
-                  ut, mi. Donec quam felis, ultricies nec, pellentesque eu,
-                  pretium quis, sem. Nam at tortor in tellus interdum sagittis.
-                </p>
-              </v-card-text>
-            </v-card>
+            <v-card flat> </v-card>
           </v-tab-item>
         </v-tabs-items>
       </v-flex>
     </v-layout>
+    <InfoDialog
+      :msg="['保存成功', saveResult.errorMsg]"
+      :succeed="saveResult.resp != null && saveResult.resp.succeed"
+      :dialog="saveResult.dialog"
+      @update:dialog="saveResult.dialog = $event"
+    >
+    </InfoDialog>
+    <InfoDialog
+      :msg="['修改成功', uploadResult.errorMsg]"
+      :succeed="uploadResult.resp != null && uploadResult.resp.succeed"
+      :dialog="uploadResult.dialog"
+      @update:dialog="uploadResult.dialog = $event"
+    >
+    </InfoDialog>
   </div>
 </template>
 
 <script>
+import InfoDialog from '../../../components/InfoDialog'
+import BaseInfo from '../../../components/userProfile/BaseInfo'
 export default {
+  components: { BaseInfo, InfoDialog },
   transition: 'none',
   data: () => ({
     tabIndex: 0,
@@ -235,12 +234,49 @@ export default {
         { text: '浏览', value: 'viewNum' }
       ],
       items: []
+    },
+    uploadResult: {
+      dialog: false,
+      resp: null,
+      errorMsg: null
+    },
+    saveResult: {
+      dialog: false,
+      resp: null,
+      loading: false,
+      errorMsg: null
     }
   }),
   created() {
     this.loadUserProfile()
   },
   methods: {
+    uploadAvatar(e) {
+      const _newAvatar = e.target.files[0]
+      if (!_newAvatar) {
+        return
+      }
+      if (_newAvatar.size > 5 * 1024 * 1024) {
+        this.uploadResult.dialog = true
+        this.uploadResult.errorMsg = '请选择5M以下的图片'
+        this.uploadResult.resp = { succeed: false }
+        return
+      }
+      const _formData = new FormData()
+      _formData.append('newAvatar', _newAvatar)
+      this.$axios
+        .$post('/userInfo/updateUserAvatar', _formData)
+        .then((resp) => {
+          this.uploadResult.resp = resp
+          if (resp.succeed) {
+            this.userProfile.avatar = resp.data
+            this.$store.commit('setAvatar', resp.data)
+          } else {
+            this.uploadResult.errorMsg = resp.msg
+            this.uploadResult.dialog = true
+          }
+        })
+    },
     loadUserProfile() {
       this.$axios
         .$post('userInfo/getUserProfile', {
@@ -304,15 +340,25 @@ export default {
   left: 0;
   top: 56px;
 }
+.bg {
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  /*background: transparent url('/svg/star-bg.svg') center;*/
+  position: fixed;
+  left: 0;
+  z-index: 0;
+  top: 56px;
+}
 .top-m-bg {
   background-size: cover;
   width: 100vw;
-  height: 100px;
+  height: 130px;
   position: fixed;
   left: 0;
   background-color: white;
-  opacity: 0.2;
   top: 256px;
+  z-index: 0;
 }
 .label-div,
 .label-divider {

@@ -6,6 +6,7 @@
         width="100vw"
         flat
         class="px-md-5 pr-md-6 py-md-1 pt-md-2 no-ripple pa-sm-0"
+        style="border-radius:3px;"
       >
         <v-layout>
           <v-flex md1>

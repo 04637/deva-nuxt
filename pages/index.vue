@@ -47,10 +47,10 @@
       >
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
-      <v-flex xs12 sm11 lg9 justify-start shrink>
+      <v-flex xs12 md9 lg9 justify-start shrink>
         <BQCardList v-if="bqList" :bq-list="bqList"></BQCardList>
       </v-flex>
-      <v-flex lg3 justify-end shrink hidden-md-and-down class="ml-3">
+      <v-flex md3 lg3 justify-end shrink hidden-sm-and-down class="ml-3">
         <RelatePost></RelatePost>
         <MyTags class="mt-4"></MyTags>
         <active-users class="mt-4"></active-users>

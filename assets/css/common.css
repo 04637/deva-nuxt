@@ -288,7 +288,7 @@ table td,:not(v-data-table__wrapper) table th {
 /*  color: rgba(255,255,255, 0.54) !important;*/
 /*}*/
 .theme--light.v-application {
-  background-color: #fcfdfd
+  /*background-color: #fcfdfd*/
 }
 .v-application a{
   color: #0366d6;
@@ -297,6 +297,7 @@ table td,:not(v-data-table__wrapper) table th {
   background-color: white;
   box-shadow: 3px 2px 11px 1px rgba(231, 231, 231, 0.71);
   border: 1px solid #e7e7e7;
+  border-radius: 3px;
 }
 
 .v-card:not(.v-card--flat) {
