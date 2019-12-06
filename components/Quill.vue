@@ -18,7 +18,7 @@
         </div>
       </v-row>
       <InfoDialog
-        :msg="['', '图片过大，请选择4M以下的图片']"
+        :msg="['', '图片过大，请选择10M以下的图片']"
         :succeed="uploadImageResult.succeed"
         :dialog="uploadImageResult.dialog"
         close-txt="关闭"
