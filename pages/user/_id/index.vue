@@ -31,33 +31,35 @@
       <div class="label-divider d-lg-none d-sm-block d-md-none">
         <div class="label-des">|</div>
       </div>
-      <v-flex shrink class="ml-2 mr-2" hidden-sm-and-down>
+      <v-flex shrink class="ml-2 mr-2" hidden-sm-and-down justify-center>
         <v-hover>
           <template v-slot:default="{ hover }">
-            <v-avatar size="130" style="z-index: 10">
-              <v-img
-                :src="userProfile.avatar"
-                style="box-shadow: 0 0 20px #fafafa"
-              ></v-img>
-              <v-fade-transition>
-                <v-overlay v-if="hover" absolute color="primary">
-                  <input
-                    v-show="false"
-                    ref="selectAvatar"
-                    accept="image/png, image/jpeg, image/bmp"
-                    type="file"
-                    @change="uploadAvatar($event)"
-                  />
-                  <v-btn
-                    icon
-                    color="white"
-                    text
-                    @click="$refs.selectAvatar.click()"
-                    ><v-icon>mdi-image-edit-outline</v-icon></v-btn
-                  >
-                </v-overlay>
-              </v-fade-transition>
-            </v-avatar>
+            <v-layout justify-center>
+              <v-avatar size="130" style="z-index: 10">
+                <v-img
+                  :src="userProfile.avatar"
+                  style="box-shadow: 0 0 20px #fafafa"
+                ></v-img>
+                <v-fade-transition>
+                  <v-overlay v-if="hover" absolute color="primary">
+                    <input
+                      v-show="false"
+                      ref="selectAvatar"
+                      accept="image/png, image/jpeg, image/bmp"
+                      type="file"
+                      @change="uploadAvatar($event)"
+                    />
+                    <v-btn
+                      icon
+                      color="white"
+                      text
+                      @click="$refs.selectAvatar.click()"
+                      ><v-icon>mdi-image-edit-outline</v-icon></v-btn
+                    >
+                  </v-overlay>
+                </v-fade-transition>
+              </v-avatar>
+            </v-layout>
           </template>
         </v-hover>
         <v-layout

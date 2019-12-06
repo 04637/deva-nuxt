@@ -218,8 +218,9 @@ export default {
       if (this.$route.query.code) {
         this.loading = true
         this.$axios
-          .$post('/userInfo/' + (this.$route.query.auth || 'qq') + 'Login', {
-            code: this.$route.query.code
+          .$post('/userInfo/thirdLogin', {
+            code: this.$route.query.code,
+            plat: this.$route.query.auth || 'qq'
           })
           .then((resp) => {
             this.loading = false
