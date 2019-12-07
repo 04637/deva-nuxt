@@ -96,7 +96,10 @@
     </v-layout>
     <v-layout class="top-m-bg" justify-center> </v-layout>
     <!--中部内容区-->
-    <v-layout style="margin-top: 150px; z-index: 10; background-color: #e7e7e7">
+    <v-layout
+      style="margin-top: 150px; z-index: 10; padding: 10px 15px 15px 0; position: relative;min-height: 900px"
+      class="right-box"
+    >
       <v-flex shrink>
         <v-tabs
           v-model="tabIndex"
@@ -107,16 +110,20 @@
           active-class="active-tab"
         >
           <v-tab>基本资料</v-tab>
-          <v-tab>我的关注</v-tab>
-          <v-tab>我的收藏</v-tab>
+          <v-divider></v-divider>
+          <v-tab>问题收藏</v-tab>
+          <v-tab>博文收藏</v-tab>
+          <v-divider></v-divider>
           <v-tab>我的提问</v-tab>
           <v-tab>我的回答</v-tab>
+          <v-tab>我的博文</v-tab>
           <v-tab>我的空间</v-tab>
+          <v-tab>我的关注</v-tab>
           <v-divider></v-divider>
           <v-tab>我的消息</v-tab>
-          <v-tab>设置中心</v-tab>
         </v-tabs>
       </v-flex>
+      <v-divider vertical></v-divider>
       <v-flex
         v-if="userProfile"
         class="ml-3"
@@ -127,7 +134,28 @@
             <base-info :user-info="userProfile"></base-info>
           </v-tab-item>
           <v-tab-item>
-            <v-card flat> </v-card>
+            <my-questions
+              :questions="userProfile.questionCollection"
+            ></my-questions>
+          </v-tab-item>
+          <v-tab-item>
+            <my-blogs :blogs="userProfile.blogCollection"></my-blogs>
+          </v-tab-item>
+          <v-tab-item>
+            <my-questions :questions="userProfile.questions"></my-questions>
+          </v-tab-item>
+          <v-tab-item>
+            <my-answers :answers="userProfile.answers"></my-answers>
+          </v-tab-item>
+          <v-tab-item>
+            <my-blogs :blogs="userProfile.blogs"></my-blogs>
+          </v-tab-item>
+          <v-tab-item></v-tab-item>
+          <v-tab-item>
+            <my-watch :users="userProfile.watchUsers"></my-watch>
+          </v-tab-item>
+          <v-tab-item>
+            <my-messages></my-messages>
           </v-tab-item>
         </v-tabs-items>
       </v-flex>
@@ -152,91 +180,26 @@
 <script>
 import InfoDialog from '../../../components/InfoDialog'
 import BaseInfo from '../../../components/userProfile/BaseInfo'
+import MyWatch from '../../../components/userProfile/MyWatch'
+import MyQuestions from '../../../components/userProfile/MyQuestions'
+import MyAnswers from '../../../components/userProfile/MyAnswers'
+import MyBlogs from '../../../components/userProfile/MyBlogs'
+import MyMessages from '../../../components/userProfile/MyMessages'
 export default {
-  components: { BaseInfo, InfoDialog },
+  components: {
+    MyMessages,
+    MyBlogs,
+    MyAnswers,
+    BaseInfo,
+    InfoDialog,
+    MyWatch,
+    MyQuestions
+  },
   transition: 'none',
   data: () => ({
     tabIndex: 0,
     userProfile: null,
     likeTagList: null,
-    // 提问tab
-    askTab: {
-      search: '',
-      headers: [
-        {
-          text: '标题',
-          sortable: false,
-          align: 'left',
-          value: 'title'
-        },
-        { text: '回答', value: 'answerNum' },
-        { text: '赞成', value: 'voteNum' },
-        { text: '状态', value: 'status' }
-      ],
-      items: []
-    },
-    //  回答tab
-    answerTab: {
-      search: '',
-      headers: [
-        {
-          text: '问题标题',
-          align: 'left',
-          sortable: false,
-          value: 'questionTitle'
-        },
-        { text: '状态', value: 'isAccepted' }
-      ],
-      items: []
-    },
-    // 收藏tab
-    collectTab: {
-      search: '',
-      headers: [
-        {
-          text: '标题',
-          sortable: false,
-          align: 'left',
-          value: 'title'
-        },
-        { text: '状态', value: 'status' },
-        { text: '回答', value: 'answerNum' },
-        { text: '支持', value: 'voteNum' },
-        { text: '浏览', value: 'viewNum' }
-      ],
-      items: []
-    },
-    likeBlogTab: {
-      search: '',
-      headers: [
-        {
-          text: '标题',
-          sortable: false,
-          align: 'left',
-          value: 'title'
-        },
-        { text: '喜欢', value: 'likeNum' },
-        { text: '支持', value: 'voteNum' },
-        { text: '浏览', value: 'viewNum' }
-      ],
-      items: []
-    },
-    blogTab: {
-      search: '',
-      headers: [
-        {
-          text: '标题',
-          sortable: false,
-          align: 'left',
-          value: 'title'
-        },
-        { text: '公开', value: 'isPublic' },
-        { text: '喜欢', value: 'likeNum' },
-        { text: '支持', value: 'voteNum' },
-        { text: '浏览', value: 'viewNum' }
-      ],
-      items: []
-    },
     uploadResult: {
       dialog: false,
       resp: null,

@@ -33,13 +33,22 @@
                 </div>
                 <div class="num-label">回答</div>
               </div>
-              <div v-else title="喜欢" class="num-div">
+              <div
+                v-else
+                title="喜欢"
+                class="num-div"
+                style="border: 1px solid transparent"
+              >
                 <div class="num-span">
                   {{ item.likeNum }}
                 </div>
                 <div class="num-label">喜欢</div>
               </div>
-              <div title="浏览" class="num-div">
+              <div
+                title="浏览"
+                class="num-div"
+                style="border: 1px solid transparent"
+              >
                 <div class="num-span">
                   {{ item.viewNum }}
                 </div>

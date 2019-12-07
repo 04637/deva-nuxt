@@ -174,7 +174,7 @@
     </v-app-bar>
     <v-layout id="content_bg" justify-center>
       <v-flex md10 lg7 sm11 class="pb-12 mb-5 mt-3" justify-center>
-        <v-content style="max-width: 1110px">
+        <v-content>
           <!--参考 https://github.com/nuxt/nuxt.js/issues/1706 nuxt缓存-->
           <div v-if="needSsr">
             <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />

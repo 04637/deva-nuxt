@@ -6,7 +6,7 @@
           <v-text-field
             v-model="userInfo.username"
             label="用户名"
-            outlined
+            solo
             class="mt-3"
             disabled
           ></v-text-field>
@@ -21,20 +21,6 @@
             :error-messages="nicknameCheck"
             @blur="checkNickname"
           ></v-text-field>
-          <v-text-field
-            v-model="userInfo.email"
-            label="邮箱"
-            outlined
-            class="mt-3"
-            disabled
-          ></v-text-field>
-          <v-text-field
-            v-model="userInfo.phone"
-            label="手机"
-            outlined
-            class="mt-3"
-            disabled
-          ></v-text-field>
           <v-textarea
             v-model="userInfo.bio"
             hint=""
@@ -46,13 +32,34 @@
           ></v-textarea>
           <v-layout class="justify-end mt-3">
             <v-btn
-              color="primary"
+              color="my_green"
+              class="white--text"
               min-width="150px"
               :loading="saveResult.loading"
               @click="saveProfile"
               >保存</v-btn
             >
           </v-layout>
+          <v-text-field
+            v-model="userInfo.email"
+            label="邮箱"
+            solo
+            readonly
+            append-icon="edit"
+            class="mt-10"
+            hide-details
+            @click:append="alert(1)"
+          ></v-text-field>
+          <v-text-field
+            v-model="userInfo.phone"
+            label="手机"
+            solo
+            readonly
+            hide-details
+            class="mt-4"
+            append-icon="edit"
+            @click:append="alert(1)"
+          ></v-text-field>
         </v-form>
       </v-layout>
     </v-card>
@@ -69,7 +76,6 @@
 <script>
 import InfoDialog from '../InfoDialog'
 export default {
-  name: 'BaseInfo',
   components: { InfoDialog },
   props: {
     userInfo: {
