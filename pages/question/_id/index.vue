@@ -15,7 +15,7 @@
               已解决 </v-chip
             ><v-chip
               v-if="questionDetail.status === 0"
-              class="hidden-sm-and-down"
+              class="hidden-sm-and-down white--text"
               color="private"
               small
               style="height: 20px;border-radius: 3px"
@@ -24,11 +24,10 @@
             </v-chip></v-row
           ></v-card-title
         >
-        <v-divider></v-divider>
       </v-layout>
       <v-layout justify-center justify-space-around>
         <v-flex sm12 md11 lg9 justify-start class="mt-4">
-          <v-card flat exact width="100vw" class="pr-2">
+          <v-card flat width="100vw" class="pr-2">
             <v-layout justify-space-between>
               <v-flex md1 hidden-sm-and-down class="mt-12" align-center>
                 <v-layout column align-center>
@@ -61,7 +60,7 @@
                   </v-btn>
                 </v-layout>
               </v-flex>
-              <v-flex xs12 md11 class="ml-md-4">
+              <v-flex xs12 md11 class="ml-md-4 pr-md-3 pr-sm-0 pr-xs-0">
                 <v-layout justify-end style="min-height: 36px">
                   <v-btn
                     v-if="
@@ -119,8 +118,7 @@
                     colored-border
                     color="private"
                     width="100%"
-                    class="inverted_color--text"
-                    elevation="1"
+                    class="inverted_color--text right-box"
                     >相似问题：
                     <router-link
                       style="text-decoration: none"
@@ -284,7 +282,7 @@
           </v-card>
           <!--所有回答-->
           <v-layout class="transparent" justify-space-between align-center
-            ><v-card-title class="sub--text"
+            ><v-card-title class="sub--text my_gray--text"
               >{{ questionDetail.answers.length }} 个回答</v-card-title
             >
           </v-layout>
@@ -319,7 +317,7 @@
                     <!--</v-btn>-->
                   </v-layout>
                 </v-flex>
-                <v-flex xs12 md11 class="ml-md-4">
+                <v-flex xs12 md11 class="ml-md-4 pr-md-3 pr-sm-0 pr-xs-0">
                   <v-layout justify-end style="min-height: 36px" class="mb-2">
                     <v-btn
                       v-if="
@@ -483,7 +481,9 @@
           </div>
           <v-divider></v-divider>
           <v-layout class="transparent" justify-space-between align-center
-            ><v-card-title class="sub--text">我的回答</v-card-title>
+            ><v-card-title class="sub--text my_gray--text"
+              >我的回答</v-card-title
+            >
           </v-layout>
           <v-layout>
             <v-flex>
@@ -499,7 +499,8 @@
               <v-layout justify-end class="my-5">
                 <v-btn
                   :loading="answer.loading"
-                  color="primary"
+                  color="my_green"
+                  class="white--text"
                   accent
                   depressed
                   min-width="150px"
@@ -520,6 +521,24 @@
           ></client-only>
         </v-flex>
       </v-layout>
+      <div class="float-action hidden-md-and-down">
+        <v-flex shrink>
+          <v-btn large icon class="d-block" @click="voteQuestion(true)"
+            ><v-icon
+              :color="questionDetail.isUseful === true ? 'private' : 'my_gray'"
+              small
+              >mdi-thumb-up</v-icon
+            ></v-btn
+          >
+          <v-btn large icon class="d-block mt-4" @click="collectQuestion"
+            ><v-icon
+              :color="questionDetail.isCollected ? 'private' : 'my_gray'"
+              small
+              >mdi-heart</v-icon
+            ></v-btn
+          >
+        </v-flex>
+      </div>
     </v-app>
     <v-dialog v-model="similarMark.dialog" persistent max-width="600px">
       <v-card>
@@ -921,3 +940,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+>>> .float-action {
+  position: fixed;
+  top: 400px;
+  left: 17%;
+}
+>>> .float-action .v-btn {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background-color: white;
+}
+</style>

@@ -15,17 +15,8 @@ export default {
   setErrorMsg(state, msg) {
     state.systemError.msg = msg
   },
-  needReloadSpaceList(state) {
-    state.reloadSpaceFlag++
-  },
   needAlertError(state) {
     state.systemError.alertFlag++
-  },
-  setDarkTheme(state, val) {
-    state.darkTheme = val
-  },
-  toggleDarkTheme(state) {
-    state.darkTheme = !state.darkTheme
   },
   setShowFooter(state, val) {
     state.showFooter = val
@@ -35,12 +26,6 @@ export default {
   },
   setUseMarkdown(state, val) {
     state.useMarkdown = val
-  },
-  toggleMiniNav(state) {
-    state.miniNav = !state.miniNav
-  },
-  setMiniNav(state, val) {
-    state.miniNav = val
   },
   supportWebp(state) {
     state.webpSupport = true

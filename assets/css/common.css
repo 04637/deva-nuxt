@@ -175,9 +175,9 @@ pre{
   display: block !important;
   margin-bottom: 1em !important;
 }
-p{
-  padding-bottom: 1em !important;
-}
+/*p{*/
+/*  padding-bottom: 1em !important;*/
+/*}*/
 
 /* checkbox 下边距*/
 .v-input.mb-0 .v-input__slot{

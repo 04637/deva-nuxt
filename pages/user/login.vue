@@ -27,7 +27,7 @@
                 small
                 text
                 depressed
-                color="primary"
+                color="link_color"
                 @click="usernameLogin = false"
                 >短信验证码登录</v-btn
               >
@@ -86,7 +86,7 @@
                 text
                 small
                 depressed
-                color="primary"
+                color="link_color"
                 @click="usernameLogin = true"
                 >用户名密码登录</v-btn
               >
@@ -145,6 +145,17 @@
             <!--  ><v-btn icon><v-icon>mdi-google</v-icon></v-btn></a-->
             <!--&gt;-->
           </v-layout>
+          <v-layout
+            align-start
+            justify-center
+            class="mt-2"
+            style="font-size: 13px"
+          >
+            <span class="my_gray--text">登录即代表您已阅读并同意</span>
+            <a @click="termsDialog = true">
+              <span class="warning--text">《法律声明和隐私权政策》</span>
+            </a>
+          </v-layout>
         </v-form>
       </v-card>
     </v-layout>
@@ -171,18 +182,25 @@
       @update:dialog="smsCodeResult.dialog = $event"
     >
     </InfoDialog>
+    <TermsDialog
+      :dialog="termsDialog"
+      @update:dialog="termsDialog = $event"
+    ></TermsDialog>
   </v-app>
 </template>
 <script>
 import Logo from '../../components/Logo'
 import InfoDialog from '../../components/InfoDialog'
 import config from '../../nuxt.config.js'
+import TermsDialog from '../../components/TermsDialog'
 export default {
   components: {
+    TermsDialog,
     Logo,
     InfoDialog
   },
   data: () => ({
+    termsDialog: false,
     username: '',
     password: '',
     phone: null,

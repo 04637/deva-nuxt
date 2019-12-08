@@ -157,7 +157,7 @@ export default {
         },
         light: {
           light_black: '#3f4448',
-          success: '#2fcb53',
+          success: '#01a687',
           text_primary: '#fff',
           primary: '#24292e',
           link_color: '#0077cc',

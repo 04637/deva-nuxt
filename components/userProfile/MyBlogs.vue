@@ -20,6 +20,7 @@
           :search="search"
           fixed-header
           style="width: 100%"
+          :mobile-breakpoint="-1"
         >
           <template #item.title="{item}">
             <router-link

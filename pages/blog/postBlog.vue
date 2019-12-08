@@ -37,8 +37,8 @@
           >
         </v-flex>
       </v-layout>
-      <v-layout justify-center>
-        <v-form ref="form" style="width: 80vw">
+      <v-layout justify-center class="mt-3">
+        <v-form ref="form" style="width: 100vw">
           <v-text-field
             ref="title"
             v-model="title"

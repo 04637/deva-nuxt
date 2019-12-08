@@ -18,6 +18,7 @@
           :items="answers"
           :search="search"
           fixed-header
+          :mobile-breakpoint="-1"
           style="width: 100%"
         >
           <template #item.questionTitle="{item}">

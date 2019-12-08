@@ -41,7 +41,13 @@
                   style="box-shadow: 0 0 20px #fafafa"
                 ></v-img>
                 <v-fade-transition>
-                  <v-overlay v-if="hover" absolute color="primary">
+                  <v-overlay
+                    v-if="
+                      hover && $store.getters.getUserId === userProfile.userId
+                    "
+                    absolute
+                    color="primary"
+                  >
                     <input
                       v-show="false"
                       ref="selectAvatar"
@@ -74,6 +80,27 @@
             <v-icon color="red">mdi-music-clef-bass</v-icon>
           </v-chip>
         </v-layout>
+        <div
+          v-if="userProfile.userId !== $store.getters.getUserId"
+          style="z-index: 10;position: relative; left: 179px; top: -80px;"
+        >
+          <v-btn
+            v-if="!userProfile.followed"
+            color="blue"
+            class="white--text"
+            small
+            @click="followUser"
+            ><v-icon small>add</v-icon>关注他</v-btn
+          >
+          <v-btn
+            v-else
+            color="blue"
+            class="white--text"
+            small
+            @click="unWatchUser"
+            ><v-icon small>remove</v-icon>取消关注</v-btn
+          >
+        </div>
       </v-flex>
       <div class="label-div">
         <div class="label-des">博文</div>
@@ -100,8 +127,9 @@
       style="margin-top: 150px; z-index: 10; padding: 10px 15px 15px 0; position: relative;min-height: 900px"
       class="right-box"
     >
-      <v-flex shrink>
+      <v-flex shrink hidden-sm-and-down>
         <v-tabs
+          v-if="userProfile"
           v-model="tabIndex"
           vertical
           slider-size="3"
@@ -109,18 +137,30 @@
           hide-slider
           active-class="active-tab"
         >
-          <v-tab>基本资料</v-tab>
-          <v-divider></v-divider>
-          <v-tab>问题收藏</v-tab>
-          <v-tab>博文收藏</v-tab>
-          <v-divider></v-divider>
-          <v-tab>我的提问</v-tab>
-          <v-tab>我的回答</v-tab>
-          <v-tab>我的博文</v-tab>
-          <v-tab>我的空间</v-tab>
-          <v-tab>我的关注</v-tab>
-          <v-divider></v-divider>
-          <v-tab>我的消息</v-tab>
+          <div v-if="$store.getters.getUserId === userProfile.userId">
+            <v-tab>个人资料</v-tab>
+            <v-divider></v-divider>
+            <v-tab>问题收藏</v-tab>
+            <v-tab>博文收藏</v-tab>
+            <v-divider></v-divider>
+            <v-tab>我的提问</v-tab>
+            <v-tab>我的回答</v-tab>
+            <v-tab>我的博文</v-tab>
+            <!--<v-tab>我的空间</v-tab>-->
+            <v-divider></v-divider>
+            <v-tab>我的关注</v-tab>
+            <v-tab>我的粉丝</v-tab>
+            <v-tab>我的标签</v-tab>
+            <v-divider></v-divider>
+            <v-tab>我的消息</v-tab>
+          </div>
+          <div v-else>
+            <v-tab>他的提问</v-tab>
+            <v-tab>他的回答</v-tab>
+            <v-tab>他的博文</v-tab>
+            <v-tab>他的粉丝</v-tab>
+            <v-tab>他的标签</v-tab>
+          </div>
         </v-tabs>
       </v-flex>
       <v-divider vertical></v-divider>
@@ -129,44 +169,64 @@
         class="ml-3"
         style="background-color: white;z-index: 10;"
       >
-        <v-tabs-items v-model="tabIndex">
-          <v-tab-item>
-            <base-info :user-info="userProfile"></base-info>
-          </v-tab-item>
-          <v-tab-item>
-            <my-questions
-              :questions="userProfile.questionCollection"
-            ></my-questions>
-          </v-tab-item>
-          <v-tab-item>
-            <my-blogs :blogs="userProfile.blogCollection"></my-blogs>
-          </v-tab-item>
-          <v-tab-item>
-            <my-questions :questions="userProfile.questions"></my-questions>
-          </v-tab-item>
-          <v-tab-item>
-            <my-answers :answers="userProfile.answers"></my-answers>
-          </v-tab-item>
-          <v-tab-item>
-            <my-blogs :blogs="userProfile.blogs"></my-blogs>
-          </v-tab-item>
-          <v-tab-item></v-tab-item>
-          <v-tab-item>
-            <my-watch :users="userProfile.watchUsers"></my-watch>
-          </v-tab-item>
-          <v-tab-item>
-            <my-messages></my-messages>
-          </v-tab-item>
-        </v-tabs-items>
+        <div v-if="$store.getters.getUserId === userProfile.userId">
+          <v-tabs-items v-model="tabIndex">
+            <v-tab-item>
+              <base-info :user-info="userProfile"></base-info>
+            </v-tab-item>
+            <v-tab-item>
+              <my-questions
+                :questions="userProfile.questionCollection"
+              ></my-questions>
+            </v-tab-item>
+            <v-tab-item>
+              <my-blogs :blogs="userProfile.blogCollection"></my-blogs>
+            </v-tab-item>
+            <v-tab-item>
+              <my-questions :questions="userProfile.questions"></my-questions>
+            </v-tab-item>
+            <v-tab-item>
+              <my-answers :answers="userProfile.answers"></my-answers>
+            </v-tab-item>
+            <v-tab-item>
+              <my-blogs :blogs="userProfile.blogs"></my-blogs>
+            </v-tab-item>
+            <!--<v-tab-item></v-tab-item>-->
+            <v-tab-item>
+              <my-watch :users="userProfile.watchUsers"></my-watch>
+            </v-tab-item>
+            <v-tab-item>
+              <my-watch :users="userProfile.followers"></my-watch>
+            </v-tab-item>
+            <v-tab-item>
+              <my-tags :user-id="userProfile.userId"></my-tags>
+            </v-tab-item>
+            <v-tab-item>
+              <my-messages></my-messages>
+            </v-tab-item>
+          </v-tabs-items>
+        </div>
+        <div v-else>
+          <v-tabs-items v-model="tabIndex">
+            <v-tab-item>
+              <my-questions :questions="userProfile.questions"></my-questions>
+            </v-tab-item>
+            <v-tab-item>
+              <my-answers :answers="userProfile.answers"></my-answers>
+            </v-tab-item>
+            <v-tab-item>
+              <my-blogs :blogs="userProfile.blogs"></my-blogs>
+            </v-tab-item>
+            <v-tab-item>
+              <my-watch :users="userProfile.followers"></my-watch>
+            </v-tab-item>
+            <v-tab-item>
+              <my-tags :user-id="userProfile.userId"></my-tags>
+            </v-tab-item>
+          </v-tabs-items>
+        </div>
       </v-flex>
     </v-layout>
-    <InfoDialog
-      :msg="['保存成功', saveResult.errorMsg]"
-      :succeed="saveResult.resp != null && saveResult.resp.succeed"
-      :dialog="saveResult.dialog"
-      @update:dialog="saveResult.dialog = $event"
-    >
-    </InfoDialog>
     <InfoDialog
       :msg="['修改成功', uploadResult.errorMsg]"
       :succeed="uploadResult.resp != null && uploadResult.resp.succeed"
@@ -185,8 +245,10 @@ import MyQuestions from '../../../components/userProfile/MyQuestions'
 import MyAnswers from '../../../components/userProfile/MyAnswers'
 import MyBlogs from '../../../components/userProfile/MyBlogs'
 import MyMessages from '../../../components/userProfile/MyMessages'
+import MyTags from '../../../components/userProfile/MyTags'
 export default {
   components: {
+    MyTags,
     MyMessages,
     MyBlogs,
     MyAnswers,
@@ -204,16 +266,22 @@ export default {
       dialog: false,
       resp: null,
       errorMsg: null
-    },
-    saveResult: {
-      dialog: false,
-      resp: null,
-      loading: false,
-      errorMsg: null
     }
   }),
   created() {
     this.loadUserProfile()
+  },
+  mounted() {
+    const _tab = this.$route.query.tab
+    if (_tab === 'message') {
+      this.tabIndex = 9
+    } else if (_tab === 'collection') {
+      this.tabIndex = 1
+    } else if (_tab === 'ask') {
+      this.tabIndex = 3
+    } else {
+      this.tabIndex = 0
+    }
   },
   methods: {
     uploadAvatar(e) {
@@ -250,44 +318,28 @@ export default {
         .then((resp) => {
           if (resp.succeed) {
             this.userProfile = resp.data
-            this.askTab.items = this.userProfile.questions
-            this.answerTab.items = this.userProfile.answers
-            this.collectTab.items = this.userProfile.questionCollection
-            this.likeBlogTab.items = this.userProfile.blogCollection
-            this.blogTab.items = this.userProfile.blogs
           }
         })
     },
-    loadLikeTags() {
-      if (this.$store.getters.getUserId) {
-        this.$axios
-          .$post('/tagLike/listOtherLikeTags', {
-            userId: this.$route.params.id
-          })
-          .then((resp) => {
-            this.likeTagList = resp.data
-          })
-      }
-    },
     followUser() {
       this.$axios
-        .$post('/userFollow/watchUser', {
+        .$post('/userFollow/followUser', {
           toUserId: this.userProfile.userId
         })
         .then((resp) => {
           if (resp.succeed) {
-            this.userProfile.followers = resp.data
+            this.userProfile.followed = !this.userProfile.followed
           }
         })
     },
     unWatchUser() {
       this.$axios
-        .$post('/userFollow/unWatchUser', {
+        .$post('/userFollow/unFollowUser', {
           toUserId: this.userProfile.userId
         })
         .then((resp) => {
           if (resp.succeed) {
-            this.userProfile.followers = resp.data
+            this.userProfile.followed = !this.userProfile.followed
           }
         })
     }

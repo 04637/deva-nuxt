@@ -53,10 +53,31 @@
             color="text_primary"
             to="/question/ask"
             class="hidden-sm-and-down"
-            >发布</v-btn
+            >提问</v-btn
           >
-          <v-btn text color="text_primary" class="hidden-sm-and-down"
-            >空间</v-btn
+          <v-btn
+            text
+            color="text_primary"
+            to="/blog/postBlog"
+            class="hidden-sm-and-down"
+            >写文</v-btn
+          >
+          <!--<v-btn text color="text_primary" class="hidden-sm-and-down"-->
+          <!--  >空间</v-btn-->
+          <!--&gt;-->
+          <v-btn
+            text
+            color="text_primary"
+            to="/tag/tags"
+            class="hidden-sm-and-down"
+            >标签</v-btn
+          >
+          <v-btn
+            text
+            color="text_primary"
+            to="/user/users"
+            class="hidden-sm-and-down"
+            >用户</v-btn
           >
         </v-flex>
         <v-flex>
@@ -65,7 +86,8 @@
               v-if="$store.state.userInfo"
               style="position: relative;margin-right: 10px"
               icon
-              to="/user/messages"
+              exact
+              :to="'/user/' + $store.getters.getUserId + '?tab=message'"
               small
             >
               <v-icon small color="text_primary">notifications_none</v-icon>
@@ -114,10 +136,11 @@
                       <v-list-item-content class="pa-0">
                         <v-btn
                           depressed
+                          exact
                           text
                           class="text-left no-flex"
                           :to="'/user/' + $store.getters.getUserId"
-                          >个人档案</v-btn
+                          >我的主页</v-btn
                         >
                       </v-list-item-content>
                     </v-list-item>
@@ -125,10 +148,11 @@
                       <v-list-item-content class="pa-0">
                         <v-btn
                           depressed
+                          exact
                           text
-                          to="/user/editProfile"
+                          :to="'/user/' + $store.getters.getUserId + '?tab=ask'"
                           class="text-left no-flex"
-                          >基本资料</v-btn
+                          >我的问题</v-btn
                         >
                       </v-list-item-content>
                     </v-list-item>
@@ -136,10 +160,15 @@
                       <v-list-item-content class="pa-0">
                         <v-btn
                           depressed
+                          exact
                           text
-                          to="/user/safeSetting"
+                          :to="
+                            '/user/' +
+                              $store.getters.getUserId +
+                              '?tab=collection'
+                          "
                           class="text-left no-flex"
-                          >安全中心</v-btn
+                          >我的收藏</v-btn
                         >
                       </v-list-item-content>
                     </v-list-item>
@@ -228,43 +257,43 @@
       @update:dialog="errorInfo.dialog = $event"
     >
     </ErrorDialog>
-    <v-dialog v-model="joinSpace.dialog" width="500px" persistent>
-      <v-card>
-        <v-card-text class="pb-0">
-          <v-container class="pb-0">
-            <v-form ref="joinSpaceForm">
-              <v-text-field
-                v-model="joinSpace.spaceId"
-                placeholder="空间ID"
-                :rules="[rules.requireSpaceId]"
-              >
-              </v-text-field>
-              <v-text-field
-                v-model="joinSpace.inviteCode"
-                placeholder="邀请码"
-                :rules="[rules.requireInviteCode]"
-              >
-              </v-text-field>
-              <span class="error--text">{{ joinSpace.errMsg }}</span>
-            </v-form>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <div class="flex-grow-1"></div>
-          <v-btn
-            color="sub"
-            text
-            small
-            @click="
-              joinSpace.dialog = false
-              joinSpace.errMsg = null
-            "
-            >关闭</v-btn
-          >
-          <v-btn color="primary" small text @click="joinToSpace">加入</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <!--<v-dialog v-model="joinSpace.dialog" width="500px" persistent>-->
+    <!--  <v-card>-->
+    <!--    <v-card-text class="pb-0">-->
+    <!--      <v-container class="pb-0">-->
+    <!--        <v-form ref="joinSpaceForm">-->
+    <!--          <v-text-field-->
+    <!--            v-model="joinSpace.spaceId"-->
+    <!--            placeholder="空间ID"-->
+    <!--            :rules="[rules.requireSpaceId]"-->
+    <!--          >-->
+    <!--          </v-text-field>-->
+    <!--          <v-text-field-->
+    <!--            v-model="joinSpace.inviteCode"-->
+    <!--            placeholder="邀请码"-->
+    <!--            :rules="[rules.requireInviteCode]"-->
+    <!--          >-->
+    <!--          </v-text-field>-->
+    <!--          <span class="error&#45;&#45;text">{{ joinSpace.errMsg }}</span>-->
+    <!--        </v-form>-->
+    <!--      </v-container>-->
+    <!--    </v-card-text>-->
+    <!--    <v-card-actions>-->
+    <!--      <div class="flex-grow-1"></div>-->
+    <!--      <v-btn-->
+    <!--        color="sub"-->
+    <!--        text-->
+    <!--        small-->
+    <!--        @click="-->
+    <!--          joinSpace.dialog = false-->
+    <!--          joinSpace.errMsg = null-->
+    <!--        "-->
+    <!--        >关闭</v-btn-->
+    <!--      >-->
+    <!--      <v-btn color="primary" small text @click="joinToSpace">加入</v-btn>-->
+    <!--    </v-card-actions>-->
+    <!--  </v-card>-->
+    <!--</v-dialog>-->
 
     <v-dialog v-model="viewNotice.dialog" persistent max-width="40vw">
       <v-card>
@@ -313,13 +342,13 @@ export default {
     ],
     ssrRouters: ['question-id', 'blog-id'],
     keywords: null,
-    spaceList: [
-      {
-        spaceId: 1,
-        spaceName: '我的空间',
-        children: []
-      }
-    ],
+    // spaceList: [
+    //   {
+    //     spaceId: 1,
+    //     spaceName: '我的空间',
+    //     children: []
+    //   }
+    // ],
     viewNotice: {
       dialog: false
     },
@@ -338,10 +367,10 @@ export default {
     systemNotice: {
       content: null
     },
-    rules: {
-      requireSpaceId: (v) => (v && v.length >= 1) || '请输入空间ID',
-      requireInviteCode: (v) => (v && v.length >= 1) || '请输入邀请码'
-    },
+    // rules: {
+    //   requireSpaceId: (v) => (v && v.length >= 1) || '请输入空间ID',
+    //   requireInviteCode: (v) => (v && v.length >= 1) || '请输入邀请码'
+    // },
     currentNoticeInterval: null
   }),
   computed: {
@@ -366,9 +395,6 @@ export default {
         this.$vuetify.breakpoint.name === 'sm' ||
         this.$vuetify.breakpoint.name === 'xs'
       )
-    },
-    toggleTheme() {
-      return this.$store.getters.isDarkTheme
     }
   },
   watch: {
@@ -388,18 +414,14 @@ export default {
     },
     toggleUser() {
       // 加载空间列表
-      this.loadSpaceList()
+      // this.loadSpaceList()
       // 加载未读消息数
       this.loadMessageCount()
       // 连接websocket
       this.connectWebsocket()
-    },
-    toggleTheme() {
-      this.$vuetify.theme.dark = this.$store.getters.isDarkTheme
     }
   },
   created() {
-    this.$vuetify.theme.dark = this.$store.getters.isDarkTheme
     this.getSystemNotice()
   },
   mounted() {
@@ -411,7 +433,7 @@ export default {
     this.requestNotifyPermission()
     this.connectWebsocket()
     // 加载空间列表
-    this.loadSpaceList()
+    // this.loadSpaceList()
     // 加载未读消息数
     this.loadMessageCount()
   },

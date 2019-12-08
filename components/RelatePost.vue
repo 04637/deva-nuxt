@@ -1,7 +1,9 @@
 <template>
   <div class="pa-4 right-box">
     <v-layout align-center
-      ><span class="my_gray--text"
+      ><span
+        class="my_gray--text d-block"
+        style="border-left: 5px solid #ff6600; padding-left: 10px"
         >{{ keywords || tagKeywords ? '相关' : '热门' }}推荐</span
       ></v-layout
     >

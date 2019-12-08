@@ -13,10 +13,9 @@
           ></v-row
         ></v-card-title
       >
-      <v-divider></v-divider>
     </v-layout>
     <v-layout justify-center justify-space-around>
-      <v-flex xs12 md11 lg9 justify-start class="mt-4">
+      <v-flex xs12 md10 lg9 justify-start class="mt-4">
         <v-card flat exact width="100vw" class="pa-md-3">
           <v-col>
             <v-layout
@@ -113,6 +112,7 @@
             :user="blogDetail.author"
             :create-time="blogDetail.createTime"
             :modified-time="blogDetail.modifiedTime"
+            :justify-end="false"
             prefix="发布"
             class="mb-2"
           ></EditUserCard>
@@ -123,6 +123,20 @@
         ></client-only>
       </v-flex>
     </v-layout>
+    <div class="float-action">
+      <v-flex>
+        <v-btn large icon class="d-block" @click="voteBlog"
+          ><v-icon :color="blogDetail.isUseful ? 'private' : 'my_gray'" small
+            >mdi-thumb-up</v-icon
+          ></v-btn
+        >
+        <v-btn large icon class="d-block mt-4" @click="likeBlog"
+          ><v-icon :color="blogDetail.isLiked ? 'private' : 'my_gray'" small
+            >mdi-heart</v-icon
+          ></v-btn
+        >
+      </v-flex>
+    </div>
   </v-app>
 </template>
 <script>
@@ -275,3 +289,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+>>> .float-action {
+  position: fixed;
+  top: 400px;
+  left: 17%;
+}
+>>> .float-action .v-btn {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background-color: white;
+}
+</style>

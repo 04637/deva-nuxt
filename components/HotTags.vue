@@ -37,9 +37,7 @@ export default {
     }
   },
   data: () => ({
-    hotTagList: null,
-    likeTagList: null,
-    editable: false
+    hotTagList: null
   }),
   created() {
     this.loadHotTags()
@@ -55,7 +53,7 @@ export default {
           size: this.hotSize
         })
         .then((resp) => {
-          this.hotTagList = resp.data.content
+          this.hotTagList = resp.data
         })
     }
   }

@@ -23,23 +23,14 @@ export default {
   getErrorMsg(state) {
     return state.systemError.msg
   },
-  getReloadSpaceFlag(state) {
-    return state.reloadSpaceFlag
-  },
   getAlertErrorFlag(state) {
     return state.systemError.alertFlag
-  },
-  isDarkTheme(state) {
-    return state.darkTheme
   },
   getShowFooter(state) {
     return state.showFooter
   },
   getUseMarkdown(state) {
     return state.useMarkdown
-  },
-  getMiniNav(state) {
-    return state.miniNav
   },
   isSupportWebp(state) {
     return state.webpSupport

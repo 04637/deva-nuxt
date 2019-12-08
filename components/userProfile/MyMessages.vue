@@ -22,6 +22,7 @@
       :search="search"
       :show-select="!isSmall()"
       hide-default-header
+      :mobile-breakpoint="-1"
       :loading="loading"
     >
       <template v-slot:item.content="{ item }">
