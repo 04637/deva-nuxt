@@ -110,6 +110,10 @@ export default {
                 this.uploadingImage[0].data,
                 resp.data + '"'
               )
+              this.editor.scrollingContainer.innerHTML = this.editor.scrollingContainer.innerHTML.replace(
+                this.uploadingImage[0].data,
+                resp.data + '"'
+              )
             } else {
               this.uploadImageResult.succeed = false
               this.uploadImageResult.dialog = true
