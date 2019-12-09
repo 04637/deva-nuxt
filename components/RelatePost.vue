@@ -86,8 +86,3 @@ export default {
   }
 }
 </script>
-<style>
-.hover-color:hover {
-  color: #01a687 !important;
-}
-</style>

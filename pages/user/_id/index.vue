@@ -98,7 +98,7 @@
             class="white--text"
             small
             @click="unWatchUser"
-            ><v-icon small>remove</v-icon>取消关注</v-btn
+            >取消关注</v-btn
           >
         </div>
       </v-flex>

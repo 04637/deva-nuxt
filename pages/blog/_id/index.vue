@@ -1,45 +1,55 @@
 <template>
   <v-app>
-    <v-layout column shrink>
-      <v-card-title class="pb-0"
-        ><v-row align="center"
-          >{{ blogDetail.title }}&nbsp;<v-btn
-            v-if="blogDetail.authorId === $store.getters.getUserId"
-            color="private"
-            text
-            small
-            :to="'/blog/postBlog?blogId=' + blogDetail.blogId"
-            ><v-icon small>edit</v-icon>编辑</v-btn
-          ></v-row
-        ></v-card-title
-      >
-    </v-layout>
+    <!--<v-layout column shrink>-->
+    <!--  <v-card-title class="pb-0"-->
+    <!--    ><v-row align="center"-->
+    <!--      >{{ blogDetail.title }}&nbsp;<v-btn-->
+    <!--        v-if="blogDetail.authorId === $store.getters.getUserId"-->
+    <!--        color="private"-->
+    <!--        text-->
+    <!--        small-->
+    <!--        :to="'/blog/postBlog?blogId=' + blogDetail.blogId"-->
+    <!--        ><v-icon small>edit</v-icon>编辑</v-btn-->
+    <!--      ></v-row-->
+    <!--    ></v-card-title-->
+    <!--  >-->
+    <!--</v-layout>-->
     <v-layout justify-center justify-space-around>
       <v-flex xs12 md10 lg9 justify-start class="mt-4">
-        <v-card flat exact width="100vw" class="pa-md-3">
+        <v-card flat exact width="100vw" class="pa-md-3 right-box">
           <v-col>
-            <v-layout
-              justify-end
-              style="position: relative; top: -20px;font-size:0.8rem"
-              align-center
-            >
-              <span class="my_gray--text" style="position: relative; top: -1px"
-                >浏览 {{ blogDetail.viewNum }} 次</span
-              >
-              <v-btn icon small class="ml-4" @click="likeBlog"
-                ><v-icon small :color="blogDetail.isLiked ? 'private' : ''"
-                  >favorite</v-icon
-                ></v-btn
-              ><span>{{ blogDetail.likeNum }}</span>
-              <v-btn icon small class="ml-4" @click="voteBlog"
-                ><v-icon small :color="blogDetail.isUseful ? 'private' : ''"
-                  >mdi-thumb-up</v-icon
-                ></v-btn
-              ><span>{{ blogDetail.voteNum }}</span>
-            </v-layout>
+            <!--<v-layout-->
+            <!--  justify-end-->
+            <!--  style="position: relative; top: -20px;font-size:0.8rem"-->
+            <!--  align-center-->
+            <!--&gt;-->
+            <!--  <span class="my_gray&#45;&#45;text" style="position: relative; top: -1px"-->
+            <!--    >浏览 {{ blogDetail.viewNum }} 次</span-->
+            <!--  >-->
+            <!--  <v-btn icon small class="ml-4 left-icon-btn" @click="likeBlog"-->
+            <!--    ><v-icon small :color="blogDetail.isLiked ? 'private' : ''"-->
+            <!--      >favorite</v-icon-->
+            <!--    ></v-btn-->
+            <!--  ><span>{{ blogDetail.likeNum }}</span>-->
+            <!--  <v-btn icon small class="ml-4 left-icon-btn" @click="voteBlog"-->
+            <!--    ><v-icon small :color="blogDetail.isUseful ? 'private' : ''"-->
+            <!--      >mdi-thumb-up</v-icon-->
+            <!--    ></v-btn-->
+            <!--  ><span>{{ blogDetail.voteNum }}</span>-->
+            <!--</v-layout>-->
+            <h2 style="font-weight: normal">{{ blogDetail.title }}</h2>
+            <header-user-card
+              :user="blogDetail.author"
+              :create-time="blogDetail.createTime"
+              :modified-time="blogDetail.modifiedTime"
+              :view-num="blogDetail.viewNum"
+              :vote-num="blogDetail.voteNum"
+              :like-num="blogDetail.likeNum"
+              width="100%"
+            ></header-user-card>
             <div
               v-dompurify-html="$md.render(blogDetail.content)"
-              style="position: relative; top: -15px"
+              class="mt-4"
             ></div>
           </v-col>
           <v-card-actions>
@@ -108,14 +118,15 @@
       </v-flex>
       <v-flex lg3 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
         <client-only>
-          <EditUserCard
+          <right-user-card
             :user="blogDetail.author"
             :create-time="blogDetail.createTime"
             :modified-time="blogDetail.modifiedTime"
             :justify-end="false"
             prefix="发布"
-            class="mb-2"
-          ></EditUserCard>
+            class="mb-2 right-box"
+            width="100%"
+          ></right-user-card>
           <RelatePost
             :exclude-id="blogDetail.blogId"
             :tags="blogDetail.tagInfos"
@@ -123,7 +134,7 @@
         ></client-only>
       </v-flex>
     </v-layout>
-    <div class="float-action">
+    <div class="float-action hidden-md-and-down">
       <v-flex>
         <v-btn large icon class="d-block" @click="voteBlog"
           ><v-icon :color="blogDetail.isUseful ? 'private' : 'my_gray'" small
@@ -142,12 +153,14 @@
 <script>
 import TagChip from '../../../components/TagChip'
 import RelatePost from '../../../components/RelatePost'
-import EditUserCard from '../../../components/EditUserCard'
+import HeaderUserCard from '../../../components/HeaderUserCard'
+import RightUserCard from '../../../components/RightUserCard'
 
 export default {
   name: 'BlogDetail',
   components: {
-    EditUserCard,
+    RightUserCard,
+    HeaderUserCard,
     RelatePost,
     TagChip
   },

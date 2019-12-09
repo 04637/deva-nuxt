@@ -5,31 +5,31 @@
         <v-flex md7 lg6 shrink hidden-sm-and-down>
           <v-card-title class="pa-0"
             ><v-layout align-center>
-              <v-chip
-                v-if="$route.query.match === 'tags'"
-                text
-                style="max-width:170px; cursor: pointer; text-decoration: none;border-radius: 0"
-                :title="$route.params.keywords"
-              >
-                <span>{{ $route.params.keywords }}</span></v-chip
-              >
-              <span
-                v-if="$route.query.match === 'tags' && tagInfo"
-                style="font-size: 14px; max-width: 80%; line-height: 17px"
-                class=" ml-3 my_gray--text label-description"
-                :title="tagInfo.description"
-                >{{ tagInfo.description }}</span
-              >
-              <span v-if="$route.query.match !== 'tags'" class="ml-3">{{
-                $route.params.keywords
-              }}</span></v-layout
+              <v-flex v-if="$route.query.match === 'tags'">
+                <v-chip
+                  text
+                  style="max-width:170px; cursor: pointer; text-decoration: none;border-radius: 0"
+                  :title="$route.params.keywords"
+                >
+                  <span>{{ $route.params.keywords }}</span></v-chip
+                >
+              </v-flex>
+              <v-flex v-if="$route.query.match === 'tags' && tagInfo">
+                <span
+                  style="font-size: 14px;line-height: 17px"
+                  class=" ml-3 my_gray--text label-description"
+                  :title="tagInfo.description"
+                  >{{ tagInfo.description }}</span
+                >
+                <span v-if="$route.query.match !== 'tags'" class="ml-3">{{
+                  $route.params.keywords
+                }}</span></v-flex
+              ></v-layout
             ></v-card-title
           >
         </v-flex>
         <v-flex md5 lg6 align-self-end>
           <v-tabs
-            centered
-            center-active
             height="38"
             slider-color="slider_color"
             background-color="transparent"
@@ -47,7 +47,7 @@
       >
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
-      <v-flex xs12 sm11 lg9 justify-start shrink>
+      <v-flex xs12 sm12 lg9 justify-start shrink>
         <BQCardList v-if="bqList" :bq-list="bqList"></BQCardList>
       </v-flex>
       <v-flex lg3 justify-end shrink hidden-md-and-down class="ml-3">

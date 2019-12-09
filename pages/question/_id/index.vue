@@ -27,7 +27,7 @@
       </v-layout>
       <v-layout justify-center justify-space-around>
         <v-flex sm12 md11 lg9 justify-start class="mt-4">
-          <v-card flat width="100vw" class="pr-2">
+          <v-card flat width="100vw" class="pr-md-4 pr-sm-1 right-box">
             <v-layout justify-space-between>
               <v-flex md1 hidden-sm-and-down class="mt-12" align-center>
                 <v-layout column align-center>
@@ -62,32 +62,32 @@
               </v-flex>
               <v-flex xs12 md11 class="ml-md-4 pr-md-3 pr-sm-0 pr-xs-0">
                 <v-layout justify-end style="min-height: 36px">
-                  <v-btn
-                    v-if="
-                      $store.state.userInfo &&
-                        $store.getters.getUserId !==
-                          questionDetail.author.userId &&
-                        $store.getters.getUserInfo.reputation >= 200
-                    "
-                    id="markDialogBtn"
-                    text
-                    color="private"
-                    style="height: 24px; padding: 0 10px;"
-                    @click.stop="similarMark.dialog = !similarMark.dialog"
-                    ><span>问题重复？标记相似</span>
-                  </v-btn>
-                  <v-btn
-                    v-else-if="
-                      $store.state.userInfo &&
-                        $store.getters.getUserId !==
-                          questionDetail.author.userId
-                    "
-                    text
-                    color="my_gray"
-                    style="height: 24px; padding: 0 10px;"
-                    title="声望达到200方可标记"
-                    ><span>问题重复？标记相似</span>
-                  </v-btn>
+                  <!--<v-btn-->
+                  <!--  v-if="-->
+                  <!--    $store.state.userInfo &&-->
+                  <!--      $store.getters.getUserId !==-->
+                  <!--        questionDetail.author.userId &&-->
+                  <!--      $store.getters.getUserInfo.reputation >= 200-->
+                  <!--  "-->
+                  <!--  id="markDialogBtn"-->
+                  <!--  text-->
+                  <!--  color="private"-->
+                  <!--  style="height: 24px; padding: 0 10px;"-->
+                  <!--  @click.stop="similarMark.dialog = !similarMark.dialog"-->
+                  <!--  ><span>问题重复？标记相似</span>-->
+                  <!--</v-btn>-->
+                  <!--<v-btn-->
+                  <!--  v-else-if="-->
+                  <!--    $store.state.userInfo &&-->
+                  <!--      $store.getters.getUserId !==-->
+                  <!--        questionDetail.author.userId-->
+                  <!--  "-->
+                  <!--  text-->
+                  <!--  color="my_gray"-->
+                  <!--  style="height: 24px; padding: 0 10px;"-->
+                  <!--  title="声望达到200方可标记"-->
+                  <!--  ><span>问题重复？标记相似</span>-->
+                  <!--</v-btn>-->
                   <v-btn
                     v-if="
                       $store.getters.getUserId === questionDetail.author.userId
@@ -281,19 +281,23 @@
             </v-layout>
           </v-card>
           <!--所有回答-->
-          <v-layout class="transparent" justify-space-between align-center
+          <v-layout class="transparent mt-3" justify-space-between align-center
             ><v-card-title class="sub--text my_gray--text"
               >{{ questionDetail.answers.length }} 个回答</v-card-title
             >
           </v-layout>
-          <v-divider></v-divider>
           <div
             v-for="(answer, aIndex) in questionDetail.answers"
             :id="answer.answerId"
             :key="answer.answerId"
-            class="pt-2"
+            class="mt-3"
           >
-            <v-card flat exact width="100vw" class="pt-1 pr-2">
+            <v-card
+              flat
+              exact
+              width="100vw"
+              class="pt-1 pr-md-4 pr-sm-1 right-box"
+            >
               <v-layout justify-space-between>
                 <v-flex md1 hidden-sm-and-down class="mt-12" align-center>
                   <v-layout column align-center>
@@ -318,7 +322,11 @@
                   </v-layout>
                 </v-flex>
                 <v-flex xs12 md11 class="ml-md-4 pr-md-3 pr-sm-0 pr-xs-0">
-                  <v-layout justify-end style="min-height: 36px" class="mb-2">
+                  <v-layout
+                    justify-end
+                    style="min-height: 36px"
+                    class="mb-2 mt-2"
+                  >
                     <v-btn
                       v-if="
                         questionDetail.status === 0 &&
@@ -471,21 +479,13 @@
                 </v-flex>
               </v-layout>
             </v-card>
-            <v-divider
-              v-show="aIndex + 1 < questionDetail.answers.length"
-            ></v-divider>
-            <div
-              v-show="aIndex + 1 < questionDetail.answers.length"
-              :class="$vuetify.theme.dark ? 'dark-divider' : 'light-divider'"
-            ></div>
           </div>
-          <v-divider></v-divider>
-          <v-layout class="transparent" justify-space-between align-center
-            ><v-card-title class="sub--text my_gray--text"
-              >我的回答</v-card-title
-            >
-          </v-layout>
-          <v-layout>
+          <!--<v-layout class="transparent" justify-space-between align-center-->
+          <!--  ><v-card-title class="sub&#45;&#45;text my_gray&#45;&#45;text"-->
+          <!--    >我的回答</v-card-title-->
+          <!--  >-->
+          <!--</v-layout>-->
+          <v-layout class="mt-2">
             <v-flex>
               <Quill
                 ref="answerQuill"
@@ -523,14 +523,22 @@
       </v-layout>
       <div class="float-action hidden-md-and-down">
         <v-flex shrink>
-          <v-btn large icon class="d-block" @click="voteQuestion(true)"
+          <v-btn
+            large
+            icon
+            class="d-block left-icon-btn"
+            @click="voteQuestion(true)"
             ><v-icon
               :color="questionDetail.isUseful === true ? 'private' : 'my_gray'"
               small
               >mdi-thumb-up</v-icon
             ></v-btn
           >
-          <v-btn large icon class="d-block mt-4" @click="collectQuestion"
+          <v-btn
+            large
+            icon
+            class="d-block mt-4 left-icon-btn"
+            @click="collectQuestion"
             ><v-icon
               :color="questionDetail.isCollected ? 'private' : 'my_gray'"
               small

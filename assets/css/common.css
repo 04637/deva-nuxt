@@ -44,8 +44,8 @@ html{
 /* 替换 code 样式 参考vuetify kbd*/
 code {
   background-image: initial;
-  background-color: #2f2e2e !important;
-  color: #ffffff !important;
+  background-color: #d3d3d38c !important;
+  color: black !important;
 }
 pre,code{
   font-family: consolas, monospace !important;
@@ -59,8 +59,8 @@ span[class*='hljs']{
 }
 pre {
   background-image: initial;
-  background-color: #2f2e2e !important;
-  color: #ffffff !important;
+  background-color: #d3d3d38c !important;
+  color: black !important;
   padding:3px 15px;
 }
 pre>code{
@@ -294,10 +294,14 @@ table td,:not(v-data-table__wrapper) table th {
   color: #0366d6;
 }
 .right-box {
-  background-color: white;
-  box-shadow: 3px 2px 11px 1px rgba(231, 231, 231, 0.71);
-  border: 1px solid #e7e7e7;
-  border-radius: 3px;
+  background-color: white !important;
+  box-shadow: 3px 2px 11px 1px rgba(231, 231, 231, 0.71) !important;
+  border: 1px solid #e7e7e7 !important;
+  border-radius: 3px !important;
+}
+.v-menu__content {
+  box-shadow: 3px 2px 11px 1px rgba(231, 231, 231, 0.71) !important;
+  border-radius: 3px !important;
 }
 
 .v-card:not(.v-card--flat) {

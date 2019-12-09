@@ -132,7 +132,7 @@
                         color="primary"
                         @click="createTag.dialog = !createTag.dialog"
                       >
-                        创建标签
+                        点此创建标签
                       </v-btn>
                     </v-list-item-title>
                   </v-list-item-content>

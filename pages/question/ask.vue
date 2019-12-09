@@ -126,12 +126,12 @@
                   <v-list-item-content>
                     <v-list-item-title>
                       <v-btn
-                        text
+                        color="blue"
                         small
-                        color="primary"
+                        class="white--text"
                         @click="createTag.dialog = !createTag.dialog"
                       >
-                        创建标签
+                        点此创建标签
                       </v-btn>
                     </v-list-item-title>
                   </v-list-item-content>
