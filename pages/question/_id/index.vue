@@ -513,6 +513,15 @@
         </v-flex>
         <v-flex lg3 justify-end shrink hidden-md-and-down class="ml-3 mt-4">
           <client-only>
+            <right-user-card
+              :user="questionDetail.author"
+              :create-time="questionDetail.createTime"
+              :modified-time="questionDetail.modifiedTime"
+              :justify-end="false"
+              prefix="提问"
+              class="mb-2 right-box"
+              width="100%"
+            ></right-user-card>
             <RelatePost
               :exclude-id="questionDetail.questionId"
               :tags="questionDetail.tagInfos"
@@ -623,10 +632,12 @@ import Quill from '../../../components/Quill'
 import RelatePost from '../../../components/RelatePost'
 import EditUserCard from '../../../components/EditUserCard'
 import MyTags from '../../../components/MyTags'
+import RightUserCard from '../../../components/RightUserCard'
 
 export default {
   name: 'QuestionDetail',
   components: {
+    RightUserCard,
     MyTags,
     EditUserCard,
     RelatePost,
