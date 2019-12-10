@@ -64,6 +64,7 @@
         solo
         class="min-input mt-2"
         hide-details
+        @keyup.enter.native="submitLogin"
       >
       </v-text-field>
       <small class="red--text">{{ loginError }}</small>
