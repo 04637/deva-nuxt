@@ -392,7 +392,7 @@ export default {
         },
         { text: '状态', value: 'status' },
         { text: '回答', value: 'answerNum' },
-        { text: '支持', value: 'voteNum' },
+        { text: '赞成', value: 'voteNum' },
         { text: '浏览', value: 'viewNum' }
       ],
       items: []
@@ -407,7 +407,7 @@ export default {
           value: 'title'
         },
         { text: '喜欢', value: 'likeNum' },
-        { text: '支持', value: 'voteNum' },
+        { text: '赞成', value: 'voteNum' },
         { text: '浏览', value: 'viewNum' }
       ],
       items: []
@@ -423,7 +423,7 @@ export default {
         },
         { text: '公开', value: 'isPublic' },
         { text: '喜欢', value: 'likeNum' },
-        { text: '支持', value: 'voteNum' },
+        { text: '赞成', value: 'voteNum' },
         { text: '浏览', value: 'viewNum' }
       ],
       items: []

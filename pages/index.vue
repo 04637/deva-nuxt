@@ -51,18 +51,7 @@
         <BQCardList v-if="bqList" :bq-list="bqList"></BQCardList>
       </v-flex>
       <v-flex md3 lg3 justify-end shrink hidden-sm-and-down class="ml-3">
-        <v-card class="pa-3 right-box">
-          <v-layout justify-space-between class="mb-2">
-            <v-btn to="/question/ask" color="my_green" class="white--text" small
-              ><v-icon small>mdi-forum</v-icon>&nbsp;提问题</v-btn
-            >
-            <v-btn to="/blog/postBlog" color="blue" class="white--text" small
-              ><v-icon small>mdi-file-document</v-icon>&nbsp;写文章</v-btn
-            >
-          </v-layout>
-          <small class="my_gray--text">我的问题</small>
-          <v-divider></v-divider>
-        </v-card>
+        <right-header></right-header>
         <MyTags class="mt-3"></MyTags>
         <RelatePost class="mt-3"></RelatePost>
         <active-users class="mt-3"></active-users>
@@ -75,8 +64,9 @@ import BQCardList from '../components/BQCardList'
 import RelatePost from '../components/RelatePost'
 import MyTags from '../components/MyTags'
 import ActiveUsers from '../components/ActiveUsers'
+import RightHeader from '../components/RightHeader'
 export default {
-  components: { ActiveUsers, MyTags, RelatePost, BQCardList },
+  components: { ActiveUsers, MyTags, RelatePost, BQCardList, RightHeader },
   data: () => ({
     currentTab: 0,
     sortType: 'RECENT',

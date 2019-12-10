@@ -16,7 +16,7 @@
               class="d-md-flex mr-1"
               hidden-sm-and-down
             >
-              <div title="支持" class="num-div">
+              <div title="赞成" class="num-div">
                 <div class="num-span">
                   {{ item.voteNum }}
                 </div>

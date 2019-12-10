@@ -55,13 +55,13 @@
             class="hidden-sm-and-down"
             >提问</v-btn
           >
-          <v-btn
-            text
-            color="text_primary"
-            to="/blog/postBlog"
-            class="hidden-sm-and-down"
-            >写文</v-btn
-          >
+          <!--<v-btn-->
+          <!--  text-->
+          <!--  color="text_primary"-->
+          <!--  to="/blog/postBlog"-->
+          <!--  class="hidden-sm-and-down"-->
+          <!--  >写文</v-btn-->
+          <!--&gt;-->
           <!--<v-btn text color="text_primary" class="hidden-sm-and-down"-->
           <!--  >空间</v-btn-->
           <!--&gt;-->
