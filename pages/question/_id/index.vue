@@ -3,14 +3,14 @@
     <v-app>
       <v-layout
         class="right-box"
-        style="position:fixed; left:0; right:0; background-color: white;height: 150px"
+        style="position:fixed; left:0; right:0; background-color: white;height: 150px;z-index: 100"
         justify-center
       >
-        <v-card class="py-3" flat width="70vw">
-          <v-layout>
+        <v-card class="py-3 px-3" flat max-width="1200px" width="95%">
+          <v-layout justify-center>
             <v-flex md9 align-space-between>
-              <v-layout column style="height: 140px" align-space-between>
-                <v-layout wrap>
+              <v-layout column style="height: 140px" justify-space-around>
+                <v-layout wrap shrink>
                   <TagChip
                     v-for="tag in questionDetail.tagInfos"
                     :key="tag.tagId"
@@ -19,8 +19,11 @@
                   ></TagChip>
                 </v-layout>
                 <h3>{{ questionDetail.title }}</h3>
-                <v-layout>
-                  <v-btn>关注问题</v-btn>
+                <v-layout shrink>
+                  <v-btn color="blue" small class="white--text">关注问题</v-btn>
+                  <v-btn color="blue" small class="white--text ml-2" outlined
+                    ><v-icon small>edit</v-icon>写回答</v-btn
+                  >
                 </v-layout>
               </v-layout>
             </v-flex>

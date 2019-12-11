@@ -1,42 +1,9 @@
 <template>
   <v-app>
-    <!--<v-layout column shrink>-->
-    <!--  <v-card-title class="pb-0"-->
-    <!--    ><v-row align="center"-->
-    <!--      >{{ blogDetail.title }}&nbsp;<v-btn-->
-    <!--        v-if="blogDetail.authorId === $store.getters.getUserId"-->
-    <!--        color="private"-->
-    <!--        text-->
-    <!--        small-->
-    <!--        :to="'/blog/postBlog?blogId=' + blogDetail.blogId"-->
-    <!--        ><v-icon small>edit</v-icon>编辑</v-btn-->
-    <!--      ></v-row-->
-    <!--    ></v-card-title-->
-    <!--  >-->
-    <!--</v-layout>-->
     <v-layout justify-center justify-space-around>
       <v-flex xs12 md10 lg9 justify-start class="mt-4">
         <v-card flat exact width="100vw" class="pa-md-3 right-box">
           <v-col>
-            <!--<v-layout-->
-            <!--  justify-end-->
-            <!--  style="position: relative; top: -20px;font-size:0.8rem"-->
-            <!--  align-center-->
-            <!--&gt;-->
-            <!--  <span class="my_gray&#45;&#45;text" style="position: relative; top: -1px"-->
-            <!--    >浏览 {{ blogDetail.viewNum }} 次</span-->
-            <!--  >-->
-            <!--  <v-btn icon small class="ml-4 left-icon-btn" @click="likeBlog"-->
-            <!--    ><v-icon small :color="blogDetail.isLiked ? 'private' : ''"-->
-            <!--      >favorite</v-icon-->
-            <!--    ></v-btn-->
-            <!--  ><span>{{ blogDetail.likeNum }}</span>-->
-            <!--  <v-btn icon small class="ml-4 left-icon-btn" @click="voteBlog"-->
-            <!--    ><v-icon small :color="blogDetail.isUseful ? 'private' : ''"-->
-            <!--      >mdi-thumb-up</v-icon-->
-            <!--    ></v-btn-->
-            <!--  ><span>{{ blogDetail.voteNum }}</span>-->
-            <!--</v-layout>-->
             <h2 style="font-weight: normal">{{ blogDetail.title }}</h2>
             <header-user-card
               :user="blogDetail.author"
@@ -46,6 +13,7 @@
               :vote-num="blogDetail.voteNum"
               :like-num="blogDetail.likeNum"
               width="100%"
+              class="mt-2"
             ></header-user-card>
             <div
               v-dompurify-html="$md.render(blogDetail.content)"

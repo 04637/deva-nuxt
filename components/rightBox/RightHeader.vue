@@ -43,6 +43,15 @@
           </div>
         </transition-group>
       </div>
+      <v-layout justify-center class="mt-2">
+        <v-btn
+          outlined
+          color="my_gray"
+          width="100%"
+          :to="'/user/' + $store.getters.getUserId + '?tab=ask'"
+          >查看所有问题 >
+        </v-btn>
+      </v-layout>
     </div>
     <div v-else>
       <v-layout align-center

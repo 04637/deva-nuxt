@@ -12,11 +12,11 @@
       ></v-text-field>
     </v-layout>
     <v-divider></v-divider>
-    <v-layout wrap shrink class="mt-3">
+    <v-layout wrap shrink class="mt-3" justify-space-around>
       <UserCard
         v-for="userInfo in userList"
         :key="userInfo.userId"
-        class="mb-2 mr-2"
+        class="mb-4 mr-2"
         :user-info="userInfo"
       ></UserCard>
     </v-layout>

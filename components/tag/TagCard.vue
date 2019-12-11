@@ -1,5 +1,5 @@
 <template>
-  <v-flex xs4 md4 lg3 style="max-width: 358px" shrink>
+  <v-flex style="max-width: 358px; width: 274px" shrink>
     <v-card min-width="250px" class="px-3 pb-2 right-box pt-2" flat>
       <v-layout align-center justify-space-between>
         <v-layout align-center>

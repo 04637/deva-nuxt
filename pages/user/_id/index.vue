@@ -10,21 +10,21 @@
       style="position:relative; top:103px;"
       class="white--text"
     >
-      <div class="label-div">
+      <div class="label-div" @click="tabIndex = 3">
         <div class="label-des">提问</div>
         <div class="label-num">{{ userProfile.questions.length }}</div>
       </div>
       <div class="label-divider">
         <div class="label-des">|</div>
       </div>
-      <div class="label-div">
+      <div class="label-div" @click="tabIndex = 4">
         <div class="label-des">回答</div>
         <div class="label-num">{{ userProfile.answers.length }}</div>
       </div>
       <div class="label-divider">
         <div class="label-des">|</div>
       </div>
-      <div class="label-div">
+      <div class="label-div" @click="tabIndex = 4">
         <div class="label-des">采纳率</div>
         <div class="label-num">{{ userProfile.adoptionRate }}%</div>
       </div>
@@ -102,21 +102,21 @@
           >
         </div>
       </v-flex>
-      <div class="label-div">
+      <div class="label-div" @click="tabIndex = 5">
         <div class="label-des">博文</div>
         <div class="label-num">{{ userProfile.blogs.length }}</div>
       </div>
       <div class="label-divider">
         <div class="label-des">|</div>
       </div>
-      <div class="label-div">
+      <div class="label-div" @click="tabIndex = 7">
         <div class="label-des">粉丝</div>
         <div class="label-num">{{ userProfile.followers.length }}</div>
       </div>
       <div class="label-divider">
         <div class="label-des">|</div>
       </div>
-      <div class="label-div">
+      <div class="label-div" @click="tabIndex = 0">
         <div class="label-des">声望</div>
         <div class="label-num">{{ userProfile.reputation }}</div>
       </div>
@@ -380,6 +380,16 @@ export default {
 .label-div,
 .label-divider {
   text-align: center;
+}
+.label-div {
+  padding: 10px 16px;
+  min-width: 80px;
+  position: relative;
+  top: -10px;
+}
+.label-div:hover {
+  background-color: rgba(250, 250, 250, 0.24);
+  cursor: pointer;
 }
 .label-num {
   margin-top: 15px;

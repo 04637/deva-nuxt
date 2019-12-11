@@ -12,12 +12,12 @@
       ></v-text-field>
     </v-layout>
     <v-divider></v-divider>
-    <v-layout wrap shrink class="mt-3">
+    <v-layout wrap shrink class="mt-3" justify-space-around>
       <tag-card
         v-for="tagInfo in tagList"
         :key="tagInfo.tagId"
         :tag-info="tagInfo"
-        class="mb-2 mr-2"
+        class="mb-4 mr-2"
       ></tag-card>
     </v-layout>
   </v-app>

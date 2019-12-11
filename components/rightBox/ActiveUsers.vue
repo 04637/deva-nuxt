@@ -1,7 +1,10 @@
 <template>
   <keep-alive>
     <div class="right-box pa-4">
-      <v-layout align-center class="mb-1"
+      <v-layout
+        align-center
+        class="mb-1"
+        style="border-left: 5px solid #ff6600; padding-left: 10px"
         ><span class="my_gray--text">活跃用户</span></v-layout
       >
       <v-divider class="mt-2"></v-divider>
