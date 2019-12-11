@@ -1,7 +1,9 @@
 <template>
   <div class="pa-4 right-box">
     <v-layout align-center
-      ><span class="my_gray--text d-block" style="padding-left: 10px"
+      ><span
+        class="my_gray--text d-block"
+        style="padding-left: 10px;border-left: 5px solid #ff6600; "
         >他的博文</span
       ></v-layout
     >

@@ -203,8 +203,8 @@
     </v-app-bar>
     <v-layout id="content_bg" justify-center>
       <v-flex
-        style="max-width: 1200px;width: 98%"
-        class="pb-12 mb-5 mt-3 px-5"
+        style="max-width: 1200px;width: 100%"
+        class="pb-12 mb-5 mt-3 px-2"
         justify-center
       >
         <v-content>

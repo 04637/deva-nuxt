@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="pa-2 right-box" :width="minWidth">
+  <v-card flat class="pa-2 right-box" width="274px">
     <v-layout justify-start align-start>
       <v-flex shrink md2 hidden-sm-and-down>
         <v-avatar

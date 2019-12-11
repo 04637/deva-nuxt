@@ -3,6 +3,7 @@ html{
 }
 *{
   font-family: Microsoft YaHei, serif;
+    word-break: break-word;
 }
 
 /*简约滚动条*/
