@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import TagCard from '../TagCard'
+import TagCard from '../tag/TagCard'
 export default {
   components: { TagCard },
   props: {

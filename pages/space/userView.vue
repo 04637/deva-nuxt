@@ -31,8 +31,8 @@
   </v-app>
 </template>
 <script>
-import UserCard from '../../components/UserCard'
-import SpaceMenu from '../../components/SpaceMenu'
+import UserCard from '../../components/userCard/UserCard'
+import SpaceMenu from '../../components/space/SpaceMenu'
 export default {
   components: { SpaceMenu, UserCard },
   data: () => ({

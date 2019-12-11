@@ -231,8 +231,8 @@
 </template>
 <script>
 import hljs from 'highlight.js'
-import InfoDialog from '../../components/InfoDialog'
-import Quill from '../../components/Quill'
+import InfoDialog from '../../components/dialog/InfoDialog'
+import Quill from '../../components/post/Quill'
 export default {
   name: 'Ask',
   components: {

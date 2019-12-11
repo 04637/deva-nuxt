@@ -17,12 +17,13 @@
         v-for="tagInfo in tagList"
         :key="tagInfo.tagId"
         :tag-info="tagInfo"
+        class="mb-2 mr-2"
       ></tag-card>
     </v-layout>
   </v-app>
 </template>
 <script>
-import TagCard from '../../components/TagCard'
+import TagCard from '../../components/tag/TagCard'
 export default {
   components: { TagCard },
   data: () => ({

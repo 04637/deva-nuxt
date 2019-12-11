@@ -321,8 +321,8 @@
 import Logo from '../components/Logo'
 // https://github.com/nuxt/nuxt.js/issues/319
 import config from '../nuxt.config.js'
-import ErrorDialog from '../components/ErrorDialog'
-import FloatMenu from '../components/FloatMenu'
+import ErrorDialog from '../components/dialog/ErrorDialog'
+import FloatMenu from '../components/float/FloatMenu'
 export default {
   name: 'App',
   components: {

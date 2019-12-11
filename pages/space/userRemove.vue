@@ -51,9 +51,9 @@
   </v-app>
 </template>
 <script>
-import UserCard from '../../components/UserCard'
-import InfoDialog from '../../components/InfoDialog'
-import SpaceMenu from '../../components/SpaceMenu'
+import UserCard from '../../components/userCard/UserCard'
+import InfoDialog from '../../components/dialog/InfoDialog'
+import SpaceMenu from '../../components/space/SpaceMenu'
 export default {
   components: { SpaceMenu, UserCard, InfoDialog },
   data: () => ({

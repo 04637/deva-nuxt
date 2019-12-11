@@ -300,8 +300,8 @@
   </v-app>
 </template>
 <script>
-import ConfirmDialog from '../../components/ConfirmDialog'
-import InfoDialog from '../../components/InfoDialog'
+import ConfirmDialog from '../../components/dialog/ConfirmDialog'
+import InfoDialog from '../../components/dialog/InfoDialog'
 export default {
   components: { InfoDialog, ConfirmDialog },
   data: () => ({

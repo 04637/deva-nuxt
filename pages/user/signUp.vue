@@ -161,8 +161,8 @@
 </template>
 <script>
 import Logo from '../../components/Logo'
-import InfoDialog from '../../components/InfoDialog'
-import TermsDialog from '../../components/TermsDialog'
+import InfoDialog from '../../components/dialog/InfoDialog'
+import TermsDialog from '../../components/dialog/TermsDialog'
 export default {
   components: {
     TermsDialog,

@@ -1,31 +1,46 @@
 <template>
   <div>
     <v-app>
-      <v-layout column shrink>
-        <v-card-title class="pb-0"
-          ><v-row align="center"
-            >{{ questionDetail.title }}&nbsp;&nbsp;
-            <v-chip
-              v-if="questionDetail.status === 1"
-              class="hidden-sm-and-down white--text"
-              color="my_green"
-              small
-              style="height: 20px;border-radius: 3px"
-            >
-              已解决 </v-chip
-            ><v-chip
-              v-if="questionDetail.status === 0"
-              class="hidden-sm-and-down white--text"
-              color="private"
-              small
-              style="height: 20px;border-radius: 3px"
-            >
-              待解决
-            </v-chip></v-row
-          ></v-card-title
-        >
+      <v-layout
+        class="right-box"
+        style="position:fixed; left:0; right:0; background-color: white;height: 150px"
+        justify-center
+      >
+        <v-card class="py-3" flat width="70vw">
+          <v-layout>
+            <v-flex md9 align-space-between>
+              <v-layout column style="height: 140px" align-space-between>
+                <v-layout wrap>
+                  <TagChip
+                    v-for="tag in questionDetail.tagInfos"
+                    :key="tag.tagId"
+                    class="mr-3 mb-1"
+                    :tag-info="tag"
+                  ></TagChip>
+                </v-layout>
+                <h3>{{ questionDetail.title }}</h3>
+                <v-layout>
+                  <v-btn>关注问题</v-btn>
+                </v-layout>
+              </v-layout>
+            </v-flex>
+            <v-flex md3>
+              <v-layout justify-space-around>
+                <v-flex shrink>
+                  <div style="color: #8590a6">关注者</div>
+                  <div><strong>20,599</strong></div>
+                </v-flex>
+                <v-divider vertical></v-divider>
+                <v-flex shrink>
+                  <div style="color: #8590a6">被浏览</div>
+                  <div><strong>840,109</strong></div>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+          </v-layout>
+        </v-card>
       </v-layout>
-      <v-layout justify-center justify-space-around>
+      <v-layout justify-center justify-space-around style="margin-top: 150px">
         <v-flex sm12 md11 lg9 justify-start class="mt-4">
           <v-card flat width="100vw" class="pr-md-4 pr-sm-1 right-box">
             <v-layout justify-space-between>
@@ -625,14 +640,14 @@
   </div>
 </template>
 <script>
-import InfoDialog from '../../../components/InfoDialog'
-import TagChip from '../../../components/TagChip'
-import ConfirmDialog from '../../../components/ConfirmDialog'
-import Quill from '../../../components/Quill'
-import RelatePost from '../../../components/RelatePost'
-import EditUserCard from '../../../components/EditUserCard'
-import MyTags from '../../../components/MyTags'
-import RightUserCard from '../../../components/RightUserCard'
+import InfoDialog from '../../../components/dialog/InfoDialog'
+import TagChip from '../../../components/tag/TagChip'
+import ConfirmDialog from '../../../components/dialog/ConfirmDialog'
+import Quill from '../../../components/post/Quill'
+import RelatePost from '../../../components/rightBox/RelatePost'
+import EditUserCard from '../../../components/userCard/EditUserCard'
+import MyTags from '../../../components/rightBox/MyTags'
+import RightUserCard from '../../../components/userCard/RightUserCard'
 
 export default {
   name: 'QuestionDetail',

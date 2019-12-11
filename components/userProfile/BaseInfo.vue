@@ -342,7 +342,7 @@
 </template>
 
 <script>
-import InfoDialog from '../InfoDialog'
+import InfoDialog from '../dialog/InfoDialog'
 export default {
   components: { InfoDialog },
   props: {

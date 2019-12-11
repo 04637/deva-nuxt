@@ -16,13 +16,14 @@
       <UserCard
         v-for="userInfo in userList"
         :key="userInfo.userId"
+        class="mb-2 mr-2"
         :user-info="userInfo"
       ></UserCard>
     </v-layout>
   </v-app>
 </template>
 <script>
-import UserCard from '../../components/UserCard'
+import UserCard from '../../components/userCard/UserCard'
 export default {
   components: { UserCard },
   data: () => ({

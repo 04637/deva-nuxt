@@ -60,11 +60,11 @@
   </v-app>
 </template>
 <script>
-import BQCardList from '../components/BQCardList'
-import RelatePost from '../components/RelatePost'
-import MyTags from '../components/MyTags'
-import ActiveUsers from '../components/ActiveUsers'
-import RightHeader from '../components/RightHeader'
+import BQCardList from '../components/post/BQCardList'
+import RelatePost from '../components/rightBox/RelatePost'
+import MyTags from '../components/rightBox/MyTags'
+import ActiveUsers from '../components/rightBox/ActiveUsers'
+import RightHeader from '../components/rightBox/RightHeader'
 export default {
   components: { ActiveUsers, MyTags, RelatePost, BQCardList, RightHeader },
   data: () => ({

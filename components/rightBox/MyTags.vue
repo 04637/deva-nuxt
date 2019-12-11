@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-import TagChip from './TagChip'
+import TagChip from '../tag/TagChip'
 export default {
   components: { TagChip },
   props: {

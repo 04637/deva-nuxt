@@ -128,7 +128,7 @@
   </v-app>
 </template>
 <script>
-import InfoDialog from '../../components/InfoDialog'
+import InfoDialog from '../../components/dialog/InfoDialog'
 export default {
   components: {
     InfoDialog

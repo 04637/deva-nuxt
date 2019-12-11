@@ -27,7 +27,7 @@
   </v-app>
 </template>
 <script>
-import SpaceCard from '../../components/SpaceCard'
+import SpaceCard from '../../components/space/SpaceCard'
 export default {
   components: { SpaceCard },
   data: () => ({

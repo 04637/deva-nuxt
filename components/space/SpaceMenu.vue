@@ -62,7 +62,7 @@
   </v-row>
 </template>
 <script>
-import ConfirmDialog from './ConfirmDialog'
+import ConfirmDialog from '../dialog/ConfirmDialog'
 export default {
   components: { ConfirmDialog },
   props: {

@@ -71,9 +71,9 @@
   </v-app>
 </template>
 <script>
-import HotTag from '../../components/HotTags'
-import BQCardList from '../../components/BQCardList'
-import RelatePost from '../../components/RelatePost'
+import HotTag from '../../components/tag/HotTags'
+import BQCardList from '../../components/post/BQCardList'
+import RelatePost from '../../components/rightBox/RelatePost'
 export default {
   components: { RelatePost, BQCardList, HotTag },
   data: () => ({

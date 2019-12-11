@@ -139,9 +139,9 @@
   </div>
 </template>
 <script>
-import ConfirmDialog from './ConfirmDialog'
-import TagChip from './TagChip'
-import UserChip from './UserChip'
+import ConfirmDialog from '../dialog/ConfirmDialog'
+import TagChip from '../tag/TagChip'
+import UserChip from '../userCard/UserChip'
 export default {
   components: {
     UserChip,

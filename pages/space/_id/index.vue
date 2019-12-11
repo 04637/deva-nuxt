@@ -106,11 +106,11 @@
   </v-app>
 </template>
 <script>
-import InfoDialog from '../../../components/InfoDialog'
-import HotTag from '../../../components/HotTags'
-import BQCardList from '../../../components/BQCardList'
-import RelatePost from '../../../components/RelatePost'
-import SpaceMenu from '../../../components/SpaceMenu'
+import InfoDialog from '../../../components/dialog/InfoDialog'
+import HotTag from '../../../components/tag/HotTags'
+import BQCardList from '../../../components/post/BQCardList'
+import RelatePost from '../../../components/rightBox/RelatePost'
+import SpaceMenu from '../../../components/space/SpaceMenu'
 export default {
   components: {
     SpaceMenu,

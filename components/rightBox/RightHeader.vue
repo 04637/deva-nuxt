@@ -46,7 +46,9 @@
     </div>
     <div v-else>
       <v-layout align-center
-        ><span class="my_gray--text d-block">立即登录</span></v-layout
+        ><span class="my_gray--text d-block" style="font-size: 13px"
+          >立即登录</span
+        ></v-layout
       >
       <v-divider class="mt-2"></v-divider>
       <v-text-field
@@ -86,7 +88,7 @@
 </template>
 
 <script>
-import ThirdLogin from './login/ThirdLogin'
+import ThirdLogin from '../login/ThirdLogin'
 export default {
   components: { ThirdLogin },
   data: () => ({

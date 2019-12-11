@@ -295,8 +295,9 @@ table td,:not(v-data-table__wrapper) table th {
 }
 .right-box {
   background-color: white !important;
-  box-shadow: 3px 2px 11px 1px rgba(231, 231, 231, 0.71) !important;
-  border: 1px solid #e7e7e7 !important;
+  /*box-shadow: 3px 2px 11px 1px rgba(231, 231, 231, 0.71) !important;*/
+  box-shadow: 0 1px 3px rgba(26,26,26,.1) !important;
+  /*border: 1px solid #e7e7e7 !important;*/
   border-radius: 3px !important;
 }
 .flat .v-menu__content {
@@ -305,6 +306,7 @@ table td,:not(v-data-table__wrapper) table th {
 }
 
 .v-card:not(.v-card--flat) {
+  /*box-shadow: 0 1px 3px rgba(26,26,26,.1);*/
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0), 0px 2px 2px 0px rgba(0, 0, 0, 0), 0px 1px 5px 0px rgba(0, 0, 0, 0.12) !important;
 }
 

@@ -172,7 +172,7 @@
   </v-app>
 </template>
 <script>
-import ConfirmDialog from '../../components/ConfirmDialog'
+import ConfirmDialog from '../../components/dialog/ConfirmDialog'
 export default {
   components: {
     ConfirmDialog

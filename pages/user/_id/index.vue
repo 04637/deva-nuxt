@@ -238,7 +238,7 @@
 </template>
 
 <script>
-import InfoDialog from '../../../components/InfoDialog'
+import InfoDialog from '../../../components/dialog/InfoDialog'
 import BaseInfo from '../../../components/userProfile/BaseInfo'
 import MyWatch from '../../../components/userProfile/MyWatch'
 import MyQuestions from '../../../components/userProfile/MyQuestions'

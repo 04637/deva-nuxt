@@ -1,10 +1,5 @@
 <template>
-  <v-card
-    flat
-    class="pa-2"
-    :width="minWidth"
-    style="border-radius: 0;border-right: 0.5px solid #e7e7e7;border-bottom: 0.5px solid #e7e7e7"
-  >
+  <v-card flat class="pa-2 right-box" :width="minWidth">
     <v-layout justify-start align-start>
       <v-flex shrink md2 hidden-sm-and-down>
         <v-avatar
@@ -52,7 +47,7 @@
             "
             ><v-icon small color="private">{{ actionIcon }}</v-icon></v-btn
           >
-          <v-layout>
+          <v-layout style="position: relative; top: -2px">
             <span
               ><nuxt-link class="hover-line" :to="'/user/' + userInfo.userId">{{
                 userInfo.nickname
@@ -118,7 +113,7 @@
   </v-card>
 </template>
 <script>
-import ConfirmDialog from './ConfirmDialog'
+import ConfirmDialog from '../dialog/ConfirmDialog'
 export default {
   components: {
     ConfirmDialog

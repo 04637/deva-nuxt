@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import UserCard from '../UserCard'
+import UserCard from '../userCard/UserCard'
 export default {
   components: { UserCard },
   props: {

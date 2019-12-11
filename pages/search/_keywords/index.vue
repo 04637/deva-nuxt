@@ -58,9 +58,9 @@
   </v-app>
 </template>
 <script>
-import BQCardList from '../../../components/BQCardList'
-import RelatePost from '../../../components/RelatePost'
-import ActiveUsers from '../../../components/ActiveUsers'
+import BQCardList from '../../../components/post/BQCardList'
+import RelatePost from '../../../components/rightBox/RelatePost'
+import ActiveUsers from '../../../components/rightBox/ActiveUsers'
 export default {
   components: {
     ActiveUsers,

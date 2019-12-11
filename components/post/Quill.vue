@@ -30,7 +30,7 @@
 </template>
 <script>
 import hljs from 'highlight.js'
-import InfoDialog from './InfoDialog'
+import InfoDialog from '../dialog/InfoDialog'
 
 export default {
   components: { InfoDialog },

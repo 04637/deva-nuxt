@@ -151,10 +151,10 @@
   </v-app>
 </template>
 <script>
-import TagChip from '../../../components/TagChip'
-import RelatePost from '../../../components/RelatePost'
-import HeaderUserCard from '../../../components/HeaderUserCard'
-import RightUserCard from '../../../components/RightUserCard'
+import TagChip from '../../../components/tag/TagChip'
+import RelatePost from '../../../components/rightBox/RelatePost'
+import HeaderUserCard from '../../../components/userCard/HeaderUserCard'
+import RightUserCard from '../../../components/userCard/RightUserCard'
 
 export default {
   name: 'BlogDetail',

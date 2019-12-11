@@ -160,7 +160,7 @@
   </div>
 </template>
 <script>
-import ConfirmDialog from '../../components/ConfirmDialog'
+import ConfirmDialog from '../dialog/ConfirmDialog'
 export default {
   components: {
     ConfirmDialog
