@@ -10,21 +10,36 @@
       style="position:relative; top:103px;"
       class="white--text"
     >
-      <div class="label-div" @click="tabIndex = 3">
+      <div
+        class="label-div"
+        @click="
+          tabIndex = $store.getters.getUserId === userProfile.userId ? 3 : 0
+        "
+      >
         <div class="label-des">提问</div>
         <div class="label-num">{{ userProfile.questions.length }}</div>
       </div>
       <div class="label-divider">
         <div class="label-des">|</div>
       </div>
-      <div class="label-div" @click="tabIndex = 4">
+      <div
+        class="label-div"
+        @click="
+          tabIndex = $store.getters.getUserId === userProfile.userId ? 4 : 1
+        "
+      >
         <div class="label-des">回答</div>
         <div class="label-num">{{ userProfile.answers.length }}</div>
       </div>
       <div class="label-divider">
         <div class="label-des">|</div>
       </div>
-      <div class="label-div" @click="tabIndex = 4">
+      <div
+        class="label-div"
+        @click="
+          tabIndex = $store.getters.getUserId === userProfile.userId ? 4 : 1
+        "
+      >
         <div class="label-des">采纳率</div>
         <div class="label-num">{{ userProfile.adoptionRate }}%</div>
       </div>
@@ -102,14 +117,24 @@
           >
         </div>
       </v-flex>
-      <div class="label-div" @click="tabIndex = 5">
+      <div
+        class="label-div"
+        @click="
+          tabIndex = $store.getters.getUserId === userProfile.userId ? 5 : 2
+        "
+      >
         <div class="label-des">博文</div>
         <div class="label-num">{{ userProfile.blogs.length }}</div>
       </div>
       <div class="label-divider">
         <div class="label-des">|</div>
       </div>
-      <div class="label-div" @click="tabIndex = 7">
+      <div
+        class="label-div"
+        @click="
+          tabIndex = $store.getters.getUserId === userProfile.userId ? 7 : 3
+        "
+      >
         <div class="label-des">粉丝</div>
         <div class="label-num">{{ userProfile.followers.length }}</div>
       </div>
@@ -388,8 +413,11 @@ export default {
   top: -10px;
 }
 .label-div:hover {
-  background-color: rgba(250, 250, 250, 0.24);
+  /*background-color: rgba(250, 250, 250, 0.24);*/
   cursor: pointer;
+}
+.label-div:hover .label-des {
+  color: white !important;
 }
 .label-num {
   margin-top: 15px;
