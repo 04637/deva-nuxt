@@ -47,12 +47,14 @@
       >
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
-      <v-flex xs12 sm12 lg9 justify-start shrink>
+      <v-flex xs12 md9 lg9 justify-start shrink>
         <BQCardList v-if="bqList" :bq-list="bqList"></BQCardList>
       </v-flex>
-      <v-flex lg3 justify-end shrink hidden-md-and-down class="ml-3">
-        <relate-post></relate-post>
-        <active-users class="mt-4"></active-users>
+      <v-flex md3 lg3 justify-end shrink hidden-sm-and-down class="ml-3">
+        <right-header></right-header>
+        <MyTags class="mt-3"></MyTags>
+        <relate-post class="mt-3"></relate-post>
+        <active-users class="mt-3"></active-users>
       </v-flex>
     </v-layout>
   </v-app>
@@ -61,8 +63,12 @@
 import BQCardList from '../../../components/post/BQCardList'
 import RelatePost from '../../../components/rightBox/RelatePost'
 import ActiveUsers from '../../../components/rightBox/ActiveUsers'
+import RightHeader from '../../../components/rightBox/RightHeader'
+import MyTags from '../../../components/rightBox/MyTags'
 export default {
   components: {
+    MyTags,
+    RightHeader,
     ActiveUsers,
     RelatePost,
     BQCardList
@@ -87,6 +93,10 @@ export default {
   },
   mounted() {
     this.scroll()
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit('setTransparentHeader', false)
+    next()
   },
   methods: {
     searchBQ() {
@@ -127,6 +137,11 @@ export default {
       window.onscroll = () => {
         if (!/\/search\//.test(this.$route.path)) {
           return false
+        }
+        if (document.documentElement.scrollTop > 62) {
+          this.$store.commit('setTransparentHeader', true)
+        } else {
+          this.$store.commit('setTransparentHeader', false)
         }
         // 距离底部200px时加载一次
         const bottomOfWindow =

@@ -27,6 +27,9 @@ export default {
   setUseMarkdown(state, val) {
     state.useMarkdown = val
   },
+  setTransparentHeader(state, val) {
+    state.transparentHeader = val
+  },
   supportWebp(state) {
     state.webpSupport = true
   }

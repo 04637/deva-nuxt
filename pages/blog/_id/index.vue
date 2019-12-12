@@ -1,7 +1,30 @@
 <template>
   <v-app>
     <v-layout justify-center justify-space-around>
-      <v-flex xs12 md10 lg9 justify-start class="mt-4">
+      <v-flex
+        xs12
+        md10
+        lg9
+        justify-start
+        class="mt-4"
+        style="transform:translate(0,0)"
+      >
+        <div class="float-action hidden-md-and-down">
+          <v-flex>
+            <v-btn large icon class="d-block" @click="voteBlog"
+              ><v-icon
+                :color="blogDetail.isUseful ? 'private' : 'my_gray'"
+                small
+                >mdi-thumb-up</v-icon
+              ></v-btn
+            >
+            <v-btn large icon class="d-block mt-4" @click="likeBlog"
+              ><v-icon :color="blogDetail.isLiked ? 'private' : 'my_gray'" small
+                >mdi-heart</v-icon
+              ></v-btn
+            >
+          </v-flex>
+        </div>
         <v-card flat exact width="100vw" class="pa-md-3 right-box">
           <v-col>
             <h2 style="font-weight: normal">{{ blogDetail.title }}</h2>
@@ -102,20 +125,6 @@
         ></client-only>
       </v-flex>
     </v-layout>
-    <div class="float-action hidden-md-and-down">
-      <v-flex>
-        <v-btn large icon class="d-block" @click="voteBlog"
-          ><v-icon :color="blogDetail.isUseful ? 'private' : 'my_gray'" small
-            >mdi-thumb-up</v-icon
-          ></v-btn
-        >
-        <v-btn large icon class="d-block mt-4" @click="likeBlog"
-          ><v-icon :color="blogDetail.isLiked ? 'private' : 'my_gray'" small
-            >mdi-heart</v-icon
-          ></v-btn
-        >
-      </v-flex>
-    </div>
   </v-app>
 </template>
 <script>

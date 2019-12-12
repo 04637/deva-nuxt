@@ -3,12 +3,12 @@
     <v-app>
       <v-layout
         class="right-box"
-        style="position:fixed; left:0; right:0; background-color: white;height: 150px;z-index: 100"
+        style="position:fixed; top:62px; left:0; right:0; background-color: white;height: 150px;z-index: 100"
         justify-center
       >
-        <v-card class="py-3 px-3" flat max-width="1200px" width="95%">
+        <v-card class="py-3 px-3" flat max-width="1032px" width="100%">
           <v-layout justify-center>
-            <v-flex md9 align-space-between>
+            <v-flex md9 sm12 align-space-between>
               <v-layout column style="height: 140px" justify-space-around>
                 <v-layout wrap shrink>
                   <TagChip
@@ -20,30 +20,55 @@
                 </v-layout>
                 <h3>{{ questionDetail.title }}</h3>
                 <v-layout shrink>
-                  <v-btn color="blue" small class="white--text">关注问题</v-btn>
-                  <v-btn color="blue" small class="white--text ml-2" outlined
+                  <v-btn
+                    color="blue"
+                    small
+                    width="80.23px"
+                    class="white--text"
+                    :outlined="questionDetail.isCollected"
+                    @click="collectQuestion"
+                    @mouseover="watchMouseOver = true"
+                    @mouseleave="watchMouseOver = false"
+                    >{{
+                      questionDetail.isCollected
+                        ? watchMouseOver
+                          ? '取消关注'
+                          : '已关注'
+                        : '关注问题'
+                    }}</v-btn
+                  >
+                  <v-btn
+                    color="blue"
+                    small
+                    class="white--text ml-4"
+                    outlined
+                    @click="toBottom"
                     ><v-icon small>edit</v-icon>写回答</v-btn
                   >
                 </v-layout>
               </v-layout>
             </v-flex>
-            <v-flex md3>
+            <v-flex md3 hidden-sm-and-down>
               <v-layout justify-space-around>
                 <v-flex shrink>
                   <div style="color: #8590a6">关注者</div>
-                  <div><strong>20,599</strong></div>
+                  <div class="text-center">
+                    <strong>{{ questionDetail.collectNum }}</strong>
+                  </div>
                 </v-flex>
                 <v-divider vertical></v-divider>
                 <v-flex shrink>
                   <div style="color: #8590a6">被浏览</div>
-                  <div><strong>840,109</strong></div>
+                  <div class="text-center">
+                    <strong>{{ questionDetail.viewNum }}</strong>
+                  </div>
                 </v-flex>
               </v-layout>
             </v-flex>
           </v-layout>
         </v-card>
       </v-layout>
-      <v-layout justify-center justify-space-around style="margin-top: 150px">
+      <v-layout justify-center justify-space-around style="margin-top: 120px">
         <v-flex sm12 md11 lg9 justify-start class="mt-4">
           <v-card flat width="100vw" class="pr-md-4 pr-sm-1 right-box">
             <v-layout justify-space-between>
@@ -66,19 +91,14 @@
                       >arrow_drop_down</v-icon
                     >
                   </v-btn>
-                  <v-btn icon fab @click="collectQuestion">
-                    <v-icon
-                      :color="questionDetail.isCollected ? 'private' : ''"
-                      >{{
-                        questionDetail.isCollected
-                          ? 'favorite'
-                          : 'favorite_border'
-                      }}</v-icon
-                    >
-                  </v-btn>
                 </v-layout>
               </v-flex>
-              <v-flex xs12 md11 class="ml-md-4 pr-md-3 pr-sm-0 pr-xs-0">
+              <v-flex
+                xs12
+                md11
+                class="ml-md-4 pr-md-3"
+                style="padding: 0 10px;"
+              >
                 <v-layout justify-end style="min-height: 36px">
                   <!--<v-btn-->
                   <!--  v-if="-->
@@ -314,7 +334,8 @@
               flat
               exact
               width="100vw"
-              class="pt-1 pr-md-4 pr-sm-1 right-box"
+              style="padding: 0 10px;"
+              class="pt-1 pr-md-4 right-box"
             >
               <v-layout justify-space-between>
                 <v-flex md1 hidden-sm-and-down class="mt-12" align-center>
@@ -548,32 +569,32 @@
           ></client-only>
         </v-flex>
       </v-layout>
-      <div class="float-action hidden-md-and-down">
-        <v-flex shrink>
-          <v-btn
-            large
-            icon
-            class="d-block left-icon-btn"
-            @click="voteQuestion(true)"
-            ><v-icon
-              :color="questionDetail.isUseful === true ? 'private' : 'my_gray'"
-              small
-              >mdi-thumb-up</v-icon
-            ></v-btn
-          >
-          <v-btn
-            large
-            icon
-            class="d-block mt-4 left-icon-btn"
-            @click="collectQuestion"
-            ><v-icon
-              :color="questionDetail.isCollected ? 'private' : 'my_gray'"
-              small
-              >mdi-heart</v-icon
-            ></v-btn
-          >
-        </v-flex>
-      </div>
+      <!--<div class="float-action hidden-md-and-down">-->
+      <!--  <v-flex shrink>-->
+      <!--    <v-btn-->
+      <!--      large-->
+      <!--      icon-->
+      <!--      class="d-block left-icon-btn"-->
+      <!--      @click="voteQuestion(true)"-->
+      <!--      ><v-icon-->
+      <!--        :color="questionDetail.isUseful === true ? 'private' : 'my_gray'"-->
+      <!--        small-->
+      <!--        >mdi-thumb-up</v-icon-->
+      <!--      ></v-btn-->
+      <!--    >-->
+      <!--    <v-btn-->
+      <!--      large-->
+      <!--      icon-->
+      <!--      class="d-block mt-4 left-icon-btn"-->
+      <!--      @click="collectQuestion"-->
+      <!--      ><v-icon-->
+      <!--        :color="questionDetail.isCollected ? 'private' : 'my_gray'"-->
+      <!--        small-->
+      <!--        >mdi-heart</v-icon-->
+      <!--      ></v-btn-->
+      <!--    >-->
+      <!--  </v-flex>-->
+      <!--</div>-->
     </v-app>
     <v-dialog v-model="similarMark.dialog" persistent max-width="600px">
       <v-card>
@@ -668,6 +689,7 @@ export default {
     return /^\d{18}$/.test(params.id)
   },
   data: () => ({
+    watchMouseOver: false,
     contentCode: '',
     quillErrMsg: null,
     questionDetail: null,
@@ -807,6 +829,13 @@ export default {
             this.similarMark.errorMsg = '权限不足'
           }
         })
+    },
+    toBottom() {
+      this.$vuetify.goTo(9999, {
+        duration: 245,
+        offset: 0,
+        easing: 'easeInCubic'
+      })
     },
     acceptAnswer() {
       const answer = this.acceptConfirm.answer

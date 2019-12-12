@@ -90,6 +90,10 @@ export default {
     this.loadLikeTags()
     this.scroll()
   },
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit('setTransparentHeader', false)
+    next()
+  },
   methods: {
     loadBQ() {
       this.page.current = 1
@@ -144,6 +148,11 @@ export default {
         }
         if (!/^\/$/.test(this.$route.path)) {
           return false
+        }
+        if (document.documentElement.scrollTop > 62) {
+          this.$store.commit('setTransparentHeader', true)
+        } else {
+          this.$store.commit('setTransparentHeader', false)
         }
         // 距离底部200px时加载一次
         const bottomOfWindow =

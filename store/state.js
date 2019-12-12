@@ -4,6 +4,8 @@ export default () => ({
   // 控制显示底部条
   showFooter: false,
   unReadMessageCount: 0,
+  // 使头部透明化
+  transparentHeader: false,
   // 全局异常
   systemError: {
     // 监听该值来弹出错误提示

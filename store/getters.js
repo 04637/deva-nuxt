@@ -29,6 +29,9 @@ export default {
   getShowFooter(state) {
     return state.showFooter
   },
+  getTransparentHeader(state) {
+    return state.transparentHeader
+  },
   getUseMarkdown(state) {
     return state.useMarkdown
   },

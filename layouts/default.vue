@@ -2,6 +2,7 @@
   <v-app id="inspire">
     <v-app-bar
       app
+      :class="$store.getters.getTransparentHeader ? 'transparent-header' : ''"
       style="background-color: #24292e; max-height: 64px;  z-index: 999;"
       class="text_primary--text justify-center"
     >
@@ -114,7 +115,7 @@
                     small
                     color="primary"
                     :to="'/user/' + $store.getters.getUserInfo.userId"
-                    style="border-radius: 0;"
+                    style="border-radius: 0; background-color: transparent !important;"
                     class="d-inline-block no-flex text-truncate text-left mr-1 text_primary__text"
                     >{{
                       $store.getters.getUserInfo.nickname ||
@@ -203,7 +204,7 @@
     </v-app-bar>
     <v-layout id="content_bg" justify-center>
       <v-flex
-        style="max-width: 1200px;width: 100%"
+        style="max-width: 1032px;width: 100%"
         class="pb-12 mb-5 mt-3 px-2"
         justify-center
       >
@@ -667,14 +668,32 @@ export default {
   min-height: 26px;
 }
 
-.theme--light header .v-toolbar__content {
-  border-bottom: 1px solid #24292e;
-}
 .my_nav .v-btn__content {
 }
 #content_bg {
   /*background: url('/svg/star-bg.svg') center;*/
   background-size: cover;
+}
+.transparent-header {
+  background-color: #454545c2 !important;
+  max-height: 54px !important;
+  transition: all 200ms linear;
+}
+.transparent-header .v-toolbar__content {
+  height: 54px !important;
+  border-bottom: none !important;
+  transition: all 200ms linear;
+}
+.transparent-header .v-input__control {
+  opacity: 0.7 !important;
+}
+.v-app-bar:not(.transparent-header) {
+  max-height: 64px !important;
+  transition: all 100ms linear;
+}
+.v-app-bar:not(.transparent-header) .v-toolbar__content {
+  height: 64px !important;
+  transition: all 100ms linear;
 }
 </style>
 <style scoped>
