@@ -3,7 +3,8 @@
     <v-app>
       <v-layout
         class="right-box"
-        style="position:fixed; top:62px; left:0; right:0; background-color: white;height: 150px;z-index: 100"
+        :class="miniTop ? 'mini-top' : 'top'"
+        style="position:fixed;  left:0; right:0; background-color: white;min-height: 150px;z-index: 100"
         justify-center
       >
         <v-card class="py-3 px-3" flat max-width="1032px" width="100%">
@@ -19,7 +20,11 @@
                   ></TagChip>
                 </v-layout>
                 <h3>{{ questionDetail.title }}</h3>
-                <v-layout shrink>
+                <v-layout
+                  shrink
+                  class="mt-2"
+                  :class="miniTop ? 'hidden-lg-and-down' : ''"
+                >
                   <v-btn
                     color="blue"
                     small
@@ -68,13 +73,18 @@
           </v-layout>
         </v-card>
       </v-layout>
-      <v-layout justify-center justify-space-around style="margin-top: 120px">
+      <v-layout justify-center justify-space-around style="margin-top: 130px">
         <v-flex sm12 md11 lg9 justify-start class="mt-4">
-          <v-card flat width="100vw" class="pr-md-4 pr-sm-1 right-box">
+          <v-card
+            flat
+            width="100vw"
+            style="padding: 0 10px;"
+            class="pr-md-4 pr-sm-1 right-box"
+          >
             <v-layout justify-space-between>
               <v-flex md1 hidden-sm-and-down class="mt-12" align-center>
                 <v-layout column align-center>
-                  <v-btn icon fab @click="voteQuestion(true)">
+                  <v-btn small icon fab @click="voteQuestion(true)">
                     <v-icon
                       size="60"
                       :color="questionDetail.isUseful === true ? 'success' : ''"
@@ -82,7 +92,7 @@
                     >
                   </v-btn>
                   <strong>{{ questionDetail.voteNum }}</strong>
-                  <v-btn icon fab @click="voteQuestion(false)">
+                  <v-btn small icon fab @click="voteQuestion(false)">
                     <v-icon
                       size="60"
                       :color="
@@ -340,7 +350,7 @@
               <v-layout justify-space-between>
                 <v-flex md1 hidden-sm-and-down class="mt-12" align-center>
                   <v-layout column align-center>
-                    <v-btn icon fab @click="voteAnswer(answer, true)">
+                    <v-btn small icon fab @click="voteAnswer(answer, true)">
                       <v-icon
                         size="60"
                         :color="answer.isUseful === true ? 'success' : ''"
@@ -348,7 +358,7 @@
                       >
                     </v-btn>
                     <strong>{{ answer.voteNum }}</strong>
-                    <v-btn icon fab @click="voteAnswer(answer, false)">
+                    <v-btn small icon fab @click="voteAnswer(answer, false)">
                       <v-icon
                         size="60"
                         :color="answer.isUseful === false ? 'success' : ''"
@@ -739,7 +749,8 @@ export default {
       matchQuestionLink: (v) =>
         (v && /question\/(\d{18})/.test(v)) || '请输入有效的问题链接'
     },
-    keywords: null
+    keywords: null,
+    miniTop: false
   }),
   computed: {},
   watch: {},
@@ -775,6 +786,12 @@ export default {
   },
   mounted() {
     this.pushBaidu()
+    window.onscroll = () => {
+      if (!/^\/question\/\d+$/.test(this.$route.path)) {
+        return false
+      }
+      this.miniTop = document.documentElement.scrollTop > 30
+    }
   },
   methods: {
     pushBaidu() {
@@ -1007,13 +1024,12 @@ export default {
 }
 </script>
 <style scoped>
->>> .float-action {
-  position: fixed;
-  top: 400px;
-  left: 17%;
+.mini-top {
+  top: -300px !important;
+  transition: all 400ms linear;
 }
->>> .float-action .v-btn {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  background-color: white;
+.top {
+  top: 62px !important;
+  transition: all 200ms linear;
 }
 </style>

@@ -1,15 +1,8 @@
 <template>
   <v-app>
-    <v-layout justify-center justify-space-around>
-      <v-flex
-        xs12
-        md10
-        lg9
-        justify-start
-        class="mt-4"
-        style="transform:translate(0,0)"
-      >
-        <div class="float-action hidden-md-and-down">
+    <v-layout justify-center justify-space-around style="position:relative">
+      <v-flex xs12 md10 lg9 justify-start class="mt-4">
+        <div class="float-action hidden-sm-and-down" style="z-index: 999">
           <v-flex>
             <v-btn large icon class="d-block" @click="voteBlog"
               ><v-icon
@@ -282,8 +275,8 @@ export default {
 <style scoped>
 >>> .float-action {
   position: fixed;
-  top: 400px;
-  left: 17%;
+  margin-left: -64px;
+  margin-top: 200px;
 }
 >>> .float-action .v-btn {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
