@@ -53,6 +53,21 @@
         >查看所有标签 >
       </v-btn>
     </v-layout>
+    <div
+      v-if="hotTagList && hotTagList.length > 0"
+      style="font-size: 14px; color: #999; margin-top: 10px"
+    >
+      热门标签
+    </div>
+    <transition-group name="list">
+      <div v-for="tag in hotTagList" :key="tag.tagId" class="mb-3 mt-1">
+        <TagChip color="light_blue" :tag-info="tag"></TagChip>&nbsp;<span
+          class="my_gray--text"
+          title="使用次数"
+          >× {{ tag.totalCount }}</span
+        >
+      </div>
+    </transition-group>
   </div>
 </template>
 <script>
@@ -68,7 +83,7 @@ export default {
     hotSize: {
       required: false,
       type: Number,
-      default: 15
+      default: 8
     }
   },
   data: () => ({
@@ -84,6 +99,9 @@ export default {
       if (this.$store.getters.getUserId) {
         this.$axios.$post('/tagLike/listLikeTags').then((resp) => {
           this.likeTagList = resp.data
+          if (this.likeTagList.length === 0) {
+            this.loadHotTags()
+          }
         })
       }
     },
@@ -101,6 +119,19 @@ export default {
               }
             }
           }
+        })
+    },
+    loadHotTags() {
+      if (!this.loadHot) {
+        return
+      }
+      this.$axios
+        .$post('/tagInfo/listTags', {
+          current: 1,
+          size: this.hotSize
+        })
+        .then((resp) => {
+          this.hotTagList = resp.data
         })
     }
   }

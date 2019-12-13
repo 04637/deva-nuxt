@@ -49,7 +49,7 @@
           color="my_gray"
           width="100%"
           :to="'/user/' + $store.getters.getUserId + '?tab=ask'"
-          >查看所有问题 >
+          >我的所有提问 >
         </v-btn>
       </v-layout>
     </div>

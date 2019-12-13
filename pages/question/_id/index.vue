@@ -19,12 +19,19 @@
                     :tag-info="tag"
                   ></TagChip>
                 </v-layout>
-                <h3>{{ questionDetail.title }}</h3>
-                <v-layout
-                  shrink
-                  class="mt-2"
-                  :class="miniTop ? 'hidden-lg-and-down' : ''"
-                >
+                <h3>
+                  {{ questionDetail.title }}
+                  <v-icon
+                    large
+                    color="my_green"
+                    title="已解决"
+                    style="position:relative; top:-3px"
+                    >{{
+                      questionDetail.status === 1 ? 'mdi-check-bold' : ''
+                    }}</v-icon
+                  >
+                </h3>
+                <v-layout shrink class="mt-2">
                   <v-btn
                     color="blue"
                     small
@@ -265,8 +272,22 @@
                                   $options.filters.moment(comment.createTime)
                                 "
                                 >&nbsp;{{ comment.createTime | timeago }}</span
-                              >
-                            </span>
+                              > </span
+                            >&nbsp;<span
+                              v-if="
+                                comment.author.userId ===
+                                  $store.getters.getUserId
+                              "
+                              class="link_color--text"
+                              style="font-size:0.8rem; cursor: pointer"
+                              @click="
+                                delQuestionComment(
+                                  questionDetail.comments,
+                                  comment.commentId
+                                )
+                              "
+                              >删除</span
+                            >
                           </v-list-item>
                           <v-divider></v-divider>
                         </div>
@@ -406,10 +427,10 @@
                     <v-chip
                       v-if="answer.isAccepted"
                       style="max-width:170px; text-decoration: none;border-radius: 0; color: white"
-                      color="private"
+                      color="my_green"
                       small
                     >
-                      已采纳
+                      推荐回答
                     </v-chip>
                   </v-layout>
                   <div v-dompurify-html="$md.render(answer.content)"></div>
@@ -473,8 +494,22 @@
                                   >&nbsp;{{
                                     comment.createTime | timeago
                                   }}</span
-                                >
-                              </span>
+                                > </span
+                              >&nbsp;<span
+                                v-if="
+                                  comment.author.userId ===
+                                    $store.getters.getUserId
+                                "
+                                class="link_color--text"
+                                style="font-size:0.8rem; cursor: pointer"
+                                @click="
+                                  delQuestionComment(
+                                    answer.comments,
+                                    comment.commentId
+                                  )
+                                "
+                                >删除</span
+                              >
                             </v-list-item>
                             <v-divider></v-divider>
                           </div>
@@ -575,7 +610,6 @@
               :exclude-id="questionDetail.questionId"
               :tags="questionDetail.tagInfos"
             ></RelatePost
-            ><my-tags class="mt-4"></my-tags
           ></client-only>
         </v-flex>
       </v-layout>
@@ -680,14 +714,12 @@ import ConfirmDialog from '../../../components/dialog/ConfirmDialog'
 import Quill from '../../../components/post/Quill'
 import RelatePost from '../../../components/rightBox/RelatePost'
 import EditUserCard from '../../../components/userCard/EditUserCard'
-import MyTags from '../../../components/rightBox/MyTags'
 import RightUserCard from '../../../components/userCard/RightUserCard'
 
 export default {
   name: 'QuestionDetail',
   components: {
     RightUserCard,
-    MyTags,
     EditUserCard,
     RelatePost,
     Quill,
@@ -794,6 +826,22 @@ export default {
     }
   },
   methods: {
+    delQuestionComment(_comments, _commentId) {
+      this.$axios
+        .$post('/questionComment/delComment', {
+          commentId: _commentId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            for (let i = 0; i < _comments.length; ++i) {
+              if (_comments[i].commentId === _commentId) {
+                _comments.splice(i, 1)
+                break
+              }
+            }
+          }
+        })
+    },
     pushBaidu() {
       const bp = document.createElement('script')
       const curProtocol = window.location.protocol.split(':')[0]

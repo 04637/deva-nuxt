@@ -76,6 +76,16 @@
                         style="font-size: 0.8rem;"
                         :title="$options.filters.moment(comment.createTime)"
                         >&nbsp;{{ comment.createTime | timeago }}</span
+                      >&nbsp;<span
+                        v-if="
+                          comment.author.userId === $store.getters.getUserId
+                        "
+                        class="link_color--text"
+                        style="font-size:0.8rem; cursor: pointer"
+                        @click="
+                          delBlogComment(blogDetail.comments, comment.commentId)
+                        "
+                        >删除</span
                       >
                     </span>
                   </v-list-item>
@@ -198,6 +208,22 @@ export default {
     this.pushBaidu()
   },
   methods: {
+    delBlogComment(_comments, _commentId) {
+      this.$axios
+        .$post('/blogComment/delComment', {
+          commentId: _commentId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            for (let i = 0; i < _comments.length; ++i) {
+              if (_comments[i].commentId === _commentId) {
+                _comments.splice(i, 1)
+                break
+              }
+            }
+          }
+        })
+    },
     pushBaidu() {
       const bp = document.createElement('script')
       const curProtocol = window.location.protocol.split(':')[0]
