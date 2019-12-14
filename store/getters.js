@@ -14,6 +14,9 @@ export default {
   getUserId(state) {
     return state.userInfo ? state.userInfo.userId : null
   },
+  getUserPhone(state) {
+    return state.userInfo ? state.userInfo.phone : null
+  },
   getRep(state) {
     return state.userInfo ? state.userInfo.reputation : null
   },
@@ -37,5 +40,8 @@ export default {
   },
   isSupportWebp(state) {
     return state.webpSupport
+  },
+  getPhoneDialog(state) {
+    return state.phoneDialog
   }
 }

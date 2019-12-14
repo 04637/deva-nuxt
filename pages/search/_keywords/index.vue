@@ -1,51 +1,55 @@
 <template>
   <v-app>
     <v-layout column shrink>
-      <v-layout>
-        <v-flex md7 lg6 shrink hidden-sm-and-down>
-          <v-card-title class="pa-0"
-            ><v-layout align-center>
-              <v-flex v-if="$route.query.match === 'tags'">
-                <v-chip
-                  text
-                  style="max-width:170px; cursor: pointer; text-decoration: none;border-radius: 0"
-                  :title="$route.params.keywords"
-                >
-                  <span>{{ $route.params.keywords }}</span></v-chip
-                >
-              </v-flex>
-              <v-flex v-if="$route.query.match === 'tags' && tagInfo">
-                <span
-                  style="font-size: 14px;line-height: 17px"
-                  class=" ml-3 my_gray--text label-description"
-                  :title="tagInfo.description"
-                  >{{ tagInfo.description }}</span
-                >
-                <span v-if="$route.query.match !== 'tags'" class="ml-3">{{
-                  $route.params.keywords
-                }}</span></v-flex
-              ></v-layout
-            ></v-card-title
+      <v-layout
+        v-if="$route.query.match === 'tags'"
+        md7
+        lg6
+        shrink
+        hidden-sm-and-down
+        ><v-layout align-center>
+          <v-flex shrink>
+            <v-chip
+              color="rgba(221, 238, 255, 0.5411764705882353)"
+              style="font-weight: 500;cursor: pointer; text-decoration: none;border-radius: 3px; font-size: 16px !important;"
+              class="text-left my_blue--text"
+              title="关注该标签"
+              @click="likeTag(tagInfo)"
+            >
+              {{ $route.params.keywords }}</v-chip
+            >
+          </v-flex>
+          <v-layout
+            v-if="$route.query.match === 'tags' && tagInfo"
+            style="line-height: normal"
+            align-center
           >
-        </v-flex>
-        <v-flex md5 lg6 align-self-end>
-          <v-tabs
-            height="38"
-            slider-color="slider_color"
-            background-color="transparent"
-            @change="searchBQ"
-          >
-            <v-tab @click="sortType = 'RELEVANCE'">相关</v-tab>
-            <v-tab @click="sortType = 'RECENT'">最新</v-tab>
-            <v-tab @click="sortType = 'ACTIVE'">活跃</v-tab>
-          </v-tabs>
-        </v-flex>
+            <span
+              style="font-size: 14px;line-height: 20px; display: inline-block; min-height: 0"
+              class=" ml-3 my_gray--text label-description"
+              :title="tagInfo.description"
+              >{{ tagInfo.description }}
+            </span>
+          </v-layout></v-layout
+        >
       </v-layout>
-      <v-divider></v-divider>
-      <span class="my_gray--text" style="font-size: 0.7rem"
-        >找到相关结果约 {{ totalElements }} 个</span
-      >
+      <v-layout>
+        <v-tabs
+          height="38"
+          slider-color="slider_color"
+          background-color="transparent"
+          @change="searchBQ"
+        >
+          <v-tab @click="sortType = 'RELEVANCE'">相关</v-tab>
+          <v-tab @click="sortType = 'RECENT'">最新</v-tab>
+          <v-tab @click="sortType = 'ACTIVE'">活跃</v-tab>
+        </v-tabs>
+      </v-layout>
     </v-layout>
+    <v-divider></v-divider>
+    <span class="my_gray--text" style="font-size: 0.7rem"
+      >找到相关结果约 {{ totalElements }} 个</span
+    >
     <v-layout justify-center justify-space-around class="mt-4">
       <v-flex xs12 md9 lg9 justify-start shrink>
         <BQCardList v-if="bqList" :bq-list="bqList"></BQCardList>
@@ -132,6 +136,17 @@ export default {
             }
           })
       }
+    },
+    likeTag(_tag) {
+      this.$axios
+        .$post('/tagLike/likeTag', {
+          tagId: _tag.tagId
+        })
+        .then((resp) => {
+          if (resp.succeed) {
+            this.$set(_tag, 'liked', resp.data)
+          }
+        })
     },
     scroll() {
       window.onscroll = () => {

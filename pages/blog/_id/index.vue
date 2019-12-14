@@ -254,6 +254,10 @@ export default {
         })
     },
     sendComment() {
+      if (this.$store.getters.getUserId && !this.$store.getters.getUserPhone) {
+        this.$store.commit('setPhoneDialog', true)
+        return false
+      }
       if (!this.$refs.commentRef.validate()) {
         return false
       }

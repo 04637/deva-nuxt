@@ -959,6 +959,10 @@ export default {
         })
     },
     sendComment(id) {
+      if (this.$store.getters.getUserId && !this.$store.getters.getUserPhone) {
+        this.$store.commit('setPhoneDialog', true)
+        return false
+      }
       if (!this.$refs['comment' + id].validate()) {
         return false
       }

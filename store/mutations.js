@@ -32,5 +32,8 @@ export default {
   },
   supportWebp(state) {
     state.webpSupport = true
+  },
+  setPhoneDialog(state, val) {
+    state.phoneDialog = val
   }
 }

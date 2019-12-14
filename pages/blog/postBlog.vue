@@ -368,6 +368,9 @@ export default {
     }
   },
   created() {
+    if (!this.$store.getters.getUserInfo.phone) {
+      this.$store.commit('setPhoneDialog', true)
+    }
     this.loadTags()
     this.loadEditBlog()
   },

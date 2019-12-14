@@ -4,7 +4,7 @@
       <v-layout align-center justify-space-between>
         <v-layout align-center>
           <TagChip :tag-info="tagInfo"></TagChip>
-          <span class="ml-2 my_gray--text" title="总使用次数"
+          <span class="ml-2 my_gray--text" title="总提问次数"
             >× {{ tagInfo.totalCount }}</span
           ></v-layout
         >

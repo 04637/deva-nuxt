@@ -319,6 +319,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <edit-phone></edit-phone>
   </v-app>
 </template>
 
@@ -328,9 +329,11 @@ import Logo from '../components/Logo'
 import config from '../nuxt.config.js'
 import ErrorDialog from '../components/dialog/ErrorDialog'
 import FloatMenu from '../components/float/FloatMenu'
+import EditPhone from '../components/dialog/EditPhone'
 export default {
   name: 'App',
   components: {
+    EditPhone,
     FloatMenu,
     Logo,
     ErrorDialog

@@ -1,5 +1,7 @@
 export default () => ({
   userInfo: null,
+  // 手机绑定弹框
+  phoneDialog: false,
   useMarkdown: false,
   // 控制显示底部条
   showFooter: false,

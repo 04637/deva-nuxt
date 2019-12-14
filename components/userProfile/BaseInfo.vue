@@ -148,9 +148,8 @@
                 </v-text-field>
                 <v-btn
                   v-show="emailCodeResult.timeInterval <= 0"
-                  class="ml-5"
                   text
-                  outlined
+                  color="link_color"
                   small
                   :loading="emailCodeResult.loading"
                   @click="sendEmailCode"
@@ -188,7 +187,7 @@
                 <v-text-field
                   ref="editPhoneRef"
                   v-model="editPhone.phone"
-                  label="输入要绑定的手机号码"
+                  label="手机号"
                   :error-messages="editPhone.phoneCheck"
                   :rules="[rules.phone]"
                 >
@@ -204,9 +203,8 @@
                 </v-text-field>
                 <v-btn
                   v-show="smsCodeResult.timeInterval <= 0"
-                  class="ml-5"
                   text
-                  outlined
+                  color="link_color"
                   small
                   :loading="smsCodeResult.loading"
                   @click="sendSmsCode"

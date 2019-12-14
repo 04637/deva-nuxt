@@ -94,6 +94,7 @@ export default {
   },
   watch: {
     myContent() {
+      this.checkPhone()
       const regex = /data:image\/.*?;base64,(.*?)"/g
       let q = null
       while ((q = regex.exec(this.myContent)) != null) {
@@ -139,6 +140,12 @@ export default {
     }, 100)
   },
   methods: {
+    checkPhone() {
+      if (this.$store.getters.getUserId && !this.$store.getters.getUserPhone) {
+        this.$store.commit('setPhoneDialog', true)
+        return false
+      }
+    },
     updateContent(_content) {
       this.myContent = _content
     }

@@ -12,7 +12,7 @@
         <div v-for="tag in hotTagList" :key="tag.tagId" class="mb-3 mt-1">
           <TagChip color="light_blue" :tag-info="tag"></TagChip>&nbsp;<span
             class="my_gray--text"
-            title="使用次数"
+            title="提问次数"
             >× {{ tag.totalCount }}</span
           >
         </div>
