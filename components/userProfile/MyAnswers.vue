@@ -58,7 +58,12 @@ export default {
         value: 'questionTitle'
       },
       { text: '赞成', value: 'voteNum', sortable: false, align: 'center' },
-      { text: '状态', value: 'isAccepted', sortable: false, align: 'center' }
+      {
+        text: '采纳状态',
+        value: 'isAccepted',
+        sortable: false,
+        align: 'center'
+      }
     ]
   }),
   methods: {}

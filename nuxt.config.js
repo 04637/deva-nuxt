@@ -202,7 +202,7 @@ export default {
    */
   build: {
     // todo 暂时关闭cdn
-    // publicPath: 'https://oss-cdn.deva.wiki/_nuxt/'
+    publicPath: 'https://oss-cdn.deva.wiki/_nuxt/'
     /*
      ** You can extend webpack config here
      */

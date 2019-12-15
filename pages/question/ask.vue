@@ -11,15 +11,15 @@
           >
         </v-flex>
         <v-flex shrink>
-          <v-btn
-            v-if="!$route.query.spaceId"
-            class="ml-2"
-            small
-            to="/blog/postBlog"
-            color="blue"
-            text
-            ><v-icon small>mdi-feather</v-icon><span>撰写文章</span></v-btn
-          >
+          <!--<v-btn-->
+          <!--  v-if="!$route.query.spaceId"-->
+          <!--  class="ml-2"-->
+          <!--  small-->
+          <!--  to="/blog/postBlog"-->
+          <!--  color="blue"-->
+          <!--  text-->
+          <!--  ><v-icon small>mdi-feather</v-icon><span>撰写文章</span></v-btn-->
+          <!--&gt;-->
           <v-btn
             text
             nuxt
@@ -110,10 +110,11 @@
             >
               <template v-slot:selection="{ attrs, item, select, selected }">
                 <v-chip
-                  color="primary"
+                  color="rgba(221, 238, 255, 0.5411764705882353)"
                   v-bind="attrs"
                   :input-value="selected"
-                  style="height: 28px"
+                  style="height: 28px;border-radius: 3px"
+                  class="my_blue--text"
                   close
                   @click="select"
                   @click:close="remove(item)"

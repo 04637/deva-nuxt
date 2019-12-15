@@ -11,15 +11,15 @@
           >
         </v-flex>
         <v-flex shrink>
-          <v-btn
-            v-if="!$route.query.spaceId"
-            class="ml-2"
-            small
-            to="/question/ask"
-            color="blue"
-            text
-            ><v-icon small>mdi-feather</v-icon><span>发布问题</span></v-btn
-          >
+          <!--<v-btn-->
+          <!--  v-if="!$route.query.spaceId"-->
+          <!--  class="ml-2"-->
+          <!--  small-->
+          <!--  to="/question/ask"-->
+          <!--  color="blue"-->
+          <!--  text-->
+          <!--  ><v-icon small>mdi-feather</v-icon><span>发布问题</span></v-btn-->
+          <!--&gt;-->
           <v-btn
             text
             nuxt
@@ -114,8 +114,9 @@
                   v-bind="attrs"
                   :input-value="selected"
                   close
-                  style="height: 28px"
-                  color="primary"
+                  style="height: 28px;border-radius: 3px"
+                  class="my_blue--text"
+                  color="rgba(221, 238, 255, 0.5411764705882353)"
                   @click="select"
                   @click:close="remove(item)"
                 >

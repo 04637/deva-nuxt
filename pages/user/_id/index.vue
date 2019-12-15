@@ -88,11 +88,8 @@
           style="z-index: 10;position: relative"
           justify-center
           align-center
-          ><v-chip>
+          ><v-chip color="white">
             <strong>{{ userProfile.nickname }}</strong>
-            <b class="my_gray--text">&nbsp;·&nbsp;</b>
-            <span style="font-size: 0.9rem;">{{ userProfile.reputation }}</span>
-            <v-icon color="red">mdi-music-clef-bass</v-icon>
           </v-chip>
         </v-layout>
         <div

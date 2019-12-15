@@ -1,25 +1,25 @@
 <template>
   <div class="pa-4 right-box">
     <div v-if="$store.getters.getUserId">
-      <v-layout justify-space-between class="mb-2">
-        <v-btn
-          to="/question/ask"
-          color="my_green"
-          class="white--text"
-          small
-          width="45%"
-          ><v-icon small>mdi-forum</v-icon>&nbsp;提问题</v-btn
-        >
-        <v-btn
-          to="/blog/postBlog"
-          color="blue"
-          class="white--text"
-          small
-          width="45%"
-          ><v-icon small>mdi-file-document</v-icon>&nbsp;写文章</v-btn
-        >
-      </v-layout>
-      <v-layout align-center class="mt-4"
+      <!--<v-layout justify-space-between class="mb-2">-->
+      <!--  <v-btn-->
+      <!--    to="/question/ask"-->
+      <!--    color="my_green"-->
+      <!--    class="white&#45;&#45;text"-->
+      <!--    small-->
+      <!--    width="45%"-->
+      <!--    ><v-icon small>mdi-forum</v-icon>&nbsp;提问题</v-btn-->
+      <!--  >-->
+      <!--  <v-btn-->
+      <!--    to="/blog/postBlog"-->
+      <!--    color="blue"-->
+      <!--    class="white&#45;&#45;text"-->
+      <!--    small-->
+      <!--    width="45%"-->
+      <!--    ><v-icon small>mdi-file-document</v-icon>&nbsp;写文章</v-btn-->
+      <!--  >-->
+      <!--</v-layout>-->
+      <v-layout align-center
         ><span
           class="my_gray--text d-block"
           style="border-left: 5px solid #ff6600; padding-left: 10px"

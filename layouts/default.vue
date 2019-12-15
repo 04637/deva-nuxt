@@ -48,12 +48,15 @@
           ></v-text-field>
         </v-flex>
         <v-flex class="my_nav ml-7">
-          <v-btn text color="text_primary" to="/">浏览</v-btn>
+          <v-btn active-class="nav-active" text color="text_primary" to="/"
+            >浏览</v-btn
+          >
           <v-btn
             text
             color="text_primary"
             to="/question/ask"
             class="hidden-sm-and-down"
+            active-class="nav-active"
             >提问</v-btn
           >
           <!--<v-btn-->
@@ -71,6 +74,7 @@
             color="text_primary"
             to="/tag/tags"
             class="hidden-sm-and-down"
+            active-class="nav-active"
             >标签</v-btn
           >
           <v-btn
@@ -78,6 +82,7 @@
             color="text_primary"
             to="/user/users"
             class="hidden-sm-and-down"
+            active-class="nav-active"
             >用户</v-btn
           >
         </v-flex>
@@ -218,6 +223,7 @@
             <nuxt v-if="needKeepAlive" class="pa-2" keep-alive />
             <nuxt v-else class="pa-2" />
           </client-only>
+          <float-post></float-post>
           <FloatMenu></FloatMenu>
         </v-content>
       </v-flex>
@@ -330,13 +336,15 @@ import config from '../nuxt.config.js'
 import ErrorDialog from '../components/dialog/ErrorDialog'
 import FloatMenu from '../components/float/FloatMenu'
 import EditPhone from '../components/dialog/EditPhone'
+import FloatPost from '../components/float/FloatPost'
 export default {
   name: 'App',
   components: {
     EditPhone,
     FloatMenu,
     Logo,
-    ErrorDialog
+    ErrorDialog,
+    FloatPost
   },
   data: () => ({
     searchElv: 0,
@@ -711,5 +719,16 @@ header.float {
 }
 .mdi-cards-outline {
   font-size: 16px !important;
+}
+.nav-active::before {
+  opacity: 0;
+}
+.nav-active {
+  border-bottom: #f5f5f5f0 2px solid !important;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.my_nav .v-btn:not(.nav-active) {
+  border-bottom: transparent 2px solid !important;
 }
 </style>

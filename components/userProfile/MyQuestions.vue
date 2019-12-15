@@ -29,6 +29,12 @@
               >{{ item.title }}</router-link
             >
           </template>
+          <template #item.status="{item}">
+            <v-icon v-if="item.status === 1" color="success" title="已解决"
+              >check</v-icon
+            >
+            <v-icon v-else color="error" title="待解决">minimize</v-icon>
+          </template>
         </v-data-table>
       </v-layout>
     </v-card>
@@ -52,7 +58,7 @@ export default {
         align: 'left',
         value: 'title'
       },
-      { text: '状态', value: 'status', align: 'center', sortable: false },
+      { text: '解决状态', value: 'status', align: 'center', sortable: false },
       { text: '回答', value: 'answerNum', align: 'center', sortable: false },
       { text: '赞成', value: 'voteNum', align: 'center', sortable: false },
       { text: '浏览', value: 'viewNum', align: 'center', sortable: false }

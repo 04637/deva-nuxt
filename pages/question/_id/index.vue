@@ -1064,6 +1064,11 @@ export default {
         .then((resp) => {
           if (resp.succeed) {
             _this.questionDetail.isCollected = resp.data
+            if (resp.data) {
+              _this.questionDetail.collectNum += 1
+            } else {
+              _this.questionDetail.collectNum -= 1
+            }
           }
         })
     },

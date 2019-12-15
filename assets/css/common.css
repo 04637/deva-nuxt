@@ -3,7 +3,6 @@ html{
 }
 *{
   font-family: Microsoft YaHei, serif;
-    word-break: break-word;
 }
 
 /*简约滚动条*/
@@ -45,13 +44,13 @@ html{
 /* 替换 code 样式 参考vuetify kbd*/
 code {
   background-image: initial;
-  background-color: #d3d3d38c !important;
-  color: black !important;
 }
 pre,code{
   font-family: consolas, monospace !important;
-  margin: 0 3px !important;
   box-shadow: none !important;
+  color: white !important;
+  background-color: #2f2e2e !important;
+
   /*todo 考虑一下?*/
   /*font-family: CharlieSans !important;*/
 }
@@ -59,10 +58,15 @@ span[class*='hljs']{
   font-family: consolas, monospace !important;
 }
 pre {
-  background-image: initial;
-  background-color: #d3d3d38c !important;
-  color: black !important;
-  padding:3px 15px;
+  overflow: auto !important;
+  max-height: 600px !important;
+  display: block !important;
+  padding: 12px 8px !important;
+  margin-bottom: 1em !important;
+  font-size: 13px !important;
+  /*background-color: #eff0f1 !important;*/
+  border-radius: 3px;
+  font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
 }
 pre>code{
   box-shadow: none !important;
@@ -170,15 +174,9 @@ pre>code{
   color: #d3d3d3 !important;
 }
 
-pre{
-  overflow: auto !important;
-  max-height: 500px !important;
-  display: block !important;
+p{
   margin-bottom: 1em !important;
 }
-/*p{*/
-/*  padding-bottom: 1em !important;*/
-/*}*/
 
 /* checkbox 下边距*/
 .v-input.mb-0 .v-input__slot{

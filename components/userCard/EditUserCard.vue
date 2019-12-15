@@ -5,6 +5,7 @@
       style="font-size: 0.9rem"
       ><nuxt-link
         :to="'/user/' + user.userId"
+        style="font-size: 14px !important;"
         class="d-xs-block hover-line  blue--text"
         >{{ user.nickname }}</nuxt-link
       >&nbsp;·&nbsp;{{ createTime | timeago }}</v-layout
@@ -22,7 +23,7 @@
               <nuxt-link
                 class="hover-line"
                 :to="'/user/' + user.userId"
-                style="text-decoration: none"
+                style="text-decoration: none; font-size: 14px"
                 >{{ user.nickname || user.username }}</nuxt-link
               ><b style="color: red">&nbsp;·&nbsp;</b
               ><span style="font-size: 12px;" title="声望">{{
@@ -30,12 +31,18 @@
               }}</span>
             </v-layout>
             <v-layout>
-              <small :title="$options.filters.moment(createTime)">
+              <small
+                style="font-size: 13px; color: #666"
+                :title="$options.filters.moment(createTime)"
+              >
                 {{ prefix }}于&nbsp; {{ createTime | timeago }}</small
               >
             </v-layout>
             <v-layout v-if="createTime !== modifiedTime">
-              <small :title="$options.filters.moment(modifiedTime)">
+              <small
+                style="font-size: 13px; color: #666"
+                :title="$options.filters.moment(modifiedTime)"
+              >
                 更新于&nbsp;
                 {{ modifiedTime | timeago }}</small
               ></v-layout

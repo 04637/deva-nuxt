@@ -1,6 +1,14 @@
 <template>
-  <v-dialog :value="$store.getters.getPhoneDialog" width="500px" persistent>
+  <v-dialog :value="$store.getters.getPhoneDialog" width="400px" persistent>
     <v-card>
+      <v-flex>
+        <v-layout justify-center wrap>
+          <v-card-title>设置手机号</v-card-title>
+        </v-layout>
+        <v-layout style="font-size: 13px; color: #666;" justify-center>
+          绑定手机后, 你就可以使用提问、回答、评论等功能。
+        </v-layout>
+      </v-flex>
       <v-card-text class="pb-0">
         <v-container class="pb-0">
           <v-form ref="phoneForm">
