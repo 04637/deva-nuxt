@@ -38,7 +38,8 @@
     "vue-quill-editor": "^3.0.6",
     "vue-toasted": "^1.1.27",
     "vuex-persistedstate": "^2.5.4",
-    "ws": "^7.1.2"
+    "ws": "^7.1.2",
+    "qs": "latest"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",
