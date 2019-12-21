@@ -10,8 +10,8 @@
         <v-card class="py-3 px-3" flat max-width="1032px" width="100%">
           <v-layout justify-center>
             <v-flex md9 sm12 align-space-between>
-              <v-layout column style="height: 140px" justify-space-around>
-                <v-layout wrap shrink>
+              <v-layout column class="flex-height" justify-space-around>
+                <v-layout wrap shrink class="title-label">
                   <TagChip
                     v-for="tag in questionDetail.tagInfos"
                     :key="tag.tagId"
@@ -31,7 +31,7 @@
                     }}</v-icon
                   >
                 </h3>
-                <v-layout shrink class="mt-2">
+                <v-layout shrink class="mt-2 title-label">
                   <v-btn
                     color="blue"
                     small
@@ -60,7 +60,7 @@
                 </v-layout>
               </v-layout>
             </v-flex>
-            <v-flex md3 hidden-sm-and-down>
+            <v-flex md3 hidden-sm-and-down class="title-label">
               <v-layout justify-space-around>
                 <v-flex shrink>
                   <div style="color: #8590a6">关注者</div>
@@ -75,6 +75,35 @@
                     <strong>{{ questionDetail.viewNum }}</strong>
                   </div>
                 </v-flex>
+              </v-layout>
+            </v-flex>
+            <v-flex md3 hidden-sm-and-down class="show-label">
+              <v-layout shrink>
+                <v-btn
+                  color="blue"
+                  small
+                  width="80.23px"
+                  class="white--text"
+                  :outlined="questionDetail.isCollected"
+                  @click="collectQuestion"
+                  @mouseover="watchMouseOver = true"
+                  @mouseleave="watchMouseOver = false"
+                  >{{
+                    questionDetail.isCollected
+                      ? watchMouseOver
+                        ? '取消关注'
+                        : '已关注'
+                      : '关注问题'
+                  }}</v-btn
+                >
+                <v-btn
+                  color="blue"
+                  small
+                  class="white--text ml-4"
+                  outlined
+                  @click="toBottom"
+                  ><v-icon small>edit</v-icon>写回答</v-btn
+                >
               </v-layout>
             </v-flex>
           </v-layout>
@@ -1082,11 +1111,38 @@ export default {
 </script>
 <style scoped>
 .mini-top {
-  top: -300px !important;
-  transition: all 400ms linear;
+  /*top: 0px !important;*/
+  top: 62px !important;
+  min-height: 50px !important;
+  height: 50px;
+  transition: all 200ms linear;
 }
+.mini-top h3 {
+  height: 32px;
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.mini-top .title-label {
+  display: none;
+}
+.mini-top .show-label {
+  display: block;
+}
+.mini-top .flex-height {
+  height: 32px;
+}
+
 .top {
   top: 62px !important;
-  transition: all 200ms linear;
+  min-height: 150px !important;
+  height: 160px;
+  transition: all 100ms linear;
+}
+.top .show-label {
+  display: none;
+}
+.top .flex-height {
+  height: 140px;
 }
 </style>
