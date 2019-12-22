@@ -18,9 +18,18 @@
             >
           </v-flex>
         </div>
-        <v-card flat exact width="100vw" class="pa-md-3 right-box">
+        <v-card flat exact width="100vw" class="right-box">
           <v-col>
-            <h2 style="font-weight: normal">{{ blogDetail.title }}</h2>
+            <h2 style="font-weight: normal">
+              {{ blogDetail.title }}&nbsp;<v-btn
+                v-if="blogDetail.authorId === $store.getters.getUserId"
+                :to="'/blog/postBlog?blogId=' + blogDetail.blogId"
+                class="private--text"
+                text
+                style="font-size: 14px"
+                ><v-icon color="private" small>edit</v-icon>编辑</v-btn
+              >
+            </h2>
             <header-user-card
               :user="blogDetail.author"
               :create-time="blogDetail.createTime"
@@ -33,7 +42,7 @@
             ></header-user-card>
             <div
               v-dompurify-html="$md.render(blogDetail.content)"
-              class="mt-4"
+              class="mt-4 ql-editor"
             ></div>
           </v-col>
           <v-card-actions>

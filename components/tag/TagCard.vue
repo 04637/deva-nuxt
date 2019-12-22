@@ -43,9 +43,9 @@
         class="mt-1"
         justify-space-between
       >
-        <v-layout> 近一周使用 {{ tagInfo.weekFrequency }} 次 </v-layout>
+        <v-layout> 近一周提问 {{ tagInfo.weekFrequency }} 次 </v-layout>
         <v-layout justify-end>
-          近一月使用 {{ tagInfo.monthFrequency }} 次
+          近一月提问 {{ tagInfo.monthFrequency }} 次
         </v-layout>
       </v-layout>
     </v-card>
