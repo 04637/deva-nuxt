@@ -57,6 +57,21 @@
                     @click="toBottom"
                     ><v-icon small>edit</v-icon>写回答</v-btn
                   >
+                  <v-btn
+                    v-if="
+                      $store.getters.getUserId === questionDetail.author.userId
+                    "
+                    small
+                    class="ml-4"
+                    color="blue"
+                    outlined
+                    :to="
+                      '/question/ask?questionId=' + questionDetail.questionId
+                    "
+                  >
+                    <v-icon small>edit</v-icon>
+                    <span>编辑问题</span>
+                  </v-btn>
                 </v-layout>
               </v-layout>
             </v-flex>
@@ -172,20 +187,6 @@
                   <!--  title="声望达到200方可标记"-->
                   <!--  ><span>问题重复？标记相似</span>-->
                   <!--</v-btn>-->
-                  <v-btn
-                    v-if="
-                      $store.getters.getUserId === questionDetail.author.userId
-                    "
-                    text
-                    color="private"
-                    style="height: 24px; padding: 0 10px;"
-                    :to="
-                      '/question/ask?questionId=' + questionDetail.questionId
-                    "
-                  >
-                    <v-icon size="15">edit</v-icon>
-                    <span>编辑问题</span>
-                  </v-btn>
                 </v-layout>
                 <div
                   v-dompurify-html="$md.render(questionDetail.content)"
