@@ -52,7 +52,7 @@
             <v-layout justify-center>
               <v-avatar size="130" style="z-index: 10">
                 <v-img
-                  :src="userProfile.avatar"
+                  :src="$options.filters.webp(userProfile.avatar)"
                   style="box-shadow: 0 0 20px #fafafa"
                 ></v-img>
                 <v-fade-transition>
