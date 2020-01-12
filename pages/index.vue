@@ -42,9 +42,9 @@
         <!--<v-spacer class="hidden-sm-and-down"></v-spacer>-->
       </v-layout>
       <v-divider></v-divider>
-      <span class="my_gray--text" style="font-size: 0.7rem"
-        >找到相关结果约 {{ totalElements }} 个</span
-      >
+      <!--<span class="my_gray&#45;&#45;text" style="font-size: 0.7rem"-->
+      <!--  >找到相关结果约 {{ totalElements }} 个</span-->
+      <!--&gt;-->
     </v-layout>
     <v-layout justify-center justify-space-around class="mt-4">
       <v-flex xs12 md9 lg9 justify-start shrink>
