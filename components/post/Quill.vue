@@ -29,8 +29,8 @@
   </client-only>
 </template>
 <script>
-import hljs from 'highlight.js'
 import InfoDialog from '../dialog/InfoDialog'
+import hljs from '../../assets/js/my-highlight'
 
 export default {
   components: { InfoDialog },

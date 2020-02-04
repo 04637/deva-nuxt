@@ -189,12 +189,22 @@ export default {
     injected: true,
     emoji: true,
     html: true,
-    use: [
-      'markdown-it-div',
-      'markdown-it-attrs',
-      'markdown-it-emoji',
-      'markdown-it-highlightjs'
-    ]
+    highlight(str) {
+      const hljs = require('highlight.js/lib/highlight')
+      hljs.registerLanguage('java', require('highlight.js/lib/languages/java'))
+      hljs.registerLanguage(
+        'python',
+        require('highlight.js/lib/languages/python')
+      )
+      hljs.registerLanguage('cpp', require('highlight.js/lib/languages/cpp'))
+      hljs.registerLanguage('go', require('highlight.js/lib/languages/go'))
+      hljs.registerLanguage(
+        'javascript',
+        require('highlight.js/lib/languages/javascript')
+      )
+      return hljs.highlightAuto(str).value
+    },
+    use: ['markdown-it-div', 'markdown-it-attrs', 'markdown-it-emoji']
   },
 
   /*

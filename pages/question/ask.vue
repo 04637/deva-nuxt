@@ -231,7 +231,6 @@
   </div>
 </template>
 <script>
-import hljs from 'highlight.js'
 import InfoDialog from '../../components/dialog/InfoDialog'
 import Quill from '../../components/post/Quill'
 export default {
@@ -277,25 +276,6 @@ export default {
       noSpace: (v) => /^[^\s]*$/.test(v) || "不能使用空格，如需分隔请使用 '-' ",
       tagDescription: (v) =>
         (v && v.length <= 400) || !v || '标签描述不能超过400个字符'
-    },
-    editorOption: {
-      modules: {
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'],
-          ['blockquote', 'code-block'],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          [{ indent: '-1' }, { indent: '+1' }],
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          [{ color: [] }, { background: [] }],
-          [{ font: [] }],
-          [{ align: [] }],
-          ['link', 'image'],
-          ['clean']
-        ],
-        syntax: {
-          highlight: (text) => hljs.highlightAuto(text).value
-        }
-      }
     }
   }),
   computed: {},
