@@ -133,7 +133,7 @@ export default {
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    // customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: false,
       themes: {
