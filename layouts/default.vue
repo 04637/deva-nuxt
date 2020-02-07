@@ -685,19 +685,19 @@ export default {
   /*background: url('/svg/star-bg.svg') center;*/
   background-size: cover;
 }
-.transparent-header {
-  background-color: #454545c2 !important;
-  max-height: 54px !important;
-  transition: all 200ms linear;
-}
-.transparent-header .v-toolbar__content {
-  height: 54px !important;
-  border-bottom: none !important;
-  transition: all 200ms linear;
-}
-.transparent-header .v-input__control {
-  opacity: 0.7 !important;
-}
+/*.transparent-header {*/
+/*  background-color: #454545c2 !important;*/
+/*  max-height: 54px !important;*/
+/*  transition: all 200ms linear;*/
+/*}*/
+/*.transparent-header .v-toolbar__content {*/
+/*  height: 54px !important;*/
+/*  border-bottom: none !important;*/
+/*  transition: all 200ms linear;*/
+/*}*/
+/*.transparent-header .v-input__control {*/
+/*  opacity: 0.7 !important;*/
+/*}*/
 .v-app-bar:not(.transparent-header) {
   max-height: 64px !important;
   transition: all 100ms linear;
