@@ -39,20 +39,25 @@ html{
   height: 23px;
   width: 23px;
 }
-
-
-/* 替换 code 样式 参考vuetify kbd*/
-code {
-  background-image: initial;
-  margin: 0 4px;
-  font-weight: bold !important;
+pre,code {
+  font-weight: normal !important;
 }
-pre,code{
+pre{
   font-family: consolas, monospace !important;
   box-shadow: none !important;
   color: white !important;
   background-color: #2f2e2e !important;
 
+  /*todo 考虑一下?*/
+  /*font-family: CharlieSans !important;*/
+}
+code{
+  box-shadow: none !important;
+  color: #c7254e !important;
+  background-color: #f6f6f6 !important;
+  font-family: consolas, monospace;
+  background-image: initial;
+  margin: 0 4px;
   /*todo 考虑一下?*/
   /*font-family: CharlieSans !important;*/
 }
@@ -73,6 +78,8 @@ pre {
 pre>code{
   box-shadow: none !important;
   margin: 0 !important;
+  color: white !important;
+  background-color: #2f2e2e !important;
 }
 
 .form {

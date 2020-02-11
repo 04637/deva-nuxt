@@ -186,6 +186,7 @@ export default {
 }
 .quill-editor {
   height: 563px;
+  word-break: break-word;
 }
 .answer-quill .quill-editor {
   height: 348px;
