@@ -5,6 +5,7 @@
         <v-flex>
           <v-tabs
             v-model="currentTab"
+            @change="loadBQ"
             class="small-slider"
             slider-color="slider_color"
             slider-size="3"
@@ -12,7 +13,6 @@
             height="38"
             color="primary"
             background-color="transparent"
-            @change="loadBQ"
           >
             <v-tab
               @click="
@@ -23,11 +23,11 @@
             >
             <v-tab @click="clickRecommend">推荐 </v-tab>
             <v-tab
-              class="hidden-sm-and-down"
               @click="
                 sortType = 'UN_RESOLVED'
                 currentTitle = '待解决'
               "
+              class="hidden-sm-and-down"
               >待解决</v-tab
             >
             <v-tab

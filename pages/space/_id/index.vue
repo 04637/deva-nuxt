@@ -9,26 +9,26 @@
                 <SpaceMenu :space-info="spaceInfo"></SpaceMenu>
                 <v-icon small>mdi-feather</v-icon>
                 <v-btn
-                  class="ml-2"
                   :to="
                     '/question/ask?spaceId=' +
                       spaceInfo.spaceId +
                       '&spaceName=' +
                       spaceInfo.spaceName
                   "
+                  class="ml-2"
                   small
                   text
                   color="primary"
                   >发布问题</v-btn
                 ><v-divider vertical></v-divider>
                 <v-btn
-                  small
                   :to="
                     '/blog/postBlog?spaceId=' +
                       spaceInfo.spaceId +
                       '&spaceName=' +
                       spaceInfo.spaceName
                   "
+                  small
                   text
                   color="blue"
                   >撰写文章</v-btn
@@ -37,6 +37,8 @@
               <v-row
                 ><v-text-field
                   v-model="keywords"
+                  @click:append="searchBtn"
+                  @keyup.enter.native="searchBtn"
                   style="max-width: 60%"
                   translate="yes"
                   class="pt-0 mt-0 mr-2"
@@ -44,8 +46,6 @@
                   append-icon="search"
                   flat
                   clearable
-                  @click:append="searchBtn"
-                  @keyup.enter.native="searchBtn"
                 ></v-text-field
               ></v-row>
             </v-layout>
@@ -54,11 +54,11 @@
         <v-flex md6 lg4 align-self-end>
           <v-tabs
             v-model="currentTab"
+            @change="loadBQ"
             centered
             center-active
             height="38"
             grow
-            @change="loadBQ"
           >
             <v-tab @click="sortType = 'RECENT'">{{
               keywords ? '相关' : '最新'

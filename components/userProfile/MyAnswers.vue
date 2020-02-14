@@ -17,14 +17,14 @@
           :headers="headers"
           :items="answers"
           :search="search"
-          fixed-header
           :mobile-breakpoint="-1"
+          fixed-header
           style="width: 100%"
         >
           <template #item.questionTitle="{item}">
             <router-link
-              class="hover-line"
               :to="'/question/' + item.ownQuestionId + '#' + item.answerId"
+              class="hover-line"
               >{{ item.questionTitle }}</router-link
             >
           </template>

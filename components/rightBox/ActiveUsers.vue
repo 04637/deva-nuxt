@@ -14,8 +14,8 @@
             <v-layout align-center>
               <v-flex shrink>
                 <v-avatar
-                  style="cursor: pointer"
                   @click="$router.push('/user/' + user.userId)"
+                  style="cursor: pointer"
                 >
                   <v-img :src="$options.filters.webp(user.avatar)"></v-img>
                 </v-avatar>
@@ -23,8 +23,8 @@
               <v-flex style="font-size: 14px" class="ml-2">
                 <v-layout align-center
                   ><div
-                    style="cursor: pointer"
                     @click="$router.push('/user/' + user.userId)"
+                    style="cursor: pointer"
                   >
                     {{ user.nickname }}
                   </div>
@@ -45,9 +45,9 @@
                   <router-link
                     v-for="(tag, index) in user.likeTags"
                     :key="tag.tagId"
+                    :to="'/search/' + tag.tagName + '?match=tags'"
                     class="hover-line"
                     style="color: #2196f3;"
-                    :to="'/search/' + tag.tagName + '?match=tags'"
                     >{{ tag.tagName
                     }}<span
                       v-if="index < user.likeTags.length - 1"

@@ -2,15 +2,15 @@
   <v-card flat class="pa-2">
     <v-layout align-center>
       <v-flex shrink>
-        <v-avatar color="grey" size="60" :to="'/user/' + user.userId">
+        <v-avatar :to="'/user/' + user.userId" color="grey" size="60">
           <v-img :src="user.avatar"></v-img>
         </v-avatar>
       </v-flex>
       <v-flex class="ml-3" justify-start shrink>
         <v-layout align-start justify-start class="mb-2">
           <nuxt-link
-            class="hover-line"
             :to="'/user/' + user.userId"
+            class="hover-line"
             style="text-decoration: none"
             >{{ user.nickname || user.username }}</nuxt-link
           >

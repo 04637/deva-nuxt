@@ -1,5 +1,5 @@
 <template>
-  <v-chip small :to="'/user/' + user.userId" color="white">
+  <v-chip :to="'/user/' + user.userId" small color="white">
     <span class="link_color--text">{{ user.nickname || user.username }}</span
     >&nbsp;<span style="font-weight: bold; color:red">·</span>&nbsp;{{
       user.reputation

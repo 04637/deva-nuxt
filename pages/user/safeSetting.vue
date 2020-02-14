@@ -21,48 +21,48 @@
               <v-layout align-center>
                 <span>绑定邮箱：<v-icon>mdi-email</v-icon></span>
                 <v-text-field
+                  :value="userInfo.email"
+                  @click:append="editEmail.dialog = true"
                   readonly
                   hint="绑定邮箱可用于订阅站内消息，关注问题进展"
                   persistent-hint
-                  :value="userInfo.email"
                   class="center-text toBottom4"
                   append-icon="mdi-pencil"
-                  @click:append="editEmail.dialog = true"
                 ></v-text-field>
                 <v-checkbox
                   v-model="userSetting.emailNotice"
+                  @change="toggleEmailNotice"
                   color="private"
                   class="ml-5 mb-0 hidden-sm-and-down"
                   label="开启邮件消息推送"
-                  @change="toggleEmailNotice"
                 ></v-checkbox>
               </v-layout>
               <v-layout align-center>
                 <span>绑定手机：<v-icon>mdi-cellphone</v-icon></span>
                 <v-text-field
+                  :value="userInfo.phone"
+                  @click:append="editPhone.dialog = true"
                   readonly
                   hint="绑定手机可用于接收验证码及敏感操作提示"
                   persistent-hint
-                  :value="userInfo.phone"
                   class="center-text toBottom4"
                   append-icon="mdi-pencil"
-                  @click:append="editPhone.dialog = true"
                 ></v-text-field>
                 <v-checkbox
                   v-model="userSetting.phoneNotice"
+                  @change="togglePhoneNotice"
                   color="private"
                   class="ml-5 mb-0 hidden-sm-and-down"
                   label="接收敏感操作提示"
-                  @change="togglePhoneNotice"
                 ></v-checkbox>
               </v-layout>
               <v-divider class="mt-7"></v-divider>
               <v-layout align-center class="mt-3">
                 <span>上次登录：<v-icon>mdi-gesture-double-tap</v-icon></span>
                 <v-text-field
+                  :value="userInfo.lastLoginIp"
                   readonly
                   hide-details
-                  :value="userInfo.lastLoginIp"
                   class="center-text mt-0 pt-0 no-padding-input"
                 ></v-text-field>
               </v-layout>
@@ -73,9 +73,9 @@
                 <v-layout justify-end>
                   <v-btn
                     :disabled="!userInfo.phone"
+                    @click="editPassword.dialog = true"
                     color="private"
                     text
-                    @click="editPassword.dialog = true"
                     ><span>修改密码</span></v-btn
                   ></v-layout
                 >
@@ -95,8 +95,8 @@
                 <v-text-field
                   ref="editEmailRef"
                   v-model="editEmail.email"
-                  label="输入要绑定的邮箱"
                   :rules="[rules.email]"
+                  label="输入要绑定的邮箱"
                 >
                 </v-text-field>
               </v-layout>
@@ -104,18 +104,18 @@
               <v-layout align-center>
                 <v-text-field
                   v-model="editEmail.emailCode"
-                  label="验证码"
                   :rules="[rules.requireCode]"
+                  label="验证码"
                 >
                 </v-text-field>
                 <v-btn
                   v-show="emailCodeResult.timeInterval <= 0"
+                  :loading="emailCodeResult.loading"
+                  @click="sendEmailCode"
                   class="ml-5"
                   text
                   outlined
                   small
-                  :loading="emailCodeResult.loading"
-                  @click="sendEmailCode"
                   >获取验证码</v-btn
                 >
                 <v-btn
@@ -133,10 +133,10 @@
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1"></div>
-          <v-btn color="sub" text small @click="editEmail.dialog = false"
+          <v-btn @click="editEmail.dialog = false" color="sub" text small
             >关闭</v-btn
           >
-          <v-btn color="primary" small text @click="updateEmail">提交</v-btn>
+          <v-btn @click="updateEmail" color="primary" small text>提交</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -150,9 +150,9 @@
                 <v-text-field
                   ref="editPhoneRef"
                   v-model="editPhone.phone"
-                  label="输入要绑定的手机号码"
                   :error-messages="editPhone.phoneCheck"
                   :rules="[rules.phone]"
+                  label="输入要绑定的手机号码"
                 >
                 </v-text-field>
               </v-layout>
@@ -160,18 +160,18 @@
               <v-layout align-center>
                 <v-text-field
                   v-model="editPhone.smsCode"
-                  label="验证码"
                   :rules="[rules.requireCode]"
+                  label="验证码"
                 >
                 </v-text-field>
                 <v-btn
                   v-show="smsCodeResult.timeInterval <= 0"
+                  :loading="smsCodeResult.loading"
+                  @click="sendSmsCode"
                   class="ml-5"
                   text
                   outlined
                   small
-                  :loading="smsCodeResult.loading"
-                  @click="sendSmsCode"
                   >获取验证码</v-btn
                 >
                 <v-btn
@@ -189,10 +189,10 @@
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1"></div>
-          <v-btn color="sub" text small @click="editPhone.dialog = false"
+          <v-btn @click="editPhone.dialog = false" color="sub" text small
             >关闭</v-btn
           >
-          <v-btn color="primary" small text @click="updatePhone"
+          <v-btn @click="updatePhone" color="primary" small text
             ><span>提交</span></v-btn
           >
         </v-card-actions>
@@ -213,9 +213,9 @@
                   "
                   :rules="[rules.password]"
                   :type="editPassword.show ? 'text' : 'password'"
+                  @click:append="editPassword.show = !editPassword.show"
                   required
                   label="输入新密码"
-                  @click:append="editPassword.show = !editPassword.show"
                 >
                 </v-text-field>
               </v-layout>
@@ -223,18 +223,18 @@
               <v-layout align-center>
                 <v-text-field
                   v-model="editPassword.smsCode"
-                  label="验证码"
                   :rules="[rules.requireCode]"
+                  label="验证码"
                 >
                 </v-text-field>
                 <v-btn
                   v-show="smsCodeResult.timeInterval <= 0"
+                  :loading="smsCodeResult.loading"
+                  @click="sendPasswordSmsCode"
                   class="ml-5"
                   text
                   outlined
                   small
-                  :loading="smsCodeResult.loading"
-                  @click="sendPasswordSmsCode"
                   >获取短信验证码</v-btn
                 >
                 <v-btn
@@ -252,10 +252,10 @@
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1"></div>
-          <v-btn color="sub" text small @click="editPassword.dialog = false"
+          <v-btn @click="editPassword.dialog = false" color="sub" text small
             >关闭</v-btn
           >
-          <v-btn color="primary" small text @click="updatePassword">提交</v-btn>
+          <v-btn @click="updatePassword" color="primary" small text>提交</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -279,11 +279,11 @@
         savePasswordResult.resp != null && savePasswordResult.resp.succeed
       "
       :dialog="savePasswordResult.dialog"
-      close-txt="去登录"
       @update:dialog="
         savePasswordResult.dialog = $event
         savePasswordResult.resp.succeed ? $router.push('/user/login') : ''
       "
+      close-txt="去登录"
     >
     </InfoDialog>
     <InfoDialog

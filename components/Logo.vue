@@ -1,14 +1,16 @@
 <template>
-  <!-- logo 设计 https://www.logogenie.net/-->
-  <!-- logo做头像 米色背景色 #e9e5de -->
-  <!-- 雪碧图 http://www.spritecow.com/-->
-  <v-layout v-if="type === 'form'" justify-center style="height: 48px;">
-    <div class="logo" @click="$router.push('/', () => ({}))"></div>
-  </v-layout>
-  <div v-else-if="type === 'simple'" @click="$router.push('/', () => ({}))">
-    <img src="/logo-transparent.png" alt="" class="logo-md" />
+  <div>
+    <!-- logo 设计 https://www.logogenie.net/-->
+    <!-- logo做头像 米色背景色 #e9e5de -->
+    <!-- 雪碧图 http://www.spritecow.com/-->
+    <v-layout v-if="type === 'form'" justify-center style="height: 48px;">
+      <div @click="$router.push('/', () => ({}))" class="logo"></div>
+    </v-layout>
+    <div v-else-if="type === 'simple'" @click="$router.push('/', () => ({}))">
+      <img src="/logo-transparent.png" alt="" class="logo-md" />
+    </div>
+    <div v-else @click="$router.push('/', () => ({}))" class="logo"></div>
   </div>
-  <div v-else class="logo" @click="$router.push('/', () => ({}))"></div>
 </template>
 <script>
 export default {

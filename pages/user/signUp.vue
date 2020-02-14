@@ -7,15 +7,15 @@
           <v-layout class="mt-3" column>
             <v-text-field
               v-model="username"
+              :rules="[rules.username]"
+              :error-messages="usernameCheck"
+              @blur="checkUsername"
               class="mt-4"
               hint="由8-16位字母/数字/下划线组成"
               counter="16"
               label="用户名"
               outlined
               required
-              :rules="[rules.username]"
-              :error-messages="usernameCheck"
-              @blur="checkUsername"
             ></v-text-field>
             <!--<v-text-field-->
             <!--  v-model="email"-->
@@ -28,21 +28,25 @@
             <!--&gt;</v-text-field>-->
             <v-text-field
               v-model="password"
+              :append-icon="show ? 'visibility' : 'visibility_off'"
+              :rules="[rules.password]"
+              :type="show ? 'text' : 'password'"
+              @click:append="show = !show"
+              @keyup.enter.native="submitSignUp"
+              @input="checkPassword"
               class="mt-4"
               hint="8-16位，包含大小写及数字"
               counter="16"
               label="密码"
               outlined
-              :append-icon="show ? 'visibility' : 'visibility_off'"
-              :rules="[rules.password]"
-              :type="show ? 'text' : 'password'"
               required
-              @click:append="show = !show"
-              @keyup.enter.native="submitSignUp"
-              @input="checkPassword"
             ></v-text-field>
             <v-text-field
               v-model="secondPassword"
+              :error-messages="passwordCheck"
+              @input="checkPassword"
+              @click:append="show = !show"
+              @keyup.enter.native="submitSignUp"
               class="mt-4"
               hint="再次输入密码"
               counter="16"
@@ -50,36 +54,32 @@
               type="password"
               outlined
               required
-              :error-messages="passwordCheck"
-              @input="checkPassword"
-              @click:append="show = !show"
-              @keyup.enter.native="submitSignUp"
             ></v-text-field>
             <v-layout align-center>
               <v-text-field
                 ref="phone"
                 v-model="phone"
+                :error-messages="phoneCheck"
+                :rules="[rules.phone]"
                 class="mt-2"
                 label="绑定手机号"
                 required
-                :error-messages="phoneCheck"
-                :rules="[rules.phone]"
               ></v-text-field>
             </v-layout>
             <v-layout align-center>
               <v-text-field
                 v-model="smsCode"
-                label="验证码"
                 :rules="[rules.requireCode]"
+                label="验证码"
               >
               </v-text-field>
               <v-btn
                 v-show="smsCodeResult.timeInterval <= 0"
+                :loading="smsCodeResult.loading"
+                @click="sendSmsCode"
                 class="ml-5"
                 text
                 outlined
-                :loading="smsCodeResult.loading"
-                @click="sendSmsCode"
                 >获取验证码</v-btn
               >
               <v-btn
@@ -95,14 +95,14 @@
               <v-layout align-start>
                 <v-checkbox
                   v-model="termsCheck"
+                  :rules="[rules.agreeTerms]"
                   color="primary"
                   label="我已认真阅读并同意"
-                  :rules="[rules.agreeTerms]"
                 ></v-checkbox
                 >&nbsp;
                 <a
-                  style="margin-top: 20px; text-decoration: #2196f3"
                   @click="termsDialog = true"
+                  style="margin-top: 20px; text-decoration: #2196f3"
                 >
                   <span class="warning--text">《法律声明和隐私权政策》</span>
                 </a>
@@ -110,13 +110,13 @@
             </v-layout>
             <v-layout>
               <v-btn
+                :loading="signUpResult.loading"
+                @click="submitSignUp"
                 accent
                 depressed
                 width="100vw"
                 color="my_green"
                 class="mt-4 white--text"
-                :loading="signUpResult.loading"
-                @click="submitSignUp"
                 >注册</v-btn
               >
             </v-layout>

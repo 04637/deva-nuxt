@@ -1,12 +1,12 @@
 <template>
   <v-row>
-    <v-menu offset-y open-on-hover :close-on-content-click="true">
+    <v-menu :close-on-content-click="true" offset-y open-on-hover>
       <template v-slot:activator="{ on }">
         <v-chip
+          v-on="on"
           color="private"
           small
           style="border-radius: 0; color: white"
-          v-on="on"
           >{{ spaceInfo.spaceName }}</v-chip
         >
       </template>
@@ -14,10 +14,10 @@
         <v-list-item class="pa-0 mb-0">
           <v-list-item-content class="pa-0">
             <v-btn
+              :to="'/space/userView?spaceId=' + spaceInfo.spaceId"
               depressed
               text
               class="text-left no-flex"
-              :to="'/space/userView?spaceId=' + spaceInfo.spaceId"
               >查看所有成员</v-btn
             >
           </v-list-item-content>
@@ -28,10 +28,10 @@
         >
           <v-list-item-content class="pa-0">
             <v-btn
+              :to="'/space/manageSpace?spaceId=' + spaceInfo.spaceId"
               depressed
               text
               class="text-left no-flex"
-              :to="'/space/manageSpace?spaceId=' + spaceInfo.spaceId"
               >管理空间</v-btn
             >
           </v-list-item-content>
@@ -39,10 +39,10 @@
         <v-list-item v-else class="pa-0 mb-0">
           <v-list-item-content class="pa-0">
             <v-btn
+              @click="confirmExit.dialog = true"
               depressed
               text
               class="text-left no-flex"
-              @click="confirmExit.dialog = true"
               >退出空间</v-btn
             >
           </v-list-item-content>
@@ -51,12 +51,12 @@
     </v-menu>
     <ConfirmDialog
       :dialog="confirmExit.dialog"
-      msg="确定退出该空间吗?"
       :todo="exitSpace"
       @update:dialog="
         confirmExit.dialog = $event
         $router.push('/')
       "
+      msg="确定退出该空间吗?"
     >
     </ConfirmDialog>
   </v-row>

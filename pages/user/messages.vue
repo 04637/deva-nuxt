@@ -23,22 +23,22 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
-            v-if="$store.state.userInfo"
             ref="table"
-            locale="zh-CN"
+            v-if="$store.state.userInfo"
             :headers="headers"
             :items="messages"
-            item-key="messageId"
             :search="search"
             :show-select="!isSmall()"
-            hide-default-header
             :loading="loading"
+            locale="zh-CN"
+            item-key="messageId"
+            hide-default-header
           >
             <template v-slot:item.content="{ item }">
               <v-row align="center">
                 <span
-                  class="d-inline-block text-truncate"
                   :class="isSmall() ? '_sm_width' : ''"
+                  class="d-inline-block text-truncate"
                 >
                   <router-link
                     :to="'/user/' + item.fromUserId"
@@ -48,10 +48,6 @@
                 >
                 <v-btn
                   v-if="item.ownQuestionId"
-                  class="hidden-sm-and-down"
-                  text
-                  small
-                  color="private"
                   @click="
                     readMessage(item)
                     $router.push(
@@ -60,30 +56,34 @@
                         (item.anchor ? item.anchor : '')
                     )
                   "
+                  class="hidden-sm-and-down"
+                  text
+                  small
+                  color="private"
                   >查看</v-btn
                 >
                 <v-btn
                   v-else-if="item.ownBlogId"
-                  class="hidden-sm-and-down"
-                  text
-                  small
-                  color="private"
                   @click="
                     readMessage(item)
                     $router.push('/blog/' + item.ownBlogId)
                   "
-                  >查看</v-btn
-                >
-                <v-btn
-                  v-else
                   class="hidden-sm-and-down"
                   text
                   small
                   color="private"
+                  >查看</v-btn
+                >
+                <v-btn
+                  v-else
                   @click="
                     readMessage(item)
                     viewTask(item.relateTaskId)
                   "
+                  class="hidden-sm-and-down"
+                  text
+                  small
+                  color="private"
                   >查看</v-btn
                 >
                 <svg
@@ -111,11 +111,11 @@
                     ></v-simple-checkbox>
                   </td>
                   <td class="pl-0">
-                    <v-btn small depressed @click="ignoreSelected">
+                    <v-btn @click="ignoreSelected" small depressed>
                       <v-icon small>mdi-notification-clear-all</v-icon>
                       <span class="body-1">忽略已选消息</span>
                     </v-btn>
-                    <v-btn small depressed @click="deleteConfirm.dialog = true">
+                    <v-btn @click="deleteConfirm.dialog = true" small depressed>
                       <v-icon small>mdi-delete-sweep-outline</v-icon>
                       <span class="body-1">删除已选消息</span>
                     </v-btn>
@@ -147,25 +147,25 @@
           <span>您的提议</span>
           <v-textarea
             v-if="taskView.taskInfo"
+            :value="taskView.taskInfo.content"
             hide-details
             readonly
             rows="10"
-            :value="taskView.taskInfo.content"
           ></v-textarea>
         </v-card-text>
         <v-card-text class="pt-0 pb-0">
           <span>管理员回复</span>
           <v-textarea
             v-if="taskView.taskInfo"
+            :value="taskView.taskInfo.replyContent"
             hide-details
             readonly
             rows="10"
-            :value="taskView.taskInfo.replyContent"
           ></v-textarea>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="taskView.dialog = false">关闭 </v-btn>
+          <v-btn @click="taskView.dialog = false" text>关闭 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -18,14 +18,14 @@
           :headers="headers"
           :items="blogs"
           :search="search"
+          :mobile-breakpoint="-1"
           fixed-header
           style="width: 100%"
-          :mobile-breakpoint="-1"
         >
           <template #item.title="{item}">
             <router-link
-              class="hover-line"
               :to="'/question/' + item.questionId"
+              class="hover-line"
               >{{ item.title }}</router-link
             >
           </template>

@@ -32,17 +32,17 @@
                     <v-spacer></v-spacer>
                     <v-flex shrink>
                       <input
-                        v-show="false"
                         ref="selectAvatar"
+                        v-show="false"
+                        @change="uploadAvatar($event)"
                         accept="image/png, image/jpeg, image/bmp"
                         type="file"
-                        @change="uploadAvatar($event)"
                       />
                       <v-btn
+                        @click="$refs.selectAvatar.click()"
                         text
                         block
                         class="white--text subheading"
-                        @click="$refs.selectAvatar.click()"
                         >修改头像
                       </v-btn>
                     </v-flex>
@@ -79,30 +79,30 @@
               ></v-text-field>
               <v-text-field
                 v-model="userInfo.nickname"
-                hint=""
                 :counter="16"
-                label="昵称"
-                outlined
-                class="mt-3"
                 :rules="[rules.max16]"
                 :error-messages="nicknameCheck"
                 @blur="checkNickname"
+                hint=""
+                label="昵称"
+                outlined
+                class="mt-3"
               ></v-text-field>
               <v-textarea
                 v-model="userInfo.bio"
-                hint=""
                 :counter="100"
+                :rules="[rules.max100]"
+                hint=""
                 label="简介"
                 outlined
                 no-resize
-                :rules="[rules.max100]"
               ></v-textarea>
               <v-layout class="justify-end mt-3">
                 <v-btn
-                  color="primary"
-                  min-width="150px"
                   :loading="saveResult.loading"
                   @click="saveProfile"
+                  color="primary"
+                  min-width="150px"
                   >保存</v-btn
                 >
               </v-layout>

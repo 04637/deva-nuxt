@@ -14,6 +14,8 @@
               <v-row align="end" class="mb-2" justify="start">
                 <v-text-field
                   v-model="keywords"
+                  @click:append="searchBtn"
+                  @keyup.enter.native="searchBtn"
                   style="max-width: 50%"
                   translate="yes"
                   class="pt-0 mt-0 mr-2"
@@ -21,8 +23,6 @@
                   append-icon="search"
                   flat
                   clearable
-                  @click:append="searchBtn"
-                  @keyup.enter.native="searchBtn"
                 ></v-text-field
               ></v-row>
             </v-layout>
@@ -31,11 +31,11 @@
         <v-flex md6 lg4 align-self-end>
           <v-tabs
             v-model="currentTab"
+            @change="loadBlogs"
             grow
             centered
             center-active
             height="38"
-            @change="loadBlogs"
           >
             <v-tab
               @click="

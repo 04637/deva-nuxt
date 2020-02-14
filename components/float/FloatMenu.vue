@@ -19,7 +19,7 @@
             fab
             style="color: white"
           >
-            <a v-if="fab" style="color: white" @click.stop="toTop"
+            <a v-if="fab" @click.stop="toTop" style="color: white"
               ><v-icon title="回到顶部">vertical_align_top</v-icon></a
             >
             <v-icon v-else>scatter_plot</v-icon>
@@ -27,7 +27,7 @@
         </template>
         <v-tooltip top internal-activator>
           <template v-slot:activator="{ on }">
-            <v-btn fab dark small color="blue" v-on="on">
+            <v-btn v-on="on" fab dark small color="blue">
               <a
                 style="color: white; text-decoration: none"
                 href="mailto:admin@aid.dev"
@@ -43,7 +43,7 @@
               style="text-decoration: none"
               href="https://jq.qq.com/?_wv=1027&k=5rD73Wh"
               target="_blank"
-              ><v-btn fab dark small color="green" v-on="on">
+              ><v-btn v-on="on" fab dark small color="green">
                 <v-icon>mdi-help</v-icon>
               </v-btn></a
             >
@@ -53,12 +53,12 @@
         <v-tooltip top fixed>
           <template v-slot:activator="{ on }">
             <v-btn
+              @click="suggest.dialog = true"
+              v-on="on"
               fab
               dark
               small
               color="orange"
-              @click="suggest.dialog = true"
-              v-on="on"
             >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
@@ -72,10 +72,10 @@
             <v-form ref="suggestForm">
               <v-textarea
                 v-model="suggest.content"
-                label="输入您的意见"
                 :rules="[rules.min10, rules.max1000]"
-                rows="20"
                 :counter="1000"
+                label="输入您的意见"
+                rows="20"
                 no-resize
               ></v-textarea>
             </v-form>
@@ -83,21 +83,21 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
-              text
-              small
               @click="
                 suggest.dialog = false
                 suggest.resp = null
                 suggest.content = null
               "
+              text
+              small
               >关闭
             </v-btn>
             <v-btn
+              :loading="suggest.loading"
+              @click="submitSuggest"
               text
               small
               color="primary"
-              :loading="suggest.loading"
-              @click="submitSuggest"
               ><span>提交</span>
             </v-btn>
           </v-card-actions>
@@ -110,8 +110,8 @@
         ]"
         :succeed="suggest.result.resp != null && suggest.result.resp.succeed"
         :dialog="suggest.result.dialog"
-        close-txt="关闭"
         @update:dialog="suggest.result.dialog = $event"
+        close-txt="关闭"
       >
       </InfoDialog>
     </div>

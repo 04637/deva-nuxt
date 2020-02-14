@@ -25,8 +25,8 @@
               <div
                 v-if="type === 'question'"
                 :title="item.status === 1 ? '已解决' : '待解决'"
-                class="num-div answer-div"
                 :class="item.status === 1 ? 'success' : ''"
+                class="num-div answer-div"
               >
                 <div class="num-span">
                   {{ item.answerNum }}
@@ -58,13 +58,13 @@
           </v-flex>
           <v-flex xs12 md11 style="margin-top: 4px">
             <v-btn
+              :title="item.title"
+              :to="'/' + type + '/' + (item.questionId || item.blogId)"
               height="30px"
               class="no-hover-active no-ripple title d-inline-block text-truncate text-left no-flex px-1"
               text
               style="font-size: 17px !important;"
               color="link_color"
-              :title="item.title"
-              :to="'/' + type + '/' + (item.questionId || item.blogId)"
               >{{ item.title }}</v-btn
             >
             <!--<v-card-text-->
@@ -100,24 +100,24 @@
           <user-chip :user="item.author" class="text--right"></user-chip>
           <small
             v-if="item.createTime === item.modifiedTime"
-            class="my_gray--text"
             :title="$options.filters.moment(item.createTime)"
+            class="my_gray--text"
           >
             {{ item.createTime | timeago }}</small
           >
           <small
             v-else
-            class="my_gray--text"
             :title="$options.filters.moment(item.modifiedTime)"
+            class="my_gray--text"
           >
             {{ item.modifiedTime | timeago }}</small
           >
           <small v-if="$store.getters.isAdmin">
             <v-btn
+              @click="confirmDelete.dialog = true"
               small
               text
               color="private"
-              @click="confirmDelete.dialog = true"
               >删除</v-btn
             >
           </small>

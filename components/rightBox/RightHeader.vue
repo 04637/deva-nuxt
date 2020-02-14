@@ -32,9 +32,9 @@
           <div v-for="post in myQuestions" :key="post.questionId" class="mb-4">
             <v-layout align-center
               ><router-link
+                :to="'/question/' + post.questionId"
                 style="font-size: 14px;"
                 class="d-block text-truncate hover-line"
-                :to="'/question/' + post.questionId"
                 ><span style="font-weight:bold;" class="my_gray--text"
                   >·&nbsp;</span
                 >{{ post.title }}</router-link
@@ -45,10 +45,10 @@
       </div>
       <v-layout justify-center class="mt-2">
         <v-btn
+          :to="'/user/' + $store.getters.getUserId + '?tab=ask'"
           outlined
           color="my_gray"
           width="100%"
-          :to="'/user/' + $store.getters.getUserId + '?tab=ask'"
           >我的所有提问 >
         </v-btn>
       </v-layout>
@@ -70,24 +70,24 @@
       </v-text-field>
       <v-text-field
         v-model="password"
+        @keyup.enter.native="submitLogin"
         placeholder="密码"
         type="password"
         solo
         class="min-input mt-2"
         hide-details
-        @keyup.enter.native="submitLogin"
       >
       </v-text-field>
       <small class="red--text">{{ loginError }}</small>
       <v-layout justify-space-between class="mt-2" align-center
         ><v-btn to="/user/signUp" text small color="link_color">去注册</v-btn
         ><v-btn
+          :loading="loginLoading"
+          @click="submitLogin"
           small
           text
-          :loading="loginLoading"
           color="link_color"
           style="background-color: #338ece12"
-          @click="submitLogin"
           >登录</v-btn
         ></v-layout
       >

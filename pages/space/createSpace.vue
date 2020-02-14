@@ -12,24 +12,24 @@
             <v-layout class="mt-4">
               <v-text-field
                 v-model="spaceName"
-                hint="空间的名称"
                 :counter="20"
+                :rules="[rules.min, rules.max]"
+                hint="空间的名称"
                 label="空间名"
                 outlined
                 required
-                :rules="[rules.min, rules.max]"
               ></v-text-field>
             </v-layout>
             <v-layout class="mt-4">
               <v-textarea
                 v-model="description"
-                hint="空间的简短描述"
                 :counter="200"
+                :rules="[rules.max200]"
+                hint="空间的简短描述"
                 label="空间描述"
                 outlined
                 required
                 no-resize
-                :rules="[rules.max200]"
               ></v-textarea>
             </v-layout>
             <small class="my_gray--text"
@@ -37,12 +37,12 @@
             >
             <v-layout justify-end class="mt-5">
               <v-btn
+                :loading="createResult.loading"
+                @click="createSpace"
                 color="primary"
                 accent
                 depressed
                 min-width="100%"
-                :loading="createResult.loading"
-                @click="createSpace"
                 >创建空间</v-btn
               >
             </v-layout>
@@ -54,13 +54,13 @@
       :msg="['创建成功', '创建失败']"
       :succeed="createResult.resp != null && createResult.resp.succeed"
       :dialog="createResult.dialog"
-      close-txt="去查看"
       @update:dialog="
         createResult.dialog = $event
         $router.push(
           '/space/manageSpace?spaceId=' + createResult.resp.data.spaceId
         )
       "
+      close-txt="去查看"
     >
     </InfoDialog>
   </v-app>

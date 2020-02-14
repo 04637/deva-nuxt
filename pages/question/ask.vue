@@ -21,16 +21,16 @@
           <!--  ><v-icon small>mdi-feather</v-icon><span>撰写文章</span></v-btn-->
           <!--&gt;-->
           <v-btn
-            text
-            nuxt
-            class="text-capitalize"
-            small
             :title="
               $store.getters.getUseMarkdown
                 ? '切换富文本编辑器'
                 : '切换markdown编辑器'
             "
             @click="$store.commit('toggleUseMarkdown')"
+            text
+            nuxt
+            class="text-capitalize"
+            small
             ><v-icon>{{
               $store.getters.getUseMarkdown ? 'mdi-markdown' : 'mdi-textbox'
             }}</v-icon></v-btn
@@ -42,12 +42,12 @@
           <v-text-field
             ref="title"
             v-model="title"
+            :counter="100"
+            :rules="[rules.min10, rules.max100]"
             prepend-icon="title"
             hint="简短的描述下你的问题"
-            :counter="100"
             label="问题标题"
             required
-            :rules="[rules.min10, rules.max100]"
           ></v-text-field>
           <v-layout
             v-if="$store.getters.getUseMarkdown"
@@ -58,6 +58,7 @@
               <v-textarea
                 id="markdown-edit"
                 v-model="source"
+                :rules="[rules.max10000, rules.min20]"
                 no-resize
                 counter="10000"
                 placeholder="在此输入内容"
@@ -66,7 +67,6 @@
                 class="flat-text"
                 solo
                 flat
-                :rules="[rules.max10000, rules.min20]"
               ></v-textarea>
             </v-flex>
             <v-flex xs6>
@@ -93,9 +93,11 @@
               ref="tags"
               v-model="selectedTags"
               :items="tags"
+              :counter="5"
+              :rules="[rules.tags, rules.tagsRequired]"
+              @change="selectedChange"
               chips
               clearable
-              :counter="5"
               label="输入问题的标签"
               multiple
               prepend-icon="filter_list"
@@ -103,21 +105,19 @@
               solo
               item-text="tagName"
               item-value="tagId"
-              :rules="[rules.tags, rules.tagsRequired]"
               auto-select-first
               flat
-              @change="selectedChange"
             >
               <template v-slot:selection="{ attrs, item, select, selected }">
                 <v-chip
-                  color="rgba(221, 238, 255, 0.5411764705882353)"
                   v-bind="attrs"
                   :input-value="selected"
+                  @click="select"
+                  @click:close="remove(item)"
+                  color="rgba(221, 238, 255, 0.5411764705882353)"
                   style="height: 28px;border-radius: 3px"
                   class="my_blue--text"
                   close
-                  @click="select"
-                  @click:close="remove(item)"
                 >
                   <span>{{ item.tagName || item }}</span>
                 </v-chip>
@@ -127,10 +127,10 @@
                   <v-list-item-content>
                     <v-list-item-title>
                       <v-btn
+                        @click="createTag.dialog = !createTag.dialog"
                         color="blue"
                         small
                         class="white--text"
-                        @click="createTag.dialog = !createTag.dialog"
                       >
                         点此创建标签
                       </v-btn>
@@ -156,13 +156,13 @@
               ></v-card-text
             >
             <v-btn
+              :loading="askResult.loading"
+              @click="submitQuestion"
               color="my_green"
               class="white--text"
               accent
               depressed
               min-width="150px"
-              :loading="askResult.loading"
-              @click="submitQuestion"
               >发布</v-btn
             >
           </v-layout>
@@ -175,15 +175,15 @@
           <v-form ref="createTagForm">
             <v-text-field
               v-model="newTag.name"
-              label="输入标签名称"
               :rules="[rules.tagName, rules.max20, rules.noSpace]"
               :counter="20"
+              label="输入标签名称"
             ></v-text-field>
             <v-text-field
               v-model="newTag.description"
-              label="输入标签描述"
               :rules="[rules.tagDescription]"
               :counter="400"
+              label="输入标签描述"
             ></v-text-field>
           </v-form>
           <div v-if="createTag.resp">
@@ -196,22 +196,22 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            text
-            small
             @click="
               createTag.dialog = false
               createTag.resp = null
               newTag.name = null
               newTag.description = null
             "
+            text
+            small
             >关闭
           </v-btn>
           <v-btn
+            :loading="createTag.loading"
+            @click="submitCreateTag"
             text
             small
             color="primary"
-            :loading="createTag.loading"
-            @click="submitCreateTag"
             >创建
           </v-btn>
         </v-card-actions>
@@ -221,11 +221,11 @@
       :msg="['提交成功', askResult.resp && askResult.resp.msg]"
       :succeed="askResult.resp != null && askResult.resp.succeed"
       :dialog="askResult.dialog"
-      close-txt="去查看"
       @update:dialog="
         askResult.dialog = $event
         $router.push('/question/' + askResult.resp.data.questionId)
       "
+      close-txt="去查看"
     >
     </InfoDialog>
   </div>

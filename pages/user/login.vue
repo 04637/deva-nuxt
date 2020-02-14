@@ -15,30 +15,30 @@
             ></v-text-field>
             <v-text-field
               v-model="password"
+              @keyup.enter.native="submitLogin"
               class="mt-4"
               placeholder="密码"
               outlined
               required
               type="password"
-              @keyup.enter.native="submitLogin"
             ></v-text-field>
             <v-layout justify-space-between align-center class="mt-4">
               <v-btn
+                @click="usernameLogin = false"
                 small
                 text
                 depressed
                 color="link_color"
-                @click="usernameLogin = false"
                 >短信验证码登录</v-btn
               >
               <v-btn
+                :loading="loading"
+                @click="submitLogin"
                 color="my_green"
                 class="white--text"
                 accent
                 depressed
                 min-width="150px"
-                :loading="loading"
-                @click="submitLogin"
                 >登录</v-btn
               >
             </v-layout>
@@ -56,19 +56,19 @@
             <v-layout align-center>
               <v-text-field
                 v-model="smsCode"
+                @keyup.enter.native="submitLogin"
                 style="width: 100px"
                 label="验证码"
                 required
-                @keyup.enter.native="submitLogin"
               ></v-text-field>
               <v-btn
                 v-show="smsCodeResult.timeInterval <= 0"
+                :loading="smsCodeResult.loading"
+                @click="sendSmsCode"
                 class="ml-5"
                 text
                 outlined
                 small
-                :loading="smsCodeResult.loading"
-                @click="sendSmsCode"
                 >获取验证码</v-btn
               >
               <v-btn
@@ -83,21 +83,21 @@
             </v-layout>
             <v-layout justify-space-between align-center class="mt-4">
               <v-btn
+                @click="usernameLogin = true"
                 text
                 small
                 depressed
                 color="link_color"
-                @click="usernameLogin = true"
                 >用户名密码登录</v-btn
               >
               <v-btn
+                :loading="loading"
+                @click="submitLogin"
                 color="my_green"
                 class="white--text"
                 accent
                 depressed
                 min-width="150px"
-                :loading="loading"
-                @click="submitLogin"
                 >登录</v-btn
               >
             </v-layout>

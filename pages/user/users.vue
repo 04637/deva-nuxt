@@ -3,12 +3,12 @@
     <v-layout style="min-width: 200px;max-width:400px" shrink>
       <v-text-field
         v-model="searchKey"
+        @click:append="loadUserList"
+        @keyup.enter.native="loadUserList"
         hide-details
         placeholder="用户名/昵称"
         append-icon="search"
         rounded
-        @click:append="loadUserList"
-        @keyup.enter.native="loadUserList"
       ></v-text-field>
     </v-layout>
     <v-divider></v-divider>
@@ -16,8 +16,8 @@
       <UserCard
         v-for="userInfo in userList"
         :key="userInfo.userId"
-        class="mb-4 mr-2"
         :user-info="userInfo"
+        class="mb-4 mr-2"
       ></UserCard>
     </v-layout>
   </v-app>

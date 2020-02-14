@@ -9,23 +9,23 @@
           ></v-layout
         >
         <v-btn
-          icon
-          small
-          title="声望值达到200将可以编辑标签描述"
           @click="
             editDescription.description = tagInfo.description
             editDescription.tagName = tagInfo.tagName
             editDescription.tagId = tagInfo.tagId
             editDescription.dialog = $store.getters.getRep >= 200
           "
+          icon
+          small
+          title="声望值达到200将可以编辑标签描述"
           ><v-icon small>edit</v-icon></v-btn
         >
         <v-btn
           v-show="showLove"
+          @click="likeTag(tagInfo)"
           class="ml-1"
           icon
           small
-          @click="likeTag(tagInfo)"
           ><v-icon :color="tagInfo.liked ? 'private' : ''" small
             >mdi-heart</v-icon
           ></v-btn
@@ -57,10 +57,10 @@
         <v-card-text>
           <v-textarea
             v-model="editDescription.description"
-            style="font-size: 0.8rem"
-            placeholder="输入标签描述"
             :rules="[rules.tagDescription]"
             :counter="400"
+            style="font-size: 0.8rem"
+            placeholder="输入标签描述"
           ></v-textarea>
           <div v-if="editDescription.resp">
             <small v-if="editDescription.resp.succeed" class="success--text">{{
@@ -74,8 +74,6 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            text
-            small
             @click="
               editDescription.dialog = false
               editDescription.resp = null
@@ -83,14 +81,16 @@
               editDescription.tagId = null
               editDescription.tagName = null
             "
+            text
+            small
             >关闭
           </v-btn>
           <v-btn
+            :loading="editDescription.loading"
+            @click="updateDescription"
             text
             small
             color="primary"
-            :loading="editDescription.loading"
-            @click="updateDescription"
             ><span>更新</span>
           </v-btn>
         </v-card-actions>

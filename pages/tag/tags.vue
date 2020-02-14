@@ -3,12 +3,12 @@
     <v-layout style="min-width: 200px;max-width:400px" shrink>
       <v-text-field
         v-model="searchKey"
+        @click:append="loadTagList"
+        @keyup.enter.native="loadTagList"
         hide-details
         placeholder="搜索标签"
         append-icon="search"
         rounded
-        @click:append="loadTagList"
-        @keyup.enter.native="loadTagList"
       ></v-text-field>
     </v-layout>
     <v-divider></v-divider>

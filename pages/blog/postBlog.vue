@@ -21,16 +21,16 @@
           <!--  ><v-icon small>mdi-feather</v-icon><span>发布问题</span></v-btn-->
           <!--&gt;-->
           <v-btn
-            text
-            nuxt
-            class="text-capitalize"
-            small
             :title="
               $store.getters.getUseMarkdown
                 ? '切换富文本编辑器'
                 : '切换markdown编辑器'
             "
             @click="$store.commit('toggleUseMarkdown')"
+            text
+            nuxt
+            class="text-capitalize"
+            small
             ><v-icon>{{
               $store.getters.getUseMarkdown ? 'mdi-markdown' : 'mdi-textbox'
             }}</v-icon></v-btn
@@ -42,12 +42,12 @@
           <v-text-field
             ref="title"
             v-model="title"
+            :counter="100"
+            :rules="[rules.min10, rules.max100]"
             class="mt-0 pt-0 "
             prepend-icon="title"
-            :counter="100"
             label="博文标题"
             required
-            :rules="[rules.min10, rules.max100]"
           ></v-text-field>
           <v-layout
             v-if="$store.getters.getUseMarkdown"
@@ -58,6 +58,7 @@
               <v-textarea
                 id="markdown-edit"
                 v-model="source"
+                :rules="[rules.max16000, rules.min20]"
                 no-resize
                 class="flat-text"
                 placeholder="在此输入内容"
@@ -66,7 +67,6 @@
                 full-height
                 rows="50"
                 solo
-                :rules="[rules.max16000, rules.min20]"
               ></v-textarea>
             </v-flex>
             <v-flex xs6>
@@ -81,12 +81,12 @@
           <div v-if="!$store.getters.getUseMarkdown" style="height: 953px;">
             <Quill
               ref="blogQuill"
-              class="blog-quill"
               :content="contentCode"
               :max="16000"
               :min="20"
               @update:contentCode="contentCode = $event"
               @update:errMsg="quillErrMsg = $event"
+              class="blog-quill"
             ></Quill>
           </div>
           <v-layout>
@@ -94,10 +94,12 @@
               ref="tags"
               v-model="selectedTags"
               :items="tags"
+              :counter="5"
+              :rules="[rules.tags, rules.tagsRequired]"
+              @change="selectedChange"
               chips
               flat
               clearable
-              :counter="5"
               label="输入相关标签"
               multiple
               prepend-icon="filter_list"
@@ -105,20 +107,18 @@
               solo
               item-text="tagName"
               item-value="tagId"
-              :rules="[rules.tags, rules.tagsRequired]"
               auto-select-first
-              @change="selectedChange"
             >
               <template v-slot:selection="{ attrs, item, select, selected }">
                 <v-chip
                   v-bind="attrs"
                   :input-value="selected"
+                  @click="select"
+                  @click:close="remove(item)"
                   close
                   style="height: 28px;border-radius: 3px"
                   class="my_blue--text"
                   color="rgba(221, 238, 255, 0.5411764705882353)"
-                  @click="select"
-                  @click:close="remove(item)"
                 >
                   <span>{{ item.tagName || item }}</span>
                 </v-chip>
@@ -128,10 +128,10 @@
                   <v-list-item-content>
                     <v-list-item-title>
                       <v-btn
+                        @click="createTag.dialog = !createTag.dialog"
                         text
                         small
                         color="primary"
-                        @click="createTag.dialog = !createTag.dialog"
                       >
                         点此创建标签
                       </v-btn>
@@ -163,23 +163,23 @@
                   ? $route.query.spaceName || '所属空间'
                   : '公共') + '可见'
               "
-              color="blue"
-              class="mr-5 mt-0 pt-0"
-              persistent-hint
               :hint="
                 '勾选将对' +
                   ($route.query.spaceId || spaceId ? '空间成员' : '所有人') +
                   '可见，不勾选则只对自己可见'
               "
+              color="blue"
+              class="mr-5 mt-0 pt-0"
+              persistent-hint
             ></v-checkbox>
             <v-btn
+              :loading="postResult.loading"
+              @click="submitBlog"
               color="my_green"
               class="white--text"
               accent
               depressed
               min-width="150px"
-              :loading="postResult.loading"
-              @click="submitBlog"
               >发布</v-btn
             >
           </v-layout>
@@ -192,15 +192,15 @@
           <v-form ref="createTagForm">
             <v-text-field
               v-model="newTag.name"
-              label="输入标签名称"
               :rules="[rules.tagName, rules.max20, rules.noSpace]"
               :counter="20"
+              label="输入标签名称"
             ></v-text-field>
             <v-text-field
               v-model="newTag.description"
-              label="输入标签描述"
               :rules="[rules.tagDescription]"
               :counter="400"
+              label="输入标签描述"
             ></v-text-field>
           </v-form>
           <div v-if="createTag.resp">
@@ -213,20 +213,20 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            text
             @click="
               createTag.dialog = false
               createTag.resp = null
               newTag.name = null
               newTag.description = null
             "
+            text
             >关闭
           </v-btn>
           <v-btn
-            text
-            color="primary"
             :loading="createTag.loading"
             @click="submitCreateTag"
+            text
+            color="primary"
             >创建
           </v-btn>
         </v-card-actions>
@@ -236,19 +236,19 @@
       :msg="['发布成功', postResult.resp && postResult.resp.msg]"
       :succeed="postResult.resp != null && postResult.resp.succeed"
       :dialog="postResult.dialog"
-      close-txt="去查看"
       @update:dialog="
         postResult.dialog = $event
         $router.push('/blog/' + postResult.resp.data.blogId)
       "
+      close-txt="去查看"
     >
     </InfoDialog>
     <InfoDialog
       :msg="['', '图片过大，上传失败']"
       :succeed="uploadImageResult.succeed"
       :dialog="uploadImageResult.dialog"
-      close-txt="关闭"
       @update:dialog="uploadImageResult.dialog = $event"
+      close-txt="关闭"
     >
     </InfoDialog>
   </v-app>

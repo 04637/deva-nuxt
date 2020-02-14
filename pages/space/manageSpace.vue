@@ -13,31 +13,31 @@
                 <v-text-field
                   v-model="spaceInfo.spaceName"
                   :counter="20"
+                  :rules="[rules.min, rules.max]"
                   label="空间名"
                   outlined
                   required
-                  :rules="[rules.min, rules.max]"
                 ></v-text-field>
               </v-layout>
               <v-layout class="mt-4">
                 <v-textarea
                   v-model="spaceInfo.description"
                   :counter="200"
+                  :rules="[rules.max200]"
                   label="空间描述"
                   outlined
                   required
                   no-resize
-                  :rules="[rules.max200]"
                 ></v-textarea>
               </v-layout>
               <v-layout justify-end class="mt-4">
                 <v-btn
+                  :loading="updateResult.loading"
+                  @click="updateSpace"
                   outlined
                   accent
                   depressed
                   min-width="150px"
-                  :loading="updateResult.loading"
-                  @click="updateSpace"
                   >更新空间信息</v-btn
                 >
               </v-layout>
@@ -53,9 +53,9 @@
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
                   <v-btn
-                    icon
                     :to="'/space/userAdd?spaceId=' + spaceInfo.spaceId"
                     v-on="on"
+                    icon
                     ><v-icon>mdi-account-plus-outline</v-icon></v-btn
                   >
                 </template>
@@ -64,9 +64,9 @@
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
                   <v-btn
-                    icon
                     :to="'/space/userRemove?spaceId=' + spaceInfo.spaceId"
                     v-on="on"
+                    icon
                     ><v-icon>mdi-account-minus-outline</v-icon></v-btn
                   >
                 </template>
@@ -74,7 +74,7 @@
               </v-tooltip>
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
-                  <v-btn icon v-on="on" @click="batchAdd.dialog = true"
+                  <v-btn v-on="on" @click="batchAdd.dialog = true" icon
                     ><v-icon>mdi-account-multiple-plus-outline</v-icon></v-btn
                   >
                 </template>
@@ -90,8 +90,8 @@
               <v-list-item-content>
                 <v-layout>
                   空间成员：<router-link
-                    class="d-inline"
                     :to="'/space/userView?spaceId=' + spaceInfo.spaceId"
+                    class="d-inline"
                     >{{ spaceInfo.memberNum }}</router-link
                   >
                   &nbsp;&nbsp;人</v-layout
@@ -173,10 +173,10 @@
                     <v-tooltip top>
                       <template v-slot:activator="{ on }">
                         <v-icon
-                          small
-                          class="ml-2"
                           v-on="on"
                           @click="refreshCode"
+                          small
+                          class="ml-2"
                           >mdi-refresh</v-icon
                         ></template
                       >
@@ -191,9 +191,9 @@
                     <template v-slot:activator="{ on }">
                       <v-checkbox
                         v-model="spaceInfo.allowInvite"
-                        color="private"
                         v-on="on"
                         @click="toggleInvite"
+                        color="private"
                       ></v-checkbox>
                     </template>
                     <span
@@ -222,10 +222,10 @@
             <v-divider></v-divider>
             <v-list-item>
               <v-btn
+                @click="confirmDelete.dialog = true"
                 width="100vw"
                 color="red"
                 style="color: white"
-                @click="confirmDelete.dialog = true"
                 >释放该空间</v-btn
               >
             </v-list-item>
@@ -258,12 +258,12 @@
               <v-layout align-center>
                 <v-textarea
                   v-model="batchAdd.usernames"
+                  :rules="[rules.minOne]"
                   rows="30"
                   clearable
                   no-resize
                   hint="输入多个用户名, 每行一个, 最多100个, 系统将自动过滤掉超过的用户名, 筛选有效且不属于空间成员的用户名。"
                   persistent-hint
-                  :rules="[rules.minOne]"
                 >
                 </v-textarea>
               </v-layout>
@@ -272,15 +272,15 @@
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1"></div>
-          <v-btn color="sub" text small @click="batchAdd.dialog = false"
+          <v-btn @click="batchAdd.dialog = false" color="sub" text small
             >关闭</v-btn
           >
           <v-btn
-            color="primary"
             :loading="batchAdd.loading"
+            @click="batchAddUser"
+            color="primary"
             small
             text
-            @click="batchAddUser"
             >添加</v-btn
           >
         </v-card-actions>
@@ -296,25 +296,25 @@
           <v-text-field
             ref="confirmCode"
             v-model="confirmDelete.inviteCode"
-            placeholder="当前邀请码"
-            persistent-hint
-            hint="释放后，所有成员将解散，所有信息删除且无法恢复。如果确认释放，请输入当前邀请码确认"
             :rules="[
               rules.rightCode(confirmDelete.inviteCode, spaceInfo.inviteCode)
             ]"
+            placeholder="当前邀请码"
+            persistent-hint
+            hint="释放后，所有成员将解散，所有信息删除且无法恢复。如果确认释放，请输入当前邀请码确认"
           ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1"></div>
-          <v-btn color="sub" text small @click="confirmDelete.dialog = false"
+          <v-btn @click="confirmDelete.dialog = false" color="sub" text small
             >取消</v-btn
           >
           <v-btn
-            color="red"
             :loading="confirmDelete.loading"
+            @click="deleteSpace"
+            color="red"
             small
             text
-            @click="deleteSpace"
             >确认</v-btn
           >
         </v-card-actions>

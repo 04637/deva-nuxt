@@ -3,13 +3,13 @@
     <v-layout style="width: 60vw" shrink justify-space-around>
       <v-text-field
         v-model="searchKey"
+        @click:append="loadUserList"
+        @keyup.enter.native="loadUserList"
         style="width: 30vw"
         hide-details
         placeholder="用户名/昵称"
         append-icon="search"
         rounded
-        @click:append="loadUserList"
-        @keyup.enter.native="loadUserList"
       ></v-text-field>
       <v-spacer></v-spacer>
       <SpaceMenu v-if="spaceInfo" :space-info="spaceInfo"></SpaceMenu>

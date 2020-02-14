@@ -8,15 +8,15 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <!-- 组件事件绑定https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model -->
-        <v-btn small text @click="$emit('update:dialog', false)">取消 </v-btn>
+        <v-btn @click="$emit('update:dialog', false)" small text>取消 </v-btn>
         <v-btn
-          small
-          color="private"
-          text
           @click="
             $emit('update:dialog', false)
             confirm()
           "
+          small
+          color="private"
+          text
           ><span>确定</span>
         </v-btn>
       </v-card-actions>

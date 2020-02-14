@@ -4,14 +4,14 @@
       <v-flex xs12 md10 lg9 justify-start class="mt-4">
         <div class="float-action hidden-sm-and-down" style="z-index: 999">
           <v-flex>
-            <v-btn large icon class="d-block" @click="voteBlog"
+            <v-btn @click="voteBlog" large icon class="d-block"
               ><v-icon
                 :color="blogDetail.isUseful ? 'private' : 'my_gray'"
                 small
                 >mdi-thumb-up</v-icon
               ></v-btn
             >
-            <v-btn large icon class="d-block mt-4" @click="likeBlog"
+            <v-btn @click="likeBlog" large icon class="d-block mt-4"
               ><v-icon :color="blogDetail.isLiked ? 'private' : 'my_gray'" small
                 >mdi-heart</v-icon
               ></v-btn
@@ -51,15 +51,15 @@
                 <TagChip
                   v-for="tag in blogDetail.tagInfos"
                   :key="tag.tagId"
-                  class="mr-3 mb-1"
                   :tag-info="tag"
+                  class="mr-3 mb-1"
                 ></TagChip>
               </v-layout>
             </v-layout>
           </v-card-actions>
           <v-divider></v-divider>
           <v-layout justify-end class="mt-2">
-            <v-btn small text @click="showCommentInput = !showCommentInput"
+            <v-btn @click="showCommentInput = !showCommentInput" small text
               >添加评论</v-btn
             >
           </v-layout>
@@ -74,26 +74,26 @@
                     <span style="font-size: 0.8rem">
                       {{ comment.content }}&nbsp;&nbsp;--&nbsp;
                       <router-link
-                        style="text-decoration: none;font-size:0.8rem"
                         :to="'/user/' + comment.author.userId"
+                        style="text-decoration: none;font-size:0.8rem"
                         >{{
                           comment.author.nickname || comment.author.username
                         }}
                       </router-link>
                       <span
+                        :title="$options.filters.moment(comment.createTime)"
                         class="my_gray--text"
                         style="font-size: 0.8rem;"
-                        :title="$options.filters.moment(comment.createTime)"
                         >&nbsp;{{ comment.createTime | timeago }}</span
                       >&nbsp;<span
                         v-if="
                           comment.author.userId === $store.getters.getUserId
                         "
-                        class="link_color--text"
-                        style="font-size:0.8rem; cursor: pointer"
                         @click="
                           delBlogComment(blogDetail.comments, comment.commentId)
                         "
+                        class="link_color--text"
+                        style="font-size:0.8rem; cursor: pointer"
                         >删除</span
                       >
                     </span>
@@ -108,13 +108,13 @@
             <v-text-field
               ref="commentRef"
               v-model="comment.currentComment"
+              :rules="[rules.requiredComment, rules.max400]"
+              @keyup.enter.native="sendComment()"
+              @click:append-outer="sendComment()"
               append-outer-icon="mdi-reply"
               autofocus
               class="pt-0 mt-0"
               placeholder="@用户昵称 可回复/召唤⚡该用户，最多可召唤五个哦"
-              :rules="[rules.requiredComment, rules.max400]"
-              @keyup.enter.native="sendComment()"
-              @click:append-outer="sendComment()"
             ></v-text-field>
           </v-layout>
         </v-card>

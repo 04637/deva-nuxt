@@ -11,7 +11,7 @@
       >&nbsp;·&nbsp;{{ createTime | timeago }}</v-layout
     >
     <v-layout :justify-end="justifyEnd" class="d-md-block hidden-sm-and-down">
-      <v-card flat class="pa-2" :width="width">
+      <v-card :width="width" flat class="pa-2">
         <v-layout align-center>
           <v-flex shrink>
             <v-avatar color="grey">
@@ -21,8 +21,8 @@
           <v-flex class="ml-3" grow>
             <v-layout align-center>
               <nuxt-link
-                class="hover-line"
                 :to="'/user/' + user.userId"
+                class="hover-line"
                 style="text-decoration: none; font-size: 14px"
                 >{{ user.nickname || user.username }}</nuxt-link
               ><b style="color: red">&nbsp;·&nbsp;</b
@@ -32,16 +32,16 @@
             </v-layout>
             <v-layout>
               <small
-                style="font-size: 13px; color: #666"
                 :title="$options.filters.moment(createTime)"
+                style="font-size: 13px; color: #666"
               >
                 {{ prefix }}于&nbsp; {{ createTime | timeago }}</small
               >
             </v-layout>
             <v-layout v-if="createTime !== modifiedTime">
               <small
-                style="font-size: 13px; color: #666"
                 :title="$options.filters.moment(modifiedTime)"
+                style="font-size: 13px; color: #666"
               >
                 更新于&nbsp;
                 {{ modifiedTime | timeago }}</small

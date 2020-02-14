@@ -11,10 +11,10 @@
       class="white--text"
     >
       <div
-        class="label-div"
         @click="
           tabIndex = $store.getters.getUserId === userProfile.userId ? 3 : 0
         "
+        class="label-div"
       >
         <div class="label-des">提问</div>
         <div class="label-num">{{ userProfile.questions.length }}</div>
@@ -23,10 +23,10 @@
         <div class="label-des">|</div>
       </div>
       <div
-        class="label-div"
         @click="
           tabIndex = $store.getters.getUserId === userProfile.userId ? 4 : 1
         "
+        class="label-div"
       >
         <div class="label-des">回答</div>
         <div class="label-num">{{ userProfile.answers.length }}</div>
@@ -35,10 +35,10 @@
         <div class="label-des">|</div>
       </div>
       <div
-        class="label-div"
         @click="
           tabIndex = $store.getters.getUserId === userProfile.userId ? 4 : 1
         "
+        class="label-div"
       >
         <div class="label-des">采纳率</div>
         <div class="label-num">{{ userProfile.adoptionRate }}%</div>
@@ -64,17 +64,17 @@
                     color="primary"
                   >
                     <input
-                      v-show="false"
                       ref="selectAvatar"
+                      v-show="false"
+                      @change="uploadAvatar($event)"
                       accept="image/png, image/jpeg, image/bmp"
                       type="file"
-                      @change="uploadAvatar($event)"
                     />
                     <v-btn
+                      @click="$refs.selectAvatar.click()"
                       icon
                       color="white"
                       text
-                      @click="$refs.selectAvatar.click()"
                       ><v-icon>mdi-image-edit-outline</v-icon></v-btn
                     >
                   </v-overlay>
@@ -98,27 +98,27 @@
         >
           <v-btn
             v-if="!userProfile.followed"
+            @click="followUser"
             color="blue"
             class="white--text"
             small
-            @click="followUser"
             ><v-icon small>add</v-icon>关注他</v-btn
           >
           <v-btn
             v-else
+            @click="unWatchUser"
             color="blue"
             class="white--text"
             small
-            @click="unWatchUser"
             >取消关注</v-btn
           >
         </div>
       </v-flex>
       <div
-        class="label-div"
         @click="
           tabIndex = $store.getters.getUserId === userProfile.userId ? 5 : 2
         "
+        class="label-div"
       >
         <div class="label-des">博文</div>
         <div class="label-num">{{ userProfile.blogs.length }}</div>
@@ -127,10 +127,10 @@
         <div class="label-des">|</div>
       </div>
       <div
-        class="label-div"
         @click="
           tabIndex = $store.getters.getUserId === userProfile.userId ? 7 : 3
         "
+        class="label-div"
       >
         <div class="label-des">粉丝</div>
         <div class="label-num">{{ userProfile.followers.length }}</div>
@@ -138,7 +138,7 @@
       <div class="label-divider">
         <div class="label-des">|</div>
       </div>
-      <div class="label-div" @click="tabIndex = 0">
+      <div @click="tabIndex = 0" class="label-div">
         <div class="label-des">声望</div>
         <div class="label-num">{{ userProfile.reputation }}</div>
       </div>

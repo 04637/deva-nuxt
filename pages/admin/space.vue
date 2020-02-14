@@ -3,12 +3,12 @@
     <v-layout style="width: 30vw" class="mb-3" shrink>
       <v-text-field
         v-model="searchKey"
+        @click:append="loadSpaceList"
+        @keyup.enter.native="loadSpaceList"
         hide-details
         placeholder="空间ID/名称 创建人用户名/昵称"
         append-icon="search"
         rounded
-        @click:append="loadSpaceList"
-        @keyup.enter.native="loadSpaceList"
       ></v-text-field>
     </v-layout>
     <v-divider></v-divider>

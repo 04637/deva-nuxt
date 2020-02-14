@@ -6,14 +6,14 @@
         <v-layout class="mt-10">
           <v-text-field
             v-model="keywords"
+            @click:append="search"
+            @keyup.enter.native="search"
             hide-details
             placeholder="搜索"
             append-icon="search"
             rounded
             solo
             class="search-input2"
-            @click:append="search"
-            @keyup.enter.native="search"
           ></v-text-field>
         </v-layout>
         <v-spacer></v-spacer>

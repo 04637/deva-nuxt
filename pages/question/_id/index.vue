@@ -2,8 +2,8 @@
   <div>
     <v-app>
       <v-layout
-        class="right-box"
         :class="miniTop ? 'mini-top' : 'top'"
+        class="right-box"
         style="position:fixed;  left:0; right:0; background-color: white;min-height: 150px;z-index: 100"
         justify-center
       >
@@ -15,8 +15,8 @@
                   <TagChip
                     v-for="tag in questionDetail.tagInfos"
                     :key="tag.tagId"
-                    class="mr-3 mb-1"
                     :tag-info="tag"
+                    class="mr-3 mb-1"
                   ></TagChip>
                 </v-layout>
                 <h3>
@@ -33,14 +33,14 @@
                 </h3>
                 <v-layout shrink class="mt-2 title-label">
                   <v-btn
-                    color="blue"
-                    small
-                    width="80.23px"
-                    class="white--text"
                     :outlined="questionDetail.isCollected"
                     @click="collectQuestion"
                     @mouseover="watchMouseOver = true"
                     @mouseleave="watchMouseOver = false"
+                    color="blue"
+                    small
+                    width="80.23px"
+                    class="white--text"
                     >{{
                       questionDetail.isCollected
                         ? watchMouseOver
@@ -50,24 +50,24 @@
                     }}</v-btn
                   >
                   <v-btn
+                    @click="toBottom"
                     color="blue"
                     small
                     class="white--text ml-4"
                     outlined
-                    @click="toBottom"
                     ><v-icon small>edit</v-icon>写回答</v-btn
                   >
                   <v-btn
                     v-if="
                       $store.getters.getUserId === questionDetail.author.userId
                     "
+                    :to="
+                      '/question/ask?questionId=' + questionDetail.questionId
+                    "
                     small
                     class="ml-4"
                     color="blue"
                     outlined
-                    :to="
-                      '/question/ask?questionId=' + questionDetail.questionId
-                    "
                   >
                     <v-icon small>edit</v-icon>
                     <span>编辑问题</span>
@@ -95,14 +95,14 @@
             <v-flex md3 hidden-sm-and-down class="show-label">
               <v-layout shrink>
                 <v-btn
-                  color="blue"
-                  small
-                  width="80.23px"
-                  class="white--text"
                   :outlined="questionDetail.isCollected"
                   @click="collectQuestion"
                   @mouseover="watchMouseOver = true"
                   @mouseleave="watchMouseOver = false"
+                  color="blue"
+                  small
+                  width="80.23px"
+                  class="white--text"
                   >{{
                     questionDetail.isCollected
                       ? watchMouseOver
@@ -112,11 +112,11 @@
                   }}</v-btn
                 >
                 <v-btn
+                  @click="toBottom"
                   color="blue"
                   small
                   class="white--text ml-4"
                   outlined
-                  @click="toBottom"
                   ><v-icon small>edit</v-icon>写回答</v-btn
                 >
               </v-layout>
@@ -135,20 +135,20 @@
             <v-layout justify-space-between>
               <v-flex md1 hidden-sm-and-down class="mt-12" align-center>
                 <v-layout column align-center>
-                  <v-btn small icon fab @click="voteQuestion(true)">
+                  <v-btn @click="voteQuestion(true)" small icon fab>
                     <v-icon
-                      size="60"
                       :color="questionDetail.isUseful === true ? 'success' : ''"
+                      size="60"
                       >arrow_drop_up</v-icon
                     >
                   </v-btn>
                   <strong>{{ questionDetail.voteNum }}</strong>
-                  <v-btn small icon fab @click="voteQuestion(false)">
+                  <v-btn @click="voteQuestion(false)" small icon fab>
                     <v-icon
-                      size="60"
                       :color="
                         questionDetail.isUseful === false ? 'success' : ''
                       "
+                      size="60"
                       >arrow_drop_down</v-icon
                     >
                   </v-btn>
@@ -206,29 +206,29 @@
                     class="inverted_color--text right-box"
                     >相似问题：
                     <router-link
-                      style="text-decoration: none"
                       :to="questionDetail.similarMark.toQuestionId"
+                      style="text-decoration: none"
                       >{{ questionDetail.similarMark.toQuestionTitle }}
                     </router-link>
                     <span
-                      class="inverted_color--text"
-                      style="font-size: 0.8rem; cursor: pointer"
                       :title="questionDetail.similarMark.nickname"
                       @click="
                         $router.push(
                           '/user/' + questionDetail.similarMark.userId
                         )
                       "
+                      class="inverted_color--text"
+                      style="font-size: 0.8rem; cursor: pointer"
                       >--&nbsp;{{ questionDetail.similarMark.nickname }}
                     </span>
                     <span
-                      class="my_gray--text ml-2"
-                      style="font-size: 0.8rem"
                       :title="
                         $options.filters.moment(
                           questionDetail.similarMark.createTime
                         )
                       "
+                      class="my_gray--text ml-2"
+                      style="font-size: 0.8rem"
                       >&nbsp;标记于&nbsp;{{
                         questionDetail.similarMark.createTime | timeago
                       }}</span
@@ -240,8 +240,8 @@
                     <TagChip
                       v-for="tag in questionDetail.tagInfos"
                       :key="tag.tagId"
-                      class="mr-3 mb-1"
                       :tag-info="tag"
+                      class="mr-3 mb-1"
                     ></TagChip>
                   </v-layout>
                 </v-card-actions>
@@ -259,8 +259,6 @@
                 <v-layout justify-center column class="mt-2">
                   <v-layout justify-end>
                     <v-btn
-                      text
-                      small
                       @click="
                         $set(
                           showCommentInput,
@@ -268,6 +266,8 @@
                           !showCommentInput[questionDetail.questionId]
                         )
                       "
+                      text
+                      small
                       >添加评论</v-btn
                     >
                   </v-layout>
@@ -288,19 +288,19 @@
                             <span style="font-size: 0.8rem">
                               {{ comment.content }}&nbsp;&nbsp;--&nbsp;
                               <router-link
-                                style="text-decoration: none;font-size:0.8rem"
                                 :to="'/user/' + comment.author.userId"
+                                style="text-decoration: none;font-size:0.8rem"
                                 >{{
                                   comment.author.nickname ||
                                     comment.author.username
                                 }}
                               </router-link>
                               <span
-                                class="my_gray--text"
-                                style="font-size: 0.8rem;"
                                 :title="
                                   $options.filters.moment(comment.createTime)
                                 "
+                                class="my_gray--text"
+                                style="font-size: 0.8rem;"
                                 >&nbsp;{{ comment.createTime | timeago }}</span
                               > </span
                             >&nbsp;<span
@@ -308,14 +308,14 @@
                                 comment.author.userId ===
                                   $store.getters.getUserId
                               "
-                              class="link_color--text"
-                              style="font-size:0.8rem; cursor: pointer"
                               @click="
                                 delQuestionComment(
                                   questionDetail.comments,
                                   comment.commentId
                                 )
                               "
+                              class="link_color--text"
+                              style="font-size:0.8rem; cursor: pointer"
                               >删除</span
                             >
                           </v-list-item>
@@ -330,8 +330,6 @@
                     class="mb-1"
                   >
                     <v-btn
-                      icon
-                      small
                       :title="
                         showAllComments[questionDetail.questionId]
                           ? '收起'
@@ -344,6 +342,8 @@
                           !showAllComments[questionDetail.questionId]
                         )
                       "
+                      icon
+                      small
                     >
                       <v-icon
                         >expand_{{
@@ -362,10 +362,6 @@
                     <v-text-field
                       :ref="'comment' + questionDetail.questionId"
                       v-model="comment.currentComment"
-                      append-outer-icon="mdi-reply"
-                      autofocus
-                      class="pt-0 mt-0"
-                      placeholder="@用户昵称 可回复/召唤⚡该用户，最多可召唤五个哦"
                       :rules="[rules.requiredComment, rules.max400]"
                       @keyup.enter.native="
                         sendComment(questionDetail.questionId)
@@ -373,6 +369,10 @@
                       @click:append-outer="
                         sendComment(questionDetail.questionId)
                       "
+                      append-outer-icon="mdi-reply"
+                      autofocus
+                      class="pt-0 mt-0"
+                      placeholder="@用户昵称 可回复/召唤⚡该用户，最多可召唤五个哦"
                     ></v-text-field>
                   </v-layout>
                 </v-layout>
@@ -401,18 +401,18 @@
               <v-layout justify-space-between>
                 <v-flex md1 hidden-sm-and-down class="mt-12" align-center>
                   <v-layout column align-center>
-                    <v-btn small icon fab @click="voteAnswer(answer, true)">
+                    <v-btn @click="voteAnswer(answer, true)" small icon fab>
                       <v-icon
-                        size="60"
                         :color="answer.isUseful === true ? 'success' : ''"
+                        size="60"
                         >arrow_drop_up</v-icon
                       >
                     </v-btn>
                     <strong>{{ answer.voteNum }}</strong>
-                    <v-btn small icon fab @click="voteAnswer(answer, false)">
+                    <v-btn @click="voteAnswer(answer, false)" small icon fab>
                       <v-icon
-                        size="60"
                         :color="answer.isUseful === false ? 'success' : ''"
+                        size="60"
                         >arrow_drop_down</v-icon
                       >
                     </v-btn>
@@ -433,23 +433,23 @@
                           $store.getters.getUserId ===
                             questionDetail.author.userId
                       "
-                      color="private"
-                      text
-                      style="height: 24px; padding: 0 10px; margin-right: 5px"
                       @click="
                         acceptConfirm.dialog = true
                         acceptConfirm.answer = answer
                       "
+                      color="private"
+                      text
+                      style="height: 24px; padding: 0 10px; margin-right: 5px"
                     >
                       <v-icon>check</v-icon>
                       采纳
                     </v-btn>
                     <v-btn
                       v-if="$store.getters.getUserId === answer.author.userId"
+                      @click="editAnswer(answer)"
                       color="private"
                       text
                       style="height: 24px; padding: 0 10px; margin-right: 5px"
-                      @click="editAnswer(answer)"
                     >
                       <v-icon small>edit</v-icon>
                       编辑
@@ -479,8 +479,6 @@
                   <v-layout justify-center column class="mt-2">
                     <v-layout justify-end>
                       <v-btn
-                        small
-                        text
                         @click="
                           $set(
                             showCommentInput,
@@ -488,6 +486,8 @@
                             !showCommentInput[answer.answerId]
                           )
                         "
+                        small
+                        text
                         >添加评论</v-btn
                       >
                     </v-layout>
@@ -508,19 +508,19 @@
                               <span style="font-size: 0.8rem">
                                 {{ comment.content }}&nbsp;&nbsp;--&nbsp;
                                 <router-link
-                                  style="text-decoration: none;font-size:0.8rem"
                                   :to="'/user/' + comment.author.userId"
+                                  style="text-decoration: none;font-size:0.8rem"
                                   >{{
                                     comment.author.nickname ||
                                       comment.author.username
                                   }}
                                 </router-link>
                                 <span
-                                  class="my_gray--text"
-                                  style="font-size: 0.8rem;"
                                   :title="
                                     $options.filters.moment(comment.createTime)
                                   "
+                                  class="my_gray--text"
+                                  style="font-size: 0.8rem;"
                                   >&nbsp;{{
                                     comment.createTime | timeago
                                   }}</span
@@ -530,14 +530,14 @@
                                   comment.author.userId ===
                                     $store.getters.getUserId
                                 "
-                                class="link_color--text"
-                                style="font-size:0.8rem; cursor: pointer"
                                 @click="
                                   delQuestionComment(
                                     answer.comments,
                                     comment.commentId
                                   )
                                 "
+                                class="link_color--text"
+                                style="font-size:0.8rem; cursor: pointer"
                                 >删除</span
                               >
                             </v-list-item>
@@ -552,8 +552,6 @@
                       class="mb-1"
                     >
                       <v-btn
-                        icon
-                        small
                         :title="
                           showAllComments[answer.answerId] ? '收起' : '展开'
                         "
@@ -564,6 +562,8 @@
                             !showAllComments[answer.answerId]
                           )
                         "
+                        icon
+                        small
                       >
                         <v-icon
                           >expand_{{
@@ -580,13 +580,13 @@
                       <v-text-field
                         ref="answerRef"
                         v-model="comment.currentComment"
+                        :rules="[rules.requiredComment, rules.max400]"
+                        @keyup.enter.native="sendAnswerComment(aIndex)"
+                        @click:append-outer="sendAnswerComment(aIndex)"
                         placeholder="@用户昵称 可回复/召唤⚡该用户，最多可召唤五个哦"
                         class="pt-0 mt-0"
                         append-outer-icon="reply"
                         autofocus
-                        :rules="[rules.requiredComment, rules.max400]"
-                        @keyup.enter.native="sendAnswerComment(aIndex)"
-                        @click:append-outer="sendAnswerComment(aIndex)"
                       ></v-text-field>
                     </v-layout>
                   </v-layout>
@@ -606,19 +606,19 @@
                 :content="answer.content"
                 :max="10000"
                 :min="10"
-                class="answer-quill"
                 @update:contentCode="contentCode = $event"
                 @update:errMsg="quillErrMsg = $event"
+                class="answer-quill"
               ></Quill>
               <v-layout justify-end class="my-5">
                 <v-btn
                   :loading="answer.loading"
+                  @click="submitAnswer"
                   color="my_green"
                   class="white--text"
                   accent
                   depressed
                   min-width="150px"
-                  @click="submitAnswer"
                   >提交</v-btn
                 >
               </v-layout>
@@ -678,9 +678,9 @@
         <v-card-text>
           <v-text-field
             v-model="similarMark.toQuestionLink"
-            label="输入相似问题的链接"
             :rules="[rules.matchQuestionLink]"
             :error-messages="similarMark.errorMsg"
+            label="输入相似问题的链接"
           ></v-text-field>
           <small class="private--text"
             >合理的标记可以帮助小伙伴们寻找答案，提升自己的声望。同时滥用标记，关联无关问题也将受到惩罚哦!</small
@@ -688,13 +688,13 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn small text @click="similarMark.dialog = false">关闭 </v-btn>
+          <v-btn @click="similarMark.dialog = false" small text>关闭 </v-btn>
           <v-btn
+            :loading="similarMark.loading"
+            @click="markQuestion"
             color="primary"
             small
-            :loading="similarMark.loading"
             text
-            @click="markQuestion"
             >确定
           </v-btn>
         </v-card-actions>
@@ -731,9 +731,9 @@
     </InfoDialog>
     <ConfirmDialog
       :dialog="acceptConfirm.dialog"
-      msg="确定采纳该回答?"
       :todo="acceptAnswer"
       @update:dialog="acceptConfirm.dialog = $event"
+      msg="确定采纳该回答?"
     ></ConfirmDialog>
   </div>
 </template>

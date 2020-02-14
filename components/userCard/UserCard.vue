@@ -3,14 +3,14 @@
     <v-layout justify-start align-start>
       <v-flex shrink md2 hidden-sm-and-down>
         <v-avatar
-          style="cursor:pointer"
-          tile
           :title="'用户名: ' + userInfo.username"
           @click="
             actionIcon || $store.getters.getUserType === 'ADMIN'
               ? $router.push('/user/' + userInfo.userId)
               : ''
           "
+          style="cursor:pointer"
+          tile
         >
           <v-img :src="$options.filters.webp(userInfo.avatar)"></v-img>
         </v-avatar>
@@ -20,13 +20,13 @@
         >
           <v-btn
             :color="userInfo.status === 0 ? 'primary' : 'private'"
-            small
-            text
             @click="
               userInfo.status === 0
                 ? (confirmUnBan.dialog = true)
                 : (confirmBan.dialog = true)
             "
+            small
+            text
             ><span>{{ userInfo.status === 0 ? '解封' : '封禁' }}</span></v-btn
           >
         </v-layout>
@@ -37,19 +37,19 @@
           <v-btn
             v-if="actionIcon"
             :title="actionTitle"
-            color="private"
-            icon
-            small
             @click.stop="
               actionConfirm
                 ? (confirm.dialog = true)
                 : actionEvent(userInfo.userId)
             "
+            color="private"
+            icon
+            small
             ><v-icon small color="private">{{ actionIcon }}</v-icon></v-btn
           >
           <v-layout style="position: relative; top: -2px">
             <span
-              ><nuxt-link class="hover-line" :to="'/user/' + userInfo.userId">{{
+              ><nuxt-link :to="'/user/' + userInfo.userId" class="hover-line">{{
                 userInfo.nickname
               }}</nuxt-link
               >&nbsp;<span style="font-weight: bold; color:red">·</span
@@ -71,9 +71,9 @@
             <router-link
               v-for="(tag, index) in userInfo.likeTags"
               :key="tag.tagId"
+              :to="'/search/' + tag.tagName + '?match=tags'"
               class="hover-line"
               style="color: #2196f3; font-size:0.9rem"
-              :to="'/search/' + tag.tagName + '?match=tags'"
               >{{ tag.tagName
               }}<span
                 v-if="index < userInfo.likeTags.length - 1"
@@ -96,18 +96,18 @@
     ></ConfirmDialog>
     <ConfirmDialog
       v-if="$store.getters.isAdmin && !actionEvent"
-      msg="确定 [封禁] 该用户？"
       :dialog="confirmBan.dialog"
       :todo="banUser"
       @update:dialog="confirmBan.dialog = $event"
+      msg="确定 [封禁] 该用户？"
     >
     </ConfirmDialog>
     <ConfirmDialog
       v-if="$store.getters.isAdmin && !actionEvent"
-      msg="确定 [解封] 该用户？"
       :dialog="confirmUnBan.dialog"
       :todo="unBanUser"
       @update:dialog="confirmUnBan.dialog = $event"
+      msg="确定 [解封] 该用户？"
     >
     </ConfirmDialog>
   </v-card>

@@ -1,8 +1,8 @@
 <template>
   <v-app id="inspire">
     <v-app-bar
-      app
       :class="$store.getters.getTransparentHeader ? 'transparent-header' : ''"
+      app
       style="background-color: #24292e; max-height: 64px;  z-index: 999;"
       class="text_primary--text justify-center"
     >
@@ -30,21 +30,21 @@
           <v-text-field
             ref="searchRef"
             v-model="keywords"
+            :class="'aelevation-' + searchElv"
+            @focusin="searchElv = 1"
+            @focusout="searchElv = 0"
+            @click:append="search"
+            @keyup.enter.native="search"
             translate="yes"
             flat
             dark
             class="ml-5 min-input search-input black--text"
-            :class="'aelevation-' + searchElv"
             label="搜索"
             hide-details
             elavation
             style="min-height: 36px;"
             append-icon="search"
             solo
-            @focusin="searchElv = 1"
-            @focusout="searchElv = 0"
-            @click:append="search"
-            @keyup.enter.native="search"
           ></v-text-field>
         </v-flex>
         <v-flex class="my_nav ml-7">
@@ -90,10 +90,10 @@
           <v-layout justify-end align-center>
             <v-btn
               v-if="$store.state.userInfo"
+              :to="'/user/' + $store.getters.getUserId + '?tab=message'"
               style="position: relative;margin-right: 10px"
               icon
               exact
-              :to="'/user/' + $store.getters.getUserId + '?tab=message'"
               small
             >
               <v-icon small color="text_primary">notifications_none</v-icon>
@@ -115,11 +115,11 @@
               >
                 <template #activator="{ on }">
                   <v-chip
+                    :to="'/user/' + $store.getters.getUserInfo.userId"
                     max-width="120px"
                     text
                     small
                     color="primary"
-                    :to="'/user/' + $store.getters.getUserInfo.userId"
                     style="border-radius: 0; background-color: transparent !important;"
                     class="d-inline-block no-flex text-truncate text-left mr-1 text_primary__text"
                     >{{
@@ -128,10 +128,10 @@
                     }}</v-chip
                   >
                   <v-avatar
+                    v-on="on"
                     color="grey"
                     size="35"
                     style="cursor:pointer"
-                    v-on="on"
                   >
                     <v-img :src="$store.getters.getUserInfo.avatar"></v-img>
                   </v-avatar>
@@ -141,11 +141,11 @@
                     <v-list-item class="pa-0 mb-0">
                       <v-list-item-content class="pa-0">
                         <v-btn
+                          :to="'/user/' + $store.getters.getUserId"
                           depressed
                           exact
                           text
                           class="text-left no-flex"
-                          :to="'/user/' + $store.getters.getUserId"
                           >我的主页</v-btn
                         >
                       </v-list-item-content>
@@ -153,10 +153,10 @@
                     <v-list-item class="pa-0 mb-0">
                       <v-list-item-content class="pa-0">
                         <v-btn
+                          :to="'/user/' + $store.getters.getUserId + '?tab=ask'"
                           depressed
                           exact
                           text
-                          :to="'/user/' + $store.getters.getUserId + '?tab=ask'"
                           class="text-left no-flex"
                           >我的问题</v-btn
                         >
@@ -165,14 +165,14 @@
                     <v-list-item class="pa-0 mb-0">
                       <v-list-item-content class="pa-0">
                         <v-btn
-                          depressed
-                          exact
-                          text
                           :to="
                             '/user/' +
                               $store.getters.getUserId +
                               '?tab=collection'
                           "
+                          depressed
+                          exact
+                          text
                           class="text-left no-flex"
                           >我的收藏</v-btn
                         >
@@ -181,7 +181,7 @@
                     <v-divider></v-divider>
                     <v-list-item class="pa-0 mb-0">
                       <v-list-item-content class="pa-0">
-                        <v-btn depressed text height="40px" @click="logout"
+                        <v-btn @click="logout" depressed text height="40px"
                           >退出</v-btn
                         >
                       </v-list-item-content>
@@ -313,15 +313,15 @@
         </v-card-title>
         <v-card-text class="pb-0">
           <v-textarea
+            :value="systemNotice.content"
             hide-details
             readonly
             rows="10"
-            :value="systemNotice.content"
           ></v-textarea>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="viewNotice.dialog = false">关闭 </v-btn>
+          <v-btn @click="viewNotice.dialog = false" text>关闭 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

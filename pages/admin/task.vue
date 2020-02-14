@@ -20,15 +20,15 @@
           </v-card-title>
           <client-only>
             <v-data-table
-              v-if="$store.getters.isAdmin"
               ref="table"
-              locale="zh-CN"
+              v-if="$store.getters.isAdmin"
               :headers="headers"
               :items="tasks"
-              class="elevation-1"
-              item-key="messageId"
               :search="search"
               :loading="loading"
+              locale="zh-CN"
+              class="elevation-1"
+              item-key="messageId"
             >
               <template v-slot:item.content="{ item }">
                 <v-row align="center">
@@ -38,31 +38,31 @@
                     >{{ item.content }}</span
                   >
                   <v-btn
-                    text
-                    small
-                    color="warning"
-                    style="position:relative;"
                     @click="
                       taskDialog.task = item
                       taskDialog.viewDetail = true
                     "
+                    text
+                    small
+                    color="warning"
+                    style="position:relative;"
                   >
                     查看详情
                   </v-btn>
                   <v-btn
                     v-if="item.relateQuestionId"
+                    @click="$router.push('/question/' + item.relateQuestionId)"
                     text
                     small
                     color="warning"
-                    @click="$router.push('/question/' + item.relateQuestionId)"
                     >查看相关问题</v-btn
                   >
                   <v-btn
                     v-if="item.relateUserId"
+                    @click="$router.push('/user/' + item.relateUserId)"
                     text
                     small
                     color="warning"
-                    @click="$router.push('/user/' + item.relateUserId)"
                     >查看相关用户</v-btn
                   ></v-row
                 >
@@ -70,19 +70,19 @@
               <template v-slot:item.creator.nickname="{ item }">
                 <v-btn
                   v-if="item.creator"
+                  @click="$router.push('/user/' + item.creatorId)"
                   text
                   color="primary"
-                  @click="$router.push('/user/' + item.creatorId)"
                   >{{ item.creator.nickname }}</v-btn
                 >
               </template>
               <template v-slot:item.replyUser.nickname="{ item }">
                 <v-btn
                   v-if="item.replyUser"
+                  @click="$router.push('/user/' + item.creatorId)"
                   text
                   color="primary"
                   style="position:relative; top:-2px;"
-                  @click="$router.push('/user/' + item.creatorId)"
                   >{{ item.replyUser.nickname }}</v-btn
                 >
               </template>
@@ -107,28 +107,28 @@
               <template v-slot:item.action="{ item }">
                 <v-icon
                   v-if="item.status === 0"
+                  @click="dealTask(item)"
                   title="回复用户"
                   small
                   class="mr-2"
-                  @click="dealTask(item)"
                 >
                   mdi-comment
                 </v-icon>
                 <v-icon
                   v-else
-                  title="查看回复内容"
-                  small
-                  class="mr-2"
                   @click="
                     taskDialog.task = item
                     taskDialog.viewDialog = true
                   "
+                  title="查看回复内容"
+                  small
+                  class="mr-2"
                 >
                   mdi-comment-eye
                 </v-icon>
               </template>
               <template v-slot:no-data>
-                <v-btn color="primary" @click="initialize">Reset</v-btn>
+                <v-btn @click="initialize" color="primary">Reset</v-btn>
               </template>
             </v-data-table>
           </client-only>
@@ -140,12 +140,12 @@
             <v-form ref="noticeForm">
               <v-text-field
                 v-model="newSystemNotice.content"
-                label="发布公告"
-                append-icon="volume_down"
                 :counter="300"
                 :rules="[rules.max300]"
                 @keyup.enter.native="newSystemNotice.confirmDialog = true"
                 @click:append="newSystemNotice.confirmDialog = true"
+                label="发布公告"
+                append-icon="volume_down"
               >
               </v-text-field>
               <v-text-field v-show="false"> </v-text-field>
@@ -204,12 +204,12 @@
           <v-form ref="dealTaskForm">
             <v-textarea
               v-model="taskDialog.task.replyContent"
+              :rules="[rules.min10, rules.max1000]"
+              :counter="1000"
               no-resize
               label="输入您的回复"
-              :rules="[rules.min10, rules.max1000]"
               autofocus
               rows="20"
-              :counter="1000"
             ></v-textarea>
           </v-form>
           <small class="error--text">{{ taskDialog.errorMsg }}</small>
@@ -217,18 +217,18 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            text
             @click="
               taskDialog.dialog = false
               taskDialog.errorMsg = null
             "
+            text
             >关闭
           </v-btn>
           <v-btn
-            text
-            color="primary"
             :loading="taskDialog.loading"
             @click="submitReply"
+            text
+            color="primary"
             ><span>提交</span>
           </v-btn>
         </v-card-actions>
@@ -242,17 +242,17 @@
         <v-card-text class="pb-0">
           <v-textarea
             v-if="taskDialog.task"
+            :value="taskDialog.task.replyContent"
             hide-details
             no-resize
             readonly
-            :value="taskDialog.task.replyContent"
             autofocus
             rows="20"
           ></v-textarea>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="taskDialog.viewDialog = false">关闭 </v-btn>
+          <v-btn @click="taskDialog.viewDialog = false" text>关闭 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -264,24 +264,24 @@
         <v-card-text class="pb-0">
           <v-textarea
             v-if="taskDialog.task"
+            :value="taskDialog.task.content"
             hide-details
             readonly
             rows="20"
-            :value="taskDialog.task.content"
             autofocus
           ></v-textarea>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="taskDialog.viewDetail = false">关闭 </v-btn>
+          <v-btn @click="taskDialog.viewDetail = false" text>关闭 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <ConfirmDialog
       :dialog="newSystemNotice.confirmDialog"
-      msg="确定发布公告吗?"
       :todo="sendSystemNotice"
       @update:dialog="newSystemNotice.confirmDialog = $event"
+      msg="确定发布公告吗?"
     ></ConfirmDialog>
     <InfoDialog
       :msg="[
@@ -293,8 +293,8 @@
           newSystemNotice.result.resp.succeed
       "
       :dialog="newSystemNotice.result.dialog"
-      close-txt="关闭"
       @update:dialog="newSystemNotice.result.dialog = $event"
+      close-txt="关闭"
     >
     </InfoDialog>
   </v-app>

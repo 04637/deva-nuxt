@@ -6,12 +6,12 @@
       style="border-left: 5px solid #ff6600; padding-left: 10px"
       ><span class="my_gray--text">我的标签</span
       ><v-btn
+        @click="editable = !editable"
         class="ml-1"
         small
         text
         icon
         color="blue"
-        @click="editable = !editable"
         ><v-icon small>edit</v-icon></v-btn
       ></v-layout
     >
@@ -31,11 +31,11 @@
             ><transition name="fade"
               ><v-btn
                 v-show="editable"
+                @click="toggleLikeTag(tag)"
                 small
                 icon
                 title="取消关注"
                 style="height: 24px"
-                @click="toggleLikeTag(tag)"
                 ><v-icon small color="private">mdi-close</v-icon></v-btn
               ></transition
             >
@@ -61,7 +61,7 @@
     </div>
     <transition-group name="list">
       <div v-for="tag in hotTagList" :key="tag.tagId" class="mb-3 mt-1">
-        <TagChip color="light_blue" :tag-info="tag"></TagChip>&nbsp;<span
+        <TagChip :tag-info="tag" color="light_blue"></TagChip>&nbsp;<span
           class="my_gray--text"
           title="提问次数"
           >× {{ tag.totalCount }}</span

@@ -16,9 +16,9 @@
               <v-text-field
                 ref="editPhoneRef"
                 v-model="editPhone.phone"
-                label="手机号"
                 :error-messages="editPhone.phoneCheck"
                 :rules="[rules.phone]"
+                label="手机号"
               >
               </v-text-field>
             </v-layout>
@@ -26,17 +26,17 @@
             <v-layout align-center>
               <v-text-field
                 v-model="editPhone.smsCode"
-                label="验证码"
                 :rules="[rules.requireCode]"
+                label="验证码"
               >
               </v-text-field>
               <v-btn
                 v-show="smsCodeResult.timeInterval <= 0"
+                :loading="smsCodeResult.loading"
+                @click="sendSmsCode"
                 text
                 color="link_color"
                 small
-                :loading="smsCodeResult.loading"
-                @click="sendSmsCode"
                 >获取验证码</v-btn
               >
               <v-btn
@@ -55,13 +55,13 @@
       <v-card-actions>
         <div class="flex-grow-1"></div>
         <v-btn
+          @click="$store.commit('setPhoneDialog', false)"
           color="sub"
           text
           small
-          @click="$store.commit('setPhoneDialog', false)"
           >关闭</v-btn
         >
-        <v-btn color="primary" small text @click="updatePhone"
+        <v-btn @click="updatePhone" color="primary" small text
           ><span>提交</span></v-btn
         >
       </v-card-actions>

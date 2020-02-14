@@ -19,13 +19,13 @@
             v-if="excludeId !== post.blogId && excludeId !== post.questionId"
             align-center
             ><router-link
-              style="font-size: 14px;"
-              class="d-block text-truncate hover-line"
               :to="
                 post.blogId
                   ? '/blog/' + post.blogId
                   : '/question/' + post.questionId
               "
+              style="font-size: 14px;"
+              class="d-block text-truncate hover-line"
               ><span style="font-weight:bold;" class="my_gray--text"
                 >·&nbsp;</span
               >{{ post.title }}</router-link

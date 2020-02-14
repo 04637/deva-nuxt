@@ -10,7 +10,7 @@
     <div class="py-1 px-2 mt-2">
       <transition-group name="list">
         <div v-for="tag in hotTagList" :key="tag.tagId" class="mb-3 mt-1">
-          <TagChip color="light_blue" :tag-info="tag"></TagChip>&nbsp;<span
+          <TagChip :tag-info="tag" color="light_blue"></TagChip>&nbsp;<span
             class="my_gray--text"
             title="提问次数"
             >× {{ tag.totalCount }}</span

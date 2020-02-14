@@ -10,11 +10,11 @@
         ><v-layout align-center>
           <v-flex shrink>
             <v-chip
+              @click="likeTag(tagInfo)"
               color="rgba(221, 238, 255, 0.5411764705882353)"
               style="font-weight: 500;cursor: pointer; text-decoration: none;border-radius: 3px; font-size: 16px !important;"
               class="text-left my_blue--text"
               title="关注该标签"
-              @click="likeTag(tagInfo)"
             >
               {{ $route.params.keywords }}</v-chip
             >
@@ -25,9 +25,9 @@
             align-center
           >
             <span
+              :title="tagInfo.description"
               style="font-size: 14px;line-height: 20px; display: inline-block; min-height: 0"
               class=" ml-3 my_gray--text label-description"
-              :title="tagInfo.description"
               >{{ tagInfo.description }}
             </span>
           </v-layout></v-layout
@@ -35,10 +35,10 @@
       </v-layout>
       <v-layout>
         <v-tabs
+          @change="searchBQ"
           height="38"
           slider-color="slider_color"
           background-color="transparent"
-          @change="searchBQ"
         >
           <v-tab @click="sortType = 'RELEVANCE'">相关</v-tab>
           <v-tab @click="sortType = 'RECENT'">最新</v-tab>

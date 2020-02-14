@@ -3,11 +3,11 @@
     <v-toolbar dense flat class="mb-1">
       <v-layout justify-space-between align-center>
         <router-link
-          class="private--text hover-line"
           :to="'/space/' + spaceInfo.spaceId"
+          class="private--text hover-line"
           >{{ spaceInfo.spaceName }}</router-link
         >
-        <v-chip small :to="'/user/' + spaceInfo.ownerUserId"
+        <v-chip :to="'/user/' + spaceInfo.ownerUserId" small
           >创建人：{{ spaceInfo.ownerUser.nickname }}</v-chip
         >
       </v-layout>
@@ -20,8 +20,8 @@
         <v-list-item-content>
           <v-layout>
             空间成员：<router-link
-              class="d-inline"
               :to="'/space/userView?spaceId=' + spaceInfo.spaceId"
+              class="d-inline"
               >{{ spaceInfo.memberNum }}</router-link
             >
             &nbsp;&nbsp;人</v-layout
@@ -91,13 +91,13 @@
       </v-list-item>
       <v-divider></v-divider>
       <v-textarea
+        :value="spaceInfo.description"
         class="mt-1"
         hide-details
         solo
         readonly
         no-resize
         flat
-        :value="spaceInfo.description"
       >
       </v-textarea>
       <v-layout

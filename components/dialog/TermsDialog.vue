@@ -7,7 +7,7 @@
       ></v-card-text>
       <v-card-actions>
         <v-layout justify-end>
-          <v-btn text @click="$emit('update:dialog', false)"
+          <v-btn @click="$emit('update:dialog', false)" text
             >关闭</v-btn
           ></v-layout
         >
