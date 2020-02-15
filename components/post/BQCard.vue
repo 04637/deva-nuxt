@@ -63,7 +63,7 @@
               height="30px"
               class="no-hover-active no-ripple title d-inline-block text-truncate text-left no-flex px-1"
               text
-              style="font-size: 17px !important;"
+              style="font-size: 17px !important;width: 100%"
               color="link_color"
               >{{ item.title }}</v-btn
             >
