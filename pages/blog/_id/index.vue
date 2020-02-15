@@ -178,8 +178,7 @@ export default {
       max10000: (v) => (v && v.length <= 10000) || '不能超过10000个字符',
       max400: (v) => (v && v.length) <= 400 || '不能超过400个字符',
       requiredComment: (v) => (v && v.trim().length > 0) || '评论不能为空'
-    },
-    keywords: null
+    }
   }),
   computed: {},
   watch: {},
@@ -189,26 +188,22 @@ export default {
       blogId: params.id
     })
     const blogDetail = resp.data
-    const keywords1 = blogDetail.title.split(' ')
-    const keywords2 = blogDetail.tagInfos.map((t) => {
-      return t.tagName
-    })
-    const _keywords = keywords1.concat(keywords2)
-    const keywords = _keywords.join(',')
-    return { blogDetail, keywords }
+    return { blogDetail }
   },
   head() {
     // 不能写成 head:()=>({}) https://stackoverflow.com/blogs/46064245/nuxt-js-ssr-title-undefined
     return {
-      title: this.blogDetail.title + ' -DEVA开发者社区',
+      title: this.blogDetail.tkd.title + ' -DEVA开发者社区',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: this.keywords },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: this.blogDetail.tkd.keywords.join(',')
+        },
         {
           hid: 'description',
           name: 'description',
-          content: this.$options.filters.filterHtml(
-            this.$md.render(this.blogDetail.content)
-          )
+          content: this.blogDetail.tkd.description
         }
       ]
     }
