@@ -811,7 +811,6 @@ export default {
       matchQuestionLink: (v) =>
         (v && /question\/(\d{18})/.test(v)) || '请输入有效的问题链接'
     },
-    keywords: null,
     miniTop: false
   }),
   computed: {},
@@ -822,26 +821,22 @@ export default {
       questionId: params.id
     })
     const questionDetail = resp.data
-    const keywords1 = questionDetail.title.split(' ')
-    const keywords2 = questionDetail.tagInfos.map((t) => {
-      return t.tagName
-    })
-    const _keywords = keywords1.concat(keywords2)
-    const keywords = _keywords.join(',')
-    return { questionDetail, keywords }
+    return { questionDetail }
   },
   head() {
     // 不能写成 head:()=>({}) https://stackoverflow.com/questions/46064245/nuxt-js-ssr-title-undefined
     return {
-      title: this.questionDetail.title + ' -DEVA开发者社区',
+      title: this.questionDetail.tkd.title + ' -DEVA开发者社区',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: this.keywords },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: this.questionDetail.tkd.keywords.join(',')
+        },
         {
           hid: 'description',
           name: 'description',
-          content: this.$options.filters.filterHtml(
-            this.$md.render(this.questionDetail.content)
-          )
+          content: this.questionDetail.tkd.description
         }
       ]
     }
