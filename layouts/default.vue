@@ -314,7 +314,6 @@
         <v-card-text class="pb-0">
           <v-textarea
             :value="systemNotice.content"
-            hide-details
             readonly
             rows="10"
           ></v-textarea>
@@ -354,7 +353,10 @@ export default {
       'question-ask',
       'blog-postBlog',
       'user-signUp',
-      'user-login'
+      'user-login',
+      'question-id',
+      'blog-id',
+      'index'
     ],
     ssrRouters: ['question-id', 'blog-id'],
     keywords: null,

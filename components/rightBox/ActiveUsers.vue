@@ -11,7 +11,7 @@
       <div v-if="userList && userList.length > 0" class="py-1 px-2 mt-2">
         <transition-group name="list">
           <div v-for="user in userList" :key="user.userId" class="mb-3 mt-1">
-            <v-layout align-center>
+            <v-layout>
               <v-flex shrink>
                 <v-avatar
                   @click="$router.push('/user/' + user.userId)"
@@ -21,7 +21,7 @@
                 </v-avatar>
               </v-flex>
               <v-flex style="font-size: 14px" class="ml-2">
-                <v-layout align-center
+                <v-layout
                   ><div
                     @click="$router.push('/user/' + user.userId)"
                     style="cursor: pointer"
@@ -62,7 +62,7 @@
           </div>
         </transition-group>
       </div>
-      <v-layout justify-center class="mt-2">
+      <v-layout class="mt-2">
         <v-btn outlined color="my_gray" width="100%" to="/user/users"
           >查看所有用户 >
         </v-btn>

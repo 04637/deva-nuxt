@@ -60,7 +60,6 @@
             <v-btn
               :title="item.title"
               :to="'/' + type + '/' + (item.questionId || item.blogId)"
-              target="_blank"
               height="30px"
               class="no-hover-active no-ripple title d-inline-block text-truncate text-left no-flex px-1"
               text

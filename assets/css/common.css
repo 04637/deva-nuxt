@@ -41,9 +41,12 @@ html{
 }
 pre,code {
   font-weight: normal !important;
+  font-family: consolas, serif !important;
+}
+.v-application code {
+  font-size: 100% !important;
 }
 pre{
-  font-family: consolas, monospace !important;
   box-shadow: none !important;
   color: white !important;
   background-color: #2f2e2e !important;
