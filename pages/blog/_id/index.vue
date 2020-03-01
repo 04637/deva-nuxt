@@ -1,10 +1,6 @@
 <template>
   <v-app>
-    <v-layout
-      justify-center
-      justify-space-around
-      style="position:relative; padding-left:10px;padding-right:10px;"
-    >
+    <v-layout justify-center justify-space-around style="position:relative;">
       <v-flex xs12 md10 lg9 justify-start class="mt-4">
         <div class="float-action hidden-sm-and-down" style="z-index: 999">
           <v-flex>
@@ -22,7 +18,13 @@
             >
           </v-flex>
         </div>
-        <v-card flat exact width="100vw" class="right-box">
+        <v-card
+          flat
+          exact
+          width="100vw"
+          style="padding-left:10px;padding-right:10px;"
+          class="right-box"
+        >
           <v-col>
             <h2 style="font-weight: normal">
               {{ blogDetail.title }}&nbsp;<v-btn
