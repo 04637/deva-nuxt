@@ -114,7 +114,7 @@
                 @click="submitSignUp"
                 accent
                 depressed
-                width="100vw"
+                width="100%"
                 color="my_green"
                 class="mt-4 white--text"
                 >注册</v-btn

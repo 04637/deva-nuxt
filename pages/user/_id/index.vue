@@ -50,11 +50,11 @@
         <v-hover>
           <template v-slot:default="{ hover }">
             <v-layout justify-center>
-              <v-avatar size="130" style="z-index: 10">
-                <v-img
-                  :src="$options.filters.webp(userProfile.avatar)"
-                  style="box-shadow: 0 0 20px #fafafa"
-                ></v-img>
+              <v-avatar
+                size="130"
+                style="z-index: 10;box-shadow: 0 0 20px #fafafa"
+              >
+                <v-img :src="$options.filters.webp(userProfile.avatar)"></v-img>
                 <v-fade-transition>
                   <v-overlay
                     v-if="
