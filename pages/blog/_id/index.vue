@@ -1,6 +1,10 @@
 <template>
   <v-app>
-    <v-layout justify-center justify-space-around style="position:relative">
+    <v-layout
+      justify-center
+      justify-space-around
+      style="position:relative; padding-left:10px;padding-right:10px;"
+    >
       <v-flex xs12 md10 lg9 justify-start class="mt-4">
         <div class="float-action hidden-sm-and-down" style="z-index: 999">
           <v-flex>
@@ -87,7 +91,8 @@
                         >&nbsp;{{ comment.createTime | timeago }}</span
                       >&nbsp;<span
                         v-if="
-                          comment.author.userId === $store.getters.getUserId
+                          comment.author.userId === $store.getters.getUserId ||
+                            $store.getters.isAdmin
                         "
                         @click="
                           delBlogComment(blogDetail.comments, comment.commentId)

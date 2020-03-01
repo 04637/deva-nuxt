@@ -306,7 +306,8 @@
                             >&nbsp;<span
                               v-if="
                                 comment.author.userId ===
-                                  $store.getters.getUserId
+                                  $store.getters.getUserId ||
+                                  $store.getters.isAdmin
                               "
                               @click="
                                 delQuestionComment(
@@ -528,7 +529,8 @@
                               >&nbsp;<span
                                 v-if="
                                   comment.author.userId ===
-                                    $store.getters.getUserId
+                                    $store.getters.getUserId ||
+                                    $store.getters.isAdmin
                                 "
                                 @click="
                                   delQuestionComment(
