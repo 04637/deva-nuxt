@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+
 const api = 'https://api.deva.wiki'
 // const api = 'http://localhost:8080'
 const websocket = 'wss://ws.deva.wiki'
@@ -45,19 +46,20 @@ export default {
   head: {
     // titleTemplate: '%s - ' + process.env.npm_package_name,
     titleTemplate: '%s',
-    title: 'DEVA - 开发者的专属社区',
+    title: 'DEVA - 原创、专业、权威的开发者问答社区',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: '中国开发者的专业问答社区 DEVA - aid.dev'
+        content: '原创、专业、权威的开发者问答社区 DEVA - deva.wiki'
       },
       {
         hid: 'keywords',
         name: 'keywords',
-        content: 'DEVA,开发者,问答社区,开发者社区,aid.dev'
+        content:
+          'DEVA,开发者,问答社区,开发者社区,aid.dev,deva.wiki,原创,IT,技术论坛'
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
