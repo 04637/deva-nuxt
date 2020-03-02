@@ -46,14 +46,14 @@ export default {
   head: {
     // titleTemplate: '%s - ' + process.env.npm_package_name,
     titleTemplate: '%s',
-    title: 'DEVA - 原创、专业、权威的开发者问答社区',
+    title: 'DEVA - 原创、专业、权威的开发者社区',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: '原创、专业、权威的开发者问答社区 DEVA - deva.wiki'
+        content: 'DEVA - 原创、专业、权威的开发者社区  - deva.wiki'
       },
       {
         hid: 'keywords',

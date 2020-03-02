@@ -19,7 +19,7 @@
           class="mt-2"
         >
           <v-btn
-            :color="userInfo.status === 0 ? 'primary' : 'private'"
+            :color="userInfo.status === 0 ? 'private' : 'primary'"
             @click="
               userInfo.status === 0
                 ? (confirmUnBan.dialog = true)
@@ -27,7 +27,9 @@
             "
             small
             text
-            ><span>{{ userInfo.status === 0 ? '解封' : '封禁' }}</span></v-btn
+          >
+            <span v-show="userInfo.status === 0">解封</span
+            ><span v-show="userInfo.status === 1">封禁</span></v-btn
           >
         </v-layout>
       </v-flex>
@@ -45,8 +47,9 @@
             color="private"
             icon
             small
-            ><v-icon small color="private">{{ actionIcon }}</v-icon></v-btn
           >
+            <v-icon small color="private">{{ actionIcon }}</v-icon>
+          </v-btn>
           <v-layout style="position: relative; top: -2px">
             <span
               ><nuxt-link :to="'/user/' + userInfo.userId" class="hover-line">{{
@@ -114,6 +117,7 @@
 </template>
 <script>
 import ConfirmDialog from '../dialog/ConfirmDialog'
+
 export default {
   components: {
     ConfirmDialog
@@ -196,6 +200,7 @@ export default {
 .icon {
   vertical-align: -7px;
 }
+
 /* 控制展示两行 */
 .label-description {
   font-size: 15px;
@@ -205,10 +210,12 @@ export default {
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
+
 .theme--light .no-shadow-box {
   box-shadow: none;
   border: 1px solid #e7e7e7;
 }
+
 .theme--dark .no-shadow-box {
   box-shadow: none;
   border: 1px solid #4b4b4b;
