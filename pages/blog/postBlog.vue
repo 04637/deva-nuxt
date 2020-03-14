@@ -32,7 +32,9 @@
             class="text-capitalize"
             small
             ><v-icon>{{
-              $store.getters.getUseMarkdown ? 'mdi-markdown' : 'mdi-textbox'
+              $store.getters.getUseMarkdown
+                ? 'mdi-language-markdown'
+                : 'mdi-textbox'
             }}</v-icon></v-btn
           >
         </v-flex>

@@ -13,7 +13,7 @@
       style="text-decoration: none"
       title="使用 github 帐号登录"
       ><v-btn icon small
-        ><v-icon small color="black">mdi-github-circle</v-icon></v-btn
+        ><v-icon small color="black">mdi-github</v-icon></v-btn
       ></a
     >
     <a

@@ -12,6 +12,7 @@
         text
         icon
         color="blue"
+        title="编辑你关注的标签"
         ><v-icon small>edit</v-icon></v-btn
       ></v-layout
     >

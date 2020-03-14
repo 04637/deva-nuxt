@@ -65,9 +65,7 @@
           </v-card-actions>
           <v-divider></v-divider>
           <v-layout justify-end class="mt-2">
-            <v-btn @click="showCommentInput = !showCommentInput" small text
-              >添加评论</v-btn
-            >
+            <v-btn @click="clickShowComment" small text>添加评论</v-btn>
           </v-layout>
           <v-layout>
             <v-list width="100vw" dense class="pb-5">
@@ -219,6 +217,14 @@ export default {
     this.pushBaidu()
   },
   methods: {
+    clickShowComment() {
+      this.showCommentInput = !this.showCommentInput
+      this.$vuetify.goTo(9999, {
+        duration: 245,
+        offset: 0,
+        easing: 'easeInCubic'
+      })
+    },
     delBlogComment(_comments, _commentId) {
       this.$axios
         .$post('/blogComment/delComment', {

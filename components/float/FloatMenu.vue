@@ -75,7 +75,7 @@
                 :rules="[rules.min10, rules.max1000]"
                 :counter="1000"
                 label="输入您的意见"
-                rows="20"
+                rows="10"
                 no-resize
               ></v-textarea>
             </v-form>
